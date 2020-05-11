@@ -1,0 +1,91 @@
+﻿
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card mt-3">
+                <div class="body">
+
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.PartialDataSource).ActionBegin("onActionBegin").AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+               {
+                   col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("InvDateTime").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("InvoiceNumber").HeaderText("Invoice").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CustomerName").HeaderText("Cust Name").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CustomerNameAr").HeaderText("Cust Name(Ar)").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Voucher").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ProductNameEn").HeaderText("ProdEn").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ProductNameAr").HeaderText("ProdAr").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("BaseQuantity").HeaderText("Base Qty").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("BaseUnit").HeaderText("Base Unit").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("SellQuantity").HeaderText("Sell Qty").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("SellUnit").HeaderText("Sell Unit").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Discount").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Amount").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                   page => page.PageSizes(true)).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                        {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Discount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+                        new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Amount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }}).Add();
+                        }).DataBound("dataBound").Render()
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<h1>TEST</h1>
+
+@section scripts {
+    <script>
+
+        function dataBound(args) {
+            this.autoFitColumns(['InvDateTime', 'InvoiceNumber', 'Voucher', 'BaseQuantity', 'BaseUnit', 'SellQuantity', 'SellUnit', 'Discount', 'Amount']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "SalesDetailReport.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+        function onActionBegin(args) {
+            if (args.requestType === "filterchoicerequest") {
+                // Filter choice count is modified
+                args.filterChoiceCount = 30000;
+            }
+        }
+
+
+    </script>
+}
+
+

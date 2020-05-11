@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "Cash Register Report";
+    ViewBag.SubTitle = "All transactions of cash register as report";
+    var checkboxVal = ViewBag.takeCount == true ? "true" : "false";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("Index", "CashRegister", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.startDate).Render()
+                        </div>
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
+                        </div>
+
+                        <div class="col-3">
+                            @Html.EJS().CheckBox("takeCount").Name("takeCount").Value("true").Label("Shift Count").Checked(ViewBag.takeCount).Render()
+                        </div>
+
+                        <div class="col-2">
+                            @*<button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>*@
+                            <button type="button" class="btn btn-raised bg-black waves-effect waves-light getRecords">Get Records</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="card mt-3">
+                <div class="body">
+
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                    <h5 class="text-center loading-text mt-2">Loading...</h5>
+
+
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+               {
+                   col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LocationShortName").Width("80").HeaderText("Short Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TransDateTime").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ShiftCount").Width("80").HeaderText("Shift Count").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ShiftType").Width("80").HeaderText("Shift Type").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Carriage").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Cheque").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Online").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Knet").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Visa").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Cash").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Expense").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Reserve").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TotalSales").Width("80").HeaderText("Total Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("NetSales").Width("80").HeaderText("Total Sales").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("NetAmount").Width("80").HeaderText("Total Cash").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                        {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Cash", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Carriage", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Cheque", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Online", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Knet", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Visa", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "TotalSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "NetSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "NetAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Reserve", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Expense", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }
+                       }).Add();
+                        }).DataBound("dataBound").Render()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        $('.preloader').hide();
+        $('.loading-text').hide();
+
+        function dataBound(args) {
+            this.autoFitColumns(['Location', 'TransDateTime', 'ShiftCount', 'ShiftType', 'Carriage', 'Cheque', 'Online', 'Expense', 'Reserve', 'TotalSales', 'NetSales', 'NetAmount', 'Cash', 'Knet', 'Visa']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "CashRegisterReport.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+         $(".getRecords").click(function () {
+
+            var i = 1;
+            setInterval(function () {
+                i++;
+            }, 1000);
+
+            $('.preloader').show();
+            $('.loading-text').show();
+             $('.e-grid').hide();
+
+              var fromDate = $('#fromDate').val();
+            var toDate = $('#toDate').val();
+
+             var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+             $.ajax({
+                type: 'GET',
+                data: { from: fromDate.toString(), to: toDate.toString() },
+                url: '@Url.Action("GetCashRegister", "CashRegister")',
+                dataType: 'json',
+                 success: function (response) {
+                     console.log(response);
+                    console.log('Total Time Taken: ', i);
+                    $('.preloader').hide();
+                    $('.loading-text').hide();
+                    $('.e-grid').show();
+
+                    grid.dataSource = response;
+                    grid.refresh();
+                },
+                error: function (ex) {
+                    alert(ex);
+                    $('.preloader').hide();
+                }
+
+            });
+        });
+
+    </script>
+}
+

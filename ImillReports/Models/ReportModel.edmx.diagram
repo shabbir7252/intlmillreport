@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="91e7721898db4476bbed1c8e8ddeb48e" Name="Diagram1" ZoomLevel="13">
+        <EntityTypeShape EntityType="IMILLModel.GL_Ledger" Width="1.5" PointX="3" PointY="69" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Item" Width="1.5" PointX="8.25" PointY="68.75" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Item_Unit_Details" Width="1.5" PointX="10.5" PointY="77" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Transaction" Width="1.5" PointX="7.5" PointY="100.875" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Transaction_Details" Width="1.5" PointX="10.5" PointY="111.375" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Transaction_Types" Width="1.5" PointX="5.25" PointY="49.5" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Unit" Width="1.5" PointX="6" PointY="44.125" />
+        <EntityTypeShape EntityType="IMILLModel.SM_Location" Width="1.5" PointX="5.25" PointY="121.125" />
+        <EntityTypeShape EntityType="IMILLModel.SM_SALESMAN" Width="1.5" PointX="0.75" PointY="76" />
+        <EntityTypeShape EntityType="IMILLModel.intlmill_cash_register" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="IMILLModel.FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd" />
+        <AssociationConnector Association="IMILLModel.FK_GL_Ledger_Salesman_Default_Sman_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_GL_Ledger_Cash_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_GL_Ledger_Ldgr_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Types_GL_Ledger_Adjustment_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Adjustment_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Cash_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Cash_Sale_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Cash_SDis_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Cash_SRet_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Cash_SRet_Dis_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Cost_Of_Sale_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Credit_Sale_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Credit_SDis_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Credit_SRet_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Credit_SRet_Dis_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Inventory_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Non_Inventory_Cost_Of_Sales_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_non_inventory_expense_cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Non_Inventory_Sales_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_PDis_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_PRet_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_PRet_Dis_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Service_Cost_Of_Sales_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Service_Expense_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Service_Sales_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Location_GL_Ledger_Suspense_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Product_GL_Ledger" />
+        <AssociationConnector Association="IMILLModel.FK_Alt_Unit_Details_Product" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_Product" />
+        <AssociationConnector Association="IMILLModel.FK_Product_Unit" />
+        <AssociationConnector Association="IMILLModel.FK_Alt_Unit_Details_Unit_Alt_Unit_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_Alt_Unit_Details_Unit_Base_Unit_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_ICS_Transaction" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_ICS_Transaction_Types" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_ICS_Transaction_Types_Voucher_Type_Linked_To_Voucher_Type" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Location" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Salesman" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_Location_Add_Locat_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_Location_Less_Locat_Cd" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Types_ICS_Transaction_Types" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Types_ICS_Transaction_Types_Revised_History_Voucher_Type" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Types_ICS_Transaction_Types_Voucher_Type_Linked_Assembly_Group_Adjust_Voucher_Type" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

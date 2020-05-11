@@ -1,0 +1,1815 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="IMILLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="GL_Ledger">
+    <Key>
+      <PropertyRef Name="Ldgr_Cd" />
+    </Key>
+    <Property Name="Ldgr_Cd" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type_Cd" Type="Byte" Nullable="false" />
+    <Property Name="Group_Cd" Type="Int32" Nullable="false" />
+    <Property Name="Parent_Group_Cd_1" Type="Int32" />
+    <Property Name="Parent_Group_Cd_2" Type="Int32" />
+    <Property Name="Parent_Group_Cd_3" Type="Int32" />
+    <Property Name="Parent_Group_Cd_4" Type="Int32" />
+    <Property Name="Parent_Group_Cd_5" Type="Int32" />
+    <Property Name="Parent_Group_Cd_6" Type="Int32" />
+    <Property Name="Parent_Group_Cd_7" Type="Int32" />
+    <Property Name="Curr_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Ldgr_No" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="L_Ldgr_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="A_Ldgr_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Credit_Limit_Amount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Credit_Limit_Days" Type="Int16" />
+    <Property Name="Addr_1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Addr_2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Addr_3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="A_Addr_1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="A_Addr_2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="A_Addr_3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Fax" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Contact_Person" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Reference_No" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="License_No" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Default_Dr_Cr_Type" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Default_Cost_Cd" Type="Int32" />
+    <Property Name="Default_Sman_Cd" Type="Int16" />
+    <Property Name="Default_Pay_Mode_Cd" Type="Byte" />
+    <Property Name="Default_Project_Cd" Type="Int64" />
+    <Property Name="Default_Sales_Price_Level" Type="Int64" />
+    <Property Name="Default_Purchase_Price_Level" Type="Int64" />
+    <Property Name="Enable_Sales_Price_Restrictions" Type="Boolean" Nullable="false" />
+    <Property Name="Maximum_Sales_Price_Level" Type="Int64" />
+    <Property Name="Minimum_Sales_Price_Level" Type="Int64" />
+    <Property Name="Maximum_Product_Sales_Discount_In_Percent" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Maximum_Voucher_Sales_Discount_In_Percent" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Enable_Purchase_Price_Restrictions" Type="Boolean" Nullable="false" />
+    <Property Name="Maximum_Purchase_Price_Level" Type="Int64" />
+    <Property Name="Minimum_Purchase_Price_Level" Type="Int64" />
+    <Property Name="Maximum_Product_Purchase_Discount_In_Percent" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Maximum_Voucher_Purchase_Discount_In_Percent" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Discontinued" Type="Boolean" Nullable="false" />
+    <Property Name="Reconciled" Type="Boolean" Nullable="false" />
+    <Property Name="Grade_Cd" Type="Int16" />
+    <Property Name="Last_Reconciled_Bal" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Last_Reconciled_Date" Type="DateTime" Precision="0" />
+    <Property Name="Current_Reconciled_Bal" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Current_Reconciled_Date" Type="DateTime" Precision="0" />
+    <Property Name="Opening_Bal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Transaction_Bal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Current_Bal" Type="Decimal" Precision="19" Scale="4" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Last_Receipt_Date" Type="DateTime" Precision="0" />
+    <Property Name="Comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Reporting_Sequence_ID" Type="Int64" Nullable="false" />
+    <Property Name="Contract_date" Type="DateTime" Precision="0" />
+    <Property Name="Contract_Value" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Default_Discount_In_Percent" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="ICS_Transaction" Relationship="Self.FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd" FromRole="GL_Ledger" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="SM_SALESMAN" Relationship="Self.FK_GL_Ledger_Salesman_Default_Sman_Cd" FromRole="GL_Ledger" ToRole="SM_SALESMAN" />
+    <NavigationProperty Name="ICS_Transaction1" Relationship="Self.FK_ICS_Transaction_GL_Ledger_Cash_Cd" FromRole="GL_Ledger" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction2" Relationship="Self.FK_ICS_Transaction_GL_Ledger_Ldgr_Cd" FromRole="GL_Ledger" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction_Types" Relationship="Self.FK_ICS_Transaction_Types_GL_Ledger_Adjustment_Cd" FromRole="GL_Ledger" ToRole="ICS_Transaction_Types" />
+    <NavigationProperty Name="SM_Location" Relationship="Self.FK_Location_GL_Ledger_Adjustment_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location1" Relationship="Self.FK_Location_GL_Ledger_Cash_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location2" Relationship="Self.FK_Location_GL_Ledger_Cash_Sale_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location3" Relationship="Self.FK_Location_GL_Ledger_Cash_SDis_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location4" Relationship="Self.FK_Location_GL_Ledger_Cash_SRet_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location5" Relationship="Self.FK_Location_GL_Ledger_Cash_SRet_Dis_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location6" Relationship="Self.FK_Location_GL_Ledger_Cost_Of_Sale_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location7" Relationship="Self.FK_Location_GL_Ledger_Credit_Sale_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location8" Relationship="Self.FK_Location_GL_Ledger_Credit_SDis_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location9" Relationship="Self.FK_Location_GL_Ledger_Credit_SRet_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location10" Relationship="Self.FK_Location_GL_Ledger_Credit_SRet_Dis_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location11" Relationship="Self.FK_Location_GL_Ledger_Inventory_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location12" Relationship="Self.FK_Location_GL_Ledger_Non_Inventory_Cost_Of_Sales_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location13" Relationship="Self.FK_Location_GL_Ledger_non_inventory_expense_cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location14" Relationship="Self.FK_Location_GL_Ledger_Non_Inventory_Sales_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location15" Relationship="Self.FK_Location_GL_Ledger_PDis_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location16" Relationship="Self.FK_Location_GL_Ledger_PRet_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location17" Relationship="Self.FK_Location_GL_Ledger_PRet_Dis_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location18" Relationship="Self.FK_Location_GL_Ledger_Service_Cost_Of_Sales_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location19" Relationship="Self.FK_Location_GL_Ledger_Service_Expense_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location20" Relationship="Self.FK_Location_GL_Ledger_Service_Sales_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location21" Relationship="Self.FK_Location_GL_Ledger_Suspense_Cd" FromRole="GL_Ledger" ToRole="SM_Location" />
+    <NavigationProperty Name="ICS_Item" Relationship="IMILLModel.FK_Product_GL_Ledger" FromRole="GL_Ledger" ToRole="ICS_Item" />
+  </EntityType>
+  <EntityType Name="ICS_Transaction">
+    <Key>
+      <PropertyRef Name="Entry_Id" />
+    </Key>
+    <Property Name="Entry_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Voucher_Type" Type="Int16" Nullable="false" />
+    <Property Name="Locat_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Ldgr_Cd" Type="Int32" />
+    <Property Name="Sman_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Cash_Cd" Type="Int32" />
+    <Property Name="Linked_To_Voucher_Type" Type="Int16" />
+    <Property Name="Linked_To_Entry_Id" Type="Int64" />
+    <Property Name="Batch_Cd" Type="Int64" />
+    <Property Name="Exchange_Rate" Type="Decimal" Precision="16" Scale="10" Nullable="false" />
+    <Property Name="Voucher_Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Voucher_No" Type="Int64" Nullable="false" />
+    <Property Name="Reference_No" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Is_Cash" Type="Boolean" Nullable="false" />
+    <Property Name="Voucher_Amt_FC" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Voucher_Amt_LC" Type="Decimal" Precision="36" Scale="14" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Discount_Amt_FC" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Discount_Amt_LC" Type="Decimal" Precision="36" Scale="14" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Net_Amt_FC" Type="Decimal" Precision="19" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Net_Amt_LC" Type="Decimal" Precision="36" Scale="14" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Expenses_Amt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Paid_Amt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Due_Amt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Due_Date" Type="DateTime" Precision="0" />
+    <Property Name="On_Hand_Stock_Affected" Type="Boolean" Nullable="false" />
+    <Property Name="Close_Transaction" Type="Boolean" Nullable="false" />
+    <Property Name="Transaction_Processed" Type="Boolean" Nullable="false" />
+    <Property Name="Transaction_Year_Closed" Type="Boolean" Nullable="false" />
+    <Property Name="Printed_Counter" Type="Int32" Nullable="false" />
+    <Property Name="Processed" Type="Boolean" Nullable="false" />
+    <Property Name="Reversed" Type="Boolean" Nullable="false" />
+    <Property Name="Reconciled" Type="Boolean" Nullable="false" />
+    <Property Name="Reconciled_Date" Type="DateTime" Precision="0" />
+    <Property Name="Comments" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Posted_Invnt" Type="Boolean" Nullable="false" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <Property Name="Posted_GL_Party" Type="Boolean" Nullable="false" />
+    <Property Name="Posted_GL_Expense" Type="Boolean" Nullable="false" />
+    <Property Name="Posted_GL_Inventory" Type="Boolean" Nullable="false" />
+    <Property Name="Posted_GL" Type="Boolean" Nullable="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Anly_Head_No_1" Type="Byte" />
+    <Property Name="Anly_Head_No_2" Type="Byte" />
+    <Property Name="Curr_Cd" Type="Int16" />
+    <Property Name="Revision_No" Type="Int32" Nullable="false" />
+    <Property Name="Cash_Amt_FC" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Credit_Card_Ldgr_Cd" Type="Int32" />
+    <Property Name="Credit_Card_Amt_FC" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Change_Amt_FC" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Amount_Received" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="POS_Counter_Cd" Type="Int32" />
+    <Property Name="Expenses_Ldgr_Cd" Type="Int32" />
+    <Property Name="Consignment_Cd" Type="Int32" />
+    <Property Name="Discount_Percent" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Ldgr_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Project_Cd" Type="Int64" />
+    <Property Name="Acty_Cd" Type="Int64" />
+    <Property Name="From_Date" Type="DateTime" Precision="3" />
+    <Property Name="To_Date" Type="DateTime" Precision="3" />
+    <Property Name="Delevery_Date" Type="DateTime" Precision="3" />
+    <Property Name="Return_Date" Type="DateTime" Precision="3" />
+    <Property Name="Discount2_percent" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Discount2_Amt" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Credit_voucher_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Credit_voucher_Amt_FC" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Credit_Voucher_Ldgr_Cd" Type="Int32" />
+    <Property Name="Credit_Card_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_6" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_7" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="GL_Ledger" Relationship="Self.FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd" FromRole="ICS_Transaction" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger1" Relationship="Self.FK_ICS_Transaction_GL_Ledger_Cash_Cd" FromRole="ICS_Transaction" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger2" Relationship="Self.FK_ICS_Transaction_GL_Ledger_Ldgr_Cd" FromRole="ICS_Transaction" ToRole="GL_Ledger" />
+    <NavigationProperty Name="ICS_Transaction_Details" Relationship="Self.FK_ICS_Transaction_Details_ICS_Transaction" FromRole="ICS_Transaction" ToRole="ICS_Transaction_Details" />
+    <NavigationProperty Name="ICS_Transaction1" Relationship="Self.FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id" FromRole="ICS_Transaction" ToRole="ICS_Transaction1" />
+    <NavigationProperty Name="ICS_Transaction2" Relationship="Self.FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id" FromRole="ICS_Transaction1" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction_Types" Relationship="Self.FK_ICS_Transaction_ICS_Transaction_Types" FromRole="ICS_Transaction" ToRole="ICS_Transaction_Types" />
+    <NavigationProperty Name="ICS_Transaction_Types1" Relationship="Self.FK_ICS_Transaction_ICS_Transaction_Types_Voucher_Type_Linked_To_Voucher_Type" FromRole="ICS_Transaction" ToRole="ICS_Transaction_Types" />
+    <NavigationProperty Name="SM_Location" Relationship="Self.FK_ICS_Transaction_Location" FromRole="ICS_Transaction" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_SALESMAN" Relationship="Self.FK_ICS_Transaction_Salesman" FromRole="ICS_Transaction" ToRole="SM_SALESMAN" />
+  </EntityType>
+  <EntityType Name="ICS_Transaction_Details">
+    <Key>
+      <PropertyRef Name="Line_No" />
+    </Key>
+    <Property Name="Line_No" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Entry_Id" Type="Int64" Nullable="false" />
+    <Property Name="Add_Locat_Cd" Type="Int16" />
+    <Property Name="Less_Locat_Cd" Type="Int16" />
+    <Property Name="Prod_Cd" Type="Int64" Nullable="false" />
+    <Property Name="Project_Cd" Type="Int64" />
+    <Property Name="Unit_Entry_ID" Type="Int64" Nullable="false" />
+    <Property Name="Linked_Line_No" Type="Int64" />
+    <Property Name="Exchange_Rate" Type="Decimal" Precision="16" Scale="10" Nullable="false" />
+    <Property Name="Prod_Name" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Reference_No" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Balance_Qty" Type="Decimal" Precision="15" Scale="5" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="FC_Rate" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="FC_Prod_Dis" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="FC_Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="LC_Rate" Type="Decimal" Precision="36" Scale="14" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="LC_Prod_Dis" Type="Decimal" Precision="36" Scale="14" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="LC_Amount" Type="Decimal" Precision="36" Scale="14" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Prod_Exp_Amt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Promo_Type" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Item_Cost" Type="Decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="Dis_In_Percent" Type="Boolean" Nullable="false" />
+    <Property Name="Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="GL_Post_Sequence_Counter" Type="Int64" Nullable="false" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Non_Stock_Manual_Cost" Type="Decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="Item_Type_Cd" Type="Byte" Nullable="false" />
+    <Property Name="Is_Dented" Type="Boolean" Nullable="false" />
+    <Property Name="Rate_UOM_Symbol" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+    <Property Name="Weight" Type="Decimal" Precision="14" Scale="3" Nullable="false" />
+    <Property Name="Linked_To_Voucher_Type" Type="Int16" />
+    <Property Name="Linked_To_Line_Id" Type="Int64" />
+    <Property Name="Processed_SQ_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_PO_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_GRN_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_CQ_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_SO_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_INV_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_CSR_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_SR_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_STS_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_ESTK_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_SSTK_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Processed_Others_Base_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Balance_Qty_1" Type="Decimal" Precision="26" Scale="5" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Pre_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Post_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Expiry_Date" Type="DateTime" Precision="0" />
+    <Property Name="Fc_Prod_Dis_Per" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Flex1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Commission_Amt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="master_discount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Print_sr_no" Type="Int32" />
+    <Property Name="Pack_Qty" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Loose_Qty" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Barcode" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Acty_Task_Cd" Type="Int64" />
+    <Property Name="Acty_Cd" Type="Int64" />
+    <Property Name="Package" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="batch_cd" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="production_status" Type="Boolean" />
+    <Property Name="Additional_Field_1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_6" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Additional_Field_7" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ICS_Transaction" Relationship="Self.FK_ICS_Transaction_Details_ICS_Transaction" FromRole="ICS_Transaction_Details" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction_Details1" Relationship="Self.FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No" FromRole="ICS_Transaction_Details" ToRole="ICS_Transaction_Details1" />
+    <NavigationProperty Name="ICS_Transaction_Details2" Relationship="Self.FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No" FromRole="ICS_Transaction_Details1" ToRole="ICS_Transaction_Details" />
+    <NavigationProperty Name="SM_Location" Relationship="Self.FK_ICS_Transaction_Details_Location_Add_Locat_Cd" FromRole="ICS_Transaction_Details" ToRole="SM_Location" />
+    <NavigationProperty Name="SM_Location1" Relationship="Self.FK_ICS_Transaction_Details_Location_Less_Locat_Cd" FromRole="ICS_Transaction_Details" ToRole="SM_Location" />
+    <NavigationProperty Name="ICS_Item" Relationship="IMILLModel.FK_ICS_Transaction_Details_Product" FromRole="ICS_Transaction_Details" ToRole="ICS_Item" />
+  </EntityType>
+  <EntityType Name="ICS_Transaction_Types">
+    <Key>
+      <PropertyRef Name="Voucher_Type" />
+    </Key>
+    <Property Name="Voucher_Type" Type="Int16" Nullable="false" />
+    <Property Name="Parent_Type" Type="Int16" Nullable="false" />
+    <Property Name="Module_Id" Type="Int16" Nullable="false" />
+    <Property Name="Feature_Id" Type="Int16" Nullable="false" />
+    <Property Name="Find_Id" Type="Int64" Nullable="false" />
+    <Property Name="Linked_Assembly_Group_Adjust_Voucher_Type" Type="Int16" />
+    <Property Name="L_Voucher_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="A_Voucher_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="L_Short_Name" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="A_Short_Name" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+    <Property Name="Add_Or_Less" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Locat_To_Locat" Type="Boolean" Nullable="false" />
+    <Property Name="Generate_On_Multiple_Location" Type="Boolean" Nullable="false" />
+    <Property Name="Master_Table_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Details_Table_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Linked_ICS_Master_Table_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Linked_ICS_Details_Table_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Linked_ICS_Parent_Master_Table_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Linked_ICS_Parent_Details_Table_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Linked_Parent_ICS_Voucher_Type_Cd" Type="Int16" />
+    <Property Name="Linked_Child_ICS_Voucher_Type_Cd" Type="Int16" />
+    <Property Name="Linked_GL_Voucher_Type_Cd" Type="Int16" />
+    <Property Name="Linked_GL_Receipt_Voucher_Type_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Linked_GL_Payment_Voucher_Type_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Linked_GL_Journal_Voucher_Type_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Auto_Generate_Linked_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Generate_Voucher_No" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_ICS" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_GL_Party" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_GL_Expense" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_GL_Inventory" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_GL" Type="Boolean" Nullable="false" />
+    <Property Name="Batch_Post_ICS" Type="Boolean" Nullable="false" />
+    <Property Name="Batch_Post_GL_Party" Type="Boolean" Nullable="false" />
+    <Property Name="Batch_Post_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Batch_Post_GL_Expense" Type="Boolean" Nullable="false" />
+    <Property Name="Batch_Post_GL_Inventory" Type="Boolean" Nullable="false" />
+    <Property Name="Batch_Post_GL" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_GLS" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_ICS" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_Cost" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_Opening_Value" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_On_Hand_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_Allocated_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_In_Transit_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_On_Order_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_Reserved_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_Advanced_Booked_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_Stock_Return_In_Transit" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_MTD_Usage" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_YTD_Usage" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_On_Order_Stock_Of_Sales" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Message_When_Negative_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Location_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Ledger_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Cash_Credit_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Remarks_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Import_Linked_Voucher_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Line_No_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Part_No_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Product_Name_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Unit_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Promo_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Qty_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Remaining_Qty_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Rate_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Product_Discount_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Amount_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Location_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Remarks_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Serial_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Barcode_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Project_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Expenses" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Exchange_Rate" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Salesman" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Percent_Discount" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Net_Amount" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Product_Base_Unit_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Product_Group_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Product_Category_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Purchase_Price_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Sales_Price_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Base_Unit_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Stock_In_Hand_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Stock_Allocated_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Stock_Available_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_In_Transit_Stock_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_On_Order_Stock_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Advanced_Booked_Stock_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Stock_Return_In_Transit_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_MTD_Usage_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_YTD_Usage_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_On_Order_Stock_Of_Sales_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Additional_Voucher_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_in_Menu" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Details_In_Product_Query" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Print_Preview_First" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Page_Setup_First" Type="Boolean" Nullable="false" />
+    <Property Name="Check_Negative_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Print_After_Save" Type="Boolean" Nullable="false" />
+    <Property Name="Print_Voucher_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Print_Voucher_Sql" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
+    <Property Name="Close_Preview_Windows_After_Print" Type="Boolean" Nullable="false" />
+    <Property Name="Include_Location_In_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Include_Voucher_No_In_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Include_Reference_No_In_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Online_GL_Post" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Excess_Qty_When_Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Product_Name_Alteration" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Add_Serial_No_When_Not_Exists" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Add_New_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Update_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Rate_When_Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Discount_When_Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Amount_When_Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Cash_Credit_On_Header_When_Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Percent_Discount_On_Header_When_Linked" Type="Boolean" Nullable="false" />
+    <Property Name="Additional_Ledger_Find_Where_Clause" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Additional_Cash_Find_Where_Clause" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Voucher_Grid_Back_Color" Type="Int64" Nullable="false" />
+    <Property Name="L_Party_Name_Caption" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="A_Party_Name_Caption" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Restore_Last_Tran_Setting" Type="Boolean" Nullable="false" />
+    <Property Name="Last_Tran_Locat_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Last_Tran_Cash_Type" Type="Boolean" />
+    <Property Name="Last_Tran_Cash_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Last_Tran_Sman_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="User_Cd" Type="Int16" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Begin_With_Line_Seperator" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Product_Dis_Per_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Last_Tran_Ldgr_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="After_Save_Script" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Setfocus_To_Newline_After_Barcode_Entered" Type="Boolean" Nullable="false" />
+    <Property Name="Setfocus_To_Newline_After_Qty_Entered" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Party_Balance_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Display_Voucher_No_After_Save" Type="Boolean" Nullable="false" />
+    <Property Name="Adjustment_Cd" Type="Int32" />
+    <Property Name="Show_Non_Inventory_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Import_Non_Inventory_From_Parent_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Amount_Over_Rate" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Dented_Stock_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Dented_Stock_Generated_Linked_Voucher_Type" Type="Int16" />
+    <Property Name="Show_Batch_Cd_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Location_Specific_Product" Type="Boolean" Nullable="false" />
+    <Property Name="Use_Crystal_Reports_For_Print" Type="Boolean" Nullable="false" />
+    <Property Name="Crystal_Report_Id" Type="Int64" />
+    <Property Name="Report_Entry_Id_Column" Type="Int64" />
+    <Property Name="Use_Report_Additional_Column_Ids" Type="Boolean" Nullable="false" />
+    <Property Name="Report_Additional_Column_Ids" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Use_Num_To_Char_Function" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_ICS_Voucher_Final_Payment_Screen" Type="Boolean" />
+    <Property Name="Import_External_Data" Type="Boolean" Nullable="false" />
+    <Property Name="Setfocus_To_Grid_After_Add_New" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Post_Stock_Generated_Linked_Voucher_Type" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Default_Location_Salesman" Type="Boolean" Nullable="false" />
+    <Property Name="auto_generate_linked_voucher_all_location" Type="Boolean" Nullable="false" />
+    <Property Name="Rate_Setting_In_Details" Type="Byte" Nullable="false" />
+    <Property Name="Amount_Setting_In_Details" Type="Byte" Nullable="false" />
+    <Property Name="Prompt_For_Print_After_Save" Type="Boolean" Nullable="false" />
+    <Property Name="Prompt_Before_Save" Type="Boolean" Nullable="false" />
+    <Property Name="Check_Part_No_Exists" Type="Boolean" Nullable="false" />
+    <Property Name="Check_Prod_Name_Exists" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Due_Date_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Preserve_Grid_Value_During_Import" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Weight_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Rate_UOM_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Auto_Generate_Linked_Voucher_For_Cash_Transaction" Type="Boolean" Nullable="false" />
+    <Property Name="Document_Type" Type="Int32" Nullable="false" />
+    <Property Name="Default_Price_Level_Priority" Type="Int32" Nullable="false" />
+    <Property Name="Show_Job_Cd_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Import_Linked_Voucher_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Use_Processed_Qty_Sum_While_Linking" Type="Boolean" Nullable="false" />
+    <Property Name="Bind_To_Parent_Header_Location" Type="Boolean" Nullable="false" />
+    <Property Name="Bind_To_Parent" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Doc_Presc_In_Additional_Voucher_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Partial_Receipt" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_ICS_Voucher_Multiline_PreDesc" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_ICS_Voucher_Multiline_PostDesc" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_Revision" Type="Boolean" Nullable="false" />
+    <Property Name="Revised_History_Voucher_Type" Type="Int16" />
+    <Property Name="Reference_No_Generate_Method" Type="Int32" Nullable="false" />
+    <Property Name="Enable_Additional_Voucher_Details_2" Type="Boolean" Nullable="false" />
+    <Property Name="Reference_No_L_Caption" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Enable_Auto_Fill_Pre_Text_With_Product_Desc" Type="Boolean" Nullable="false" />
+    <Property Name="Export_To_Word" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Direct_Transaction" Type="Boolean" Nullable="false" />
+    <Property Name="Form_Height_Size" Type="Int32" Nullable="false" />
+    <Property Name="Grid_Row_Height_Size" Type="Int32" Nullable="false" />
+    <Property Name="Show_Supplier_Tab_In_ICS_Voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Expenses_Ldgr_Code_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Affect_GL_With_Expenses_Ldgr_Cd" Type="Boolean" Nullable="false" />
+    <Property Name="Expenses_Ldgr_Find_Where_Clause" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="Show_Consignment_No_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Get_Max_New_Voucher_No" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Zero_Amount_Transaction" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Expiry_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Product_List_Where_Clause" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Default_Location_Salesman" Type="Boolean" Nullable="false" />
+    <Property Name="Show_In_Periodical_Batch_Post" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Message_On_Items_Below_Reorder_Level" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Message_On_Items_Below_Minimum_Level" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Message_On_Items_Above_Maximum_Level" Type="Boolean" Nullable="false" />
+    <Property Name="Default_cash_cd" Type="Int32" />
+    <Property Name="generate_receipt_payment_voucher" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex1_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="Default_Credit_Card_Cd" Type="Int32" />
+    <Property Name="Enable_Cash_Credit_On_Header" Type="Boolean" Nullable="false" />
+    <Property Name="Generate_voucher_no_method" Type="Int16" Nullable="false" />
+    <Property Name="Import_Cash_Credit_on_link" Type="Boolean" Nullable="false" />
+    <Property Name="Overwrite_Price_On_Import" Type="Boolean" Nullable="false" />
+    <Property Name="Show_In_Toolbar" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_duplicate_refrence_no" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Print_sr_no" Type="Boolean" Nullable="false" />
+    <Property Name="Ribbon_Icon_Id" Type="Int32" Nullable="false" />
+    <Property Name="Show_Pack_Qty" Type="Boolean" Nullable="false" />
+    <Property Name="Setfocus_To_Qty_After_Name_Entered" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Ldgr_Name_Alteration" Type="Boolean" Nullable="false" />
+    <Property Name="show_proj_cd_on_header" Type="Boolean" Nullable="false" />
+    <Property Name="show_activity_cd_on_header" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Activity_Task_In_Details" Type="Boolean" Nullable="false" />
+    <Property Name="show_Non_Inventory_Item_Only" Type="Boolean" Nullable="false" />
+    <Property Name="show_Activity_In_Detail" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Default_Qty_one" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex_1_In_Footer" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Item_Remark_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex_1_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_start_end_date" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_delivery_date" Type="Boolean" Nullable="false" />
+    <Property Name="Enable_delivery_return_date" Type="Boolean" Nullable="false" />
+    <Property Name="Check_Stock_Availability" Type="Boolean" Nullable="false" />
+    <Property Name="Minimum_Rent_price_check" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Reporting_Unit_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_generate_barcode_button" Type="Boolean" Nullable="false" />
+    <Property Name="show_hidden_discount" Type="Boolean" Nullable="false" />
+    <Property Name="enable_customer_default_discount" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Package" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Supplier_Barcode" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex_2_In_Footer" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex_2_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex_3_In_Footer" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Flex_3_In_List" Type="Boolean" Nullable="false" />
+    <Property Name="default_credit_voucher_cd" Type="Int32" />
+    <Property Name="Show_Link_No_In_Footer" Type="Boolean" Nullable="false" />
+    <Property Name="Setfocus_To_Name_On_Newline" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Item_Cost_In_Status" Type="Boolean" Nullable="false" />
+    <Property Name="Show_Production_Batch" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Production_Batch_Add" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Negative_Qty" Type="Boolean" Nullable="false" />
+    <Property Name="Setfocus_To_Newline_After_Rate_Entered" Type="Boolean" Nullable="false" />
+    <Property Name="Allow_Negative_Line_Discount" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="GL_Ledger" Relationship="Self.FK_ICS_Transaction_Types_GL_Ledger_Adjustment_Cd" FromRole="ICS_Transaction_Types" ToRole="GL_Ledger" />
+    <NavigationProperty Name="ICS_Transaction" Relationship="Self.FK_ICS_Transaction_ICS_Transaction_Types" FromRole="ICS_Transaction_Types" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction1" Relationship="Self.FK_ICS_Transaction_ICS_Transaction_Types_Voucher_Type_Linked_To_Voucher_Type" FromRole="ICS_Transaction_Types" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction_Types1" Relationship="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types" FromRole="ICS_Transaction_Types" ToRole="ICS_Transaction_Types1" />
+    <NavigationProperty Name="ICS_Transaction_Types2" Relationship="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types" FromRole="ICS_Transaction_Types1" ToRole="ICS_Transaction_Types" />
+    <NavigationProperty Name="ICS_Transaction_Types11" Relationship="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types_Revised_History_Voucher_Type" FromRole="ICS_Transaction_Types" ToRole="ICS_Transaction_Types1" />
+    <NavigationProperty Name="ICS_Transaction_Types3" Relationship="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types_Revised_History_Voucher_Type" FromRole="ICS_Transaction_Types1" ToRole="ICS_Transaction_Types" />
+    <NavigationProperty Name="ICS_Transaction_Types12" Relationship="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types_Voucher_Type_Linked_Assembly_Group_Adjust_Voucher_Type" FromRole="ICS_Transaction_Types" ToRole="ICS_Transaction_Types1" />
+    <NavigationProperty Name="ICS_Transaction_Types4" Relationship="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types_Voucher_Type_Linked_Assembly_Group_Adjust_Voucher_Type" FromRole="ICS_Transaction_Types1" ToRole="ICS_Transaction_Types" />
+  </EntityType>
+  <EntityType Name="SM_Location">
+    <Key>
+      <PropertyRef Name="Locat_Cd" />
+    </Key>
+    <Property Name="Locat_Cd" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Locat_No" Type="Int32" Nullable="false" />
+    <Property Name="L_Locat_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="A_Locat_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="L_Short_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="A_Short_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Addr_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Addr_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Addr_3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Contact_Person" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Auto_Create_Delivery_Notes" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Create_Receipt_Of_Goods" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Create_Supplier_Return" Type="Boolean" Nullable="false" />
+    <Property Name="Auto_Create_Stock_Return" Type="Boolean" Nullable="false" />
+    <Property Name="Inventory_Cd" Type="Int32" />
+    <Property Name="Adjustment_Cd" Type="Int32" />
+    <Property Name="Cost_Of_Sale_Cd" Type="Int32" />
+    <Property Name="PDis_Cd" Type="Int32" />
+    <Property Name="Cash_Sale_Cd" Type="Int32" />
+    <Property Name="Credit_Sale_Cd" Type="Int32" />
+    <Property Name="Cash_SDis_Cd" Type="Int32" />
+    <Property Name="Credit_SDis_Cd" Type="Int32" />
+    <Property Name="PRet_Cd" Type="Int32" />
+    <Property Name="PRet_Dis_Cd" Type="Int32" />
+    <Property Name="Cash_SRet_Cd" Type="Int32" />
+    <Property Name="Credit_SRet_Cd" Type="Int32" />
+    <Property Name="Cash_SRet_Dis_Cd" Type="Int32" />
+    <Property Name="Credit_SRet_Dis_Cd" Type="Int32" />
+    <Property Name="Cash_Cd" Type="Int32" />
+    <Property Name="Suspense_Cd" Type="Int32" />
+    <Property Name="Inventory_Cost_Cd" Type="Int32" />
+    <Property Name="Adjustment_Cost_Cd" Type="Int32" />
+    <Property Name="Cost_Of_Sale_Cost_Cd" Type="Int32" />
+    <Property Name="PDis_Cost_Cd" Type="Int32" />
+    <Property Name="Cash_Sale_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_Sale_Cost_Cd" Type="Int32" />
+    <Property Name="Cash_SDis_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_SDis_Cost_Cd" Type="Int32" />
+    <Property Name="PRet_Cost_Cd" Type="Int32" />
+    <Property Name="PRet_Dis_Cost_Cd" Type="Int32" />
+    <Property Name="Cash_SRet_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_SRet_Cost_Cd" Type="Int32" />
+    <Property Name="Cash_SRet_Dis_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_SRet_Dis_Cost_Cd" Type="Int32" />
+    <Property Name="Cash_Cost_Cd" Type="Int32" />
+    <Property Name="Suspense_Cost_Cd" Type="Int32" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="time_stamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Is_Primary_Location" Type="Boolean" Nullable="false" />
+    <Property Name="Last_Ldgr_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Last_Cash_Type" Type="Boolean" />
+    <Property Name="Last_Cash_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Sales_Cd" Type="Int32" />
+    <Property Name="Service_Cost_Of_Sales_Cd" Type="Int32" />
+    <Property Name="Service_Expense_Cd" Type="Int32" />
+    <Property Name="Non_Inventory_Sales_Cd" Type="Int32" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Cd" Type="Int32" />
+    <Property Name="non_inventory_expense_cd" Type="Int32" />
+    <Property Name="Service_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Service_Cost_Of_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Service_Expense_Cost_Cd" Type="Int32" />
+    <Property Name="Non_Inventory_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Non_Inventory_Expense_Cost_Cd" Type="Int32" />
+    <Property Name="Data_Upload_Path" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Card_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Default_Sman_No" Type="Int16" />
+    <Property Name="Allow_Generation_Of_Reverse_Voucher_Type" Type="Boolean" Nullable="false" />
+    <Property Name="Check_Negative_Stock" Type="Boolean" Nullable="false" />
+    <Property Name="Inventory_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Inventory_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Inventory_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Inventory_Anly_Head_No_2" Type="Byte" />
+    <Property Name="adjustment_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Adjustment_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Adjustment_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Adjustment_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Cost_Of_Sale_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cost_Of_Sale_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Cost_Of_Sale_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cost_Of_Sale_Anly_Head_No_2" Type="Byte" />
+    <Property Name="PDis_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PDis_Anly_Head_No_1" Type="Byte" />
+    <Property Name="PDis_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PDis_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Cash_Sale_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_Sale_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Cash_Sale_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_Sale_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Credit_Sale_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Sale_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Credit_Sale_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Sale_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Cash_SDis_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_SDis_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Cash_SDis_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_SDis_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Credit_SDis_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_SDis_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Credit_SDis_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_SDis_Anly_Head_No_2" Type="Byte" />
+    <Property Name="PRet_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PRet_Anly_Head_No_1" Type="Byte" />
+    <Property Name="PRet_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PRet_Anly_Head_No_2" Type="Byte" />
+    <Property Name="PRet_Dis_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PRet_Dis_Anly_Head_No_1" Type="Byte" />
+    <Property Name="PRet_Dis_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="PRet_Dis_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Cash_SRet_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_SRet_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Cash_SRet_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_SRet_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Credit_SRet_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_SRet_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Credit_SRet_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_SRet_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Cash_SRet_Dis_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_SRet_Dis_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Cash_SRet_Dis_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_SRet_Dis_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Credit_SRet_Dis_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_SRet_Dis_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Credit_SRet_Dis_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_SRet_Dis_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Cash_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Cash_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Cash_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Suspense_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Suspense_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Suspense_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Suspense_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Service_Sales_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Sales_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Service_Sales_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Sales_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Service_Expense_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Expense_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Service_Expense_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Expense_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Non_Inventory_Sales_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Non_Inventory_Sales_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Non_Inventory_Sales_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Non_Inventory_Sales_Anly_Head_No_2" Type="Byte" />
+    <Property Name="non_inventory_expense_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="non_inventory_expense_Anly_Head_No_1" Type="Byte" />
+    <Property Name="non_inventory_expense_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="non_inventory_expense_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Inventory_Project_Cd" Type="Int64" />
+    <Property Name="Adjustment_Project_Cd" Type="Int64" />
+    <Property Name="Cost_Of_Sale_Project_Cd" Type="Int64" />
+    <Property Name="PDis_Project_Cd" Type="Int64" />
+    <Property Name="Cash_Sale_Project_Cd" Type="Int64" />
+    <Property Name="Credit_Sale_Project_Cd" Type="Int64" />
+    <Property Name="Cash_SDis_Project_Cd" Type="Int64" />
+    <Property Name="Credit_SDis_Project_Cd" Type="Int64" />
+    <Property Name="PRet_Project_Cd" Type="Int64" />
+    <Property Name="PRet_Dis_Project_Cd" Type="Int64" />
+    <Property Name="Cash_SRet_Project_Cd" Type="Int64" />
+    <Property Name="Credit_SRet_Project_Cd" Type="Int64" />
+    <Property Name="Cash_SRet_Dis_Project_Cd" Type="Int64" />
+    <Property Name="Credit_SRet_Dis_Project_Cd" Type="Int64" />
+    <Property Name="Cash_Project_Cd" Type="Int64" />
+    <Property Name="Suspense_Project_Cd" Type="Int64" />
+    <Property Name="Service_Sales_Project_Cd" Type="Int64" />
+    <Property Name="Service_Expense_Project_Cd" Type="Int64" />
+    <Property Name="Non_Inventory_Sales_Project_Cd" Type="Int64" />
+    <Property Name="non_inventory_expense_Project_Cd" Type="Int64" />
+    <Property Name="Service_Cost_Of_Sales_Project_Cd" Type="Int64" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Project_Cd" Type="Int64" />
+    <Property Name="Material_Issue_Return_Cd" Type="Int32" />
+    <Property Name="Material_Issue_Return_Cost_Cd" Type="Int32" />
+    <Property Name="Material_Issue_Return_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Material_Issue_Return_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Material_Issue_Return_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Material_Issue_Return_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Material_Issue_Return_Project_Cd" Type="Int32" />
+    <Property Name="Credit_Service_Sales_Cd" Type="Int32" />
+    <Property Name="Credit_Service_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_Service_Sales_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Service_Sales_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Credit_Service_Sales_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Service_Sales_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Credit_Service_Expense_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Service_Expense_Anly_Head_No_1" Type="Byte" />
+    <Property Name="Credit_Service_Expense_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_Service_Expense_Anly_Head_No_2" Type="Byte" />
+    <Property Name="Credit_non_inventory_Sales_Cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_expense_cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Head_No_1" Type="Int32" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Head_No_2" Type="Int32" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Code_1" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Head_No_1" Type="Int32" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Code_2" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Head_No_2" Type="Int32" />
+    <Property Name="Credit_non_inventory_cost_of_sales_cd" Type="Int32" />
+    <Property Name="Credit_Service_Expense_Cd" Type="Int32" />
+    <Property Name="Credit_Service_Cost_Of_Sales_Cost_Cd" Type="Int32" />
+    <Property Name="Credit_service_cost_of_sales_cd" Type="Int32" />
+    <Property Name="Credit_service_expense_cost_cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_cost_of_sales_cost_cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_expense_cost_cd" Type="Int32" />
+    <Property Name="Credit_service_sales_project_cd" Type="Int32" />
+    <Property Name="Credit_service_cost_of_sales_project_cd" Type="Int32" />
+    <Property Name="Credit_service_expense_project_cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_sales_project_cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_cost_of_sales_project_cd" Type="Int32" />
+    <Property Name="Credit_non_inventory_expense_project_cd" Type="Int32" />
+    <NavigationProperty Name="GL_Ledger" Relationship="Self.FK_Location_GL_Ledger_Adjustment_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger1" Relationship="Self.FK_Location_GL_Ledger_Cash_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger2" Relationship="Self.FK_Location_GL_Ledger_Cash_Sale_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger3" Relationship="Self.FK_Location_GL_Ledger_Cash_SDis_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger4" Relationship="Self.FK_Location_GL_Ledger_Cash_SRet_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger5" Relationship="Self.FK_Location_GL_Ledger_Cash_SRet_Dis_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger6" Relationship="Self.FK_Location_GL_Ledger_Cost_Of_Sale_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger7" Relationship="Self.FK_Location_GL_Ledger_Credit_Sale_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger8" Relationship="Self.FK_Location_GL_Ledger_Credit_SDis_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger9" Relationship="Self.FK_Location_GL_Ledger_Credit_SRet_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger10" Relationship="Self.FK_Location_GL_Ledger_Credit_SRet_Dis_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger11" Relationship="Self.FK_Location_GL_Ledger_Inventory_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger12" Relationship="Self.FK_Location_GL_Ledger_Non_Inventory_Cost_Of_Sales_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger13" Relationship="Self.FK_Location_GL_Ledger_non_inventory_expense_cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger14" Relationship="Self.FK_Location_GL_Ledger_Non_Inventory_Sales_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger15" Relationship="Self.FK_Location_GL_Ledger_PDis_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger16" Relationship="Self.FK_Location_GL_Ledger_PRet_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger17" Relationship="Self.FK_Location_GL_Ledger_PRet_Dis_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger18" Relationship="Self.FK_Location_GL_Ledger_Service_Cost_Of_Sales_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger19" Relationship="Self.FK_Location_GL_Ledger_Service_Expense_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger20" Relationship="Self.FK_Location_GL_Ledger_Service_Sales_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="GL_Ledger21" Relationship="Self.FK_Location_GL_Ledger_Suspense_Cd" FromRole="SM_Location" ToRole="GL_Ledger" />
+    <NavigationProperty Name="ICS_Transaction" Relationship="Self.FK_ICS_Transaction_Location" FromRole="SM_Location" ToRole="ICS_Transaction" />
+    <NavigationProperty Name="ICS_Transaction_Details" Relationship="Self.FK_ICS_Transaction_Details_Location_Add_Locat_Cd" FromRole="SM_Location" ToRole="ICS_Transaction_Details" />
+    <NavigationProperty Name="ICS_Transaction_Details1" Relationship="Self.FK_ICS_Transaction_Details_Location_Less_Locat_Cd" FromRole="SM_Location" ToRole="ICS_Transaction_Details" />
+  </EntityType>
+  <EntityType Name="SM_SALESMAN">
+    <Key>
+      <PropertyRef Name="Sman_Cd" />
+    </Key>
+    <Property Name="Sman_Cd" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Supervisor_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Sman_No" Type="Int64" Nullable="false" />
+    <Property Name="L_Sman_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="A_Sman_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Addr_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Addr_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Fax" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Civil_Id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Passport_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Comm_Percent" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Credit_Limit_Amount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Credit_Limit_Days" Type="Int16" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Default_locat_cd" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="GL_Ledger" Relationship="Self.FK_GL_Ledger_Salesman_Default_Sman_Cd" FromRole="SM_SALESMAN" ToRole="GL_Ledger" />
+    <NavigationProperty Name="ICS_Transaction" Relationship="Self.FK_ICS_Transaction_Salesman" FromRole="SM_SALESMAN" ToRole="ICS_Transaction" />
+  </EntityType>
+  <Association Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Expenses_Ldgr_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GL_Ledger_Salesman_Default_Sman_Cd">
+    <End Role="SM_SALESMAN" Type="Self.SM_SALESMAN" Multiplicity="0..1" />
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SM_SALESMAN">
+        <PropertyRef Name="Sman_Cd" />
+      </Principal>
+      <Dependent Role="GL_Ledger">
+        <PropertyRef Name="Default_Sman_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_GL_Ledger_Cash_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Cash_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_GL_Ledger_Ldgr_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Types_GL_Ledger_Adjustment_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="ICS_Transaction_Types" Type="Self.ICS_Transaction_Types" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Types">
+        <PropertyRef Name="Adjustment_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Adjustment_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Adjustment_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Cash_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Cash_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Cash_Sale_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Cash_Sale_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Cash_SDis_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Cash_SDis_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Cash_SRet_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Cash_SRet_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Cash_SRet_Dis_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Cash_SRet_Dis_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Cost_Of_Sale_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Cost_Of_Sale_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Credit_Sale_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Credit_Sale_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Credit_SDis_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Credit_SDis_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Credit_SRet_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Credit_SRet_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Credit_SRet_Dis_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Credit_SRet_Dis_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Inventory_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Inventory_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Non_Inventory_Cost_Of_Sales_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Non_Inventory_Cost_Of_Sales_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_non_inventory_expense_cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="non_inventory_expense_cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Non_Inventory_Sales_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Non_Inventory_Sales_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_PDis_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="PDis_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_PRet_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="PRet_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_PRet_Dis_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="PRet_Dis_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Service_Cost_Of_Sales_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Service_Cost_Of_Sales_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Service_Expense_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Service_Expense_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Service_Sales_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Service_Sales_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Location_GL_Ledger_Suspense_Cd">
+    <End Role="GL_Ledger" Type="Self.GL_Ledger" Multiplicity="0..1" />
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="SM_Location">
+        <PropertyRef Name="Suspense_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Details_ICS_Transaction">
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="1" />
+    <End Role="ICS_Transaction_Details" Type="Self.ICS_Transaction_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction">
+        <PropertyRef Name="Entry_Id" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Details">
+        <PropertyRef Name="Entry_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id">
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="0..1" />
+    <End Role="ICS_Transaction1" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction">
+        <PropertyRef Name="Entry_Id" />
+      </Principal>
+      <Dependent Role="ICS_Transaction1">
+        <PropertyRef Name="Linked_To_Entry_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_ICS_Transaction_Types">
+    <End Role="ICS_Transaction_Types" Type="Self.ICS_Transaction_Types" Multiplicity="1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction_Types">
+        <PropertyRef Name="Voucher_Type" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Voucher_Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_ICS_Transaction_Types_Voucher_Type_Linked_To_Voucher_Type">
+    <End Role="ICS_Transaction_Types" Type="Self.ICS_Transaction_Types" Multiplicity="0..1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction_Types">
+        <PropertyRef Name="Voucher_Type" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Linked_To_Voucher_Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Location">
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SM_Location">
+        <PropertyRef Name="Locat_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Locat_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Salesman">
+    <End Role="SM_SALESMAN" Type="Self.SM_SALESMAN" Multiplicity="1" />
+    <End Role="ICS_Transaction" Type="Self.ICS_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SM_SALESMAN">
+        <PropertyRef Name="Sman_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction">
+        <PropertyRef Name="Sman_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No">
+    <End Role="ICS_Transaction_Details" Type="Self.ICS_Transaction_Details" Multiplicity="0..1" />
+    <End Role="ICS_Transaction_Details1" Type="Self.ICS_Transaction_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction_Details">
+        <PropertyRef Name="Line_No" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Details1">
+        <PropertyRef Name="Linked_Line_No" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Details_Location_Add_Locat_Cd">
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="0..1" />
+    <End Role="ICS_Transaction_Details" Type="Self.ICS_Transaction_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SM_Location">
+        <PropertyRef Name="Locat_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Details">
+        <PropertyRef Name="Add_Locat_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Details_Location_Less_Locat_Cd">
+    <End Role="SM_Location" Type="Self.SM_Location" Multiplicity="0..1" />
+    <End Role="ICS_Transaction_Details" Type="Self.ICS_Transaction_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SM_Location">
+        <PropertyRef Name="Locat_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Details">
+        <PropertyRef Name="Less_Locat_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Types_ICS_Transaction_Types">
+    <End Role="ICS_Transaction_Types" Type="Self.ICS_Transaction_Types" Multiplicity="1" />
+    <End Role="ICS_Transaction_Types1" Type="Self.ICS_Transaction_Types" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction_Types">
+        <PropertyRef Name="Voucher_Type" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Types1">
+        <PropertyRef Name="Voucher_Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Types_ICS_Transaction_Types_Revised_History_Voucher_Type">
+    <End Role="ICS_Transaction_Types" Type="Self.ICS_Transaction_Types" Multiplicity="0..1" />
+    <End Role="ICS_Transaction_Types1" Type="Self.ICS_Transaction_Types" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction_Types">
+        <PropertyRef Name="Voucher_Type" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Types1">
+        <PropertyRef Name="Revised_History_Voucher_Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Types_ICS_Transaction_Types_Voucher_Type_Linked_Assembly_Group_Adjust_Voucher_Type">
+    <End Role="ICS_Transaction_Types" Type="Self.ICS_Transaction_Types" Multiplicity="0..1" />
+    <End Role="ICS_Transaction_Types1" Type="Self.ICS_Transaction_Types" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Transaction_Types">
+        <PropertyRef Name="Voucher_Type" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Types1">
+        <PropertyRef Name="Linked_Assembly_Group_Adjust_Voucher_Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="IMILLEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="GL_Ledger" EntityType="Self.GL_Ledger" />
+    <EntitySet Name="ICS_Transaction" EntityType="Self.ICS_Transaction" />
+    <EntitySet Name="ICS_Transaction_Details" EntityType="Self.ICS_Transaction_Details" />
+    <EntitySet Name="ICS_Transaction_Types" EntityType="Self.ICS_Transaction_Types" />
+    <EntitySet Name="SM_Location" EntityType="Self.SM_Location" />
+    <EntitySet Name="SM_SALESMAN" EntityType="Self.SM_SALESMAN" />
+    <AssociationSet Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd" Association="Self.FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GL_Ledger_Salesman_Default_Sman_Cd" Association="Self.FK_GL_Ledger_Salesman_Default_Sman_Cd">
+      <End Role="SM_SALESMAN" EntitySet="SM_SALESMAN" />
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_GL_Ledger_Cash_Cd" Association="Self.FK_ICS_Transaction_GL_Ledger_Cash_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_GL_Ledger_Ldgr_Cd" Association="Self.FK_ICS_Transaction_GL_Ledger_Ldgr_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Types_GL_Ledger_Adjustment_Cd" Association="Self.FK_ICS_Transaction_Types_GL_Ledger_Adjustment_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Adjustment_Cd" Association="Self.FK_Location_GL_Ledger_Adjustment_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Cash_Cd" Association="Self.FK_Location_GL_Ledger_Cash_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Cash_Sale_Cd" Association="Self.FK_Location_GL_Ledger_Cash_Sale_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Cash_SDis_Cd" Association="Self.FK_Location_GL_Ledger_Cash_SDis_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Cash_SRet_Cd" Association="Self.FK_Location_GL_Ledger_Cash_SRet_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Cash_SRet_Dis_Cd" Association="Self.FK_Location_GL_Ledger_Cash_SRet_Dis_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Cost_Of_Sale_Cd" Association="Self.FK_Location_GL_Ledger_Cost_Of_Sale_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Credit_Sale_Cd" Association="Self.FK_Location_GL_Ledger_Credit_Sale_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Credit_SDis_Cd" Association="Self.FK_Location_GL_Ledger_Credit_SDis_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Credit_SRet_Cd" Association="Self.FK_Location_GL_Ledger_Credit_SRet_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Credit_SRet_Dis_Cd" Association="Self.FK_Location_GL_Ledger_Credit_SRet_Dis_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Inventory_Cd" Association="Self.FK_Location_GL_Ledger_Inventory_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Non_Inventory_Cost_Of_Sales_Cd" Association="Self.FK_Location_GL_Ledger_Non_Inventory_Cost_Of_Sales_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_non_inventory_expense_cd" Association="Self.FK_Location_GL_Ledger_non_inventory_expense_cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Non_Inventory_Sales_Cd" Association="Self.FK_Location_GL_Ledger_Non_Inventory_Sales_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_PDis_Cd" Association="Self.FK_Location_GL_Ledger_PDis_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_PRet_Cd" Association="Self.FK_Location_GL_Ledger_PRet_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_PRet_Dis_Cd" Association="Self.FK_Location_GL_Ledger_PRet_Dis_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Service_Cost_Of_Sales_Cd" Association="Self.FK_Location_GL_Ledger_Service_Cost_Of_Sales_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Service_Expense_Cd" Association="Self.FK_Location_GL_Ledger_Service_Expense_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Service_Sales_Cd" Association="Self.FK_Location_GL_Ledger_Service_Sales_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Location_GL_Ledger_Suspense_Cd" Association="Self.FK_Location_GL_Ledger_Suspense_Cd">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="SM_Location" EntitySet="SM_Location" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Details_ICS_Transaction" Association="Self.FK_ICS_Transaction_Details_ICS_Transaction">
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+      <End Role="ICS_Transaction_Details" EntitySet="ICS_Transaction_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id" Association="Self.FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id">
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+      <End Role="ICS_Transaction1" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_ICS_Transaction_Types" Association="Self.FK_ICS_Transaction_ICS_Transaction_Types">
+      <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_ICS_Transaction_Types_Voucher_Type_Linked_To_Voucher_Type" Association="Self.FK_ICS_Transaction_ICS_Transaction_Types_Voucher_Type_Linked_To_Voucher_Type">
+      <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Location" Association="Self.FK_ICS_Transaction_Location">
+      <End Role="SM_Location" EntitySet="SM_Location" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Salesman" Association="Self.FK_ICS_Transaction_Salesman">
+      <End Role="SM_SALESMAN" EntitySet="SM_SALESMAN" />
+      <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No" Association="Self.FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No">
+      <End Role="ICS_Transaction_Details" EntitySet="ICS_Transaction_Details" />
+      <End Role="ICS_Transaction_Details1" EntitySet="ICS_Transaction_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Details_Location_Add_Locat_Cd" Association="Self.FK_ICS_Transaction_Details_Location_Add_Locat_Cd">
+      <End Role="SM_Location" EntitySet="SM_Location" />
+      <End Role="ICS_Transaction_Details" EntitySet="ICS_Transaction_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Details_Location_Less_Locat_Cd" Association="Self.FK_ICS_Transaction_Details_Location_Less_Locat_Cd">
+      <End Role="SM_Location" EntitySet="SM_Location" />
+      <End Role="ICS_Transaction_Details" EntitySet="ICS_Transaction_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Types_ICS_Transaction_Types" Association="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types">
+      <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
+      <End Role="ICS_Transaction_Types1" EntitySet="ICS_Transaction_Types" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Types_ICS_Transaction_Types_Revised_History_Voucher_Type" Association="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types_Revised_History_Voucher_Type">
+      <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
+      <End Role="ICS_Transaction_Types1" EntitySet="ICS_Transaction_Types" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Types_ICS_Transaction_Types_Voucher_Type_Linked_Assembly_Group_Adjust_Voucher_Type" Association="Self.FK_ICS_Transaction_Types_ICS_Transaction_Types_Voucher_Type_Linked_Assembly_Group_Adjust_Voucher_Type">
+      <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
+      <End Role="ICS_Transaction_Types1" EntitySet="ICS_Transaction_Types" />
+    </AssociationSet>
+    <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
+    <EntitySet Name="ICS_Item_Unit_Details" EntityType="IMILLModel.ICS_Item_Unit_Details" />
+    <EntitySet Name="ICS_Unit" EntityType="IMILLModel.ICS_Unit" />
+    <AssociationSet Name="FK_Alt_Unit_Details_Unit_Alt_Unit_Cd" Association="IMILLModel.FK_Alt_Unit_Details_Unit_Alt_Unit_Cd">
+      <End Role="ICS_Unit" EntitySet="ICS_Unit" />
+      <End Role="ICS_Item_Unit_Details" EntitySet="ICS_Item_Unit_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Alt_Unit_Details_Unit_Base_Unit_Cd" Association="IMILLModel.FK_Alt_Unit_Details_Unit_Base_Unit_Cd">
+      <End Role="ICS_Unit" EntitySet="ICS_Unit" />
+      <End Role="ICS_Item_Unit_Details" EntitySet="ICS_Item_Unit_Details" />
+    </AssociationSet>
+    <FunctionImport Name="spICSTrans_GetAll" ReturnType="Collection(IMILLModel.spICSTrans_GetAll_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="locationArray" Mode="In" Type="String" />
+      <Parameter Name="voucherTypeArray" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spIUD_GetAll" ReturnType="Collection(IMILLModel.spIUD_GetAll_Result)" />
+    <EntitySet Name="ICS_Item" EntityType="IMILLModel.ICS_Item" />
+    <AssociationSet Name="FK_Product_GL_Ledger" Association="IMILLModel.FK_Product_GL_Ledger">
+      <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+      <End Role="ICS_Item" EntitySet="ICS_Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Alt_Unit_Details_Product" Association="IMILLModel.FK_Alt_Unit_Details_Product">
+      <End Role="ICS_Item" EntitySet="ICS_Item" />
+      <End Role="ICS_Item_Unit_Details" EntitySet="ICS_Item_Unit_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICS_Transaction_Details_Product" Association="IMILLModel.FK_ICS_Transaction_Details_Product">
+      <End Role="ICS_Item" EntitySet="ICS_Item" />
+      <End Role="ICS_Transaction_Details" EntitySet="ICS_Transaction_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Unit" Association="IMILLModel.FK_Product_Unit">
+      <End Role="ICS_Unit" EntitySet="ICS_Unit" />
+      <End Role="ICS_Item" EntitySet="ICS_Item" />
+    </AssociationSet>
+    <FunctionImport Name="spICSTransDetail_GetAll" ReturnType="Collection(IMILLModel.spICSTransDetail_GetAll_Result)">
+      <Parameter Name="intArray" Mode="In" Type="String" />
+      <Parameter Name="prodArray" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="intlmill_cash_register">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="trans_date_time" />
+      <PropertyRef Name="location" />
+      <PropertyRef Name="salesman" />
+      <PropertyRef Name="shift_type" />
+      <PropertyRef Name="shift_count" />
+      <PropertyRef Name="total_cash" />
+      <PropertyRef Name="net_cash" />
+      <PropertyRef Name="total_sales" />
+      <PropertyRef Name="net_sales" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="trans_date_time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="salesman" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="shift_type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="shift_count" Type="Int32" Nullable="false" />
+    <Property Name="cheque" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="other" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="carriage" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="online" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="knet" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="visa" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="reserve" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="expense" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="total_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="net_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="d_20000" Type="Int32" />
+    <Property Name="d_10000" Type="Int32" />
+    <Property Name="d_5000" Type="Int32" />
+    <Property Name="d_1000" Type="Int32" />
+    <Property Name="d_0500" Type="Int32" />
+    <Property Name="d_0250" Type="Int32" />
+    <Property Name="d_0100" Type="Int32" />
+    <Property Name="d_0050" Type="Int32" />
+    <Property Name="d_0020" Type="Int32" />
+    <Property Name="d_0010" Type="Int32" />
+    <Property Name="d_0005" Type="Int32" />
+    <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+  </EntityType>
+  <EntityType Name="ICS_Item_Unit_Details">
+    <Key>
+      <PropertyRef Name="Prod_Cd" />
+      <PropertyRef Name="Alt_Unit_Cd" />
+    </Key>
+    <Property Name="Unit_Entry_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Prod_Cd" Type="Int64" Nullable="false" />
+    <Property Name="Alt_Unit_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Base_Unit_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Base_Qty" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Alt_Qty" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Line_No" Type="Int16" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Sales_Rate" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <NavigationProperty Name="ICS_Unit" Relationship="IMILLModel.FK_Alt_Unit_Details_Unit_Alt_Unit_Cd" FromRole="ICS_Item_Unit_Details" ToRole="ICS_Unit" />
+    <NavigationProperty Name="ICS_Unit1" Relationship="IMILLModel.FK_Alt_Unit_Details_Unit_Base_Unit_Cd" FromRole="ICS_Item_Unit_Details" ToRole="ICS_Unit" />
+    <NavigationProperty Name="ICS_Item" Relationship="IMILLModel.FK_Alt_Unit_Details_Product" FromRole="ICS_Item_Unit_Details" ToRole="ICS_Item" />
+  </EntityType>
+  <EntityType Name="ICS_Unit">
+    <Key>
+      <PropertyRef Name="Unit_Cd" />
+    </Key>
+    <Property Name="Unit_Cd" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Unit_No" Type="Int64" Nullable="false" />
+    <Property Name="L_Unit_Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="A_Unit_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Symbol" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+    <Property Name="Decimals" Type="Byte" Nullable="false" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="A_Symbol" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="ICS_Item_Unit_Details" Relationship="IMILLModel.FK_Alt_Unit_Details_Unit_Alt_Unit_Cd" FromRole="ICS_Unit" ToRole="ICS_Item_Unit_Details" />
+    <NavigationProperty Name="ICS_Item_Unit_Details1" Relationship="IMILLModel.FK_Alt_Unit_Details_Unit_Base_Unit_Cd" FromRole="ICS_Unit" ToRole="ICS_Item_Unit_Details" />
+    <NavigationProperty Name="ICS_Item" Relationship="IMILLModel.FK_Product_Unit" FromRole="ICS_Unit" ToRole="ICS_Item" />
+  </EntityType>
+  <Association Name="FK_Alt_Unit_Details_Unit_Alt_Unit_Cd">
+    <End Type="IMILLModel.ICS_Unit" Role="ICS_Unit" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Item_Unit_Details" Role="ICS_Item_Unit_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Unit">
+        <PropertyRef Name="Unit_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item_Unit_Details">
+        <PropertyRef Name="Alt_Unit_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Alt_Unit_Details_Unit_Base_Unit_Cd">
+    <End Type="IMILLModel.ICS_Unit" Role="ICS_Unit" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Item_Unit_Details" Role="ICS_Item_Unit_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Unit">
+        <PropertyRef Name="Unit_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item_Unit_Details">
+        <PropertyRef Name="Base_Unit_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="spICSTrans_GetAll_Result">
+    <Property Type="Int64" Name="Entry_Id" Nullable="false" />
+    <Property Type="DateTime" Name="Voucher_Date" Nullable="false" Precision="16" />
+    <Property Type="String" Name="L_Sman_Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="A_Sman_Name" Nullable="true" MaxLength="50" />
+    <Property Type="Int64" Name="Voucher_No" Nullable="false" />
+    <Property Type="Int16" Name="Locat_Cd" Nullable="false" />
+    <Property Type="String" Name="L_Short_Name" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="A_Short_Name" Nullable="true" MaxLength="20" />
+    <Property Type="Int16" Name="Voucher_Type" Nullable="false" />
+    <Property Type="String" Name="L_Voucher_Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="A_Voucher_Name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="Group_Cd" Nullable="false" />
+    <Property Type="String" Name="L_Ldgr_Name" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="A_Ldgr_Name" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="spIUD_GetAll_Result">
+    <Property Type="Int64" Name="Unit_Entry_Id" Nullable="false" />
+    <Property Type="Int16" Name="Alt_Unit_Cd" Nullable="false" />
+    <Property Type="Int16" Name="Base_Unit_Cd" Nullable="false" />
+    <Property Type="Decimal" Name="Base_Qty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="Decimal" Name="Alt_Qty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="String" Name="Unit1Name" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="Unit2Name" Nullable="false" MaxLength="20" />
+  </ComplexType>
+  <EntityType Name="ICS_Item">
+    <Key>
+      <PropertyRef Name="Prod_Cd" />
+    </Key>
+    <Property Name="Prod_Cd" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Group_Cd" Type="Int32" Nullable="false" />
+    <Property Name="Cat_Cd" Type="Int32" Nullable="false" />
+    <Property Name="Base_Unit_Cd" Type="Int16" Nullable="false" />
+    <Property Name="Item_Type_Cd" Type="Byte" Nullable="false" />
+    <Property Name="Part_No" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="L_Prod_Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="A_Prod_Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Prod_Desc" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+    <Property Name="Cost" Type="Decimal" Nullable="false" Precision="19" Scale="6" />
+    <Property Name="Costing_Method" Type="Byte" Nullable="false" />
+    <Property Name="Cash_Sale_Cd" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Credit_Sale_Cd" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Inventory_Cd" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Cost_Of_Sale_Cd" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Current_Qty" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_In_Hand" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_Allocated" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_Reserved" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_Booked" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_Available" Type="Decimal" Precision="17" Scale="5" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Stock_In_Transit" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_On_Order" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Stock_Return_In_Transit" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="MTD_Usage" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="YTD_Usage" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Avg_Monthly_Usage" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Tot_Qty_In" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Tot_Qty_Out" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Supplier_Ldgr_Cd" Type="Int32" />
+    <Property Name="Supplier_Part_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ABC_Category" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Picture" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Maximum_Level" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Minimum_Level" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Reorder_Level" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Maximum_Reorder_Qty" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Minimum_Reorder_Qty" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Last_Purchased_Qty" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Last_Sold_Qty" Type="Decimal" Precision="14" Scale="5" />
+    <Property Name="Last_Supplier_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Last_Customer_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Last_Purchased_Date" Type="DateTime" Precision="0" />
+    <Property Name="Last_Sold_Date" Type="DateTime" Precision="0" />
+    <Property Name="Last_Purchased_Unit_Cd" Type="Int16" />
+    <Property Name="Last_Sold_Unit_Cd" Type="Int16" />
+    <Property Name="Purchase_Rate" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Purchase_Rate_1" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Purchase_Rate_2" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Purchase_Rate_3" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Purchase_Rate_4" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Purchase_Rate_5" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Sales_Rate" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Sale_Rate1" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Sale_Rate2" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Sale_Rate3" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Sale_Rate4" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Sale_Rate5" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Expiry_Date" Type="DateTime" Precision="0" />
+    <Property Name="Warranty_Period_In_Days" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="Serialized" Type="Boolean" Nullable="false" />
+    <Property Name="Discontinued" Type="Boolean" Nullable="false" />
+    <Property Name="Promotional_Item" Type="Boolean" Nullable="false" />
+    <Property Name="Print_Components_On_Voucher" Type="Boolean" />
+    <Property Name="Commision_In_Percent_On_Sales" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Commision_In_Percent_On_Purchase" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Stock_On_Order_Of_Sales" Type="Decimal" Nullable="false" Precision="14" Scale="5" />
+    <Property Name="Picture_Object" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Updated_By_User_Cd" Type="Int16" />
+    <Property Name="Updated_Date_Time" Type="DateTime" Precision="0" />
+    <Property Name="Offline_Data_Updated_Locat_Cd" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Bin_Location" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Weight" Type="Decimal" Nullable="false" Precision="14" Scale="3" />
+    <Property Name="Flex1_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex2_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex3_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex4_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex5_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex6_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex7_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex8_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex9_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex10_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex11_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex12_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex13_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flex14_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Report_Unit_Cd" Type="Int16" Nullable="false" />
+    <Property Name="package" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ExpDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MadeIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PackDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="GL_Ledger" Relationship="IMILLModel.FK_Product_GL_Ledger" FromRole="ICS_Item" ToRole="GL_Ledger" />
+    <NavigationProperty Name="ICS_Item_Unit_Details" Relationship="IMILLModel.FK_Alt_Unit_Details_Product" FromRole="ICS_Item" ToRole="ICS_Item_Unit_Details" />
+    <NavigationProperty Name="ICS_Transaction_Details" Relationship="IMILLModel.FK_ICS_Transaction_Details_Product" FromRole="ICS_Item" ToRole="ICS_Transaction_Details" />
+    <NavigationProperty Name="ICS_Unit" Relationship="IMILLModel.FK_Product_Unit" FromRole="ICS_Item" ToRole="ICS_Unit" />
+  </EntityType>
+  <Association Name="FK_Product_GL_Ledger">
+    <End Type="IMILLModel.GL_Ledger" Role="GL_Ledger" Multiplicity="0..1" />
+    <End Type="IMILLModel.ICS_Item" Role="ICS_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GL_Ledger">
+        <PropertyRef Name="Ldgr_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item">
+        <PropertyRef Name="Supplier_Ldgr_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Alt_Unit_Details_Product">
+    <End Type="IMILLModel.ICS_Item" Role="ICS_Item" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Item_Unit_Details" Role="ICS_Item_Unit_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Item">
+        <PropertyRef Name="Prod_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item_Unit_Details">
+        <PropertyRef Name="Prod_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICS_Transaction_Details_Product">
+    <End Type="IMILLModel.ICS_Item" Role="ICS_Item" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Transaction_Details" Role="ICS_Transaction_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Item">
+        <PropertyRef Name="Prod_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Transaction_Details">
+        <PropertyRef Name="Prod_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Unit">
+    <End Type="IMILLModel.ICS_Unit" Role="ICS_Unit" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Item" Role="ICS_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Unit">
+        <PropertyRef Name="Unit_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item">
+        <PropertyRef Name="Base_Unit_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="spICSTransDetail_GetAll_Result">
+    <Property Type="Int64" Name="Entry_Id" Nullable="false" />
+    <Property Type="String" Name="ProdEn" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ProdAr" Nullable="false" MaxLength="200" />
+    <Property Type="Decimal" Name="Base_Qty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="Decimal" Name="Qty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="Decimal" Name="FC_Prod_Dis" Nullable="false" Precision="19" />
+    <Property Type="Decimal" Name="FC_Amount" Nullable="false" Precision="19" />
+    <Property Type="String" Name="BaseUnit" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="SellUnit" Nullable="false" MaxLength="20" />
+  </ComplexType>
+</Schema>

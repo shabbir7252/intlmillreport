@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.SubTitle = "";
+
+    var fromDate = ViewBag.fromDate;
+    var toDate = ViewBag.toDate;
+
+    var fromD = ViewBag.fromD;
+    var toD = ViewBag.toD;
+    var jsonResult = ViewBag.jsonResult;
+}
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("Index", "Dashboard", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(@fromD).Render()
+                        </div>
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(@toD).Render()
+                        </div>
+
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-blush">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Total Branch Sales</div>
+                        <div class="number" id="totalBranchSales"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-amber">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Total HO Sales</div>
+                        <div class="number" id="totalHOSales"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-parpl">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Total HO Sales (Cash)</div>
+                        <div class="number" id="totalHOSalesCash"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-seagreen">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Total HO Sales (Credit)</div>
+                        <div class="number" id="totalHOSalesCredit"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-blue">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Sales Return (HO)</div>
+                        <div class="number" id="salesReturnHO"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-khaki">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Sales Return (Branches)</div>
+                        <div class="number" id="salesReturnBranches"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+
+                    <div class="row">
+                        <div class="col-7">
+                            <canvas id="barChart" style="width:100%"></canvas>
+                        </div>
+
+                        <div class="col-5 pt-5">
+                            <canvas id="doughnutChart" style="width:100%"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+
+        var fromD = "@fromDate";
+        var toD = "@toDate";
+        var data = "@jsonResult";
+
+        var tData = JSON.parse(data.replace(/(&quot\;)/g, "\""));
+
+        document.getElementById("totalBranchSales").innerText = tData.TotalBranchSales;
+        document.getElementById("totalHOSales").innerText = tData.TotalHOSales;
+        document.getElementById("totalHOSalesCash").innerText = tData.TotalHOSalesCash;
+        document.getElementById("totalHOSalesCredit").innerText = tData.TotalHOSalesCredit;
+        document.getElementById("salesReturnHO").innerText = tData.SalesReturnHO;
+        document.getElementById("salesReturnBranches").innerText = tData.SalesReturnBranches;
+
+        var c = document.getElementById("barChart");
+        var ctx = c.getContext("2d");
+
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: tData.ChartData,
+            options: {
+                responsive: true,
+                legend: false
+            }
+        });
+
+        var donutc = document.getElementById("doughnutChart");
+        var donutCtx = donutc.getContext("2d");
+        var mydonutChart = new Chart(donutCtx, {
+            type: 'pie',
+            data: tData.ChartData,
+            options: {
+                responsive: true,
+                legend: false
+            }
+        });
+
+        function getValues(url) {
+            var result = null;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                 data: {
+                    fromD,
+                    toD
+                },
+                dataType: "json",
+                success: function (data) {
+                    result = data;
+                }
+            });
+            return result;
+        }
+    </script>
+}

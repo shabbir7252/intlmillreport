@@ -1,0 +1,333 @@
+﻿
+@{
+    ViewBag.Title = "Branch Sales Dashboard";
+    ViewBag.SubTitle = "";
+
+    var fromDate = ViewBag.fromDate;
+    var toDate = ViewBag.toDate;
+
+    var fromD = ViewBag.fromD;
+    var toD = ViewBag.toD;
+    var jsonResult = ViewBag.jsonResult;
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.custom-header-css {
+        background-color: #eee8aa;
+    }
+
+    .e-grid .e-headercell.custom-header-ho-css {
+        background-color: #d9ff81;
+    }
+</style>
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("BranchSales", "Dashboard", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(@fromD).Render()
+                        </div>
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(@toD).Render()
+                        </div>
+
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-amber">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Total Branch Sales</div>
+                        <div class="number" id="totalBranchSales"></div>
+                        <hr />
+                        <h5>@ViewBag.BRSalesPercent%</h5>
+                        <div class="progress m-b-5">
+                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.BRSalesPercent" aria-valuemin="@ViewBag.BRSalesPercent"
+                                 aria-valuemax="100" style="width:@ViewBag.BRSalesPercent%">
+                                <span class="sr-only">@ViewBag.BRSalesPercent% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-blush">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">Total HO Sales</div>
+                        <div class="number" id="totalHOSales"></div>
+                        <hr />
+                        <h5>@ViewBag.HOSalesPercent%</h5>
+                        <div class="progress m-b-5">
+                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesPercent" aria-valuemin="@ViewBag.HOSalesPercent"
+                                 aria-valuemax="100" style="width:@ViewBag.HOSalesPercent%">
+                                <span class="sr-only">@ViewBag.HOSalesPercent% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-parpl">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">HO Sales (Cash)</div>
+                        <div class="number" id="totalHOSalesCash"></div>
+                        <hr />
+                        <h5>@ViewBag.HOSalesCashPercent%</h5>
+                        <div class="progress m-b-5">
+                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesCashPercent" aria-valuemin="@ViewBag.HOSalesCashPercent"
+                                 aria-valuemax="100" style="width:@ViewBag.HOSalesCashPercent%">
+                                <span class="sr-only">@ViewBag.HOSalesCashPercent% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-seagreen">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">HO Sales (Credit)</div>
+                        <div class="number" id="totalHOSalesCredit"></div>
+                        <hr />
+                        <h5>@ViewBag.HOSalesCreditPercent%</h5>
+                        <div class="progress m-b-5">
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesCreditPercent" aria-valuemin="@ViewBag.HOSalesCreditPercent"
+                                 aria-valuemax="100" style="width:@ViewBag.HOSalesCreditPercent%">
+                                <span class="sr-only">@ViewBag.HOSalesCreditPercent% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12">
+            <div class="card info-box-2 l-blue">
+                <div class="body">
+                    <div class="content col-12">
+                        <div class="text">HO Sales Return</div>
+                        <div class="number" id="salesReturnHO"></div>
+                        <hr />
+                        <h5>@ViewBag.HOSalesReturnPercent%</h5>
+                        <div class="progress m-b-5">
+                            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesReturnPercent" aria-valuemin="@ViewBag.HOSalesReturnPercent"
+                                 aria-valuemax="100" style="width:@ViewBag.HOSalesReturnPercent%">
+                                <span class="sr-only">@ViewBag.HOSalesReturnPercent% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-lg-2 col-md-6 col-sm-12">
+                <div class="card info-box-2 l-khaki">
+                    <div class="body">
+                        <div class="content col-12">
+                            <div class="text">Sales Return (Branches)</div>
+                            <div class="number" id="salesReturnBranches"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="header">
+                    <h4>Cash</h4>
+                    <hr />
+                </div>
+                <div class="body" style="padding-top: 0 !important">
+                    <input type="text" class="knob dial1" value="@ViewBag.BRCashPercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#824ED2" readonly>
+                    <h5 id="totalCashSales" class="m-t-20"></h5>
+                    @*<hr />
+                        <small class="displayblock">@ViewBag.BRCashPercent %</small>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="header">
+                    <h4>KNET</h4>
+                    <hr />
+                </div>
+                <div class="body" style="padding-top: 0 !important">
+                    <input type="text" class="knob dial2" value="@ViewBag.BRKnetPercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#ffa07a" readonly>
+                    <h5 id="totalKnetSales" class="m-t-20"></h5>
+                    @*<hr />
+                        <small class="displayblock">@ViewBag.BRKnetPercent %</small>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="header">
+                    <h4>Credit Card</h4>
+                    <hr />
+                </div>
+                <div class="body" style="padding-top: 0 !important">
+                    <input type="text" class="knob dial3" value="@ViewBag.BRCCPercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#8fbc8f" readonly>
+                    <h5 id="totalCreditCardSales" class="m-t-20"></h5>
+                    @*<small class="displayblock">@ViewBag.BRCCPercent %</small>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="header">
+                    <h4>Carraige</h4>
+                    <hr />
+                </div>
+                <div class="body" style="padding-top: 0 !important">
+                    <input type="text" class="knob dial4" value="@ViewBag.BRCarraigePercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#00adef" readonly>
+                    <h5 id="totalCarraigeSales" class="m-t-20"></h5>
+                    @*<small class="displayblock">@ViewBag.BRCarraigePercent %</small>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="header">
+                    <h4>Online</h4>
+                    <hr />
+                </div>
+                <div class="body" style="padding-top: 0 !important">
+                    <input type="text" class="knob dial1" value="@ViewBag.BROnlinePercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#00ced1" readonly>
+                    <h5 id="totalOnlineSales" class="m-t-20"></h5>
+                    @*<small class="displayblock">@ViewBag.BROnlinePercent %</small>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="header">
+                    <h4>Sales Return</h4>
+                    <hr />
+                </div>
+                <div class="body" style="padding-top: 0 !important">
+                    <input type="text" class="knob dial2" value="0" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#ffa07a" readonly>
+                    <h5 id="salesReturnBranches" class="m-t-20"></h5>
+                    @*<small class="displayblock">@ViewBag.BRsalesReturnPercent %</small>*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-6">
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DSTop5BranchProdByVal).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Value (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Amount", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-css" }).Add();
+       }).DataBound("dataBound").Render()
+        </div>
+
+        
+
+        <div class="col-6">
+            @Html.EJS().Grid("Grid2").DataSource((IEnumerable<object>)ViewBag.DSTop5HoProdByVal).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Value (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Amount", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-ho-css" }).Add();
+       }).DataBound("dataBound").Render()
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts {
+    <script>
+
+        var fromD = "@fromDate";
+        var toD = "@toDate";
+        var data = "@jsonResult";
+
+        var tData = JSON.parse(data.replace(/(&quot\;)/g, "\""));
+
+        document.getElementById("totalBranchSales").innerText = tData.TotalBranchSales;
+        document.getElementById("totalCashSales").innerText = tData.TotalCashSales;
+        document.getElementById("totalKnetSales").innerText = tData.TotalKnetSales;
+        document.getElementById("totalCreditCardSales").innerText = tData.TotalCreditCardSales;
+        document.getElementById("totalCarraigeSales").innerText = tData.TotalCarraigeSales;
+        document.getElementById("totalOnlineSales").innerText = tData.TotalOnlineSales;
+        document.getElementById("salesReturnBranches").innerText = tData.SalesReturnBranches;
+
+        document.getElementById("totalHOSales").innerText = tData.TotalHOSales;
+        document.getElementById("totalHOSalesCash").innerText = tData.TotalHOSalesCash;
+        document.getElementById("totalHOSalesCredit").innerText = tData.TotalHOSalesCredit;
+        document.getElementById("salesReturnHO").innerText = tData.SalesReturnHO;
+
+        function dataBound(args) {
+            this.autoFitColumns(['Name', 'NameAr', 'Amount', 'Location', 'Percentage']);
+        }
+
+    </script>
+}

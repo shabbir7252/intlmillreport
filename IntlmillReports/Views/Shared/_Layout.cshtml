@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="International Mill Report Application">
+
+    <title>@ViewBag.Title</title>
+
+    @*<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <script src="~/Scripts/modernizr-2.8.3.js"></script>*@
+
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Bootstrap -->
+    <link href="~/Content/stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/stylesheets/morris.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="~/Content/stylesheets/main.css" rel="stylesheet" />
+    <link href="~/Content/stylesheets/hm-style.css" rel="stylesheet" />
+    <link href="~/Content/stylesheets/color_skins.css" rel="stylesheet" />
+
+    @*<link href="~/Content/DataTables/datatables.min.css" rel="stylesheet" />
+        <link href="~/Content/DataTables/Buttons-1.6.1/css/buttons.dataTables.min.css" rel="stylesheet" />
+        <link href="~/Content/DataTables/Buttons-1.6.1/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
+    <link href="~/Content/ej2/material.css" rel="stylesheet" />
+
+    <style>
+        .navbar-header {
+            padding-bottom: 0;
+            padding-top: 5px;
+        }
+    </style>
+
+</head>
+
+<body class="theme-cyan index2">
+
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <p>Please wait...</p>
+            <div class="m-t-30">
+                <img src="~/Content/Images/InternationalMill.jpg" alt="Imill logo" width="48" height="48" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="col-12">
+
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="class=" h-bars""></a>
+                <a class="navbar-brand" href="#">
+                    <div class="row">
+                        <div class="col-8"> <img src="~/Content/Images/logo_black.png" class="img-fluid" /></div>
+                    </div>
+                </a>
+            </div>
+
+            @*<ul class="nav navbar-nav navbar-left">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a></li>
+                    }
+                    else
+                    {
+                        <li style="visibility:hidden"><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a></li>
+                    }
+                </ul>*@
+
+            <ul class="nav navbar-nav navbar-right">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="@Url.Action("Logout", "Account")" class="mega-menu xs-hide" data-close="true"><i class="zmdi zmdi-power"></i></a></li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+
+        <div class="menu-container">
+            <div class="menu">
+                <ul class="pullDown">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span></a></li>
+                    <li>
+                        <a href="javascript:void(0);"><i class="zmdi zmdi-assignment"></i> <span>Reports</span></a>
+                        <ul class="pullDown">
+                            <li><a href="@Url.Action("Index", "SalesReport")">Sales Report</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- Left Sidebar -->
+        @* <aside id="leftsidebar" class="sidebar">
+                <!-- User Info -->
+                <div class="user-info">
+                    <div class="image">
+                        <img src="~/Content/Images/avatar5.jpg" width="48" height="48" alt="User" />
+                    </div>
+                    <div class="info-container">
+                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                            @User.Identity.Name
+                        </div>
+                    </div>
+                </div>
+                <!-- #User Info -->
+                <!-- Menu -->
+                <div class="menu">
+                    <ul class="list">
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li><a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-view-dashboard"></i><span>Dashboard</span></a></li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-assignment"></i><span>Reports</span></a>
+                            <ul class="ml-menu">
+                                <li><a href="@Url.Action("Index", "SalesReport")">Sales Report</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- #Menu -->
+            </aside>*@
+    }
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="#">@User.Identity.Name</a></li>
+                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+
+    @*<div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>*@
+
+    <section class="content">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>
+                        @ViewBag.Title
+                        <small class="text-muted">@ViewBag.SubTitle</small>
+                    </h2>
+                </div>
+                @*<div class="col-lg-5 col-md-6 col-sm-12">
+                        <ul class="breadcrumb float-md-right">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Nexa</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Extra</a></li>
+                            <li class="breadcrumb-item active">Stater Page</li>
+                        </ul>
+                    </div>*@
+            </div>
+        </div>
+
+        @RenderBody()
+
+    </section>
+
+    @*  <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>*@
+
+    <!-- Jquery Core Js -->
+    <script src="~/Scripts/libscripts.bundle.js"></script>
+
+    <!-- Lib Scripts Plugin Js -->
+    <script src="~/Scripts/vendorscripts.bundle.js"></script>
+    <script src="~/Scripts/morrisscripts.bundle.js"></script><!-- Morris Plugin Js -->
+    <!-- Custom Js -->
+    <script src="~/Scripts/mainscripts.bundle.js"></script>
+    <script src="~/Scripts/index2.js"></script>
+    <script>
+        /*global $ */
+        $(document).ready(function () {
+            "use strict";
+            $('.menu > ul > li:has( > ul)').addClass('menu-dropdown-icon');
+            //Checks if li has sub (ul) and adds class for toggle icon - just an UI
+
+            $('.menu > ul > li > ul:not(:has(ul))').addClass('normal-sub');
+
+            $(".menu > ul > li").hover(function (e) {
+                if ($(window).width() > 943) {
+                    $(this).children("ul").stop(true, false).fadeToggle(150);
+                    e.preventDefault();
+                }
+            });
+            //If width is more than 943px dropdowns are displayed on hover
+            $(".menu > ul > li").on('click', function () {
+                if ($(window).width() <= 943) {
+                    $(this).children("ul").fadeToggle(150);
+                }
+            });
+            //If width is less or equal to 943px dropdowns are displayed on click (thanks Aman Jain from stackoverflow)
+
+            $(".h-bars").on('click', function (e) {
+                $(".menu > ul").toggleClass('show-on-mobile');
+                e.preventDefault();
+            });
+            //when clicked on mobile-menu, normal menu is shown as a list, classic rwd menu story (thanks mwl from stackoverflow)
+
+        });
+    </script>
+
+    <!-- Datatable Js -->
+    @*<script src="~/Content/DataTables/datatables.min.js"></script>
+        <script src="~/Content/DataTables/Buttons-1.6.1/js/buttons.bootstrap.min.js"></script>
+        <script src="~/Content/DataTables/Buttons-1.6.1/js/buttons.html5.min.js"></script>
+        <script src="~/Content/DataTables/JSZip-2.5.0/jszip.min.js"></script>*@
+    <script src="~/Scripts/ej2/ej2.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    @Html.EJS().ScriptManager()
+
+</body>
+</html>

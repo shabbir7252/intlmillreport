@@ -1,0 +1,293 @@
+﻿
+@model IntlmillReports.ViewModels.SalesReportViewModel
+
+@{
+    ViewBag.Title = "Sales Report";
+    ViewBag.SubTitle = "Sales report according to locations";
+}
+
+
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("Index", "SalesReport", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("fromDate").Value(ViewBag.startDate).Render()
+                        </div>
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("toDate").Value(ViewBag.endDate).Render()
+                        </div>
+                        <div class="col-3" id="locationDiv">
+                            @Html.DropDownList("locationId", ViewBag.locations as IEnumerable<SelectListItem>, "Select Location", new { @class = "form-control show-tick" })
+                        </div>
+
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="card mt-3">
+                <div class="body">
+
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+               {
+                   col.Field("Location").Width("30").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("InvDateTime").Width("40").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MM/yyyy hh:mm a" }).Add();
+                   col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("InvoiceNumber").Width("30").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   // col.Field("GroupCD").Width("30").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("CustomerName").HeaderText("Cust Name").Width("70").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("CustomerNameAr").HeaderText("Cust Name(Ar)").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("Voucher").Width("60").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("AmountRecieved").Width("40").HeaderText("Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("Discount").Width("40").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                   col.Field("NetAmount").Width("40").Format("N3").HeaderText("Net").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                   col.Field("Cash").Width("40").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                   col.Field("Knet").Width("40").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                   col.Field("CreditCard").HeaderText("CC").Width("40").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                   // col.Field("CreditCardType").Width("50").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                   page => page.PageSizes(true)).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                        {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "AmountRecieved", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Discount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "NetAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Cash", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Knet", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "CreditCard", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           } }).Add();
+                        }).Render()
+
+                    @*<table id="datatable" class="table table-bordered table-striped w-100">
+                        <thead>
+                            <tr>
+                                <th class="text-center SLocation">Location</th>
+                                <th class="text-center SDate">Date</th>
+                                <th class="text-center SSalesman">Salesman</th>
+                            </tr>
+                        </thead>*@
+                    @*<tbody>
+                            @foreach (var item in Model.SalesReportItems)
+                            {
+                                <tr>
+                                    <td class="text-center">@item.Location</td>
+                                    <td class="text-center">@item.TransDateTime.ToString("dd-MMM-yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>*@
+
+                    @*<tfoot>
+                                <tr>
+                                    <th class="text-center">Location</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center SSalesman">Salesman</th>
+                                </tr>
+                            </tfoot>
+                        </table>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "SalesReport.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+        $(document).ready(function () {
+            $('#locationDiv .bootstrap-select button').remove();
+            $('#locationDiv .bootstrap-select').removeAttr("class");
+            //$('#locationDiv .bootstrap-select').removeClass("show-tick");
+            //$('#locationDiv .bootstrap-select').removeClass("form-control");
+            //$('#locationDiv .bootstrap-select').removeClass("btn-group");
+            //$('#locationDiv .bootstrap-select').removeClass("bootstrap-select");
+        });
+
+                                                                //var locations = [];
+                                                                //var salesmans = [];
+                                                                //var salesmanId = 0;
+                                                                //var locationId = 0;
+                                                                //var fromDate = "2019-12-01";
+                                                                //var toDate = "2019-12-08";
+                                                                //var dataTableInstance;
+
+                                                                //function callSalesReport() {
+                                                                //    console.log("enters");
+                                                                //    $.ajax({
+                                                                //        url: "/SalesReport/GetSalesReport",
+                                                                //        method: "GET",
+                                                                //        data: {
+                                                                //            fromDate,
+                                                                //            toDate,
+                                                                //            locationId,
+                                                                //            salesmanId
+                                                                //        },
+                                                                //        dataType: 'json',
+                                                                //        success: function (data) {
+                                                                //            console.log("Data Reply : ", data);
+                                                                //            // data = JSON.parse(data);
+                                                                //            dataTableInstance = $('#datatable').DataTable({
+                                                                //                data: data,
+                                                                //                columns: [
+                                                                //                    { 'data': 'Location' },
+                                                                //                    { 'data': 'TransDateTime' },
+                                                                //                    { 'data': 'Salesman' }
+                                                                //                ],
+                                                                //                dom: "<'row'<'col-4'l><'col-4'B><'col-4'f>>" +
+                                                                //                    "<'row'<'col-sm-12'tr>>" +
+                                                                //                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                                                                //                buttons: [
+                                                                //                    'copy', 'excel', 'pdf', 'colvis'
+                                                                //                ],
+                                                                //                responsive: true
+                                                                //            });
+
+
+                                                                //            $('#datatable thead th').each(function () {
+                                                                //                var title = $('#datatable tfoot th').eq($(this).index()).text();
+
+                                                                //                if (this.className.includes("SLocation")) {
+                                                                //                    var option;
+                                                                //                    locations.forEach(item => {
+                                                                //                        if (typeof option === "undefined") {
+                                                                //                            option = '<option value=' + item.ShortName + '>' + item.ShortName + '</option>'
+                                                                //                        } else {
+                                                                //                            option = option + '<option value=' + item.ShortName + '>' + item.ShortName + '</option>'
+                                                                //                        }
+                                                                //                    })
+
+                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6>' +
+                                                                //                        '<select id="ddlocation" class="form-control">' + option + '</select>');
+
+                                                                //                }
+
+                                                                //                else if (this.className.includes("SSalesman")) {
+
+                                                                //                    var option = '<option value= "">All</option>';
+                                                                //                    salesmans.forEach(item => {
+                                                                //                        option = option + '<option value=' + item.Name + '>' + item.Name + '</option>'
+                                                                //                    });
+
+                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6>' +
+                                                                //                        '<select id="ddSalesman" class="form-control">' + option + '</select>');
+
+                                                                //                }
+
+                                                                //                else if (this.className.includes("SDate")) {
+
+                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6><input class="form-control" type="date" placeholder="Search ' + title + '"></input> ');
+
+                                                                //                }
+
+                                                                //                else {
+                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6><input class="form-control" type="text" placeholder="Search ' + title + '"></input> ');
+                                                                //                }
+                                                                //            });
+
+                                                                //            dataTableInstance.columns().every(function () {
+                                                                //                var dataTableColumn = this;
+
+                                                                //                var searchTextBoxes = $(this.header()).find('input');
+                                                                //                searchTextBoxes.on('keyup change', function () {
+
+                                                                //                    if (this.type === "date") {
+
+                                                                //                        var dateSearchVal = new Date(this.value);
+
+                                                                //                        var dd = dateSearchVal.getDate();
+                                                                //                        var mm = dateSearchVal.getMonth() + 1;
+
+                                                                //                        var yyyy = dateSearchVal.getFullYear();
+                                                                //                        if (dd < 10) {
+                                                                //                            dd = '0' + dd;
+                                                                //                        }
+                                                                //                        if (mm < 10) {
+                                                                //                            mm = '0' + mm;
+                                                                //                        }
+                                                                //                        var value = dd + '-' + mm + '-' + yyyy;
+
+                                                                //                        dataTableColumn.search(value).draw();
+
+                                                                //                    } else {
+                                                                //                        dataTableColumn.search(this.value).draw();
+                                                                //                    }
+
+                                                                //                });
+
+                                                                //                searchTextBoxes.on('click', function (e) {
+                                                                //                    e.stopPropagation();
+                                                                //                });
+
+                                                                //                var searchDropdown = $(this.header()).find('select');
+
+                                                                //                searchDropdown.on('change', function () {
+                                                                //                    dataTableColumn.search(this.value, false, true, true).draw();
+
+                                                                //                    this.locationId = this.value;
+                                                                //                    callSalesReport();
+
+                                                                //                });
+
+                                                                //                searchDropdown.on('click', function (e) {
+                                                                //                    e.stopPropagation();
+                                                                //                });
+                                                                //            });
+                                                                //        },
+                                                                //        error: function (err) {
+                                                                //            console.log("Get Sales Report Error : ", err);
+                                                                //        }
+                                                                //    });
+                                                                //}
+
+                                                                //$(document).ready(function () {
+
+
+                                                                //    $.ajax({
+                                                                //        url: "/Location/GetLocations",
+                                                                //        method: "GET",
+                                                                //        dataType: 'json',
+                                                                //        success: function (data) {
+                                                                //            locations = JSON.parse(data);
+                                                                //        },
+                                                                //        error: function (err) {
+                                                                //            console.log("Get Location error in Sales Report: ", err);
+                                                                //        }
+                                                                //    });
+
+                                                                //    $.ajax({
+                                                                //        url: "/Salesman/GetSalesmans",
+                                                                //        method: "GET",
+                                                                //        dataType: 'json',
+                                                                //        success: function (data) {
+                                                                //            salesmans = JSON.parse(data);
+                                                                //        },
+                                                                //        error: function (err) {
+                                                                //            console.log("Get salesmans error in Sales Report: ", err);
+                                                                //        }
+                                                                //    });
+
+                                                                //    callSalesReport();
+                                                                //});
+    </script>
+}

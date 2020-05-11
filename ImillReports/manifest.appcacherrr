@@ -1,0 +1,20 @@
+CACHE MANIFEST
+#2020-03-26
+
+CACHE:
+/
+/SalesReport
+/SalesDetailReport
+/CashRegister
+/Account/Login
+/Content/stylesheets/main.css
+/bundles/Bootstrap?v=hDbKGKfeHeNwGZkAUXD7SZvQ7JYjkDfTM6RBRdPTG-g1
+/bundles/ReportStyles?v=lv8Blf3dkzRf3OpYKUstee5T7MliRNzjwM8dEPIa8xw1
+/bundles/ReportScript?v=wnEBugPn4WNUFXhWloMisF3db_cRsYOnlkclpmkh2DQ1
+/bundles/ReportScript
+/Content/Images/InternationalMill.jpg 
+https://fonts.googleapis.com/css?family=Muli:300,400,600,700 
+/Content/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0
+/Content/Images/logo_black.png
+https://fonts.gstatic.com/s/muli/v20/7Auwp_0qiz-afTLGLQ.woff2
+/favicon.ico
