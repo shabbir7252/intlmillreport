@@ -27,6 +27,18 @@
     .e-headertext {
         font-size: 11px;
     }
+
+    .e-grid .e-headercell.custom-header-css {
+        background-color: #eee8aa;
+    }
+
+    .e-grid .e-headercell.custom-header-qty-css {
+        background-color: #d9ff81;
+    }
+
+    .e-grid .e-headercell.custom-header-kg-css {
+        background-color: #81d8ff;
+    }
 </style>
 
 <div class="container-fluid">
@@ -107,7 +119,7 @@
             <div class="card info-box-2 l-parpl">
                 <div class="body">
                     <div class="content col-12">
-                        <div class="text">Total HO Sales (Cash)</div>
+                        <div class="text">HO Sales (Cash)</div>
                         <div class="number" id="totalHOSalesCash"></div>
                         <hr />
                         <h5>@ViewBag.HOSalesCashPercent%</h5>
@@ -126,7 +138,7 @@
             <div class="card info-box-2 l-seagreen">
                 <div class="body">
                     <div class="content col-12">
-                        <div class="text">Total HO Sales (Credit)</div>
+                        <div class="text">HO Sales (Credit)</div>
                         <div class="number" id="totalHOSalesCredit"></div>
                         <hr />
                         <h5>@ViewBag.HOSalesCreditPercent%</h5>
@@ -145,7 +157,7 @@
             <div class="card info-box-2 l-blue">
                 <div class="body">
                     <div class="content col-12">
-                        <div class="text">Sales Return (HO)</div>
+                        <div class="text">HO Sales Return</div>
                         <div class="number" id="salesReturnHO"></div>
                         <hr />
                         <h5>@ViewBag.HOSalesReturnPercent%</h5>
@@ -177,7 +189,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h3>Cash</h3>
+                    <h4>Cash</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -192,7 +204,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h3>KNET</h3>
+                    <h4>KNET</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -207,7 +219,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h3>Credit Card</h3>
+                    <h4>Credit Card</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -221,7 +233,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h3>Carraige</h3>
+                    <h4>Carraige</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -235,7 +247,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h3>Online</h3>
+                    <h4>Online</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -249,7 +261,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h3>Sales Return</h3>
+                    <h4>Sales Return</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -262,14 +274,89 @@
 
     </div>
 
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-6">
-            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DSTop5BranchProdByVal).AllowResizing(true).Height("400").Width("auto").Columns(col =>
-              {
-                  col.Field("Name").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                  col.Field("NameAr").Width("80").HeaderText("Name(Ar)").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                  col.Field("NetAmount").Width("80").HeaderText("Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-              }).DataBound("dataBound").Render()
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DSTop5BranchProdByVal).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Value (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Amount", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-css" }).Add();
+       }).DataBound("dataBound").Render()
+        </div>
+
+
+        <div class="col-6">
+            @Html.EJS().Grid("Grid2").DataSource((IEnumerable<object>)ViewBag.DSTop5HoProdByVal).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Value (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Amount", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-css" }).Add();
+       }).DataBound("dataBound").Render()
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-6">
+            @Html.EJS().Grid("Grid3").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdByKg).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Kg (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-kg-css" }).Add();
+       }).DataBound("dataBoundByQty").Render()
+        </div>
+
+        <div class="col-6">
+            @Html.EJS().Grid("Grid4").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdHoByKg).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Kg (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-kg-css" }).Add();
+       }).DataBound("dataBoundByQty").Render()
+        </div>
+
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-6">
+            @Html.EJS().Grid("Grid5").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdByQty).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Qty (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-qty-css" }).Add();
+       }).DataBound("dataBoundByQty").Render()
+        </div>
+
+        <div class="col-6">
+            @Html.EJS().Grid("Grid6").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdHoByQty).AllowResizing(true).Height("220").Width("auto").Columns(col =>
+       {
+           col.HeaderText("Top 5 Product By Qty (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
+                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-qty-css" }).Add();
+       }).DataBound("dataBoundByQty").Render()
         </div>
     </div>
 
@@ -299,7 +386,11 @@
         document.getElementById("salesReturnHO").innerText = tData.SalesReturnHO;
 
         function dataBound(args) {
-            this.autoFitColumns(['Name', 'NameAr', 'NetAmount']);
+            this.autoFitColumns(['Name', 'NameAr', 'Amount', 'Location', 'Percentage']);
+        }
+
+        function dataBoundByQty(args) {
+            this.autoFitColumns(['Name', 'NameAr', 'SellQuantity', 'Location', 'Percentage']);
         }
 
     </script>

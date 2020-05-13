@@ -43,6 +43,8 @@ namespace ImillReports.ViewModels
         public string SellUnit { get; internal set; }
         public DateTime Date { get; internal set; }
         public string ProductNameAr { get; internal set; }
+        public short BaseUnitId { get; internal set; }
+        public short SellUnitId { get; internal set; }
     }
 
     public class TransactionViewModel

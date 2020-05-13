@@ -46,9 +46,6 @@ namespace ImillReports.Repository
                 salesMonthItems.Add(salesMonthItem);
             }
 
-
-
-
             var totalAmount = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(x => x.Amount);
 
             var salesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.Amount)
@@ -58,7 +55,6 @@ namespace ImillReports.Repository
 
             foreach (var item in salesDetails.OrderByDescending(a => a.Amount).Take(5))
             {
-                // if (item.LocationId == 1 || item.LocationId == 84) continue;
                 var product = new Product
                 {
                     Name = item.ProductNameEn,
@@ -70,9 +66,6 @@ namespace ImillReports.Repository
 
                 top5ProductsByAmount.Add(product);
             }
-
-
-
 
             var totalAmountHo = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1).Sum(x => x.Amount);
 
@@ -95,9 +88,92 @@ namespace ImillReports.Repository
                 top5HoProductsByAmount.Add(product);
             }
 
+            var totalSellKgQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).Sum(x => x.SellQuantity);
+
+            var salesDetailsByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).GroupBy(x => x.SellQuantity)
+                .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
+
+            var top5ProductsByKg = new List<Product>();
+
+            foreach (var item in salesDetailsByKg.OrderByDescending(a => a.SellQuantity).Take(5))
+            {
+                var product = new Product
+                {
+                    Name = item.ProductNameEn,
+                    NameAr = item.ProductNameAr,
+                    SellQuantity = item.SellQuantity,
+                    Percentage = 100 / totalSellKgQty * item.SellQuantity,
+                    Location = item.Location
+                };
+
+                top5ProductsByKg.Add(product);
+            }
 
 
-            var totalSellQuantity = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnit == "Kg").Sum(x => x.SellQuantity);
+            var totalHoSellKgQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.SellUnitId == 40).Sum(x => x.SellQuantity);
+
+            var salesDetailsHoByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.SellUnitId == 40).GroupBy(x => x.SellQuantity)
+                .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
+
+            var top5ProductsHoByKg = new List<Product>();
+
+            foreach (var item in salesDetailsHoByKg.OrderByDescending(a => a.SellQuantity).Take(5))
+            {
+                var product = new Product
+                {
+                    Name = item.ProductNameEn,
+                    NameAr = item.ProductNameAr,
+                    SellQuantity = item.SellQuantity,
+                    Percentage = 100 / totalHoSellKgQty * item.SellQuantity,
+                    Location = item.Location
+                };
+
+                top5ProductsHoByKg.Add(product);
+            }
+
+
+            var totalSellQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(x => x.SellQuantity);
+
+            var salesDetailsByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.SellQuantity)
+                .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
+
+            var top5ProductsByQty = new List<Product>();
+
+            foreach (var item in salesDetailsByQty.OrderByDescending(a => a.SellQuantity).Take(5))
+            {
+                var product = new Product
+                {
+                    Name = item.ProductNameEn,
+                    NameAr = item.ProductNameAr,
+                    SellQuantity = item.SellQuantity,
+                    Percentage = 100 / totalSellQty * item.SellQuantity,
+                    Location = item.Location
+                };
+
+                top5ProductsByQty.Add(product);
+            }
+
+
+            var totalSellHoQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1).Sum(x => x.SellQuantity);
+
+            var salesDetailsHoByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1).GroupBy(x => x.SellQuantity)
+                .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
+
+            var top5ProductsHoByQty = new List<Product>();
+
+            foreach (var item in salesDetailsHoByQty.OrderByDescending(a => a.SellQuantity).Take(5))
+            {
+                var product = new Product
+                {
+                    Name = item.ProductNameEn,
+                    NameAr = item.ProductNameAr,
+                    SellQuantity = item.SellQuantity,
+                    Percentage = 100 / totalSellHoQty * item.SellQuantity,
+                    Location = item.Location
+                };
+
+                top5ProductsHoByQty.Add(product);
+            }
 
 
 
@@ -122,8 +198,11 @@ namespace ImillReports.Repository
                 SalesReturnHO = salesOfMonth.SalesReportItems.Where(x => x.LocationId == 1).Sum(a => a.SalesReturn),
 
                 Top5ProductsByAmount = top5ProductsByAmount,
-                Top5HoProductsByAmount = top5HoProductsByAmount
-
+                Top5HoProductsByAmount = top5HoProductsByAmount,
+                Top5ProductsByKg = top5ProductsByKg,
+                Top5ProductsHoByKg = top5ProductsHoByKg,
+                Top5ProductsByQty = top5ProductsByQty,
+                Top5ProductsHoByQty = top5ProductsHoByQty
             };
 
         }

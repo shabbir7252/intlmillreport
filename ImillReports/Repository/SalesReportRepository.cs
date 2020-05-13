@@ -55,9 +55,10 @@ namespace ImillReports.Repository
                         ProductNameAr = detail.ProdAr,
                         BaseQuantity = detail.Base_Qty,
                         BaseUnit = detail.BaseUnit,
-                        BaseUnitId = detail.bas
+                        BaseUnitId = detail.BaseUnitId,
                         SellQuantity = detail.Qty,
                         SellUnit = detail.SellUnit,
+                        SellUnitId = detail.SellUnitId,
                         Discount = trans.Voucher_Type == 202 ||
                                trans.Voucher_Type == 2023 ||
                                trans.Voucher_Type == 2035 ||

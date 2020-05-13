@@ -1498,7 +1498,6 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
     <Parameter Name="intArray" Type="varchar(max)" Mode="In" />
     <Parameter Name="prodArray" Type="varchar(max)" Mode="In" />
   </Function>
-  <Function Name="spIUD_GetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="IMILLModelStoreContainer">
     <EntitySet Name="GL_Ledger" EntityType="Self.GL_Ledger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ICS_Item" EntityType="Self.ICS_Item" Schema="dbo" store:Type="Tables" />
