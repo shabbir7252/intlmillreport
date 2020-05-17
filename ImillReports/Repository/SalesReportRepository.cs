@@ -51,6 +51,7 @@ namespace ImillReports.Repository
                         GroupCD = trans.Group_Cd,
                         CustomerName = trans.L_Ldgr_Name,
                         CustomerNameAr = trans.A_Ldgr_Name,
+                        ProdId = detail.ProdId,
                         ProductNameEn = detail.ProdEn,
                         ProductNameAr = detail.ProdAr,
                         BaseQuantity = detail.Base_Qty,

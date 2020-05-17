@@ -45,6 +45,7 @@ namespace ImillReports.ViewModels
         public string ProductNameAr { get; internal set; }
         public short BaseUnitId { get; internal set; }
         public short SellUnitId { get; internal set; }
+        public long ProdId { get; internal set; }
     }
 
     public class TransactionViewModel

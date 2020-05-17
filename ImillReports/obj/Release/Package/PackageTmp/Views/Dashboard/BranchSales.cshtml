@@ -1,4 +1,4 @@
-﻿
+﻿@using ImillReports.ViewModels
 @{
     ViewBag.Title = "Branch Sales Dashboard";
     ViewBag.SubTitle = "";
@@ -9,6 +9,16 @@
     var fromD = ViewBag.fromD;
     var toD = ViewBag.toD;
     var jsonResult = ViewBag.jsonResult;
+
+    var DSTop5BranchProdByVal = (List<Product>)ViewBag.DSTop5BranchProdByVal;
+    var DSTop5HoProdByVal = (List<Product>)ViewBag.DSTop5HoProdByVal;
+
+    var DSTop5ProdByKg = (List<Product>)ViewBag.DSTop5ProdByKg;
+    var DSTop5ProdHoByKg = (List<Product>)ViewBag.DSTop5ProdHoByKg;
+    
+    var DSTop5ProdByQty = (List<Product>)ViewBag.DSTop5ProdByQty;
+    var DSTop5ProdHoByQty = (List<Product>)ViewBag.DSTop5ProdHoByQty;
+
 }
 
 <style>
@@ -38,6 +48,16 @@
 
     .e-grid .e-headercell.custom-header-kg-css {
         background-color: #81d8ff;
+    }
+
+    .hiddenRow {
+        padding: 0 4px !important;
+        background-color: #eeeeee;
+        font-size: 13px;
+    }
+
+    .accordian-body span {
+        color: #a2a2a2 !important;
     }
 </style>
 
@@ -233,7 +253,7 @@
         <div class="col-lg-2 col-md-6 col-sm-12 text-center">
             <div class="card tasks_report">
                 <div class="header">
-                    <h4>Carraige</h4>
+                    <h4>Carriage</h4>
                     <hr />
                 </div>
                 <div class="body" style="padding-top: 0 !important">
@@ -275,89 +295,288 @@
     </div>
 
     <div class="row mb-5">
-        <div class="col-6">
-            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DSTop5BranchProdByVal).AllowResizing(true).Height("220").Width("auto").Columns(col =>
-       {
-           col.HeaderText("Top 5 Product By Value (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Amount", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-css" }).Add();
-       }).DataBound("dataBound").Render()
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Product By Value (Branch)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5BranchProdByVal)
+                            {
+                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.Amount.Value.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+
+                                <tr class="p">
+                                    <td colspan="6" class="hiddenRow">
+                                        <div class="accordian-body collapse p-3" id="demo1">
+                                            <h4></h4>
+                                            <table class="table table-bordered" style="border-collapse:collapse;">
+                                                <thead style="background-color: #fff8dc;">
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>Amount</th>
+                                                        <th>Percentage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: #fffaf0">
+
+                                                    @foreach (var detail in prod.ProductDetails)
+                                                    {
+
+                                                        <tr>
+                                                            <td>@detail.Location</td>
+                                                            <td>@detail.Amount.Value.ToString("0.000")</td>
+                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            @*<p>Amount : <span></span></p>
+                                <p>Percentage : <span></span> </p>
+                                <p>Location : <span></span> </p>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-
-        <div class="col-6">
-            @Html.EJS().Grid("Grid2").DataSource((IEnumerable<object>)ViewBag.DSTop5HoProdByVal).AllowResizing(true).Height("220").Width("auto").Columns(col =>
-       {
-           col.HeaderText("Top 5 Product By Value (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Amount", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-css" }).Add();
-       }).DataBound("dataBound").Render()
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Product By Value (HO)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5HoProdByVal)
+                            {
+                                <tr colspan="6">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.Amount.Value.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </div>
 
     <div class="row mb-5">
-        <div class="col-6">
-            @Html.EJS().Grid("Grid3").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdByKg).AllowResizing(true).Height("220").Width("auto").Columns(col =>
-       {
-           col.HeaderText("Top 5 Product By Kg (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-kg-css" }).Add();
-       }).DataBound("dataBoundByQty").Render()
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Product By Kg (Branch)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Sell Quantity</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5ProdByKg)
+                            {
+                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.SellQuantity.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+
+                                <tr class="p">
+                                    <td colspan="6" class="hiddenRow">
+                                        <div class="accordian-body collapse p-3" id="demo1">
+                                            <h4></h4>
+                                            <table class="table table-bordered" style="border-collapse:collapse;">
+                                                <thead style="background-color: #b4baff;">
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>Sell Quantity</th>
+                                                        <th>Percentage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: #edefff">
+
+                                                    @foreach (var detail in prod.ProductDetails)
+                                                    {
+
+                                                        <tr>
+                                                            <td>@detail.Location</td>
+                                                            <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            @*<p>Amount : <span></span></p>
+                                            <p>Percentage : <span></span> </p>
+                                            <p>Location : <span></span> </p>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div class="col-6">
-            @Html.EJS().Grid("Grid4").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdHoByKg).AllowResizing(true).Height("220").Width("auto").Columns(col =>
-       {
-           col.HeaderText("Top 5 Product By Kg (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-kg-css" }).Add();
-       }).DataBound("dataBoundByQty").Render()
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Product By Kg (HO)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Sell Quantity</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5ProdHoByKg)
+                            {
+                                <tr colspan="6">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.SellQuantity.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>
 
     <div class="row mb-5">
-        <div class="col-6">
-            @Html.EJS().Grid("Grid5").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdByQty).AllowResizing(true).Height("220").Width("auto").Columns(col =>
-       {
-           col.HeaderText("Top 5 Product By Qty (Branch)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-qty-css" }).Add();
-       }).DataBound("dataBoundByQty").Render()
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Product By Qty (Branch)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Sell Quantity</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5ProdByQty)
+                            {
+                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.SellQuantity.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+
+                                <tr class="p">
+                                    <td colspan="6" class="hiddenRow">
+                                        <div class="accordian-body collapse p-3" id="demo1">
+                                            <h4></h4>
+                                            <table class="table table-bordered" style="border-collapse:collapse;">
+                                                <thead style="background-color: #b4baff;">
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>Sell Quantity</th>
+                                                        <th>Percentage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: #edefff">
+
+                                                    @foreach (var detail in prod.ProductDetails)
+                                                    {
+
+                                                        <tr>
+                                                            <td>@detail.Location</td>
+                                                            <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            @*<p>Amount : <span></span></p>
+                                            <p>Percentage : <span></span> </p>
+                                            <p>Location : <span></span> </p>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div class="col-6">
-            @Html.EJS().Grid("Grid6").DataSource((IEnumerable<object>)ViewBag.DSTop5ProdHoByQty).AllowResizing(true).Height("220").Width("auto").Columns(col =>
-       {
-           col.HeaderText("Top 5 Product By Qty (HO)").Columns(new List<Syncfusion.EJ2.Grids.GridColumn>() {
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Name", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center ,CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "NameAr", Width = "80", HeaderText = "Name(Ar)", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "SellQuantity",HeaderText = "Qty", Width = "80", Format="N3", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Percentage", Width = "80", Format="N2", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Location", Width = "80", TextAlign = Syncfusion.EJ2.Grids.TextAlign.Center, CustomAttributes = new { @class = "customcss" } },
-                   }).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "custom-header-qty-css" }).Add();
-       }).DataBound("dataBoundByQty").Render()
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 5 Product By Qty (HO)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Sell Quantity</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5ProdHoByQty)
+                            {
+                                <tr colspan="6">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.SellQuantity.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </div>
 
 </div>
@@ -365,6 +584,14 @@
 
 @section scripts {
     <script>
+        //function rowSelected(args) {
+        //    alert("row index: " + args.row.getAttribute('aria-rowindex'));
+        //}
+
+        $('.accordion-toggle').click(function () {
+            $('.hiddenRow').hide();
+            $(this).next('tr').find('.hiddenRow').show();
+        });
 
         var fromD = "@fromDate";
         var toD = "@toDate";
@@ -384,14 +611,6 @@
         document.getElementById("totalHOSalesCash").innerText = tData.TotalHOSalesCash;
         document.getElementById("totalHOSalesCredit").innerText = tData.TotalHOSalesCredit;
         document.getElementById("salesReturnHO").innerText = tData.SalesReturnHO;
-
-        function dataBound(args) {
-            this.autoFitColumns(['Name', 'NameAr', 'Amount', 'Location', 'Percentage']);
-        }
-
-        function dataBoundByQty(args) {
-            this.autoFitColumns(['Name', 'NameAr', 'SellQuantity', 'Location', 'Percentage']);
-        }
 
     </script>
 }

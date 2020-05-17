@@ -968,6 +968,7 @@
       <ResultMapping>
         <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
           <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
           <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
           <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
           <ScalarProperty Name="Base_Qty" ColumnName="Base_Qty" />

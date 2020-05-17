@@ -14,6 +14,7 @@ namespace ImillReports.Models
     public partial class spICSTransDetail_GetAll_Result
     {
         public long Entry_Id { get; set; }
+        public long ProdId { get; set; }
         public string ProdEn { get; set; }
         public string ProdAr { get; set; }
         public decimal Base_Qty { get; set; }

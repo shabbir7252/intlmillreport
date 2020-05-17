@@ -3534,6 +3534,7 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
         </Association>
         <ComplexType Name="spICSTransDetail_GetAll_Result">
           <Property Type="Int64" Name="Entry_Id" Nullable="false" />
+          <Property Type="Int64" Name="ProdId" Nullable="false" />
           <Property Type="String" Name="ProdEn" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="ProdAr" Nullable="false" MaxLength="200" />
           <Property Type="Decimal" Name="Base_Qty" Nullable="false" Precision="14" Scale="5" />
@@ -4518,6 +4519,7 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
             <ResultMapping>
               <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
                 <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
                 <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
                 <ScalarProperty Name="Base_Qty" ColumnName="Base_Qty" />

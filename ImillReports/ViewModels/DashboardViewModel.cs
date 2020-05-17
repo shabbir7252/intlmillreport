@@ -58,6 +58,7 @@ namespace ImillReports.ViewModels
         public List<Product> Top5ProductsHoByKg { get; internal set; }
         public List<Product> Top5ProductsByQty { get; internal set; }
         public List<Product> Top5ProductsHoByQty { get; internal set; }
+        public List<Product> Top5ProdDetailsByAmount { get; internal set; }
     }
 
     public class Product
@@ -68,6 +69,19 @@ namespace ImillReports.ViewModels
         public string Location { get; internal set; }
         public decimal Percentage { get; internal set; }
         public decimal SellQuantity { get; internal set; }
+        public long ProductId { get; internal set; }
+        public List<ProductDetail> ProductDetails { get; set; }
+    }
+
+    public class ProductDetail
+    {
+        public string Name { get; set; }
+        public string NameAr { get; internal set; }
+        public decimal? Amount { get; internal set; }
+        public string Location { get; internal set; }
+        public decimal Percentage { get; internal set; }
+        public decimal SellQuantity { get; internal set; }
+        public long ProductId { get; internal set; }
     }
 
     public class SalesMonthItem

@@ -133,8 +133,10 @@ namespace ImillReports.Controllers
 
             ViewBag.DSTop5BranchProdByVal = salesOfMonth.Top5ProductsByAmount;
             ViewBag.DSTop5HoProdByVal = salesOfMonth.Top5HoProductsByAmount;
+
             ViewBag.DSTop5ProdByKg = salesOfMonth.Top5ProductsByKg;
             ViewBag.DSTop5ProdHoByKg = salesOfMonth.Top5ProductsHoByKg;
+
             ViewBag.DSTop5ProdByQty = salesOfMonth.Top5ProductsByQty;
             ViewBag.DSTop5ProdHoByQty = salesOfMonth.Top5ProductsHoByQty;
 
