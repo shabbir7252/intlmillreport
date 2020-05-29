@@ -36,6 +36,7 @@ namespace ImillReports
             container.RegisterType<IBaseUnitRepository, BaseUnitRepository>();
             container.RegisterType<IVoucherTypesRepository, VoucherTypesRepository>();
             container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IBaseRepository, BaseRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

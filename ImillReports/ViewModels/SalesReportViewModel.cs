@@ -60,4 +60,23 @@ namespace ImillReports.ViewModels
         public string CustomerName { get; internal set; }
         public string CustomerNameAr { get; internal set; }
     }
+
+    public class SalesPeakHourViewModel
+    {
+        public List<SalesPeakHourItem> SalesPeakHourItems { get; set; }
+    }       
+
+    public class SalesPeakHourItem
+    {
+        public string Hour { get; set; }
+        public decimal? Amount { get; set; }
+        public int TransCount { get; internal set; }
+    }
+
+    public class SalesReportType
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string NameAr { get; set; }
+    }
 }

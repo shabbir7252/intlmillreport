@@ -24,10 +24,10 @@ namespace ImillReports.Controllers
             var _takeCount = takeCount == null ? false : takeCount == true ? true : false;
 
             if (fromDate == null)
-                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 04, 00, 00);
+                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
 
             if (toDate == null)
-                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 01, 00, 00).AddDays(1);
+                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
 
             ViewBag.startDate = fromDate;
             ViewBag.endDate = toDate;
@@ -114,10 +114,10 @@ namespace ImillReports.Controllers
         public ActionResult CashRegVsSalesRpt(DateTime? fromDate, DateTime? toDate)
         {
             if (fromDate == null)
-                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 04, 00, 00);
+                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
 
             if (toDate == null)
-                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 01, 00, 00).AddDays(1);
+                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
 
             ViewBag.startDate = fromDate;
             ViewBag.endDate = toDate;

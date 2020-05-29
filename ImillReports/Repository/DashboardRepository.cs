@@ -63,7 +63,7 @@ namespace ImillReports.Repository
             var salesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.ProdId);
 
             var top5ProductsByAmount = new List<Product>();
-            
+
             foreach (var item in salesDetails.OrderByDescending(a => a.Sum(b => b.Amount)).Take(5))
             {
                 var productDetails = new List<ProductDetail>();
@@ -129,42 +129,68 @@ namespace ImillReports.Repository
 
             #region Top 5 Product by Kg
 
-            var totalSellKgQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).Sum(x => x.SellQuantity);
+           var sellQtyKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 &&
+                                                                                 x.LocationId != 84 &&
+                                                                                 (x.BaseUnitId == 40)).Sum(x => x.BaseQuantity * x.SellQuantity);
+
+            var sellQtyGm = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 &&
+                                                                                 x.LocationId != 84 &&
+                                                                                 (x.BaseUnitId == 42)).Sum(x => (x.BaseQuantity * x.SellQuantity)/1000);
+
+            var totalSellQtyKg = sellQtyKg + sellQtyGm;
 
             //var salesDetailsByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).GroupBy(x => x.SellQuantity)
             //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
 
-            var salesDetailsByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).GroupBy(x => x.ProdId);
+            var salesDetailsByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && 
+                                                                                   x.LocationId != 84 && 
+                                                                                   (x.BaseUnitId == 40 || 
+                                                                                    x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
 
             var top5ProductsByKg = new List<Product>();
 
-            foreach (var item in salesDetailsByKg.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(5))
+            foreach (var item in salesDetailsByKg.OrderByDescending(a => a.Sum(b => b.BaseUnitId == 40 
+                                                                                    ? b.BaseQuantity * b.SellQuantity 
+                                                                                    : (b.BaseQuantity * b.SellQuantity)/1000)).Take(5))
             {
                 var productDetails = new List<ProductDetail>();
-                var itemTotalQty = item.Sum(a => a.SellQuantity);
-                var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
+                var individualSalesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.ProdId == item.Key && 
+                                                                                             x.LocationId != 1 && 
+                                                                                             x.LocationId != 84 && 
+                                                                                             (x.BaseUnitId == 40 ||
+                                                                                              x.BaseUnitId == 42)).GroupBy(a => a.LocationId);
 
-                var individualSalesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.ProdId == item.Key && x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).GroupBy(a => a.LocationId);
-
-                foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.SellQuantity)))
+                foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40 
+                                                                                                ? x.BaseQuantity * x.SellQuantity 
+                                                                                                : (x.BaseQuantity * x.SellQuantity)/1000)))
                 {
-                    var detailSellQty = detail.Sum(x => x.SellQuantity);
+                    var detailSellQty = detail.Sum(x => x.BaseUnitId == 40 
+                                                        ? x.BaseQuantity * x.SellQuantity 
+                                                        : (x.BaseQuantity * x.SellQuantity) / 1000);
+
                     var productDetail = new ProductDetail
                     {
                         SellQuantity = detailSellQty,
-                        Percentage = 100 / totalSellKgQty * detailSellQty,
+                        Percentage = 100 / totalSellQtyKg * detailSellQty,
                         Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name
                     };
 
                     productDetails.Add(productDetail);
                 }
 
+
+                var itemTotalQty = item.Sum(x => x.BaseUnitId == 40
+                                                        ? x.BaseQuantity * x.SellQuantity
+                                                        : (x.BaseQuantity * x.SellQuantity) / 1000);
+
+                var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
+
                 var product = new Product
                 {
                     Name = prod.Name,
                     NameAr = prod.NameAr,
                     SellQuantity = itemTotalQty,
-                    Percentage = 100 / totalSellKgQty * itemTotalQty,
+                    Percentage = 100 / totalSellQtyKg * itemTotalQty,
                     ProductDetails = productDetails
                 };
 
@@ -172,18 +198,34 @@ namespace ImillReports.Repository
             }
 
 
-            var totalHoSellKgQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.SellUnitId == 40).Sum(x => x.SellQuantity);
 
-            //var salesDetailsHoByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.SellUnitId == 40).GroupBy(x => x.SellQuantity)
+            var hoSellQtyKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 &&
+                                                                              (x.BaseUnitId == 40)).Sum(x => x.BaseQuantity * x.SellQuantity);
+
+            var hoSellQtyGm = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 &&
+                                                                              (x.BaseUnitId == 42)).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+
+            var totalHoSellKgQty = hoSellQtyKg + hoSellQtyGm;
+
+            // var totalHoSellKgQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
+
+            // var salesDetailsHoByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.SellUnitId == 40).GroupBy(x => x.SellQuantity)
             //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
 
-            var salesDetailsHoByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && x.SellUnitId == 40).GroupBy(x => x.ProdId);
+            var salesDetailsHoByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 &&
+                                                                                     (x.BaseUnitId == 40 || 
+                                                                                     x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
 
             var top5ProductsHoByKg = new List<Product>();
 
-            foreach (var item in salesDetailsHoByKg.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(5))
+            foreach (var item in salesDetailsHoByKg.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40
+                                                                                    ? x.BaseQuantity * x.SellQuantity
+                                                                                    : (x.BaseQuantity * x.SellQuantity) / 1000)).Take(5))
             {
-                var itemTotalQty = item.Sum(a => a.SellQuantity);
+                var itemTotalQty = item.Sum(x => x.BaseUnitId == 40
+                                               ? x.BaseQuantity * x.SellQuantity
+                                               : (x.BaseQuantity * x.SellQuantity) / 1000);
+
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
                 var product = new Product
@@ -201,22 +243,33 @@ namespace ImillReports.Repository
 
             #region Top 5 Product by Quantity
 
-            var totalSellQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(x => x.SellQuantity);
+            var totalSellQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && 
+                                                                               x.LocationId != 84 && 
+                                                                               x.BaseUnitId != 40 && 
+                                                                               x.BaseUnitId != 42 && 
+                                                                               x.ProdId != 19595).Sum(x => x.SellQuantity);
 
             //var salesDetailsByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.SellQuantity)
             //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
 
-            var salesDetailsByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.ProdId);
+            var salesDetailsByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && 
+                                                                                    x.LocationId != 84 && 
+                                                                                    x.BaseUnitId != 40 &&
+                                                                                    x.BaseUnitId != 42 &&
+                                                                                    x.ProdId != 19595).GroupBy(x => x.ProdId);
 
             var top5ProductsByQty = new List<Product>();
 
             foreach (var item in salesDetailsByQty.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(5))
             {
                 var productDetails = new List<ProductDetail>();
-                var itemTotalQty = item.Sum(a => a.SellQuantity);
-                var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var individualSalesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.ProdId == item.Key && x.LocationId != 1 && x.LocationId != 84).GroupBy(a => a.LocationId);
+                var individualSalesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.ProdId == item.Key && 
+                                                                                             x.ProdId != 19595 &&
+                                                                                             x.LocationId != 1 && 
+                                                                                             x.LocationId != 84 && 
+                                                                                             x.BaseUnitId != 40 &&
+                                                                                             x.BaseUnitId != 42).GroupBy(a => a.LocationId);
 
                 foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.SellQuantity)))
                 {
@@ -224,12 +277,15 @@ namespace ImillReports.Repository
                     var productDetail = new ProductDetail
                     {
                         SellQuantity = detailSellQty,
-                        Percentage = 100 / totalSellKgQty * detailSellQty,
+                        Percentage = 100 / totalSellQtyKg * detailSellQty,
                         Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name
                     };
 
                     productDetails.Add(productDetail);
                 }
+
+                var itemTotalQty = item.Sum(a => a.SellQuantity);
+                var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
                 var product = new Product
                 {
@@ -244,12 +300,18 @@ namespace ImillReports.Repository
             }
 
 
-            var totalSellHoQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1).Sum(x => x.SellQuantity);
+            var totalSellHoQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && 
+                                                                                 x.BaseUnitId != 40 &&
+                                                                                 x.BaseUnitId != 42 &&
+                                                                                 x.ProdId != 19595).Sum(x => x.SellQuantity);
 
             //var salesDetailsHoByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1).GroupBy(x => x.SellQuantity)
             //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
 
-            var salesDetailsHoByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1).GroupBy(x => x.ProdId);
+            var salesDetailsHoByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId == 1 && 
+                                                                                      x.BaseUnitId != 40 &&
+                                                                                      x.BaseUnitId != 42 &&
+                                                                                      x.ProdId != 19595).GroupBy(x => x.ProdId);
 
             var top5ProductsHoByQty = new List<Product>();
 
@@ -292,7 +354,7 @@ namespace ImillReports.Repository
                 SalesReturnHO = salesOfMonth.SalesReportItems.Where(x => x.LocationId == 1).Sum(a => a.SalesReturn),
 
                 Top5ProductsByAmount = top5ProductsByAmount,
-//                 Top5ProdDetailsByAmount = top5ProdDetailsByAmount,
+                //                 Top5ProdDetailsByAmount = top5ProdDetailsByAmount,
 
                 Top5HoProductsByAmount = top5HoProductsByAmount,
                 Top5ProductsByKg = top5ProductsByKg,

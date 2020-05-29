@@ -18,4 +18,9 @@ namespace ImillReports.Models
         public string borderWidth { get; set; }
         public decimal?[] data { get; set; }
     }
+    public class ColumnChartData
+    {
+        public string x;
+        public decimal? yValue;
+    }
 }

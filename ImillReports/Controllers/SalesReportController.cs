@@ -1,4 +1,5 @@
 ﻿using ImillReports.Contracts;
+using ImillReports.Models;
 using ImillReports.ViewModels;
 using Newtonsoft.Json;
 using Syncfusion.EJ2.QueryBuilder;
@@ -18,11 +19,13 @@ namespace ImillReports.Controllers
         private readonly IBaseUnitRepository _baseUnitRepository;
         private readonly IVoucherTypesRepository _voucherTypesRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IBaseRepository _baseRepository;
         public SalesReportController(
             ISalesReportRepository salesReportRepository,
             ILocationRepository locationRepository,
             IBaseUnitRepository baseUnitRepository,
             IProductRepository productRepository,
+            IBaseRepository baseRepository,
             IVoucherTypesRepository voucherTypesRepository)
         {
             _salesReportRepository = salesReportRepository;
@@ -30,6 +33,7 @@ namespace ImillReports.Controllers
             _baseUnitRepository = baseUnitRepository;
             _voucherTypesRepository = voucherTypesRepository;
             _productRepository = productRepository;
+            _baseRepository = baseRepository;
         }
 
         public SalesReportController() { }
@@ -40,14 +44,16 @@ namespace ImillReports.Controllers
 
             if (fromDate == null)
             {
-                fromDate = DateTime.Now;
-                ViewBag.startDate = DateTime.Now;
+                var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+                fromDate = fDate;
+                ViewBag.startDate = fDate;
             }
 
             if (toDate == null)
             {
-                toDate = DateTime.Now;
-                ViewBag.endDate = DateTime.Now;
+                var tDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+                toDate = tDate;
+                ViewBag.endDate = tDate;
             }
 
             ViewBag.startDate = fromDate;
@@ -152,14 +158,16 @@ namespace ImillReports.Controllers
 
             if (fromDate == null)
             {
-                fromDate = DateTime.Now;
-                ViewBag.startDate = DateTime.Now;
+                var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+                fromDate = fDate;
+                ViewBag.startDate = fDate;
             }
 
             if (toDate == null)
             {
-                toDate = DateTime.Now;
-                ViewBag.endDate = DateTime.Now;
+                var tDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+                toDate = tDate;
+                ViewBag.endDate = tDate;
             }
 
             ViewBag.startDate = fromDate;
@@ -337,6 +345,67 @@ namespace ImillReports.Controllers
             };
 
             return result;
+        }
+
+        public ActionResult SalesHourlyReport(DateTime? fromDate, string[] locationStringArray, int? reportType)
+        {
+            if (fromDate == null)
+            {
+                var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 00, 00);
+                fromDate = fDate;
+                ViewBag.startDate = fDate;
+            }
+            else
+            {
+                fromDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 06, 00, 00);
+            }
+
+            var toDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 05, 59, 00).AddDays(1);
+
+            ViewBag.startDate = fromDate;
+            ViewBag.validation = "false";
+
+            var locations = _locationRepository.GetLocations().LocationItems;
+
+            var locationArray = new List<int>();
+            if (locationStringArray != null)
+            {
+                locationArray.AddRange(from item in locationStringArray select int.Parse(item));
+                foreach (var currentLocation in
+                    from location in locations
+                    from id in locationArray
+                    where location.LocationId == id
+                    select location)
+                {
+                    currentLocation.IsSelected = true;
+                }
+            }
+
+            ViewBag.locations = locations;
+            ViewBag.locationVal = new string[] { "" };
+
+            ViewBag.ReportType = _baseRepository.GetSalesReportType();
+
+            var locationsString = locationStringArray != null && locationStringArray.Length > 0 ? string.Join(",", locationStringArray) : "";
+            var voucherTypeString = "201,2021,2022,2025,2026";
+
+            var salesPeakHour = _salesReportRepository.GetSalesHourlyReport(fromDate, toDate, locationsString, voucherTypeString);
+
+            List<ColumnChartData> chartAmountData = (from items in salesPeakHour.SalesPeakHourItems
+                                                     select new ColumnChartData { x = items.Hour, yValue = items.Amount }).ToList();
+            ViewBag.dataSourceAmount = chartAmountData;
+
+            List<ColumnChartData> chartCountData = (from items in salesPeakHour.SalesPeakHourItems
+                                                    select new ColumnChartData { x = items.Hour, yValue = items.TransCount }).ToList();
+            ViewBag.dataSourceCount = chartCountData;
+
+            ViewBag.BarChartAmountTitle = fromDate.Value.ToString("dd/MMM/yyyy HH:mm tt") + " to " + toDate.ToString("dd/MMM/yyyy HH:mm tt") + " by Amount";
+            ViewBag.BarChartCountTitle = fromDate.Value.ToString("dd/MMM/yyyy HH:mm tt") + " to " + toDate.ToString("dd/MMM/yyyy HH:mm tt") + " by Transaction Count";
+
+            //string[] color = new string[] { "#4286f4", "#f4b642", "#f441a9" };
+            //ViewBag.seriesColors = color;
+
+            return View();
         }
     }
 }

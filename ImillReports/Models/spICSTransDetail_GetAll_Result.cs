@@ -17,7 +17,7 @@ namespace ImillReports.Models
         public long ProdId { get; set; }
         public string ProdEn { get; set; }
         public string ProdAr { get; set; }
-        public decimal Base_Qty { get; set; }
+        public decimal IUDBaseQty { get; set; }
         public decimal Qty { get; set; }
         public decimal FC_Prod_Dis { get; set; }
         public decimal FC_Amount { get; set; }

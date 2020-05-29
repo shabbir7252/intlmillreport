@@ -20,7 +20,7 @@ namespace ImillReports.Controllers
 
         public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
-            if (fromDate == null)
+           if (fromDate == null)
                 fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
 
             if (toDate == null)

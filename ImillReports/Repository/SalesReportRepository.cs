@@ -54,7 +54,7 @@ namespace ImillReports.Repository
                         ProdId = detail.ProdId,
                         ProductNameEn = detail.ProdEn,
                         ProductNameAr = detail.ProdAr,
-                        BaseQuantity = detail.Base_Qty,
+                        BaseQuantity = detail.IUDBaseQty,
                         BaseUnit = detail.BaseUnit,
                         BaseUnitId = detail.BaseUnitId,
                         SellQuantity = detail.Qty,
@@ -246,6 +246,35 @@ namespace ImillReports.Repository
             return new SalesReportViewModel
             {
                 SalesReportItems = salesReportItems
+            };
+        }
+
+        public SalesPeakHourViewModel GetSalesHourlyReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray)
+        {
+            var salesReportItems = GetSalesReport(fromDate, toDate, locationArray, "").SalesReportItems;
+            var salesPeakHourItems = new List<SalesPeakHourItem>();
+            var hoursCount = 24;
+            var currentstartHour = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 00, 00);
+
+            for (int i = 1; i<= hoursCount; i++)
+            {
+                var salesItems = salesReportItems.Where(x => x.InvDateTime >= currentstartHour && 
+                                                             x.InvDateTime <= currentstartHour.Add(TimeSpan.FromMinutes(59)));
+
+                var salesPeakHourItem = new SalesPeakHourItem
+                {
+                    Hour = currentstartHour.ToString("hh:mm tt"),
+                    Amount = salesItems.Sum(a => a.NetAmount),
+                    TransCount = salesItems.Count()
+                };
+
+                salesPeakHourItems.Add(salesPeakHourItem);
+                currentstartHour = currentstartHour.Add(TimeSpan.FromHours(1));
+            }
+
+            return new SalesPeakHourViewModel
+            {
+                SalesPeakHourItems = salesPeakHourItems
             };
         }
     }

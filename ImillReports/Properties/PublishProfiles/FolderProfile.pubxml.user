@@ -16,10 +16,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 18:59:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/17/2020 20:18:42</publishTime>
+      <publishTime>05/27/2020 11:20:00</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/17/2020 20:18:42</publishTime>
+      <publishTime>05/27/2020 11:20:00</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>11/16/2019 03:00:22</publishTime>
@@ -28,10 +28,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/16/2019 03:00:40</publishTime>
     </File>
     <File Include="bin/ImillReports.dll">
-      <publishTime>05/17/2020 20:18:26</publishTime>
+      <publishTime>05/27/2020 11:19:46</publishTime>
     </File>
     <File Include="bin/ImillReports.pdb">
-      <publishTime>05/17/2020 20:18:26</publishTime>
+      <publishTime>05/27/2020 11:19:46</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>04/24/2018 12:47:38</publishTime>
@@ -793,7 +793,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/11/2020 23:41:47</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/17/2020 20:18:29</publishTime>
+      <publishTime>05/27/2020 11:19:49</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>03/18/2020 13:11:03</publishTime>
@@ -951,6 +951,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/SalesReport/SalesDetailReport.cshtml">
       <publishTime>05/08/2020 01:46:15</publishTime>
     </File>
+    <File Include="Views/SalesReport/SalesPeakHourReport.cshtml">
+      <publishTime>05/27/2020 08:01:19</publishTime>
+    </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>03/18/2020 13:11:21</publishTime>
     </File>
@@ -958,7 +961,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/18/2020 13:11:22</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/16/2020 14:29:21</publishTime>
+      <publishTime>05/26/2020 20:35:39</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>03/18/2020 13:11:22</publishTime>

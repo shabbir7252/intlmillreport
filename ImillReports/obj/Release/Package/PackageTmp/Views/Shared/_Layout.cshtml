@@ -80,6 +80,7 @@
                         <ul class="pullDown">
                             <li><a href="@Url.Action("Index", "SalesReport")">Sales Report</a></li>
                             <li><a href="@Url.Action("SalesDetailReport", "SalesReport")">Sales Detail Report</a></li>
+                            <li><a href="@Url.Action("SalesPeakHourReport", "SalesReport")">Sales Hourly Report</a></li>
                             <li><a href="@Url.Action("Index", "CashRegister")">Cash Register Report</a></li>
                             <li><a href="@Url.Action("CashRegVsSalesRpt", "CashRegister")">Cash Register Vs Sales Report</a></li>
                         </ul>
@@ -149,7 +150,6 @@
     <script src="~/Scripts/jquery-knob.min.js"></script>
 
     @RenderSection("scripts", required: false)
-    @RenderSection("ControlsSection", required: false)
 
     @Html.EJS().ScriptManager()
 
