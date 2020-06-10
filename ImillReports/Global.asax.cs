@@ -12,7 +12,8 @@ namespace ImillReports
     {
         protected void Application_Start()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjIyMzYzQDMxMzcyZTM0MmUzMEozVk1KeVAwN1owUndhQVZLdlBHRDZqZ24rem0zcHdYbHc4TllNYVg3Tk09");
+            // Old License Key = MjIyMzYzQDMxMzcyZTM0MmUzMEozVk1KeVAwN1owUndhQVZLdlBHRDZqZ24rem0zcHdYbHc4TllNYVg3Tk09
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjcwMjA1QDMxMzgyZTMxMmUzMERwaVMyUklkbXkrbkYwRHhjT0p5MWlUQlpFelcxZWdCOFI5RlgwaCtMdnc9");
 
             // UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
