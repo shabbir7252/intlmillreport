@@ -1,8 +1,6 @@
-﻿using ImillReports.Models;
-using System;
+﻿using System;
+using ImillReports.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ImillReports.ViewModels
 {
@@ -64,13 +62,15 @@ namespace ImillReports.ViewModels
     public class SalesPeakHourViewModel
     {
         public List<SalesPeakHourItem> SalesPeakHourItems { get; set; }
-    }       
+    }
 
     public class SalesPeakHourItem
     {
-        public string Hour { get; set; }
+        public string Location { get; set; }
+        public DateTime Hour { get; set; }
         public decimal? Amount { get; set; }
         public int TransCount { get; internal set; }
+        public int LocationId { get; internal set; }
     }
 
     public class SalesReportType

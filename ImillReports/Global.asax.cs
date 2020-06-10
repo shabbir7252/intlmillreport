@@ -14,7 +14,7 @@ namespace ImillReports
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjIyMzYzQDMxMzcyZTM0MmUzMEozVk1KeVAwN1owUndhQVZLdlBHRDZqZ24rem0zcHdYbHc4TllNYVg3Tk09");
 
-            UnityConfig.RegisterComponents();
+            // UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

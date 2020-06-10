@@ -683,6 +683,7 @@ warning 6002: The table/view 'IMILL.dbo.intlmill_cash_register' does not have a 
     <Property Name="d_0005" Type="int" />
     <Property Name="total_sales" Type="money" Nullable="false" />
     <Property Name="net_sales" Type="money" Nullable="false" />
+    <Property Name="staff_date" Type="varchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="SM_Location">
     <Key>
@@ -1538,7 +1539,8 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
     [intlmill_cash_register].[d_0010] AS [d_0010], 
     [intlmill_cash_register].[d_0005] AS [d_0005], 
     [intlmill_cash_register].[total_sales] AS [total_sales], 
-    [intlmill_cash_register].[net_sales] AS [net_sales]
+    [intlmill_cash_register].[net_sales] AS [net_sales], 
+    [intlmill_cash_register].[staff_date] AS [staff_date]
     FROM [dbo].[intlmill_cash_register] AS [intlmill_cash_register]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_Alt_Unit_Details_Product" Association="Self.FK_Alt_Unit_Details_Product">

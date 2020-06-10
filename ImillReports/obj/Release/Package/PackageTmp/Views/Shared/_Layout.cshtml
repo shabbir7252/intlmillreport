@@ -18,6 +18,8 @@
 </head>
 <body class="theme-cyan index2">
 
+    
+
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="line"></div>
@@ -63,6 +65,7 @@
     {
 
         <div class="menu-container">
+
             <div class="menu">
                 <ul class="pullDown">
                     @*<li><a href="@Url.Action("Index", "Dashboard")"><i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span></a></li>*@
@@ -80,7 +83,7 @@
                         <ul class="pullDown">
                             <li><a href="@Url.Action("Index", "SalesReport")">Sales Report</a></li>
                             <li><a href="@Url.Action("SalesDetailReport", "SalesReport")">Sales Detail Report</a></li>
-                            <li><a href="@Url.Action("SalesPeakHourReport", "SalesReport")">Sales Hourly Report</a></li>
+                            <li><a href="@Url.Action("SalesHourlyReport", "SalesReport")">Sales Hourly Report</a></li>
                             <li><a href="@Url.Action("Index", "CashRegister")">Cash Register Report</a></li>
                             <li><a href="@Url.Action("CashRegVsSalesRpt", "CashRegister")">Cash Register Vs Sales Report</a></li>
                         </ul>
@@ -142,6 +145,9 @@
         </div>
         @*<div id="area_chart" class="graph"></div>*@
         @RenderBody()
+
+
+
 
     </section>
 

@@ -15,7 +15,7 @@
 
     .e-grid .e-rowcell.custom-cash-css {
         font-size: 11px;
-        background-color:antiquewhite;
+        background-color: antiquewhite;
     }
 
     .e-grid .e-headercell.custom-cash-css {
@@ -53,8 +53,6 @@
 </style>
 
 <div class="container-fluid">
-
-    <h2 class="text-center">Report is in Development</h2>
 
     @if (ViewBag.validation == "true")
     {
@@ -155,8 +153,8 @@
 @section scripts {
     <script>
 
-         function dataBound(args) {
-             this.autoFitColumns(['Location', 'LocationShortName', 'TransDate', 'CRCash', 'CRKnet', 'CRVisa', 'Cash', 'Knet', 'CreditCard', 'CROnline', 'Online']);
+        function dataBound(args) {
+            this.autoFitColumns(['Location', 'LocationShortName', 'TransDate', 'CRCash', 'CRKnet', 'CRVisa', 'Cash', 'Knet', 'CreditCard', 'CROnline', 'Online']);
         }
 
         function toolbarClick(args) {

@@ -1,21 +1,22 @@
-﻿using ImillReports.Contracts;
-using ImillReports.Models;
-using ImillReports.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System;
 using System.Linq;
-using System.Web;
+using System.Data.Entity;
+using ImillReports.Models;
+using ImillReports.Contracts;
+using ImillReports.ViewModels;
+using System.Collections.Generic;
 
 namespace ImillReports.Repository
 {
     public class SalesReportRepository : ISalesReportRepository
     {
         private readonly IMILLEntities _context;
+        private readonly ILocationRepository _locationRepository;
 
-        public SalesReportRepository(IMILLEntities context)
+        public SalesReportRepository(IMILLEntities context, ILocationRepository locationRepository)
         {
             _context = context;
+            _locationRepository = locationRepository;
         }
 
         public SalesReportViewModel GetSalesDetailReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray)
@@ -90,15 +91,8 @@ namespace ImillReports.Repository
 
         public SalesReportViewModel GetSalesReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray)
         {
-            if (fromDate == null)
-            {
-                fromDate = DateTime.Now;
-            }
-
-            if (toDate == null)
-            {
-                toDate = DateTime.Now;
-            }
+            if (fromDate == null) fromDate = DateTime.Now;
+            if (toDate == null) toDate = DateTime.Now;
 
             var transactions = _context.ICS_Transaction
                 .Include(a => a.SM_Location)
@@ -128,7 +122,7 @@ namespace ImillReports.Repository
             if (!string.IsNullOrEmpty(locationArray))
             {
                 var locationIds = new List<short>();
-                foreach(var id in locationArray.Split(','))
+                foreach (var id in locationArray.Split(','))
                 {
                     locationIds.Add(short.Parse(id));
                 }
@@ -254,22 +248,45 @@ namespace ImillReports.Repository
             var salesReportItems = GetSalesReport(fromDate, toDate, locationArray, "").SalesReportItems;
             var salesPeakHourItems = new List<SalesPeakHourItem>();
             var hoursCount = 24;
-            var currentstartHour = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 00, 00);
+            
 
-            for (int i = 1; i<= hoursCount; i++)
+            if(locationArray != "")
             {
-                var salesItems = salesReportItems.Where(x => x.InvDateTime >= currentstartHour && 
-                                                             x.InvDateTime <= currentstartHour.Add(TimeSpan.FromMinutes(59)));
+                var locationListIds = new List<int>();
+                var locationStringArray = locationArray.Split(',');
 
-                var salesPeakHourItem = new SalesPeakHourItem
+                foreach (var item in locationStringArray)
                 {
-                    Hour = currentstartHour.ToString("hh:mm tt"),
-                    Amount = salesItems.Sum(a => a.NetAmount),
-                    TransCount = salesItems.Count()
-                };
+                    var id = int.Parse(item);
+                    locationListIds.Add(id);
+                }
 
-                salesPeakHourItems.Add(salesPeakHourItem);
-                currentstartHour = currentstartHour.Add(TimeSpan.FromHours(1));
+                var locations = _locationRepository.GetLocations().LocationItems.Where(x => locationListIds.Contains(x.LocationId));
+
+
+                foreach (var location in locations)
+                {
+                    var currentstartHour = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 00, 00);
+
+                    for (int i = 1; i <= hoursCount; i++)
+                    {
+                        var salesItems = salesReportItems.Where(x => x.InvDateTime >= currentstartHour &&
+                                                                     x.InvDateTime <= currentstartHour.Add(TimeSpan.FromMinutes(59)) &&
+                                                                     x.LocationId == location.LocationId);
+
+                        var salesPeakHourItem = new SalesPeakHourItem
+                        {
+                            LocationId = location.LocationId,
+                            Location = location.Name,
+                            Hour = currentstartHour,
+                            Amount = salesItems.Sum(a => a.NetAmount),
+                            TransCount = salesItems.Count()
+                        };
+
+                        salesPeakHourItems.Add(salesPeakHourItem);
+                        currentstartHour = currentstartHour.Add(TimeSpan.FromHours(1));
+                    }
+                }
             }
 
             return new SalesPeakHourViewModel

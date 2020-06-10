@@ -53,7 +53,7 @@ namespace ImillReports.Repository
             var products = _productRepository.GetAllProducts().Items;
 
 
-            #region Top 5 Product by Amount
+            #region Top 10 Product by Amount
 
             var totalAmount = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(x => x.Amount);
 
@@ -64,7 +64,7 @@ namespace ImillReports.Repository
 
             var top5ProductsByAmount = new List<Product>();
 
-            foreach (var item in salesDetails.OrderByDescending(a => a.Sum(b => b.Amount)).Take(5))
+            foreach (var item in salesDetails.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
                 var productDetails = new List<ProductDetail>();
                 var itemTotalAmount = item.Sum(a => a.Amount);
@@ -109,7 +109,7 @@ namespace ImillReports.Repository
 
             var top5HoProductsByAmount = new List<Product>();
 
-            foreach (var item in salesDetailsHo.OrderByDescending(a => a.Sum(b => b.Amount)).Take(5))
+            foreach (var item in salesDetailsHo.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
                 var itemTotalAmount = item.Sum(a => a.Amount);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
@@ -127,7 +127,7 @@ namespace ImillReports.Repository
 
             #endregion
 
-            #region Top 5 Product by Kg
+            #region Top 10 Product by Kg
 
            var sellQtyKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 &&
                                                                                  x.LocationId != 84 &&
@@ -151,7 +151,7 @@ namespace ImillReports.Repository
 
             foreach (var item in salesDetailsByKg.OrderByDescending(a => a.Sum(b => b.BaseUnitId == 40 
                                                                                     ? b.BaseQuantity * b.SellQuantity 
-                                                                                    : (b.BaseQuantity * b.SellQuantity)/1000)).Take(5))
+                                                                                    : (b.BaseQuantity * b.SellQuantity)/1000)).Take(10))
             {
                 var productDetails = new List<ProductDetail>();
                 var individualSalesDetails = salesDetailsOfMonth.SalesReportItems.Where(x => x.ProdId == item.Key && 
@@ -159,6 +159,11 @@ namespace ImillReports.Repository
                                                                                              x.LocationId != 84 && 
                                                                                              (x.BaseUnitId == 40 ||
                                                                                               x.BaseUnitId == 42)).GroupBy(a => a.LocationId);
+
+
+                
+
+
 
                 foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40 
                                                                                                 ? x.BaseQuantity * x.SellQuantity 
@@ -168,11 +173,20 @@ namespace ImillReports.Repository
                                                         ? x.BaseQuantity * x.SellQuantity 
                                                         : (x.BaseQuantity * x.SellQuantity) / 1000);
 
+                    var totalSellQtyKgInBranch = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 &&
+                                                                                                 x.LocationId != 84 &&
+                                                                                                 x.LocationId == detail.Key &&
+                                                                                                 (x.BaseUnitId == 40 ||
+                                                                                                 x.BaseUnitId == 42)).Sum(b => b.BaseUnitId == 40
+                                                                                                                            ? b.BaseQuantity * b.SellQuantity
+                                                                                                                            : (b.BaseQuantity * b.SellQuantity) / 1000);
+
                     var productDetail = new ProductDetail
                     {
+                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name,
                         SellQuantity = detailSellQty,
                         Percentage = 100 / totalSellQtyKg * detailSellQty,
-                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name
+                        PercentageAllItem = 100 / totalSellQtyKgInBranch * detailSellQty
                     };
 
                     productDetails.Add(productDetail);
@@ -220,7 +234,7 @@ namespace ImillReports.Repository
 
             foreach (var item in salesDetailsHoByKg.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40
                                                                                     ? x.BaseQuantity * x.SellQuantity
-                                                                                    : (x.BaseQuantity * x.SellQuantity) / 1000)).Take(5))
+                                                                                    : (x.BaseQuantity * x.SellQuantity) / 1000)).Take(10))
             {
                 var itemTotalQty = item.Sum(x => x.BaseUnitId == 40
                                                ? x.BaseQuantity * x.SellQuantity
@@ -241,13 +255,13 @@ namespace ImillReports.Repository
 
             #endregion
 
-            #region Top 5 Product by Quantity
+            #region Top 10 Product by Quantity
 
             var totalSellQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && 
                                                                                x.LocationId != 84 && 
                                                                                x.BaseUnitId != 40 && 
                                                                                x.BaseUnitId != 42 && 
-                                                                               x.ProdId != 19595).Sum(x => x.SellQuantity);
+                                                                               x.ProdId != 19595).Sum(x => x.BaseQuantity * x.SellQuantity);
 
             //var salesDetailsByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.SellQuantity)
             //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
@@ -260,7 +274,7 @@ namespace ImillReports.Repository
 
             var top5ProductsByQty = new List<Product>();
 
-            foreach (var item in salesDetailsByQty.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(5))
+            foreach (var item in salesDetailsByQty.OrderByDescending(a => a.Sum(b => b.BaseQuantity * b.SellQuantity)).Take(10))
             {
                 var productDetails = new List<ProductDetail>();
 
@@ -271,14 +285,22 @@ namespace ImillReports.Repository
                                                                                              x.BaseUnitId != 40 &&
                                                                                              x.BaseUnitId != 42).GroupBy(a => a.LocationId);
 
-                foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.SellQuantity)))
+                foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.BaseQuantity * x.SellQuantity)))
                 {
-                    var detailSellQty = detail.Sum(x => x.SellQuantity);
+                    var detailSellQty = detail.Sum(x => x.BaseQuantity * x.SellQuantity);
+
+                    var totalSellQtyInBranch = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 &&
+                                                                                               x.LocationId != 84 &&
+                                                                                               x.ProdId != 19595 &&
+                                                                                               x.LocationId == detail.Key &&
+                                                                                               (x.BaseUnitId != 40 ||
+                                                                                               x.BaseUnitId != 42)).Sum(b =>  b.BaseQuantity * b.SellQuantity);
                     var productDetail = new ProductDetail
                     {
+                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name,
                         SellQuantity = detailSellQty,
-                        Percentage = 100 / totalSellQtyKg * detailSellQty,
-                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name
+                        Percentage = 100 / totalSellQty * detailSellQty,
+                        PercentageAllItem = 100 / totalSellQtyInBranch * detailSellQty,
                     };
 
                     productDetails.Add(productDetail);
@@ -315,7 +337,7 @@ namespace ImillReports.Repository
 
             var top5ProductsHoByQty = new List<Product>();
 
-            foreach (var item in salesDetailsHoByQty.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(5))
+            foreach (var item in salesDetailsHoByQty.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(10))
             {
                 var itemTotalQty = item.Sum(a => a.SellQuantity);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
@@ -330,6 +352,7 @@ namespace ImillReports.Repository
 
                 top5ProductsHoByQty.Add(product);
             }
+
             #endregion
 
 

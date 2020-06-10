@@ -1260,6 +1260,7 @@
     <Property Name="d_0005" Type="Int32" />
     <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
     <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="staff_date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
     <End Type="IMILLModel.GL_Ledger" Role="GL_Ledger" Multiplicity="0..1" />

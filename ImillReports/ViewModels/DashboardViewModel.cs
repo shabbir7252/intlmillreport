@@ -71,6 +71,7 @@ namespace ImillReports.ViewModels
         public decimal SellQuantity { get; internal set; }
         public long ProductId { get; internal set; }
         public List<ProductDetail> ProductDetails { get; set; }
+        public decimal PercentageAllItem { get; internal set; }
     }
 
     public class ProductDetail
@@ -82,6 +83,7 @@ namespace ImillReports.ViewModels
         public decimal Percentage { get; internal set; }
         public decimal SellQuantity { get; internal set; }
         public long ProductId { get; internal set; }
+        public decimal PercentageAllItem { get; internal set; }
     }
 
     public class SalesMonthItem

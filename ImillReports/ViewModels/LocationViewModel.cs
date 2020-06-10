@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using static ImillReports.Repository.LocationRepository;
 
 namespace ImillReports.ViewModels
 {
@@ -17,5 +15,13 @@ namespace ImillReports.ViewModels
         public string NameAr { get; set; }
         public string ShortName { get; set; }
         public bool IsSelected { get; set; }
+        public LocationType Type { get; internal set; }
+        public string TypeName { get; internal set; }
+    }
+
+    public class LocationGroupItem
+    {
+        public int LocationId { get; set; }
+        public string Name { get; set; }
     }
 }

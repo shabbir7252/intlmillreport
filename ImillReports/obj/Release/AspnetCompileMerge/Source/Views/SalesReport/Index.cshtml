@@ -1,6 +1,4 @@
 ﻿@using Syncfusion.EJ2
-@using Syncfusion.EJ2.DropDowns
-@using ImillReports.ViewModels
 @model ImillReports.ViewModels.SalesReportViewModel
 
 @{
@@ -56,15 +54,14 @@
 
 
                             @*@Html.DropDownList("locationId", ViewBag.locations as IEnumerable<SelectListItem>, "Select Location", new { @class = "form-control show-tick" })*@
-                            @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").DataSource(
-                           (IEnumerable<object>)ViewBag.locations
-                           ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
-                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
+                            @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
+                           (IEnumerable<object>)ViewBag.locations).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { GroupBy = "TypeName", Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
 
                         </div>
 
                         <div class="col-2">
-                            @Html.EJS().MultiSelect("voucherTypeStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.voucherTypesVal).Placeholder("Select Voucher").DataSource(
+                            @Html.EJS().MultiSelect("voucherTypeStringArray").ShowDropDownIcon().AllowFiltering(true).Filtering("onVoucherTypefiltering").Value(ViewBag.voucherTypesVal).Placeholder("Select Voucher").DataSource(
                            (IEnumerable<object>)ViewBag.voucherTypes
                            ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
                            new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "L_Voucher_Name", Value = "Voucher_Type" }).ActionBegin("onVoucherTypeBegin").DataBound("onVoucherTypeBound").Render()
@@ -91,7 +88,7 @@
                     </div>
                     <h5 class="text-center loading-text mt-2">Loading...</h5>
 
-                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).EnablePersistence(true).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
                {
                    col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("InvDateTime").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
@@ -187,6 +184,17 @@
                     fileName: "SalesReport.xlsx"
                 };
                 gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+        function onVoucherTypefiltering(e) {
+            var CBObj = document.getElementById("voucherTypeStringArray").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('voucherTypeStringArray').select(['L_Voucher_Name', 'Voucher_Type']);
+                query = (e.text !== '') ? query.where('L_Voucher_Name', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
             }
         }
 

@@ -30,6 +30,7 @@ namespace ImillReports.ViewModels
         public int ShiftCount { get; set; }
         public string ShiftType { get; set; }
         public DateTime TransDate { get; internal set; }
+        public DateTime StaffDate { get; internal set; }
     }
 
     public class CashRegVsSalesViewModel

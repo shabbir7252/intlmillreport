@@ -53,8 +53,8 @@
                         </div>
 
                         <div class="col-2">
-                            @*<button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>*@
-                            <button type="button" class="btn btn-raised bg-black waves-effect waves-light getRecords">Get Records</button>
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+                            @*<button type="button" class="btn btn-raised bg-black waves-effect waves-light getRecords">Get Records</button>*@
                         </div>
                     </div>
                 }
@@ -77,7 +77,7 @@
                {
                    col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("LocationShortName").Width("80").HeaderText("Short Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("TransDateTime").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("StaffDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("ShiftCount").Width("80").HeaderText("Shift Count").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("ShiftType").Width("80").HeaderText("Shift Type").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
@@ -94,7 +94,7 @@
                    col.Field("NetAmount").Width("80").HeaderText("Total Cash").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
                    page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
-                        {
+                   {
                        agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "Cash", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
@@ -140,7 +140,7 @@
                                Field = "Expense", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            }
                        }).Add();
-                        }).DataBound("dataBound").Render()
+                   }).DataBound("dataBound").Render()
                 </div>
             </div>
         </div>
@@ -154,8 +154,17 @@
         $('.loading-text').hide();
 
         function dataBound(args) {
-            this.autoFitColumns(['Location', 'TransDateTime', 'ShiftCount', 'ShiftType', 'Carriage', 'Cheque', 'Online', 'Expense', 'Reserve', 'TotalSales', 'NetSales', 'NetAmount', 'Cash', 'Knet', 'Visa']);
+           this.autoFitColumns(['Location', 'StaffDate', 'ShiftCount', 'ShiftType', 'Carriage', 'Cheque', 'Online', 'Expense', 'Reserve', 'TotalSales', 'NetSales', 'NetAmount', 'Cash', 'Knet', 'Visa']);
         }
+
+        //function load() {
+        //    var grid = document.getElementById('Grid').ej2_instances[0];
+        //    var rowHeight = grid.getRowHeight();  //height of the each row
+        //    var gridHeight = grid.height;  //grid height
+        //    var pageSize = grid.pageSettings.pageSize;   //initial page size
+        //    var pageResize = 25; //new page size is obtained here
+        //    grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+        //}
 
         function toolbarClick(args) {
             var gridObj = document.getElementById("Grid").ej2_instances[0];
@@ -167,7 +176,7 @@
             }
         }
 
-         $(".getRecords").click(function () {
+         @*$(".getRecords").click(function () {
 
             var i = 1;
             setInterval(function () {
@@ -203,7 +212,7 @@
                 }
 
             });
-        });
+        });*@
 
     </script>
 }

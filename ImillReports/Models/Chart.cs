@@ -21,6 +21,7 @@ namespace ImillReports.Models
     public class ColumnChartData
     {
         public string x;
-        public decimal? yValue;
+        public decimal? y;
+        public string text;
     }
 }

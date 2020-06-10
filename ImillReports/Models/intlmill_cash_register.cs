@@ -43,5 +43,6 @@ namespace ImillReports.Models
         public Nullable<int> d_0005 { get; set; }
         public decimal total_sales { get; set; }
         public decimal net_sales { get; set; }
+        public string staff_date { get; set; }
     }
 }

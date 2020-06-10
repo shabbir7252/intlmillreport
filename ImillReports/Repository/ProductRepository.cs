@@ -19,7 +19,7 @@ namespace ImillReports.Repository
 
         public ProductViewModel GetAllProducts()
         {
-            var items = _context.ICS_Item;
+            var items = _context.ICS_Item.Where(a=> a.Discontinued == false);
 
             var prodItems = new List<Item>();
 

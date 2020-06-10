@@ -37,34 +37,35 @@ namespace ImillReports.Controllers
             if (toDate < fromDate) ViewBag.validation = "true";
 
 
-            if (fromDate.Value.Date == DateTime.Now.Date || fromDate == null)
-            {
-                var cashRegisterItems = new List<CashRegisterItem>();
-                var cashRegisterItem = new CashRegisterItem
-                {
-                    Carriage = 0,
-                    Cash = 0,
-                    Cheque = 0,
-                    Expense = 0,
-                    Knet = 0,
-                    Location = "",
-                    NetAmount = 0,
-                    NetSales = 0,
-                    Online = 0,
-                    Reserve = 0,
-                    Salesman = "",
-                    ShiftCount = 0,
-                    ShiftType = "",
-                    TotalSales = 0,
-                    TransDate = DateTime.Now,
-                    TransDateTime = DateTime.Now,
-                    Visa = 0
-                };
+            //if (fromDate.Value.Date == DateTime.Now.Date || fromDate == null)
+            //{
+            //    var cashRegisterItems = new List<CashRegisterItem>();
+            //    var cashRegisterItem = new CashRegisterItem
+            //    {
+            //        Carriage = 0,
+            //        Cash = 0,
+            //        Cheque = 0,
+            //        Expense = 0,
+            //        Knet = 0,
+            //        Location = "",
+            //        NetAmount = 0,
+            //        NetSales = 0,
+            //        Online = 0,
+            //        Reserve = 0,
+            //        Salesman = "",
+            //        ShiftCount = 0,
+            //        ShiftType = "",
+            //        TotalSales = 0,
+            //        TransDate = DateTime.Now,
+            //        TransDateTime = DateTime.Now,
+            //        Visa = 0,
+            //        StaffDate = DateTime.Now
+            //    };
 
-                cashRegisterItems.Add(cashRegisterItem);
-                ViewBag.DataSource = cashRegisterItems;
-                return View();
-            }
+            //    cashRegisterItems.Add(cashRegisterItem);
+            //    ViewBag.DataSource = cashRegisterItems;
+            //    return View();
+            //}
 
 
             var cashRegister = _cashRegisterRepository.GetCashRegister(fromDate, toDate, _takeCount);

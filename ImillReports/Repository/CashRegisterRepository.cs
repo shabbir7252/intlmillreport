@@ -30,6 +30,8 @@ namespace ImillReports.Repository
 
             foreach (var item in cashRegister)
             {
+                var staffDate = DateTime.Parse(item.staff_date).Date;
+                // var locationName = item.location.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
                 var cashRegisterItem = new CashRegisterItem
                 {
                     Carriage = item.carriage,
@@ -46,7 +48,8 @@ namespace ImillReports.Repository
                     Reserve = item.reserve,
                     ShiftCount = item.shift_count,
                     ShiftType = item.shift_type,
-                    TransDate = item.trans_date_time.Date
+                    TransDate = item.trans_date_time.Date,
+                    StaffDate = staffDate
                 };
 
                 var totalSales = item.cheque + item.carriage + item.online + item.knet + item.visa + item.total_cash;
@@ -65,14 +68,16 @@ namespace ImillReports.Repository
 
         public CashRegisterViewModel GetCashRegister(DateTime? fromDate, DateTime? toDate, bool takeCount)
         {
-            var cashRegister = _context.intlmill_cash_register.Where(x => x.trans_date_time >= fromDate && x.trans_date_time <= toDate);
+            var cashRegister = _context.intlmill_cash_register.Where(x => x.trans_date_time >= fromDate 
+                                                                       && x.trans_date_time <= toDate
+                                                                       && x.staff_date != null);
 
             var result = GetCashRegisterItems(cashRegister);
 
             if (!takeCount)
             {
                 // cashRegister = cashRegister.GroupBy(x => new { x.salesman }).Select(x => x.OrderByDescending(t => t.shift_count).FirstOrDefault());
-                var modifiedResult = result.GroupBy(x => new { x.Salesman, x.TransDate }).Select(x => x.OrderByDescending(t => t.ShiftCount).FirstOrDefault());
+                var modifiedResult = result.GroupBy(x => new { x.Salesman, x.StaffDate }).Select(x => x.OrderByDescending(t => t.ShiftCount).FirstOrDefault());
                 return new CashRegisterViewModel
                 {
                     CashRegisterItems = modifiedResult.ToList()
@@ -115,19 +120,21 @@ namespace ImillReports.Repository
 
         public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt(DateTime? fromDate, DateTime? toDate)
         {
-            var cashRegister = _context.intlmill_cash_register.Where(x => x.trans_date_time >= fromDate && x.trans_date_time <= toDate);
+            var cashRegister = _context.intlmill_cash_register.Where(x => x.trans_date_time >= fromDate 
+                                                                       && x.trans_date_time <= toDate
+                                                                       && x.staff_date != null);
 
             var result = GetCashRegisterItems(cashRegister);
 
             foreach (var item in result)
             {
-                if (item.TransDate.Date != fromDate.Value.Date)
-                    item.TransDate = fromDate.Value.Date;
+                if (item.StaffDate.Date != fromDate.Value.Date)
+                    item.StaffDate = fromDate.Value.Date;
             }
 
-            var modifiedResult = result.GroupBy(x => new { x.Salesman, x.TransDate }).Select(x => x.OrderByDescending(t => t.ShiftCount).FirstOrDefault());
+            var modifiedResult = result.GroupBy(x => new { x.Salesman, x.StaffDate }).Select(x => x.OrderByDescending(t => t.ShiftCount).FirstOrDefault());
 
-            var cashRegisters = modifiedResult.GroupBy(x => new { x.Location, x.TransDate });
+            var cashRegisters = modifiedResult.GroupBy(x => new { x.Location, x.StaffDate });
 
             var locations = _locationRepository.GetLocations().LocationItems;
 
@@ -149,7 +156,7 @@ namespace ImillReports.Repository
                 {
                     Location = item.Key.Location,
                     LocationShortName = locations.FirstOrDefault(a => a.NameAr == item.Key.Location).ShortName,
-                    TransDate = item.Key.TransDate,
+                    TransDate = item.Key.StaffDate,
                     CRCash = item.Sum(x => x.NetAmount),
                     CRKnet = item.Sum(x => x.Knet),
                     CRVisa = item.Sum(x => x.Visa),
@@ -158,7 +165,7 @@ namespace ImillReports.Repository
                     Cash = salesReportItems.Sum(a => a.Cash),
                     Knet = salesReportItems.Sum(a => a.Knet),
                     CreditCard = salesReportItems.Sum(a => a.CreditCard),
-                    Online = salesReportItems.Sum(a => a.Knet) + salesReportItems.Sum(a => a.CreditCard),
+                    Online = salesReportItems.Sum(a => a.Knet) + salesReportItems.Sum(a => a.CreditCard)
                 };
 
                 cashRegVsSalesItems.Add(cashRegVsSalesItem);

@@ -299,7 +299,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Top 5 Product By Value (Branch)</h5>
+                    <h5 class="card-title">Top 10 Product By Value</h5>
                     <table class="table table-bordered" style="border-collapse:collapse;">
                         <thead>
                             <tr>
@@ -361,7 +361,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Top 5 Product By Value (HO)</h5>
+                    <h5 class="card-title">Top 10 Product By Value (HO)</h5>
                     <table class="table table-bordered" style="border-collapse:collapse;">
                         <thead>
                             <tr>
@@ -394,7 +394,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Top 5 Product By Kg (Branch)</h5>
+                    <h5 class="card-title">Top 10 Product By Kg</h5>
                     <table class="table table-bordered" style="border-collapse:collapse;">
                         <thead>
                             <tr>
@@ -423,7 +423,8 @@
                                                     <tr>
                                                         <th>Location</th>
                                                         <th>Sell Quantity</th>
-                                                        <th>Percentage</th>
+                                                        <th>Overall %</th>
+                                                        <th>Branch %</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody style="background-color: #edefff">
@@ -431,11 +432,12 @@
                                                     @foreach (var detail in prod.ProductDetails)
                                                     {
 
-                                                        <tr>
-                                                            <td>@detail.Location</td>
-                                                            <td>@detail.SellQuantity.ToString("0.000")</td>
-                                                            <td>@detail.Percentage.ToString("0.00")</td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td>@detail.Location</td>
+                                                        <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                        <td>@detail.Percentage.ToString("0.00")</td>
+                                                        <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                    </tr>
 
                                                     }
                                                 </tbody>
@@ -456,7 +458,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Top 5 Product By Kg (HO)</h5>
+                    <h5 class="card-title">Top 10 Product By Kg (HO)</h5>
                     <table class="table table-bordered" style="border-collapse:collapse;">
                         <thead>
                             <tr>
@@ -489,7 +491,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Top 5 Product By Qty (Branch)</h5>
+                    <h5 class="card-title">Top 10 Product By Qty</h5>
                     <table class="table table-bordered" style="border-collapse:collapse;">
                         <thead>
                             <tr>
@@ -518,7 +520,8 @@
                                                     <tr>
                                                         <th>Location</th>
                                                         <th>Sell Quantity</th>
-                                                        <th>Percentage</th>
+                                                        <th>Overall %</th>
+                                                        <th>Branch %</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody style="background-color: #edefff">
@@ -530,6 +533,7 @@
                                                             <td>@detail.Location</td>
                                                             <td>@detail.SellQuantity.ToString("0.000")</td>
                                                             <td>@detail.Percentage.ToString("0.00")</td>
+                                                            <td>@detail.PercentageAllItem.ToString("0.00")</td>
                                                         </tr>
 
                                                     }
@@ -551,7 +555,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Top 5 Product By Qty (HO)</h5>
+                    <h5 class="card-title">Top 10 Product By Qty (HO)</h5>
                     <table class="table table-bordered" style="border-collapse:collapse;">
                         <thead>
                             <tr>

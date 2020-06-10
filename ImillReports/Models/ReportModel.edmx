@@ -688,6 +688,7 @@ warning 6002: The table/view 'IMILL.dbo.intlmill_cash_register' does not have a 
           <Property Name="d_0005" Type="int" />
           <Property Name="total_sales" Type="money" Nullable="false" />
           <Property Name="net_sales" Type="money" Nullable="false" />
+          <Property Name="staff_date" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="SM_Location">
           <Key>
@@ -1543,7 +1544,8 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
     [intlmill_cash_register].[d_0010] AS [d_0010], 
     [intlmill_cash_register].[d_0005] AS [d_0005], 
     [intlmill_cash_register].[total_sales] AS [total_sales], 
-    [intlmill_cash_register].[net_sales] AS [net_sales]
+    [intlmill_cash_register].[net_sales] AS [net_sales], 
+    [intlmill_cash_register].[staff_date] AS [staff_date]
     FROM [dbo].[intlmill_cash_register] AS [intlmill_cash_register]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Alt_Unit_Details_Product" Association="Self.FK_Alt_Unit_Details_Product">
@@ -2991,6 +2993,7 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <Property Name="d_0005" Type="Int32" />
           <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="staff_date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
           <End Type="IMILLModel.GL_Ledger" Role="GL_Ledger" Multiplicity="0..1" />
@@ -4483,6 +4486,7 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <EntitySetMapping Name="intlmill_cash_register">
             <EntityTypeMapping TypeName="IMILLModel.intlmill_cash_register">
               <MappingFragment StoreEntitySet="intlmill_cash_register">
+                <ScalarProperty Name="staff_date" ColumnName="staff_date" />
                 <ScalarProperty Name="net_sales" ColumnName="net_sales" />
                 <ScalarProperty Name="total_sales" ColumnName="total_sales" />
                 <ScalarProperty Name="d_0005" ColumnName="d_0005" />
