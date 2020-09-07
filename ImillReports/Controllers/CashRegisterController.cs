@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ImillReports.Contracts;
-using ImillReports.ViewModels;
 using System.Collections.Generic;
 
 namespace ImillReports.Controllers
@@ -19,6 +18,7 @@ namespace ImillReports.Controllers
         public CashRegisterController() { }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(DateTime? fromDate, DateTime? toDate, bool? takeCount)
         {
             var _takeCount = takeCount == null ? false : takeCount == true ? true : false;
@@ -112,6 +112,7 @@ namespace ImillReports.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult CashRegVsSalesRpt(DateTime? fromDate, DateTime? toDate)
         {
             if (fromDate == null)
@@ -131,6 +132,13 @@ namespace ImillReports.Controllers
             ViewBag.DataSource = cashRegVsSalesRpt.CashRegVsSalesItems;
 
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult UpdateVerifiedIds(List<int> verifiedIds, List<int> deVerifiedIds)
+        {
+            var result = _cashRegisterRepository.UpdateVerifiedIds(verifiedIds, deVerifiedIds);
+            return Json(result);
         }
 
     }

@@ -8,6 +8,9 @@ using ImillReports.ViewModels;
 using System.Collections.Generic;
 using Syncfusion.EJ2.QueryBuilder;
 using System.Web.Script.Serialization;
+using Microsoft.AspNet.Identity;
+using System.IO;
+using System.Text;
 
 namespace ImillReports.Controllers
 {
@@ -35,6 +38,8 @@ namespace ImillReports.Controllers
             _productRepository = productRepository;
             _baseRepository = baseRepository;
         }
+
+        private readonly string PageName = "SalesDetailReport";
 
         public SalesReportController() { }
 
@@ -78,7 +83,7 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.locations = locations;
+            ViewBag.locations = locations.OrderBy(x => x.Name);
             ViewBag.locationVal = new string[] { "" };
 
             //var enumData = from LocationType e in Enum.GetValues(typeof(LocationType))
@@ -119,7 +124,7 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.voucherTypes = voucherTypes;
+            ViewBag.voucherTypes = voucherTypes.OrderBy(x => x.L_Voucher_Name);
             ViewBag.voucherTypesVal = new string[] { "" };
 
 
@@ -167,12 +172,13 @@ namespace ImillReports.Controllers
 
             var salesReportViewModel = _salesReportRepository.GetSalesReport(fromDate, toDate, locationsString, voucherTypeString);
             ViewBag.DataSource = salesReportViewModel.SalesReportItems;
+
             return View();
         }
 
         [HttpGet]
         public ActionResult SalesDetailReport(DateTime? fromDate, DateTime? toDate, string[] locationStringArray,
-            string[] voucherTypeStringArray, string[] productStringArray, JsonResult querybuilder)
+            string[] voucherTypeStringArray, bool? isChecked, string[] productStringArray, string[] productArStringArray, JsonResult querybuilder)
         {
 
             if (fromDate == null)
@@ -214,7 +220,7 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.locations = locations;
+            ViewBag.locations = locations.OrderBy(x => x.Name);
             ViewBag.locationVal = new string[] { "" };
 
             //var enumData = from LocationType e in Enum.GetValues(typeof(LocationType))
@@ -258,7 +264,7 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.voucherTypes = voucherTypes;
+            ViewBag.voucherTypes = voucherTypes.OrderBy(x => x.L_Voucher_Name);
             ViewBag.voucherTypesVal = new string[] { "" };
 
             var products = _productRepository.GetAllProducts().Items;
@@ -276,7 +282,7 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.products = products;
+            ViewBag.products = products.OrderBy(x => x.Name);
             ViewBag.productsVal = new string[] { "" };
 
             QueryBuilderRule rule = new QueryBuilderRule()
@@ -289,6 +295,8 @@ namespace ImillReports.Controllers
             };
 
             ViewBag.rule = rule;
+
+            SetSalesDetailsColChooserVal();
 
             if (fromDate.Value.Date == DateTime.Now.Date || fromDate == null)
             {
@@ -333,70 +341,86 @@ namespace ImillReports.Controllers
             var voucherTypeString = voucherTypeStringArray != null && voucherTypeStringArray.Length > 0 ? string.Join(",", voucherTypeStringArray) : "";
             var productString = productStringArray != null && productStringArray.Length > 0 ? string.Join(",", productStringArray) : "";
 
-            var salesReportViewModel = _salesReportRepository.GetSalesDetailReport(fromDate, toDate, locationsString, voucherTypeString, productString);
-            ViewBag.DataSource = salesReportViewModel.SalesReportItems;
+            var salesReportViewModel = _salesReportRepository.GetSalesDetailTransaction(fromDate, toDate, locationsString, voucherTypeString, productString);
+            ViewBag.DataSource = salesReportViewModel;
+
             return View();
         }
 
-        public ContentResult GetSalesDetailReport(string from, string to, string locations, string voucher, string product)
+        [HttpPost]
+        public ActionResult GetSalesDetailReport(string from, string to, string locations, string voucher, string product, string productAr, bool isChecked)
         {
-            var fromDate = DateTime.Now;
-            var toDate = DateTime.Now;
-
-            if (!string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to))
+            try
             {
-                fromDate = DateTime.Parse(from);
-                toDate = DateTime.Parse(to);
+                var fromDate = DateTime.Now;
+                var toDate = DateTime.Now;
+                var productIds = isChecked ? product : productAr;
+
+                if (!string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to))
+                {
+                    fromDate = DateTime.Parse(from);
+                    toDate = DateTime.Parse(to);
+                }
+
+                ViewBag.startDate = fromDate;
+                ViewBag.endDate = toDate;
+                ViewBag.validation = "false";
+
+                if (toDate < fromDate)
+                {
+                    ViewBag.validation = "true";
+                }
+
+                //var locationList = new List<int>();
+                //var locationStringArray = location.Split(',');
+
+                //foreach (var item in locationStringArray)
+                //{
+                //    var id = int.Parse(item);
+                //    if ((LocationType)id == LocationType.Coops)
+                //    {
+                //        var locationIds = _baseRepository.GetLocationIds(LocationType.Coops);
+                //        foreach (var locationId in locationIds)
+                //            locationList.Add(locationId);
+                //    }
+                //    else if ((LocationType)id == LocationType.Mall)
+                //    {
+                //        var locationIds = _baseRepository.GetLocationIds(LocationType.Mall);
+                //        foreach (var locationId in locationIds)
+                //            locationList.Add(locationId);
+                //    }
+                //}
+
+                //var locationString = string.Join(",", locationList.Select(n => n.ToString()).ToArray());
+
+                //var salesReportViewModel = _salesReportRepository.GetSalesDetailReport(fromDate, toDate, locations, voucher, productIds);
+                //var source = salesReportViewModel.SalesReportItems;
+                var salesReportViewModel = _salesReportRepository.GetSalesDetailTransaction(fromDate, toDate, locations, voucher, productIds);
+                var source = salesReportViewModel;
+                //ViewBag.DataSource = source;
+                //return View();
+
+                var serializer = new JavaScriptSerializer();
+
+                // For simplicity just use Int32's max value.
+                // You could always read the value from the config section mentioned above.
+                serializer.MaxJsonLength = Int32.MaxValue;
+
+                var result = new ContentResult
+                {
+                    // Content = serializer.Serialize(salesReportViewModel.SalesReportItems),
+                    Content = JsonConvert.SerializeObject(source),
+                    ContentType = "application/json"
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
-            ViewBag.startDate = fromDate;
-            ViewBag.endDate = toDate;
-            ViewBag.validation = "false";
 
-            if (toDate < fromDate)
-            {
-                ViewBag.validation = "true";
-            }
-
-            //var locationList = new List<int>();
-            //var locationStringArray = location.Split(',');
-
-            //foreach (var item in locationStringArray)
-            //{
-            //    var id = int.Parse(item);
-            //    if ((LocationType)id == LocationType.Coops)
-            //    {
-            //        var locationIds = _baseRepository.GetLocationIds(LocationType.Coops);
-            //        foreach (var locationId in locationIds)
-            //            locationList.Add(locationId);
-            //    }
-            //    else if ((LocationType)id == LocationType.Mall)
-            //    {
-            //        var locationIds = _baseRepository.GetLocationIds(LocationType.Mall);
-            //        foreach (var locationId in locationIds)
-            //            locationList.Add(locationId);
-            //    }
-            //}
-
-            //var locationString = string.Join(",", locationList.Select(n => n.ToString()).ToArray());
-
-            var salesReportViewModel = _salesReportRepository.GetSalesDetailReport(fromDate, toDate, locations, voucher, product);
-            var source = salesReportViewModel.SalesReportItems;
-
-            var serializer = new JavaScriptSerializer();
-
-            // For simplicity just use Int32's max value.
-            // You could always read the value from the config section mentioned above.
-            serializer.MaxJsonLength = Int32.MaxValue;
-
-            var result = new ContentResult
-            {
-                // Content = serializer.Serialize(salesReportViewModel.SalesReportItems),
-                Content = JsonConvert.SerializeObject(source),
-                ContentType = "application/json"
-            };
-
-            return result;
         }
 
         public ContentResult GetSalesReport(DateTime from, DateTime to, string locations, string voucherType)
@@ -423,7 +447,7 @@ namespace ImillReports.Controllers
 
             //var locationString = string.Join(",", locationList.Select(n => n.ToString()).ToArray());
 
-            var salesReportViewModel = _salesReportRepository.GetSalesReport(from, to, locations, voucherType);
+            var salesReportViewModel = _salesReportRepository.GetSalesTransaction(from, to, locations, voucherType);
             var source = salesReportViewModel.SalesReportItems;
 
             var result = new ContentResult
@@ -435,7 +459,8 @@ namespace ImillReports.Controllers
             return result;
         }
 
-        public ActionResult SalesHourlyReport(DateTime? fromDate, string[] locationStringArray, int? reportType)
+        [Authorize(Roles = "Admin,Sales")]
+        public ActionResult SalesHourlyReport(DateTime? fromDate, string[] locationStringArray)
         {
             if (fromDate == null)
             {
@@ -453,7 +478,7 @@ namespace ImillReports.Controllers
             ViewBag.startDate = fromDate;
             ViewBag.validation = "false";
 
-            var locations = _locationRepository.GetLocations().LocationItems;
+            var locations = _locationRepository.GetLocations().LocationItems.Where(x => x.Type != Repository.LocationRepository.LocationType.HO);
 
             var locationArray = new List<int>();
             if (locationStringArray != null)
@@ -469,13 +494,23 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.locations = locations;
+            ViewBag.locations = locations.OrderBy(x => x.Name);
             ViewBag.locationVal = new string[] { "" };
 
-            ViewBag.ReportType = _baseRepository.GetSalesReportType();
+            var reportType = _baseRepository.GetSalesReportType();
+
+            if (User.IsInRole("Sales"))
+            {
+                var type = reportType.FirstOrDefault(x => x.Id == 1);
+                reportType.Remove(type);
+            }
+
+            ViewBag.ReportType = reportType;
 
             var locationsString = locationStringArray != null && locationStringArray.Length > 0 ? string.Join(",", locationStringArray) : "";
 
+            var branchWiseTotals = new List<HourlySalesBranchTotal>();
+            var branchWiseCountTotals = new List<HourlySalesBranchCountTotal>();
 
             #region Chart Amount
 
@@ -508,8 +543,21 @@ namespace ImillReports.Controllers
             var salesPeakHourItems = _salesReportRepository.GetSalesHourlyReport(fromDate, toDate, locationsString, "").SalesPeakHourItems.GroupBy(x => x.LocationId);
             var count = 1;
 
-            foreach (var items in salesPeakHourItems)
+            var totalChartAmount = salesPeakHourItems.Sum(x => x.Sum(y => y.Amount)).Value;
+            ViewBag.TotalChartAmount = totalChartAmount.ToString("0.000");
+
+            foreach (var items in salesPeakHourItems.OrderByDescending(x => x.Sum(y => y.Amount)))
             {
+                var branchTotal = items.Sum(x => x.Amount).Value;
+                var branchPercentage = totalChartAmount == 0 ? 0 : 100 / totalChartAmount * branchTotal;
+                var branchWiseTotal = new HourlySalesBranchTotal
+                {
+                    LocationName = locations.FirstOrDefault(x => x.LocationId == items.Key).Name,
+                    AmountInfo = $"{branchTotal:0.000} ({branchPercentage:0.0}%)"
+                };
+
+                branchWiseTotals.Add(branchWiseTotal);
+
                 var listData = chartAmountData1;
 
                 switch (count)
@@ -637,17 +685,21 @@ namespace ImillReports.Controllers
 
                 foreach (var item in items)
                 {
-                    decimal? totalAmount = 0;
+                    decimal? totalHourAmount = 0;
                     var hour = item.Hour;
                     var amount = item.Amount;
 
                     foreach (var data in salesPeakHourItems)
                     {
-                        totalAmount += data.Where(x => x.Hour == hour).Sum(x => x.Amount);
+                        totalHourAmount += data.Where(x => x.Hour == hour).Sum(x => x.Amount);
                     }
 
-                    var percentage = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
-                    listData.Add(new ColumnChartData { x = hour.ToString("hh:mm tt"), y = amount, text = $"{hour:hh:mm tt} : {amount} ({percentage.Value:0.0}%) <br> Total {totalAmount}" });
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalHourPercent = totalHourAmount == 0 ? 0 : 100 / totalHourAmount * amount;
+
+                    listData.Add(new ColumnChartData { x = hour.ToString("hh:mm tt"), y = amount, text = $"{hour:hh:mm tt} : {amount.Value:0.000} ({totalHourPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Hour Total : {totalHourAmount.Value:0.000}" });
                 }
 
                 count += 1;
@@ -709,9 +761,22 @@ namespace ImillReports.Controllers
             var voucherTypeString = "201,2021,2022,2025,2026";
             var salesPeakHourCountItems = _salesReportRepository.GetSalesHourlyReport(fromDate, toDate, locationsString, voucherTypeString).SalesPeakHourItems.GroupBy(x => x.LocationId);
             var transCount = 1;
+            decimal totalChartCount = salesPeakHourCountItems.Sum(x => x.Sum(y => y.TransCount));
+            ViewBag.TotalChartCount = totalChartCount;
 
-            foreach (var items in salesPeakHourCountItems)
+            foreach (var items in salesPeakHourCountItems.OrderByDescending(x => x.Sum(y => y.TransCount)))
             {
+                decimal branchCountTotal = items.Sum(x => x.TransCount);
+                decimal branchCountPercentage = totalChartCount == 0 ? 0 : 100 / totalChartCount * branchCountTotal;
+                var branchWiseCountTotal = new HourlySalesBranchCountTotal
+                {
+                    LocationName = locations.FirstOrDefault(x => x.LocationId == items.Key).Name,
+                    CountInfo = $"{branchCountTotal:0.000} ({branchCountPercentage:0.0}%)"
+                };
+
+                branchWiseCountTotals.Add(branchWiseCountTotal);
+
+
                 var listData = chartCountData1;
 
                 switch (transCount)
@@ -838,7 +903,23 @@ namespace ImillReports.Controllers
                 }
 
                 foreach (var item in items)
-                    listData.Add(new ColumnChartData { x = item.Hour.ToString("hh:mm tt"), y = item.TransCount });
+                {
+                    decimal totalHourTransCount = 0;
+                    var hour = item.Hour;
+                    decimal itemTransCount = item.TransCount;
+
+                    foreach (var data in salesPeakHourItems)
+                    {
+                        totalHourTransCount += data.Where(x => x.Hour == hour).Sum(x => x.TransCount);
+                    }
+
+                    decimal totalTransCount = items.Sum(x => x.TransCount);
+
+                    decimal totalbranchPercent = totalTransCount == 0 ? 0 : 100 / totalTransCount * totalHourTransCount;
+                    decimal totalHourPercent = totalHourTransCount == 0 ? 0 : 100 / totalHourTransCount * itemTransCount;
+
+                    listData.Add(new ColumnChartData { x = item.Hour.ToString("hh:mm tt"), y = item.TransCount, text = $"{hour:hh:mm tt} : {itemTransCount} ({totalHourPercent:0.0}%) <br> Branch Total : {totalTransCount} ({totalbranchPercent:0.0}%) <br> Hour Total : {totalHourTransCount}" });
+                }
 
                 transCount += 1;
             }
@@ -874,10 +955,129 @@ namespace ImillReports.Controllers
             ViewBag.BarChartAmountTitle = fromDate.Value.ToString("dd/MMM/yyyy HH:mm tt") + " to " + toDate.ToString("dd/MMM/yyyy HH:mm tt") + " by Amount";
             ViewBag.BarChartCountTitle = fromDate.Value.ToString("dd/MMM/yyyy HH:mm tt") + " to " + toDate.ToString("dd/MMM/yyyy HH:mm tt") + " by Transaction Count";
 
+            ViewBag.BranchWiseTotals = branchWiseTotals;
+            ViewBag.BranchWiseCountTotals = branchWiseCountTotals;
+
             //string[] color = new string[] { "#4286f4", "#f4b642", "#f441a9" };
             //ViewBag.seriesColors = color;
 
             return View();
         }
+
+        public bool SaveColumnChooser(List<ColumnChooserItem> columnChooserItems) =>
+            _baseRepository.SaveColumnChooser(columnChooserItems, PageName, User.Identity.GetUserId());
+
+        private void SetSalesDetailsColChooserVal()
+        {
+            ViewBag.Location = true;
+            ViewBag.InvDateTime = true;
+            ViewBag.Salesman = true;
+            ViewBag.InvoiceNumber = true;
+            ViewBag.CustomerName = true;
+            ViewBag.CustomerNameAr = true;
+            ViewBag.Voucher = true;
+            ViewBag.ProductNameEn = true;
+            ViewBag.ProductNameAr = true;
+            ViewBag.BaseQuantity = true;
+            ViewBag.BaseUnit = true;
+            ViewBag.SellQuantity = true;
+            ViewBag.SellUnit = true;
+            ViewBag.Discount = true;
+            ViewBag.Amount = true;
+
+            var jsonPath = Server.MapPath("~/App_Data/column_chooser.json");
+
+            using (var fileStream = new FileStream(jsonPath, FileMode.Open))
+            {
+                var streamReader = new StreamReader(fileStream, Encoding.UTF8);
+
+                var columnChooserFile = streamReader.ReadToEnd();
+                var list = JsonConvert.DeserializeObject<List<ColumnChooserItem>>(columnChooserFile);
+                if (list != null)
+                {
+                    var userId = User.Identity.GetUserId();
+                    foreach (var listItem in list)
+                    {
+                        if (listItem.PageName == PageName && listItem.UserId == userId)
+                        {
+                            switch (listItem.FieldName)
+                            {
+                                case "Location":
+                                    ViewBag.Location = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "InvDateTime":
+                                    ViewBag.InvDateTime = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "Salesman":
+                                    ViewBag.Salesman = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "InvoiceNumber":
+                                    ViewBag.InvoiceNumber = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "CustomerName":
+                                    ViewBag.CustomerName = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "CustomerNameAr":
+                                    ViewBag.CustomerNameAr = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "Voucher":
+                                    ViewBag.Voucher = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "ProductNameEn":
+                                    ViewBag.ProductNameEn = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "ProductNameAr":
+                                    ViewBag.ProductNameAr = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "BaseQuantity":
+                                    ViewBag.BaseQuantity = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "BaseUnit":
+                                    ViewBag.BaseUnit = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "SellQuantity":
+                                    ViewBag.SellQuantity = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "SellUnit":
+                                    ViewBag.SellUnit = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "Discount":
+                                    ViewBag.Discount = bool.Parse(listItem.FieldValue);
+                                    break;
+                                case "Amount":
+                                    ViewBag.Amount = bool.Parse(listItem.FieldValue);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                streamReader.Close();
+                fileStream.Close();
+            }
+        }
+
+        public string GetSalesSync(int days)
+        {
+            return _salesReportRepository.GetSales(days);
+        }
+
+        public string GetSalesDetailSync(int days)
+        {
+            return _salesReportRepository.GetSalesDetail(days);
+        }
+
+        public string GetSalesMonthSync(int year, int month, int from, int to)
+        {
+            return $"{_salesReportRepository.GetSalesMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
+        }
+
+        public string GetSalesDetailMonthSync(int year, int month, int from, int to)
+        {
+            return $"{_salesReportRepository.GetSalesDetailMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
+        }
+
     }
 }

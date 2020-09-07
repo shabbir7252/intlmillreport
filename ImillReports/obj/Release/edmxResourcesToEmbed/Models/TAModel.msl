@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="FCCUNVDBModelStoreContainer" CdmEntityContainer="FCCUNVDBEntities">
+    <EntitySetMapping Name="tbl_Location">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Location">
+        <MappingFragment StoreEntitySet="tbl_Location">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Shift">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Shift">
+        <MappingFragment StoreEntitySet="tbl_Shift">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_EmpTransaction">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpTransaction">
+        <MappingFragment StoreEntitySet="tbl_EmpTransaction">
+          <ScalarProperty Name="Permission" ColumnName="Permission" />
+          <ScalarProperty Name="Maskflag" ColumnName="Maskflag" />
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+          <ScalarProperty Name="TransactionDateTime" ColumnName="TransactionDateTime" />
+          <ScalarProperty Name="pushed" ColumnName="pushed" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+          <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+          <ScalarProperty Name="TransactionSecond" ColumnName="TransactionSecond" />
+          <ScalarProperty Name="TransactionMinute" ColumnName="TransactionMinute" />
+          <ScalarProperty Name="TransactionHour" ColumnName="TransactionHour" />
+          <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+          <ScalarProperty Name="TransactionMonth" ColumnName="TransactionMonth" />
+          <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Employees">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Employees">
+        <MappingFragment StoreEntitySet="tbl_Employees">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="Sman_Cd" ColumnName="Sman_Cd" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_EmpLocShiftMap">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpLocShiftMap">
+        <MappingFragment StoreEntitySet="tbl_EmpLocShiftMap">
+          <ScalarProperty Name="toDate" ColumnName="toDate" />
+          <ScalarProperty Name="fromDate" ColumnName="fromDate" />
+          <ScalarProperty Name="ShiftOid" ColumnName="ShiftOid" />
+          <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
+          <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Transactions">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Transactions">
+        <MappingFragment StoreEntitySet="tbl_Transactions">
+          <ScalarProperty Name="IsOpened" ColumnName="IsOpened" />
+          <ScalarProperty Name="ShiftEnd" ColumnName="ShiftEnd" />
+          <ScalarProperty Name="ShiftStart" ColumnName="ShiftStart" />
+          <ScalarProperty Name="TotalHoursWorked" ColumnName="TotalHoursWorked" />
+          <ScalarProperty Name="EarlyOut" ColumnName="EarlyOut" />
+          <ScalarProperty Name="LateIn" ColumnName="LateIn" />
+          <ScalarProperty Name="PunchOut" ColumnName="PunchOut" />
+          <ScalarProperty Name="PunchIn" ColumnName="PunchIn" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="Employee" ColumnName="Employee" />
+          <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+          <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

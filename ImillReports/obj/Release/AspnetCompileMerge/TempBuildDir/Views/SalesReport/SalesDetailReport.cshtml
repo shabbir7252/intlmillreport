@@ -1,4 +1,4 @@
-﻿
+﻿@using Syncfusion.EJ2.Grids;
 @model ImillReports.ViewModels.SalesReportViewModel
 
 @{
@@ -24,6 +24,13 @@
     }
 </style>
 
+@*<script>
+        var value = window.localStorage.getItem('gridGrid'); //"gridGrid" is component name + component id.
+        var model = JSON.parse(value);
+        // delete model["columns"];    // remove the column from localStorage
+        window.localStorage.setItem('gridGrid', JSON.stringify(model));
+    </script>*@
+
 <div class="container-fluid">
     @if (ViewBag.validation == "true")
     {
@@ -41,34 +48,51 @@
             <div class="card">
                 @using (Html.BeginForm("SalesDetailReport", "SalesReport", FormMethod.Get))
                 {
-                    <div class="row moreFilter">
-                        <div class="col-6 mx-auto">
-                            @Html.EJS().QueryBuilder("querybuilder").Width("100%").Columns(col =>
-                            {
-                           col.Field("Title").Label("Title").Type("string").Add();
-                            }).DataSource(ViewBag.dataSource).Rule(ViewBag.rule).Render()
-                        </div>
-                    </div>
+                    @*<div class="row moreFilter">
+                            <div class="col-6 mx-auto">
+                                @Html.EJS().QueryBuilder("querybuilder").Width("100%").Columns(col =>
+                                {
+                               col.Field("Title").Label("Title").Type("string").Add();
+                                }).DataSource(ViewBag.dataSource).Rule(ViewBag.rule).Render()
+                            </div>
+                        </div>*@
 
-                    <div class="row p-3">
+                    <div class="row pt-3 pb-0 px-3 mb-0">
                         <div class="col-2">
                             @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm aa").Placeholder("From").Value(ViewBag.startDate).Render()
                         </div>
                         <div class="col-2">
                             @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm aa").Placeholder("To").Value(ViewBag.endDate).Render()
                         </div>
-                        <div class="col-3">
-                            @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
-                           (IEnumerable<object>)ViewBag.locations
-                           ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
-                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { GroupBy = "TypeName", Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
+                        @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
+                        {
+                            <div class="col-2">
+                                @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
+                                (IEnumerable<object>)ViewBag.locations
+                                ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                                new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { GroupBy = "TypeName", Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
+                            </div>
+                        }
+                        <div class="col-1 mt-2 px-0 text-center">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input m-0 p-0" id="isChecked">
+                                <label class="form-check-label" for="isChecked">Prod(En)</label>
+                            </div>
                         </div>
 
-                        <div class="col-3">
+                        <div class="col-3 prodEn">
                             @Html.EJS().MultiSelect("productStringArray").ShowDropDownIcon().AllowFiltering(true).Filtering("onfiltering").Value(ViewBag.productsVal).Placeholder("Select Products").DataSource(
                            (IEnumerable<object>)ViewBag.products
                            ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
                            new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "Name", Value = "ProductId" }).ActionBegin("onProductBegin").DataBound("onProductBound").Render()
+                        </div>
+
+                        <div class="col-3 prodAr">
+                            @Html.EJS().MultiSelect("productArStringArray").ShowDropDownIcon().AllowFiltering(true).Filtering("onfilteringAr").Value(ViewBag.productsVal).EnableRtl(true).Placeholder("اختر المنتجات").DataSource(
+                            (IEnumerable<object>
+                                )ViewBag.products
+                                ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                                new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "NameAr", Value = "ProductId" }).ActionBegin("onProductArBegin").DataBound("onProductArBound").Render()
                         </div>
 
                         @*<div class="col-2">
@@ -85,8 +109,6 @@
                            new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "L_Voucher_Name", Value = "Voucher_Type" }).ActionBegin("onVoucherTypeBegin").DataBound("onVoucherTypeBound").Render()
                         </div>
                     </div>
-
-
 
                     <div class="row">
                         <div class="col-2 py-2 mx-auto">
@@ -110,38 +132,41 @@
                     </div>
                     <h5 class="text-center loading-text mt-2">Loading...</h5>
 
-                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).EnablePersistence(true).ActionBegin("onActionBegin").AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").ActionComplete("afterFilterOpen").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+                    @Html.EJS().Grid("Grid").DataSource(
+                   (IEnumerable<object>)
+                   ViewBag.DataSource).EnablePersistence(false).ActionBegin("onActionBegin").AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").ActionComplete(
+                   "afterFilterOpen").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
                {
-                   col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("InvDateTime").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("InvoiceNumber").HeaderText("Invoice").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("CustomerName").HeaderText("Cust Name").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("CustomerNameAr").HeaderText("Cust Name(Ar)").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Voucher").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("ProductNameEn").HeaderText("Prod (En)").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "Menu" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("ProductNameAr").HeaderText("Prod (Ar)").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "Menu" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("BaseQuantity").HeaderText("Base Qty").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("BaseUnit").HeaderText("Base Unit").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("SellQuantity").HeaderText("Sell Qty").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("SellUnit").HeaderText("Sell Unit").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Discount").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Amount").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Location").Width("80").TextAlign(TextAlign.Center).Visible(ViewBag.Location).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("InvDateTime").Width("100").HeaderText("Date").TextAlign(TextAlign.Center).Visible(ViewBag.InvDateTime).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Salesman").Width("80").TextAlign(TextAlign.Center).Visible(ViewBag.Salesman).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("InvoiceNumber").HeaderText("Invoice").Width("80").TextAlign(TextAlign.Center).Visible(ViewBag.InvoiceNumber).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CustomerName").HeaderText("Cust Name").Width("100").TextAlign(TextAlign.Center).Visible(ViewBag.CustomerName).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CustomerNameAr").HeaderText("Cust Name(Ar)").Width("100").TextAlign(TextAlign.Center).Visible(ViewBag.CustomerNameAr).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Voucher").Width("100").TextAlign(TextAlign.Center).Visible(ViewBag.Voucher).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ProductNameEn").HeaderText("Prod (En)").Width("100").Visible(ViewBag.ProductNameEn).TextAlign(TextAlign.Center).Filter(new { type = "Menu" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ProductNameAr").HeaderText("Prod (Ar)").Width("100").Visible(ViewBag.ProductNameAr).TextAlign(TextAlign.Center).Filter(new { type = "Menu" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("BaseQuantity").HeaderText("Base Qty").Width("100").Visible(ViewBag.BaseQuantity).TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("BaseUnit").HeaderText("Base Unit").Width("100").Visible(ViewBag.BaseUnit).TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("SellQuantity").HeaderText("Sell Qty").Width("100").Visible(ViewBag.SellQuantity).TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("SellUnit").HeaderText("Sell Unit").Width("100").Visible(ViewBag.SellUnit).TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Discount").Width("80").Format("N3").Visible(ViewBag.Discount).TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Amount").Width("80").Format("N3").Visible(ViewBag.Amount).TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
 
-               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(FilterType.Menu)).PageSettings(
                    page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
                         {
-                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
-                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                       agg.Columns(new List<GridAggregateColumn>() {
+                            new GridAggregateColumn() {
                                Field = "Discount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            },
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                           new GridAggregateColumn() {
                                Field = "Amount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            },
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                           new GridAggregateColumn() {
                                Field = "SellQuantity", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            } }).Add();
-                        }).DataBound("dataBound").Render()
+                        }).DataBound("dataBound").Load("load").Render()
 
                 </div>
             </div>
@@ -154,15 +179,38 @@
 
         $('.preloader').hide();
         $('.loading-text').hide();
+        $('.prodEn').hide();
+        var prodEnCheck = false;
 
         function dataBound(args) {
-            this.autoFitColumns(['InvDateTime', 'InvoiceNumber', 'Voucher', 'BaseQuantity', 'BaseUnit', 'SellQuantity', 'SellUnit', 'Discount', 'Amount']);
+            this.autoFitColumns(['Location', 'InvDateTime', 'InvoiceNumber', 'Voucher', 'BaseQuantity', 'BaseUnit', 'SellQuantity', 'SellUnit', 'Discount', 'Amount']);
         }
 
         function afterFilterOpen(args) {
             if (args.requestType == "filterafteropen" && (args.columnName == "ProductNameEn" || args.columnName == "ProductNameAr")) {
                 args.filterModel.dlgDiv.querySelector('input').ej2_instances[0].value = 'contains';
             }
+        }
+
+        $('#isChecked').change(function () {
+            if (this.checked) {
+                $('.prodEn').show();
+                $('.prodAr').hide();
+                prodEnCheck = true;
+            } else {
+                $('.prodEn').hide();
+                $('.prodAr').show();
+                prodEnCheck = false;
+            }
+        });
+
+        function load() {
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            var rowHeight = grid.getRowHeight();  //height of the each row
+            var gridHeight = grid.height;  //grid height
+            var pageSize = grid.pageSettings.pageSize;   //initial page size
+            var pageResize = 25; //new page size is obtained here
+            grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
         }
 
         function onfiltering(e) {
@@ -172,6 +220,17 @@
             else {
                 var query = new ej.data.Query().from('productStringArray').select(['Name', 'ProductId']);
                 query = (e.text !== '') ? query.where('Name', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        function onfilteringAr(e) {
+            var CBObj = document.getElementById("productArStringArray").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('productArStringArray').select(['NameAr', 'ProductId']);
+                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
                 e.updateData(CBObj.dataSource, query);
             }
         }
@@ -201,16 +260,63 @@
             $('#locationDiv .bootstrap-select button').remove();
             $('#locationDiv .bootstrap-select').removeAttr("class");
             $(".moreFilter").toggle();
+
+            //var gridObj = document.getElementById("Grid").ej2_instances[0];
+            //console.log(gridObj);
+            //gridObj.enablePersistence = true;
         });
 
+        var callCount = 0;
         function onActionBegin(args) {
             if (args.requestType === "filterchoicerequest") {
                 // Filter choice count is modified
                 args.filterChoiceCount = 30000;
             }
+
+            var columns = [];
+            if (args.requestType == "columnstate") {
+
+                callCount += 1;
+
+                if (callCount > 1) {
+                    setTimeout(function () {
+                        callCount = 0;
+                        console.log('Reset to : ', callCount);
+                    }, 3000);
+
+                    var gridObj = document.getElementById("Grid").ej2_instances[0];
+
+                    gridObj.columnModel.forEach(function (item) {
+                        var column = {
+                        "FieldName": item.field,
+                        "FieldValue": item.visible
+                    };
+
+                    columns.push(column);
+                })
+
+                // console.log('Value of columns : ', columns);
+
+                    $.ajax({
+                        async: true,
+                        type: "POST",
+                        url: '@Url.Action("SaveColumnChooser", "SalesReport")',
+                        data: {
+                            columnChooserItems: columns
+                            //pageName: "SalesDetailReport"
+                        },
+                        success: function (result) {
+                            // alert('Completed');
+                        },
+                        error: function (xhr) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+                // SalesReport
+                // SaveColumnChooser
+            }
         }
-
-
 
         var selected = [];
         function onBegin(e) {
@@ -288,6 +394,30 @@
             this.value = selectedProduct;
         }
 
+        var selectedProductAr = [];
+        function onProductArBegin(e) {
+            this.fields = {
+                text: 'NameAr', value: 'ProductId', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemProductSearch(e.curData.ProductId); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemProductArSearch(e) {
+            if (selectedProductAr.indexOf(e) == -1)
+                selectedProductAr.push(e);
+        }
+
+        function onProductArBound(e) {
+            this.value = selectedProductAr;
+        }
+
 
         //var selectedBaseUnit = [];
         //function onBaseUnitBegin(e) {
@@ -328,18 +458,22 @@
             var toDate = $('#toDate').val();
 
             var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-            var locationObj = document.getElementById('locationStringArray').ej2_instances[0]; // MultiSelect Instance of location
+            // var locationObj = document.getElementById('locationStringArray').ej2_instances[0]; // MultiSelect Instance of location
+            var locationObj = '@User.IsInRole("Admin")' === 'True' || '@User.IsInRole("Sales")' === 'True' ? document.getElementById('locationStringArray').ej2_instances[0].value : ["84","1"]; // MultiSelect Instance of location
             var productObj = document.getElementById('productStringArray').ej2_instances[0]; // MultiSelect Instance of product
+            var productArObj = document.getElementById('productArStringArray').ej2_instances[0]; // MultiSelect Instance of product
             var vouchertypeObj = document.getElementById('voucherTypeStringArray').ej2_instances[0]; // MultiSelect Instance of voucher Type
 
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 data: {
                     from: fromDate.toString(),
                     to: toDate.toString(),
-                    locations: locationObj.value.toString(),
+                    locations: locationObj.toString(),
                     voucher: vouchertypeObj.value.toString(),
-                    product: productObj.value.toString()
+                    product: productObj.value.toString(),
+                    productAr: productArObj.value.toString(),
+                    isChecked: prodEnCheck
                 },
                 url: '@Url.Action("GetSalesDetailReport", "SalesReport")',
                 dataType: 'json',
@@ -349,6 +483,7 @@
                     $('.loading-text').hide();
                     $('.e-grid').show();
 
+                    console.log(response);
                     grid.dataSource = response;
                     grid.refresh();
                 },

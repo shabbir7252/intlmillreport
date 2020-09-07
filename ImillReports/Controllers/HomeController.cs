@@ -20,6 +20,9 @@ namespace ImillReports.Controllers
 
         public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
+            if (User.IsInRole("Sales"))
+                return RedirectToAction("Index", "SalesReport");
+
             if (fromDate == null)
             {
                 fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);

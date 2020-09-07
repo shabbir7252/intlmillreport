@@ -48,18 +48,14 @@
                         <div class="col-3">
                             @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
                         </div>
-                        <div class="col-3" id="locationDiv">
-                            @*@Html.DropDownList("locationId", ViewBag.locations as IEnumerable<SelectListItem>, "Select Location", new { @class = "form-control show-tick" })*@
-                            @*@Html.EJS().MultiSelect("locationId").DataSource((IEnumerable<SelectListItem>)ViewBag.locations).Mode(VisualMode.CheckBox).Placeholder("Select Locations").MaximumSelectionLength(3).ShowDropDownIcon(true).PopupHeight("350px").Fields(new MultiSelectFieldSettings { Value = "LocationId", Text = "Name" }).Render()*@
-
-
-                            @*@Html.DropDownList("locationId", ViewBag.locations as IEnumerable<SelectListItem>, "Select Location", new { @class = "form-control show-tick" })*@
-                            @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
-                           (IEnumerable<object>)ViewBag.locations).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
-                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { GroupBy = "TypeName", Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
-
-                        </div>
-
+                        @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
+                        {
+                            <div class="col-3" id="locationDiv">
+                                @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
+                                (IEnumerable<object>)ViewBag.locations).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                                new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { GroupBy = "TypeName", Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
+                            </div>
+                        }
                         <div class="col-2">
                             @Html.EJS().MultiSelect("voucherTypeStringArray").ShowDropDownIcon().AllowFiltering(true).Filtering("onVoucherTypefiltering").Value(ViewBag.voucherTypesVal).Placeholder("Select Voucher").DataSource(
                            (IEnumerable<object>)ViewBag.voucherTypes
@@ -88,7 +84,7 @@
                     </div>
                     <h5 class="text-center loading-text mt-2">Loading...</h5>
 
-                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).EnablePersistence(true).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
                {
                    col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("InvDateTime").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
@@ -103,7 +99,7 @@
                    col.Field("NetAmount").Width("80").Format("N3").HeaderText("Total Amount").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("Cash").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("Knet").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("CreditCard").HeaderText("CC").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CreditCard").HeaderText("Visa").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    // col.Field("CreditCardType").Width("50").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
                    page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
@@ -262,12 +258,12 @@
             var toDate = $('#toDate').val();
 
             var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-            var locationObj = document.getElementById('locationStringArray').ej2_instances[0]; // MultiSelect Instance of location
+            var locationObj = '@User.IsInRole("Admin")' === 'True' || '@User.IsInRole("Sales")' === 'True' ? document.getElementById('locationStringArray').ej2_instances[0].value : ["84","1"]; // MultiSelect Instance of location
             var vouchertypeObj = document.getElementById('voucherTypeStringArray').ej2_instances[0]; // MultiSelect Instance of voucher Type
 
             $.ajax({
                 type: 'GET',
-                data: { from: fromDate.toString(), to: toDate.toString(), locations: locationObj.value.toString(), voucherType: vouchertypeObj.value.toString() },
+                data: { from: fromDate.toString(), to: toDate.toString(), locations: locationObj.toString(), voucherType: vouchertypeObj.value.toString() },
                 url: '@Url.Action("GetSalesReport", "SalesReport")',
                 dataType: 'json',
                 success: function (response) {
@@ -299,170 +295,5 @@
             //$('#locationDiv .bootstrap-select').removeClass("bootstrap-select");
         });
 
-                                                                                                //var locations = [];
-                                                                                                //var salesmans = [];
-                                                                                                //var salesmanId = 0;
-                                                                                                //var locationId = 0;
-                                                                                                //var fromDate = "2019-12-01";
-                                                                                                //var toDate = "2019-12-08";
-                                                                                                //var dataTableInstance;
-
-                                                                                                //function callSalesReport() {
-                                                                                                //    console.log("enters");
-                                                                                                //    $.ajax({
-                                                                                                //        url: "/SalesReport/GetSalesReport",
-                                                                                                //        method: "GET",
-                                                                                                //        data: {
-                                                                                                //            fromDate,
-                                                                                                //            toDate,
-                                                                                                //            locationId,
-                                                                                                //            salesmanId
-                                                                                                //        },
-                                                                                                //        dataType: 'json',
-                                                                                                //        success: function (data) {
-                                                                                                //            console.log("Data Reply : ", data);
-                                                                                                //            // data = JSON.parse(data);
-                                                                                                //            dataTableInstance = $('#datatable').DataTable({
-                                                                                                //                data: data,
-                                                                                                //                columns: [
-                                                                                                //                    { 'data': 'Location' },
-                                                                                                //                    { 'data': 'TransDateTime' },
-                                                                                                //                    { 'data': 'Salesman' }
-                                                                                                //                ],
-                                                                                                //                dom: "<'row'<'col-4'l><'col-4'B><'col-4'f>>" +
-                                                                                                //                    "<'row'<'col-sm-12'tr>>" +
-                                                                                                //                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                                                                                                //                buttons: [
-                                                                                                //                    'copy', 'excel', 'pdf', 'colvis'
-                                                                                                //                ],
-                                                                                                //                responsive: true
-                                                                                                //            });
-
-
-                                                                                                //            $('#datatable thead th').each(function () {
-                                                                                                //                var title = $('#datatable tfoot th').eq($(this).index()).text();
-
-                                                                                                //                if (this.className.includes("SLocation")) {
-                                                                                                //                    var option;
-                                                                                                //                    locations.forEach(item => {
-                                                                                                //                        if (typeof option === "undefined") {
-                                                                                                //                            option = '<option value=' + item.ShortName + '>' + item.ShortName + '</option>'
-                                                                                                //                        } else {
-                                                                                                //                            option = option + '<option value=' + item.ShortName + '>' + item.ShortName + '</option>'
-                                                                                                //                        }
-                                                                                                //                    })
-
-                                                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6>' +
-                                                                                                //                        '<select id="ddlocation" class="form-control">' + option + '</select>');
-
-                                                                                                //                }
-
-                                                                                                //                else if (this.className.includes("SSalesman")) {
-
-                                                                                                //                    var option = '<option value= "">All</option>';
-                                                                                                //                    salesmans.forEach(item => {
-                                                                                                //                        option = option + '<option value=' + item.Name + '>' + item.Name + '</option>'
-                                                                                                //                    });
-
-                                                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6>' +
-                                                                                                //                        '<select id="ddSalesman" class="form-control">' + option + '</select>');
-
-                                                                                                //                }
-
-                                                                                                //                else if (this.className.includes("SDate")) {
-
-                                                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6><input class="form-control" type="date" placeholder="Search ' + title + '"></input> ');
-
-                                                                                                //                }
-
-                                                                                                //                else {
-                                                                                                //                    $(this).html('<h6 class="text-center">' + title + '</h6><input class="form-control" type="text" placeholder="Search ' + title + '"></input> ');
-                                                                                                //                }
-                                                                                                //            });
-
-                                                                                                //            dataTableInstance.columns().every(function () {
-                                                                                                //                var dataTableColumn = this;
-
-                                                                                                //                var searchTextBoxes = $(this.header()).find('input');
-                                                                                                //                searchTextBoxes.on('keyup change', function () {
-
-                                                                                                //                    if (this.type === "date") {
-
-                                                                                                //                        var dateSearchVal = new Date(this.value);
-
-                                                                                                //                        var dd = dateSearchVal.getDate();
-                                                                                                //                        var mm = dateSearchVal.getMonth() + 1;
-
-                                                                                                //                        var yyyy = dateSearchVal.getFullYear();
-                                                                                                //                        if (dd < 10) {
-                                                                                                //                            dd = '0' + dd;
-                                                                                                //                        }
-                                                                                                //                        if (mm < 10) {
-                                                                                                //                            mm = '0' + mm;
-                                                                                                //                        }
-                                                                                                //                        var value = dd + '-' + mm + '-' + yyyy;
-
-                                                                                                //                        dataTableColumn.search(value).draw();
-
-                                                                                                //                    } else {
-                                                                                                //                        dataTableColumn.search(this.value).draw();
-                                                                                                //                    }
-
-                                                                                                //                });
-
-                                                                                                //                searchTextBoxes.on('click', function (e) {
-                                                                                                //                    e.stopPropagation();
-                                                                                                //                });
-
-                                                                                                //                var searchDropdown = $(this.header()).find('select');
-
-                                                                                                //                searchDropdown.on('change', function () {
-                                                                                                //                    dataTableColumn.search(this.value, false, true, true).draw();
-
-                                                                                                //                    this.locationId = this.value;
-                                                                                                //                    callSalesReport();
-
-                                                                                                //                });
-
-                                                                                                //                searchDropdown.on('click', function (e) {
-                                                                                                //                    e.stopPropagation();
-                                                                                                //                });
-                                                                                                //            });
-                                                                                                //        },
-                                                                                                //        error: function (err) {
-                                                                                                //            console.log("Get Sales Report Error : ", err);
-                                                                                                //        }
-                                                                                                //    });
-                                                                                                //}
-
-                                                                                                //$(document).ready(function () {
-
-
-                                                                                                //    $.ajax({
-                                                                                                //        url: "/Location/GetLocations",
-                                                                                                //        method: "GET",
-                                                                                                //        dataType: 'json',
-                                                                                                //        success: function (data) {
-                                                                                                //            locations = JSON.parse(data);
-                                                                                                //        },
-                                                                                                //        error: function (err) {
-                                                                                                //            console.log("Get Location error in Sales Report: ", err);
-                                                                                                //        }
-                                                                                                //    });
-
-                                                                                                //    $.ajax({
-                                                                                                //        url: "/Salesman/GetSalesmans",
-                                                                                                //        method: "GET",
-                                                                                                //        dataType: 'json',
-                                                                                                //        success: function (data) {
-                                                                                                //            salesmans = JSON.parse(data);
-                                                                                                //        },
-                                                                                                //        error: function (err) {
-                                                                                                //            console.log("Get salesmans error in Sales Report: ", err);
-                                                                                                //        }
-                                                                                                //    });
-
-                                                                                                //    callSalesReport();
-                                                                                                //});
     </script>
 }

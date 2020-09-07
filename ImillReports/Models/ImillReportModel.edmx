@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ImillReportsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Trans_Detail_2019">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" />
+          <Property Name="LocationId" Type="smallint" />
+          <Property Name="InvDateTime" Type="datetime" />
+          <Property Name="Salesman" Type="nvarchar" MaxLength="100" />
+          <Property Name="Voucher" Type="nvarchar" MaxLength="50" />
+          <Property Name="VoucherId" Type="smallint" />
+          <Property Name="InvoiceNumber" Type="bigint" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CustomerNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="AmountRecieved" Type="money" />
+          <Property Name="Discount" Type="money" />
+          <Property Name="SalesReturn" Type="money" />
+          <Property Name="NetAmount" Type="money" />
+          <Property Name="CreditCardType" Type="varchar" MaxLength="50" />
+          <Property Name="Cash" Type="money" />
+          <Property Name="Knet" Type="money" />
+          <Property Name="CreditCard" Type="money" />
+          <Property Name="GroupCD" Type="int" />
+          <Property Name="ProductNameEn" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="BaseQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="BaseUnit" Type="varchar" MaxLength="50" />
+          <Property Name="SellQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="BaseUnitId" Type="smallint" />
+          <Property Name="SellUnitId" Type="smallint" />
+          <Property Name="ProdId" Type="bigint" />
+          <Property Name="EntryId" Type="bigint" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityType Name="Trans_Detail_2020">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" />
+          <Property Name="LocationId" Type="smallint" />
+          <Property Name="InvDateTime" Type="datetime" />
+          <Property Name="Salesman" Type="nvarchar" MaxLength="100" />
+          <Property Name="Voucher" Type="nvarchar" MaxLength="50" />
+          <Property Name="VoucherId" Type="smallint" />
+          <Property Name="InvoiceNumber" Type="bigint" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CustomerNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="AmountRecieved" Type="money" />
+          <Property Name="Discount" Type="money" />
+          <Property Name="SalesReturn" Type="money" />
+          <Property Name="NetAmount" Type="money" />
+          <Property Name="CreditCardType" Type="varchar" MaxLength="50" />
+          <Property Name="Cash" Type="money" />
+          <Property Name="Knet" Type="money" />
+          <Property Name="CreditCard" Type="money" />
+          <Property Name="GroupCD" Type="int" />
+          <Property Name="ProductNameEn" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="BaseQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="BaseUnit" Type="varchar" MaxLength="50" />
+          <Property Name="SellQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="BaseUnitId" Type="smallint" />
+          <Property Name="SellUnitId" Type="smallint" />
+          <Property Name="ProdId" Type="bigint" />
+          <Property Name="EntryId" Type="bigint" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityType Name="Transaction_2019">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" />
+          <Property Name="LocationId" Type="smallint" />
+          <Property Name="InvDateTime" Type="datetime" />
+          <Property Name="Salesman" Type="nvarchar" MaxLength="100" />
+          <Property Name="Voucher" Type="nvarchar" MaxLength="50" />
+          <Property Name="VoucherId" Type="smallint" />
+          <Property Name="InvoiceNumber" Type="bigint" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CustomerNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="AmountRecieved" Type="money" />
+          <Property Name="Discount" Type="money" />
+          <Property Name="SalesReturn" Type="money" />
+          <Property Name="NetAmount" Type="money" />
+          <Property Name="CreditCardType" Type="varchar" MaxLength="50" />
+          <Property Name="Cash" Type="money" />
+          <Property Name="Knet" Type="money" />
+          <Property Name="CreditCard" Type="money" />
+          <Property Name="GroupCD" Type="int" />
+          <Property Name="ProductNameEn" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="BaseQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="BaseUnit" Type="varchar" MaxLength="50" />
+          <Property Name="SellQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="BaseUnitId" Type="smallint" />
+          <Property Name="SellUnitId" Type="smallint" />
+          <Property Name="ProdId" Type="bigint" />
+          <Property Name="EntryId" Type="bigint" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityType Name="Transaction_2020">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" />
+          <Property Name="LocationId" Type="smallint" />
+          <Property Name="InvDateTime" Type="datetime" />
+          <Property Name="Salesman" Type="nvarchar" MaxLength="100" />
+          <Property Name="Voucher" Type="nvarchar" MaxLength="50" />
+          <Property Name="VoucherId" Type="smallint" />
+          <Property Name="InvoiceNumber" Type="bigint" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CustomerNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="AmountRecieved" Type="money" />
+          <Property Name="Discount" Type="money" />
+          <Property Name="SalesReturn" Type="money" />
+          <Property Name="NetAmount" Type="money" />
+          <Property Name="CreditCardType" Type="varchar" MaxLength="50" />
+          <Property Name="Cash" Type="money" />
+          <Property Name="Knet" Type="money" />
+          <Property Name="CreditCard" Type="money" />
+          <Property Name="GroupCD" Type="int" />
+          <Property Name="ProductNameEn" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductNameAr" Type="nvarchar" MaxLength="100" />
+          <Property Name="BaseQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="BaseUnit" Type="varchar" MaxLength="50" />
+          <Property Name="SellQuantity" Type="numeric" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="BaseUnitId" Type="smallint" />
+          <Property Name="SellUnitId" Type="smallint" />
+          <Property Name="ProdId" Type="bigint" />
+          <Property Name="EntryId" Type="bigint" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Year" Type="int" />
+        </EntityType>
+        <EntityContainer Name="ImillReportsModelStoreContainer">
+          <EntitySet Name="Trans_Detail_2019" EntityType="Self.Trans_Detail_2019" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trans_Detail_2020" EntityType="Self.Trans_Detail_2020" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transaction_2019" EntityType="Self.Transaction_2019" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transaction_2020" EntityType="Self.Transaction_2020" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ImillReportsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ImillReportsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Transaction_2020" EntityType="ImillReportsModel.Transaction_2020" />
+          <EntitySet Name="Trans_Detail_2020" EntityType="ImillReportsModel.Trans_Detail_2020" />
+          <EntitySet Name="Trans_Detail_2019" EntityType="ImillReportsModel.Trans_Detail_2019" />
+          <EntitySet Name="Transaction_2019" EntityType="ImillReportsModel.Transaction_2019" />
+        </EntityContainer>
+        <EntityType Name="Transaction_2020">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int16" />
+          <Property Name="InvDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Salesman" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Voucher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VoucherId" Type="Int16" />
+          <Property Name="InvoiceNumber" Type="Int64" />
+          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AmountRecieved" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesReturn" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NetAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCardType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cash" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Knet" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCard" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="GroupCD" Type="Int32" />
+          <Property Name="ProductNameEn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BaseQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="BaseUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SellQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="BaseUnitId" Type="Int16" />
+          <Property Name="SellUnitId" Type="Int16" />
+          <Property Name="ProdId" Type="Int64" />
+          <Property Name="EntryId" Type="Int64" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Trans_Detail_2020">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int16" />
+          <Property Name="InvDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Salesman" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Voucher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VoucherId" Type="Int16" />
+          <Property Name="InvoiceNumber" Type="Int64" />
+          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AmountRecieved" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesReturn" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NetAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCardType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cash" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Knet" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCard" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="GroupCD" Type="Int32" />
+          <Property Name="ProductNameEn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BaseQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="BaseUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SellQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="BaseUnitId" Type="Int16" />
+          <Property Name="SellUnitId" Type="Int16" />
+          <Property Name="ProdId" Type="Int64" />
+          <Property Name="EntryId" Type="Int64" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Trans_Detail_2019">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int16" />
+          <Property Name="InvDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Salesman" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Voucher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VoucherId" Type="Int16" />
+          <Property Name="InvoiceNumber" Type="Int64" />
+          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AmountRecieved" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesReturn" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NetAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCardType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cash" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Knet" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCard" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="GroupCD" Type="Int32" />
+          <Property Name="ProductNameEn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BaseQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="BaseUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SellQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="BaseUnitId" Type="Int16" />
+          <Property Name="SellUnitId" Type="Int16" />
+          <Property Name="ProdId" Type="Int64" />
+          <Property Name="EntryId" Type="Int64" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Transaction_2019">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int16" />
+          <Property Name="InvDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Salesman" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Voucher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VoucherId" Type="Int16" />
+          <Property Name="InvoiceNumber" Type="Int64" />
+          <Property Name="CustomerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AmountRecieved" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesReturn" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NetAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCardType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cash" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Knet" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CreditCard" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="GroupCD" Type="Int32" />
+          <Property Name="ProductNameEn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BaseQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="BaseUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SellQuantity" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="SellUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="BaseUnitId" Type="Int16" />
+          <Property Name="SellUnitId" Type="Int16" />
+          <Property Name="ProdId" Type="Int64" />
+          <Property Name="EntryId" Type="Int64" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ImillReportsModelStoreContainer" CdmEntityContainer="ImillReportsEntities">
+          <EntitySetMapping Name="Transaction_2020">
+            <EntityTypeMapping TypeName="ImillReportsModel.Transaction_2020">
+              <MappingFragment StoreEntitySet="Transaction_2020">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+                <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+                <ScalarProperty Name="SellQuantity" ColumnName="SellQuantity" />
+                <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
+                <ScalarProperty Name="ProductNameAr" ColumnName="ProductNameAr" />
+                <ScalarProperty Name="ProductNameEn" ColumnName="ProductNameEn" />
+                <ScalarProperty Name="GroupCD" ColumnName="GroupCD" />
+                <ScalarProperty Name="CreditCard" ColumnName="CreditCard" />
+                <ScalarProperty Name="Knet" ColumnName="Knet" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="CreditCardType" ColumnName="CreditCardType" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="SalesReturn" ColumnName="SalesReturn" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="AmountRecieved" ColumnName="AmountRecieved" />
+                <ScalarProperty Name="CustomerNameAr" ColumnName="CustomerNameAr" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Voucher" ColumnName="Voucher" />
+                <ScalarProperty Name="Salesman" ColumnName="Salesman" />
+                <ScalarProperty Name="InvDateTime" ColumnName="InvDateTime" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trans_Detail_2020">
+            <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2020">
+              <MappingFragment StoreEntitySet="Trans_Detail_2020">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+                <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+                <ScalarProperty Name="SellQuantity" ColumnName="SellQuantity" />
+                <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
+                <ScalarProperty Name="ProductNameAr" ColumnName="ProductNameAr" />
+                <ScalarProperty Name="ProductNameEn" ColumnName="ProductNameEn" />
+                <ScalarProperty Name="GroupCD" ColumnName="GroupCD" />
+                <ScalarProperty Name="CreditCard" ColumnName="CreditCard" />
+                <ScalarProperty Name="Knet" ColumnName="Knet" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="CreditCardType" ColumnName="CreditCardType" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="SalesReturn" ColumnName="SalesReturn" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="AmountRecieved" ColumnName="AmountRecieved" />
+                <ScalarProperty Name="CustomerNameAr" ColumnName="CustomerNameAr" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Voucher" ColumnName="Voucher" />
+                <ScalarProperty Name="Salesman" ColumnName="Salesman" />
+                <ScalarProperty Name="InvDateTime" ColumnName="InvDateTime" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trans_Detail_2019">
+            <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2019">
+              <MappingFragment StoreEntitySet="Trans_Detail_2019">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+                <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+                <ScalarProperty Name="SellQuantity" ColumnName="SellQuantity" />
+                <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
+                <ScalarProperty Name="ProductNameAr" ColumnName="ProductNameAr" />
+                <ScalarProperty Name="ProductNameEn" ColumnName="ProductNameEn" />
+                <ScalarProperty Name="GroupCD" ColumnName="GroupCD" />
+                <ScalarProperty Name="CreditCard" ColumnName="CreditCard" />
+                <ScalarProperty Name="Knet" ColumnName="Knet" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="CreditCardType" ColumnName="CreditCardType" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="SalesReturn" ColumnName="SalesReturn" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="AmountRecieved" ColumnName="AmountRecieved" />
+                <ScalarProperty Name="CustomerNameAr" ColumnName="CustomerNameAr" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Voucher" ColumnName="Voucher" />
+                <ScalarProperty Name="Salesman" ColumnName="Salesman" />
+                <ScalarProperty Name="InvDateTime" ColumnName="InvDateTime" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transaction_2019">
+            <EntityTypeMapping TypeName="ImillReportsModel.Transaction_2019">
+              <MappingFragment StoreEntitySet="Transaction_2019">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+                <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+                <ScalarProperty Name="SellQuantity" ColumnName="SellQuantity" />
+                <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="BaseQuantity" ColumnName="BaseQuantity" />
+                <ScalarProperty Name="ProductNameAr" ColumnName="ProductNameAr" />
+                <ScalarProperty Name="ProductNameEn" ColumnName="ProductNameEn" />
+                <ScalarProperty Name="GroupCD" ColumnName="GroupCD" />
+                <ScalarProperty Name="CreditCard" ColumnName="CreditCard" />
+                <ScalarProperty Name="Knet" ColumnName="Knet" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="CreditCardType" ColumnName="CreditCardType" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="SalesReturn" ColumnName="SalesReturn" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="AmountRecieved" ColumnName="AmountRecieved" />
+                <ScalarProperty Name="CustomerNameAr" ColumnName="CustomerNameAr" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Voucher" ColumnName="Voucher" />
+                <ScalarProperty Name="Salesman" ColumnName="Salesman" />
+                <ScalarProperty Name="InvDateTime" ColumnName="InvDateTime" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

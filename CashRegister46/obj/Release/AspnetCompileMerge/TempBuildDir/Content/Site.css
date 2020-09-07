@@ -1,0 +1,58 @@
+﻿@font-face {
+    font-family: 'Almarai-Regular';
+    src: url('fonts/Almarai-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Almarai-Light';
+    src: url('fonts/Almarai-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Almarai-Bold';
+    src: url('fonts/Almarai-Bold.ttf') format('truetype');
+}
+
+* {
+    font-family: 'Almarai-Regular';
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: #ECE9E6; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.fontArReg {
+    font-family: 'Almarai-Regular';
+}
+
+.fontArLig {
+    font-family: 'Almarai-Light';
+}
+
+.fontArBold {
+    font-family: 'Almarai-Bold';
+}

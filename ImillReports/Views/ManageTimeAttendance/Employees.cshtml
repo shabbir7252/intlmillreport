@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "List Of Employees";
+    ViewBag.SubTitle = "Manage records of employee";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("Print");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    // toolbarItems.Add("Delete");
+    toolbarItems.Add(new { text = "Delete Employee(s)", tooltipText = "Delete the records of Employee(s)", id = "deleteRecords", prefixIcon = "e-delete" });
+
+}
+
+    <div class="container-fluid">
+
+        @Html.EJS().Toast("success-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Record(s) Deleted").Render()
+        @Html.EJS().Toast("success-added-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Employee Added!").Render()
+        @Html.EJS().Toast("error-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be updated! Please try again by refereshing page").Render()
+        @Html.EJS().Toast("info-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please select atleast 1 employee").Render()
+        @Html.EJS().Toast("info-added-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please review the employee information").Render()
+
+
+        <div id="main">
+            <div class="row clearfix">
+                <div class="col-12">
+
+                    <div class="card">
+                        <div class="row p-3">
+                            <div class="col-2">
+                                @Html.EJS().TextBox("EmpId").Placeholder("Emp Id/Code").Type("number").Render()
+                            </div>
+                            <div class="col-3">
+                                @Html.EJS().TextBox("NameEn").Placeholder("Name En").Render()
+                            </div>
+                            <div class="col-3">
+                                @Html.EJS().TextBox("NameAr").Placeholder("Name Ar").Render()
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-raised bg-black waves-effect waves-light" onclick="AddEmployee()">Add Employee</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <div class="body">
+
+                            <div class="preloader loading">
+                                <span class="slice"></span>
+                                <span class="slice"></span>
+                                <span class="slice"></span>
+                                <span class="slice"></span>
+                                <span class="slice"></span>
+                                <span class="slice"></span>
+                            </div>
+                            <h5 class="text-center loading-text mt-2">Loading...</h5>
+
+                            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+                       {
+                           col.Field("IsVerified").Type("checkbox").Width("30").AllowFiltering(true).AllowSorting(true).Add();
+                           col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
+                           col.Field("EmployeeId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                           col.Field("NameEn").Width("80").HeaderText("Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                           col.Field("NameAr").Width("80").HeaderText("NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                           page =>
+                           {
+                               page.PageSizes(true); page.PageSize(25);
+                           }).EditSettings(edit => { edit.AllowDeleting(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal); }).Toolbar(toolbarItems).DataBound("dataBound").RowSelected("OnSelected").RowDeselected("OnDeselected").AllowSelection(true).SelectionSettings(select =>
+                           select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section scripts {
+    <script>
+        var verificationIds = [];
+        $('.preloader').hide();
+        $('.loading-text').hide();
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "Employees.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRecords') {
+
+            if (verificationIds.length === 0) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("DeleteEmployees", "ManageTimeAttendance")',
+                    success: function (response) {
+                        if (response) {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('success-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+
+                            verificationIds = [];
+
+                            window.location.reload();
+
+                        } else {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+                        }
+                },
+                    error: function (ex) {
+                        setTimeout(() => {
+                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            toastObj.target = document.body;
+                            toastObj.show();
+                        }, 1000);
+                    }
+                });
+
+            }
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row[0].cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function dataBound(args) {
+            this.autoFitColumns(['EmployeeID', 'Name', 'NameAr']);
+        }
+
+        function AddEmployee() {
+            var empId = document.getElementById("EmpId").ej2_instances[0].value;
+            var NameEn = document.getElementById("NameEn").ej2_instances[0].value;
+            var NameAr = document.getElementById("NameAr").ej2_instances[0].value;
+
+            if (empId === 0 || empId === null || NameEn === "" || NameEn === null || NameAr === "" || NameAr === null) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-added-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        empId: empId,
+                        NameEn: NameEn,
+                        NameAr: NameAr
+                    },
+                    url: '@Url.Action("AddEmployee", "ManageTimeAttendance")',
+                    success: function (response) {
+                        if (response) {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('success-added-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+
+                            window.location.reload();
+
+                        } else {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+                        }
+                },
+                    error: function (ex) {
+                        setTimeout(() => {
+                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            toastObj.target = document.body;
+                            toastObj.show();
+                        }, 1000);
+                    }
+                });
+            }
+
+        }
+
+
+    </script>
+}

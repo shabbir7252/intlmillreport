@@ -34,7 +34,7 @@ namespace ImillReports.Repository
             var cooperativeIds = _baseRepository.GetLocationIds(LocationType.Coops);
             var mallIds = _baseRepository.GetLocationIds(LocationType.Mall);
 
-            foreach (var location in locations.Where(x => x.Locat_Cd != 67))
+            foreach (var location in locations.Where(x => x.Locat_Cd != 67 && x.Locat_Cd != 63 && x.Locat_Cd != 73))
             {
                 var locationItem = new LocationItem
                 {
@@ -42,7 +42,11 @@ namespace ImillReports.Repository
                     Name = location.L_Locat_Name,
                     NameAr = location.A_Locat_Name,
                     ShortName = location.L_Short_Name,
-                    Type = cooperativeIds.Contains(location.Locat_Cd) ? LocationType.Coops : LocationType.Mall,
+                    Type = cooperativeIds.Contains(location.Locat_Cd) 
+                                ? LocationType.Coops 
+                                : mallIds.Contains(location.Locat_Cd)
+                                    ? LocationType.Mall
+                                    : LocationType.HO,
                     TypeName = cooperativeIds.Contains(location.Locat_Cd)
                                     ? Enum.GetName(typeof(LocationType), LocationType.Coops)
                                     : mallIds.Contains(location.Locat_Cd) 

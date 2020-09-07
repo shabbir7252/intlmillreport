@@ -44,5 +44,11 @@ namespace ImillReports.Models
         public decimal total_sales { get; set; }
         public decimal net_sales { get; set; }
         public string staff_date { get; set; }
+        public Nullable<bool> IsVerified { get; set; }
+        public Nullable<System.DateTime> ActualStaffDate { get; set; }
+        public Nullable<short> Sman_Cd { get; set; }
+        public Nullable<short> Locat_Cd { get; set; }
+        public Nullable<int> CrOid { get; set; }
+        public Nullable<System.DateTime> UpdatedOn { get; set; }
     }
 }

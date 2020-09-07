@@ -1,12 +1,25 @@
 ﻿using System;
 using ImillReports.Models;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace ImillReports.ViewModels
 {
     public class SalesReportViewModel
     {
         public List<SalesReportItem> SalesReportItems { get; set; }
+    }
+
+    public class SalesReportDashboard
+    {
+        public List<SalesReportItem> SRItemsTrans { get; set; }
+        public List<TransDetailsViewModel> SRItemsTransDetails { get; set; }
+    }
+
+    public class ChartData
+    {
+        public JsonResult Chart1 { get; set; }
+        public JsonResult Chart2 { get; set; }
     }
 
     public class SalesReportItem
@@ -44,6 +57,9 @@ namespace ImillReports.ViewModels
         public short BaseUnitId { get; internal set; }
         public short SellUnitId { get; internal set; }
         public long ProdId { get; internal set; }
+        public long EntryId { get; internal set; }
+        public int CustomerId { get; internal set; }
+        public int Year { get; internal set; }
     }
 
     public class TransactionViewModel
@@ -78,5 +94,55 @@ namespace ImillReports.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string NameAr { get; set; }
+    }
+
+    public class HourlySalesBranchTotal
+    {
+        public string LocationName { get; set; }
+        public string AmountInfo { get; internal set; }
+    }
+
+    public class HourlySalesBranchCountTotal
+    {
+        public string LocationName { get; set; }
+        public string CountInfo { get; internal set; }
+    }
+
+    public class TransDetailsViewModel
+    {
+        public int Oid { get; set; }
+        public string Location { get; set; }
+        public Nullable<short> LocationId { get; set; }
+        public Nullable<System.DateTime> InvDateTime { get; set; }
+        public string Salesman { get; set; }
+        public string Voucher { get; set; }
+        public Nullable<short> VoucherId { get; set; }
+        public Nullable<long> InvoiceNumber { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerNameAr { get; set; }
+        public Nullable<decimal> AmountRecieved { get; set; }
+        public Nullable<decimal> Discount { get; set; }
+        public Nullable<decimal> SalesReturn { get; set; }
+        public Nullable<decimal> NetAmount { get; set; }
+        public string CreditCardType { get; set; }
+        public Nullable<decimal> Cash { get; set; }
+        public Nullable<decimal> Knet { get; set; }
+        public Nullable<decimal> CreditCard { get; set; }
+        public Nullable<int> GroupCD { get; set; }
+        public string ProductNameEn { get; set; }
+        public string ProductNameAr { get; set; }
+        public Nullable<decimal> BaseQuantity { get; set; }
+        public Nullable<decimal> UnitPrice { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public string BaseUnit { get; set; }
+        public Nullable<decimal> SellQuantity { get; set; }
+        public string SellUnit { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<short> BaseUnitId { get; set; }
+        public Nullable<short> SellUnitId { get; set; }
+        public Nullable<long> ProdId { get; set; }
+        public Nullable<long> EntryId { get; set; }
+        public Nullable<int> CustomerId { get; set; }
+        public Nullable<int> Year { get; set; }
     }
 }

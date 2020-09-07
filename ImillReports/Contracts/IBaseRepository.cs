@@ -1,5 +1,6 @@
 ﻿using ImillReports.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using static ImillReports.Repository.LocationRepository;
 
 namespace ImillReports.Contracts
@@ -8,5 +9,7 @@ namespace ImillReports.Contracts
     {
         List<SalesReportType> GetSalesReportType();
         List<int> GetLocationIds(LocationType locationType);
+        bool SaveColumnChooser(List<ColumnChooserItem> columnChooserItems, string pageName, string userId);
+        bool CheckDate(string date);
     }
 }

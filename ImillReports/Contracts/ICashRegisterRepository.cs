@@ -1,5 +1,6 @@
 ﻿using ImillReports.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace ImillReports.Contracts
 {
@@ -7,6 +8,8 @@ namespace ImillReports.Contracts
     {
         CashRegisterViewModel GetCashRegister(DateTime? fromDate, DateTime? toDate, bool takeCount);
         CashRegVsSalesViewModel GetCashRegisterVsSalesRpt(DateTime? fromDate, DateTime? toDate);
+
+        bool UpdateVerifiedIds(List<int> verifiedIds, List<int> deVerifiedIds);
 
     }
 }

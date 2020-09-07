@@ -1,0 +1,603 @@
+﻿
+@{
+    ViewBag.Title = "Location and Shift of Employees";
+    ViewBag.SubTitle = "Manage shift and location of an employee";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("Print");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    toolbarItems.Add(new { text = "Delete Record(s)", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
+}
+
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+
+    @Html.EJS().Toast("success-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Record(s) Updated").Render()
+    @Html.EJS().Toast("error-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be saved! Please try again by refereshing page").Render()
+    @Html.EJS().Toast("error-add-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Some employees could not be added as the records were already present").Render()
+    @Html.EJS().Toast("info-location-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please Select location or shift or both").Render()
+    @Html.EJS().Toast("info-emp-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please select atleast 1 employee").Render()
+    @Html.EJS().Toast("info-add-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Employees were not added as records are already present.").Render()
+    @Html.EJS().Toast("info-loc-shift-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Location or Shift is not selected").Render()
+    @Html.EJS().Toast("info-date-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please mention from date!").Render()
+
+
+    <div id="main">
+        <div class="row clearfix">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="row pt-3 pr-3 pl-3">
+
+                        <div class="col-1 mt-2">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input m-0 p-0" id="isChecked">
+                                <label class="form-check-label" for="isChecked">
+                                    Update
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-3 emp">
+                            @Html.EJS().MultiSelect("employees").ShowDropDownIcon().AllowFiltering(true).Filtering("onEmpFiltering").Value(ViewBag.Employees).Placeholder("Select Employees").DataSource(
+                           (IEnumerable<object>)ViewBag.Employees
+                           ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "NameAr", Value = "Oid" }).ActionBegin("onEmpBegin").DataBound("onEmpBound").Render()
+                        </div>
+
+                        <div class="col-2 emp">
+                            @Html.EJS().DatePicker("fromDate").Format("dd/MMM/yyyy").Value(ViewBag.startDate).Placeholder("From Date").Render()
+                        </div>
+
+                        <div class="col-2 emp">
+                            @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Placeholder("To Date (Optional)").Render()
+                        </div>
+
+                        <div class="col-2">
+                            @Html.EJS().DropDownList("locations").AllowFiltering(true).Filtering("onfiltering").Placeholder("Select location").DataSource(
+                          (IEnumerable<object>)ViewBag.Locations).Fields(
+                          new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "NameEn", Value = "Oid" }).ActionBegin("onBegin").DataBound("onBound").Render()
+                        </div>
+
+                        <div class="col-2">
+                            @Html.EJS().DropDownList("shifts").AllowFiltering(true).Filtering("onShiftFiltering").Placeholder("Select Shift").DataSource(
+                          (IEnumerable<object>)ViewBag.Shifts).Fields(
+                          new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "NameEn", Value = "Oid" }).ActionBegin("onShiftBegin").DataBound("onShiftBound").Render()
+                        </div>
+
+                    </div>
+
+                    <div class="row pt-1 pb-3">
+                        <div class="col-2 mx-auto">
+                            <button type="button" class="btn btn-raised bg-black waves-effect waves-light add" onclick="Add()">Add</button>
+                            <button type="button" class="btn btn-raised bg-black waves-effect waves-light update" onclick="Update()">Update</button>
+                            @Html.EJS().Button("btn").Content("Reset").CssClass("ml-3").Render()
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card mt-3">
+                    <div class="body">
+
+                        <div class="preloader loading">
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                        </div>
+
+                        <h5 class="text-center loading-text mt-2">Loading...</h5>
+
+                        @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+                           {
+
+                               col.Field("IsVerified").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
+                               col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
+                               col.Field("EmpId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                               col.Field("EmpName").Width("80").HeaderText("Emp Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("EmpNameAr").Width("80").HeaderText("Emp NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("LocationOid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).ShowInColumnChooser(false).Add();
+                               col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("LocationAr").Width("80").HeaderText("LocationAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("ShiftOid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).ShowInColumnChooser(false).Add();
+                               col.Field("ShiftCode").Width("80").HeaderText("Shift Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("ShiftName").Width("80").HeaderText("Shift").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("StartTime").Width("100").HeaderText("Start Time").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("EndTime").Width("100").HeaderText("End Time").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("FromDate").Width("100").HeaderText("From Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("ToDate").Width("100").HeaderText("To Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+                           }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                               page =>
+                            {
+                                page.PageSizes(true); page.PageSize(25);
+                            }).Toolbar(toolbarItems).DataBound("dataBound").RowSelected("OnSelected").RowDeselected("OnDeselected").AllowSelection(true).SelectionSettings(select =>
+                            select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script>
+        var verificationIds = [];
+        $('.preloader').hide();
+        $('.loading-text').hide();
+        $('.update').hide();
+
+        $('#isChecked').change(function () {
+            if (this.checked) {
+                $('.update').show();
+                $('.emp').hide();
+                $('.add').hide();
+            } else {
+                $('.emp').show();
+                $('.add').show();
+                $('.update').hide();
+            }
+        });
+
+
+
+        var selected = [];
+        function onBegin(e) {
+            this.fields = {
+                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemSearch(e) {
+            if (selected.indexOf(e) == -1)
+                selected.push(e);
+        }
+
+        function onBound(e) {
+            this.value = selected;
+        }
+
+
+
+        var selectedShifts = [];
+        function onShiftBegin(e) {
+            this.fields = {
+                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemShiftSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemShiftSearch(e) {
+            if (selectedShifts.indexOf(e) == -1)
+                selectedShifts.push(e);
+        }
+
+        function onShiftBound(e) {
+            this.value = selectedShifts;
+        }
+
+
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row[0].cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function dataBound(args) {
+            this.autoFitColumns(['EmpId', 'EmpName', 'EmpNameAr', 'Location', 'LocationAr', 'ShiftCode', 'ShiftName', 'StartTime', 'EndTime', 'FromDate', 'ToDate']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "EmpShiftAndLocation.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRec') {
+
+            if (verificationIds.length === 0) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("DeleteAllocations", "ManageTimeAttendance")',
+                    success: function () {
+                            verificationIds = [];
+                            window.location.reload();
+                },
+                    error: function (ex) {
+                        setTimeout(() => {
+                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            toastObj.target = document.body;
+                            toastObj.show();
+                        }, 1000);
+                    }
+                });
+
+            }
+            }
+        }
+
+        function onfiltering(e) {
+            var CBObj = document.getElementById("locations").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('locations').select(['NameEn', 'Oid']);
+                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        function onShiftFiltering(e) {
+            var CBObj = document.getElementById("shifts").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('shifts').select(['NameEn', 'Oid']);
+                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        document.getElementById('btn').onclick = () => {
+            var dropObj = document.getElementById("locations").ej2_instances[0]; //to get dropdown list object
+            dropObj.value = null;
+
+            var dropShiftObj = document.getElementById("shifts").ej2_instances[0]; //to get dropdown list object
+            dropShiftObj.value = null;
+
+            var dropEmpObj = document.getElementById('employees').ej2_instances[0];
+            dropEmpObj.value = null;
+        };
+
+
+        function Update() {
+
+            if (verificationIds.length === 0) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-emp-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+                var locationObj = document.getElementById('locations').ej2_instances[0].value; // MultiSelect Instance of ocations
+                var shiftObj = document.getElementById('shifts').ej2_instances[0].value; // MultiSelect Instance of Shifts
+
+                if (locationObj === null && shiftObj === null) {
+                    setTimeout(() => {
+                        var toastObj = document.getElementById('info-location-toast').ej2_instances[0];
+                        toastObj.target = document.body;
+                        toastObj.show();
+                    }, 1000);
+                } else {
+
+                    var i = 1;
+                    setInterval(function () {
+                        i++;
+                    }, 1000);
+
+                    $('.preloader').show();
+                    $('.loading-text').show();
+                    $('.e-grid').hide();
+
+                    $.ajax({
+                        type: 'POST',
+                         data: {
+                             locations: locationObj === null ? "" : locationObj.toString(),
+                             shifts: shiftObj === null ? "" : shiftObj.toString(),
+                             verifiedIds: verificationIds
+                         },
+                        url: '@Url.Action("AllocateShiftLocation", "ManageTimeAttendance")',
+                         success: function (response) {
+                             if (response) {
+                                 setTimeout(() => {
+                                     var toastObj = document.getElementById('success-toast').ej2_instances[0];
+                                     toastObj.target = document.body;
+                                     toastObj.show();
+                                 }, 1000);
+                                 verificationIds = [];
+
+                                 console.log('Total Time Taken: ', i);
+                                 $('.preloader').hide();
+                                 $('.loading-text').hide();
+                                 $('.e-grid').show();
+
+                                 grid.dataSource = response;
+                                 grid.refresh();
+
+                             } else {
+                                 setTimeout(() => {
+                                     var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                     toastObj.target = document.body;
+                                     toastObj.show();
+                                 }, 1000);
+                                 $('.loading-text').hide();
+                                 $('.preloader').hide();
+                             }
+                        },
+                        error: function (ex) {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+                            $('.loading-text').hide();
+                            $('.preloader').hide();
+                        }
+                    });
+                }
+            }
+        }
+
+
+
+
+
+        var empLocationSelected = [];
+        function onEmpLocationBegin(e) {
+            this.fields = {
+                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemEmpLocationSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemEmpLocationSearch(e) {
+            if (empLocationSelected.indexOf(e) == -1)
+                empLocationSelected.push(e);
+        }
+
+        function onEmpLocationBound(e) {
+            this.value = empLocationSelected;
+        }
+
+
+
+        var selectedEmpShifts = [];
+        function onEmpShiftBegin(e) {
+            this.fields = {
+                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemEmpShiftSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemEmpShiftSearch(e) {
+            if (selectedEmpShifts.indexOf(e) == -1)
+                selectedEmpShifts.push(e);
+        }
+
+        function onEmpShiftBound(e) {
+            this.value = selectedEmpShifts;
+        }
+
+        function onEmpLocationFiltering (e) {
+            var CBObj = document.getElementById("empLocations").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('empLocations').select(['NameEn', 'Oid']);
+                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        function onEmpShiftFiltering(e) {
+            var CBObj = document.getElementById("empShifts").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('empShifts').select(['NameEn', 'Oid']);
+                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selectedEmployees = [];
+        function onEmpBegin(e) {
+            this.fields = {
+                text: 'NameAr', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemEmpSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemEmpSearch(e) {
+            if (selectedEmployees.indexOf(e) == -1)
+                selectedEmployees.push(e);
+        }
+
+        function onEmpBound(e) {
+            this.value = selectedEmployees;
+        }
+
+        function onEmpFiltering(e) {
+            var CBObj = document.getElementById("employees").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('employees').select(['NameAr', 'Oid']);
+                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+
+
+        function Add() {
+            // var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+            var empObj = document.getElementById('employees').ej2_instances[0].value; // MultiSelect Instance of ocations
+            var locationObj = document.getElementById('locations').ej2_instances[0].value; // MultiSelect Instance of ocations
+            var shiftObj = document.getElementById('shifts').ej2_instances[0].value;
+            var fromDateObj = document.getElementById('fromDate').ej2_instances[0].value;
+            var toDateObj = document.getElementById('toDate').ej2_instances[0].value;
+
+            if (empObj.length < 1) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-emp-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            }
+            else if (fromDateObj === null) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-date-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else if (locationObj === null || shiftObj === null) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-loc-shift-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                    $('.preloader').show();
+                    $('.loading-text').show();
+                $('.e-grid').hide();
+
+                var sd = new Date(fromDateObj);
+                var from = sd.getDate().toString() + '-' + sd.getMonth().toString() + '-' + sd.getFullYear().toString();
+
+                $.ajax({
+                    type: 'POST',
+                        data: {
+                            employees: empObj,
+                            shift: shiftObj === null ? "" : shiftObj.toString(),
+                            location: locationObj === null ? "" : locationObj.toString(),
+                            fromDate: from,
+                            toDate: toDateObj !== null
+                                ? new Date(toDateObj).getDate().toString() + '-' + new Date(toDateObj).getMonth().toString() + '-' + new Date(toDateObj).getFullYear().toString()
+                                : toDateObj
+                        },
+                    url: '@Url.Action("AddAllocation", "ManageTimeAttendance")',
+                    success: function (response) {
+                            if (+response === 1) {
+                                window.location.reload();
+                            } else if (+response === 2) {
+                                setTimeout(() => {
+                                    var toastObj = document.getElementById('error-add-toast').ej2_instances[0];
+                                    toastObj.target = document.body;
+                                    toastObj.show();
+                                }, 1000);
+
+                                $('.preloader').hide();
+                                $('.loading-text').hide();
+                                $('.e-grid').show();
+                            } else {
+                                setTimeout(() => {
+                                    var toastObj = document.getElementById('info-add-toast').ej2_instances[0];
+                                    toastObj.target = document.body;
+                                    toastObj.show();
+                                }, 1000);
+
+                                $('.preloader').hide();
+                                $('.loading-text').hide();
+                                $('.e-grid').show();
+                            }
+                    },
+                    error: function (ex) {
+                        setTimeout(() => {
+                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            toastObj.target = document.body;
+                            toastObj.show();
+                        }, 1000);
+                        $('.loading-text').hide();
+                        $('.preloader').hide();
+                    }
+                });
+                }
+
+        }
+
+
+    </script>
+
+}
+

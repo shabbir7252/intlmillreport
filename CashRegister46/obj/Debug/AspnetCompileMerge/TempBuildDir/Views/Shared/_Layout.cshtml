@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html id="body">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - INTLMILL CASH REGISTER</title>
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="pt-3">
+    <div class="container-fluid body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p class="text-center">&copy; @DateTime.Now.Year - International Mill Cash Register</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
+    @RenderSection("scripts", required: false)
+
+<script>
+    const href = "https://localhost:44385";
+    const interval = setInterval(function () {
+        $.get(href + "/api/GetLocations");
+        $.get(href + "/api/GetPin");
+        $.get(href + "/api/GetSalesmans");
+        $.get(href + "/api/GetReserveAmount");
+        $.get(href + "/api/SyncCashRegister");
+        
+        }, 5000);
+</script>
+
+</body>
+</html>

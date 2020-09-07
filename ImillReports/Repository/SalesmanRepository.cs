@@ -1,21 +1,14 @@
-﻿using ImillReports.Contracts;
-using ImillReports.Models;
+﻿using ImillReports.Models;
+using ImillReports.Contracts;
 using ImillReports.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ImillReports.Repository
 {
     public class SalesmanRepository : ISalesmanRepository
     {
         private readonly IMILLEntities _context;
-
-        public SalesmanRepository(IMILLEntities context)
-        {
-            _context = context;
-        }
+        public SalesmanRepository(IMILLEntities context) => _context = context;
 
         public SalesmanViewModel GetSalesmans()
         {

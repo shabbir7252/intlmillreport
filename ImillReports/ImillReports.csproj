@@ -59,15 +59,18 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.EJ2, Version=17.4500.0.55, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.EJ2.MVC5.17.4.0.55\lib\net45\Syncfusion.EJ2.dll</HintPath>
+    <Reference Include="Syncfusion.EJ2, Version=18.1500.0.56, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.EJ2.MVC5.18.1.0.56\lib\net45\Syncfusion.EJ2.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Licensing, Version=17.4451.0.55, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Licensing.17.4.0.55\lib\net451\Syncfusion.Licensing.dll</HintPath>
+    <Reference Include="Syncfusion.Licensing, Version=18.1451.0.56, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.18.1.0.56\lib\net451\Syncfusion.Licensing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -82,6 +85,12 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -199,6 +208,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\IBaseRepository.cs" />
     <Compile Include="Contracts\IBaseUnitRepository.cs" />
     <Compile Include="Contracts\ICashRegisterRepository.cs" />
@@ -207,15 +217,19 @@
     <Compile Include="Contracts\IProductRepository.cs" />
     <Compile Include="Contracts\ISalesmanRepository.cs" />
     <Compile Include="Contracts\ISalesReportRepository.cs" />
+    <Compile Include="Contracts\ITARepository.cs" />
     <Compile Include="Contracts\IVoucherTypesRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\TASyncController.cs" />
     <Compile Include="Controllers\CashRegisterController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManageTimeAttendanceController.cs" />
     <Compile Include="Controllers\SalesmanController.cs" />
     <Compile Include="Controllers\SalesReportController.cs" />
+    <Compile Include="Controllers\TAReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -243,6 +257,21 @@
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImillReportModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImillReportModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImillReportModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImillReportModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImillReportModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\intlmill_cash_register.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
@@ -277,6 +306,51 @@
     <Compile Include="Models\spIUD_GetAll_Result.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TAModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmpLocShiftMap.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Employees.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmpTransaction.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Location.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Shift.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Transactions.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Transaction_2019.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Transaction_2020.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2019.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2020.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Repository\BaseUnitRepository.cs" />
@@ -286,15 +360,19 @@
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\SalesmanRepository.cs" />
     <Compile Include="Repository\SalesReportRepository.cs" />
+    <Compile Include="Repository\TARepository.cs" />
     <Compile Include="Repository\VoucherTypesRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BaseUnitViewModel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CashRegisterViewModel.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\LocationViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SalesmanViewModel.cs" />
     <Compile Include="ViewModels\SalesReportViewModel.cs" />
+    <Compile Include="ViewModels\ShiftViewModel.cs" />
+    <Compile Include="ViewModels\TimeAttendanceViewModel.cs" />
     <Compile Include="ViewModels\VoucherTypeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +523,7 @@
     <Content Include="Content\DataTables\Scroller-2.0.1\js\scroller.semanicui.js" />
     <Content Include="Content\DataTables\Scroller-2.0.1\js\scroller.semanticui.js" />
     <Content Include="Content\DataTables\Scroller-2.0.1\js\scroller.semanticui.min.js" />
+    <Content Include="Content\ej2\bootstrap-dark.css" />
     <Content Include="Content\ej2\bootstrap.css" />
     <Content Include="Content\ej2\bootstrap4.css" />
     <Content Include="Content\ej2\compatibility\bootstrap.css" />
@@ -452,10 +531,13 @@
     <Content Include="Content\ej2\compatibility\fabric.css" />
     <Content Include="Content\ej2\compatibility\highcontrast.css" />
     <Content Include="Content\ej2\compatibility\material.css" />
+    <Content Include="Content\ej2\fabric-dark.css" />
     <Content Include="Content\ej2\fabric.css" />
     <Content Include="Content\ej2\highcontrast.css" />
+    <Content Include="Content\ej2\material-dark.css" />
     <Content Include="Content\ej2\material.css" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="Content\Images\DryFruit_Background.jpg" />
     <Content Include="fonts\Material-Design-Iconic-Font.svg" />
     <Content Include="Content\Images\avatar5.jpg" />
     <Content Include="Content\Images\InternationalMill.jpg" />
@@ -474,7 +556,18 @@
     <Content Include="Content\fonts\Material-Design-Iconic-Font.ttf" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="App_Data\column_chooser.json" />
     <None Include="manifest.appcacherrr" />
+    <Content Include="Models\ImillReportModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ImillReportModel.edmx</DependentUpon>
+      <LastGenOutput>ImillReportModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ImillReportModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ImillReportModel.edmx</DependentUpon>
+      <LastGenOutput>ImillReportModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\ReportModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ReportModel.edmx</DependentUpon>
@@ -484,6 +577,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ReportModel.edmx</DependentUpon>
       <LastGenOutput>ReportModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TAModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TAModel.edmx</DependentUpon>
+      <LastGenOutput>TAModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TAModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TAModel.edmx</DependentUpon>
+      <LastGenOutput>TAModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -495,7 +598,6 @@
     <Content Include="fonts\Material-Design-Iconic-Font.woff2" />
     <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\common.js" />
-    <Content Include="Scripts\ej2\ej2.min.js.map" />
     <EntityDeploy Include="Models\ReportModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ReportModel.Designer.cs</LastGenOutput>
@@ -503,9 +605,24 @@
     <Content Include="Models\ReportModel.edmx.diagram">
       <DependentUpon>ReportModel.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="Models\ImillReportModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ImillReportModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ImillReportModel.edmx.diagram">
+      <DependentUpon>ImillReportModel.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\TAModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TAModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TAModel.edmx.diagram">
+      <DependentUpon>TAModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\ej2\ej2.min.js" />
+    <Content Include="Scripts\ej2\ej2.min.js.map" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\index2.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -566,6 +683,14 @@
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Dashboard\BranchSales.cshtml" />
     <Content Include="Views\SalesReport\SalesHourlyReport.cshtml" />
+    <Content Include="Views\TAReport\Index.cshtml" />
+    <Content Include="Views\Dashboard\_BranchGraphs.cshtml" />
+    <Content Include="Views\Dashboard\_BranchSalesDetails.cshtml" />
+    <Content Include="Views\Dashboard\SyncSalesData.cshtml" />
+    <Content Include="Views\ManageTimeAttendance\AllocateShiftLocation.cshtml" />
+    <Content Include="Views\ManageTimeAttendance\Employees.cshtml" />
+    <Content Include="Views\ManageTimeAttendance\Locations.cshtml" />
+    <Content Include="Views\ManageTimeAttendance\Shifts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Location\" />
@@ -581,11 +706,11 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\ej2\ej2.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\ej2\ej2.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

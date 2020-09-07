@@ -1,0 +1,306 @@
+﻿@model Cash_Register.ViewModels.CRegister
+
+@{
+    ViewBag.Title = "Print";
+}
+
+<style>
+    @@media print {
+        .print {
+            display: none;
+        }
+
+        body {
+            margin: 0 25mm 25mm 0;
+        }
+    }
+
+    .printableArea h1 {
+        font-size: 2rem;
+    }
+</style>
+
+<div class="row">
+    <div class="col-6"><h2></h2></div>
+    <div class="col-6">
+        <h2 class="text-
+
+right"></h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 text-center mb-3
+
+print">
+
+        <div class="row">
+            <div class="col-4 mx-auto">
+                <div class="row">
+                    <div class="col-6">
+                        <button onclick="window.print();" class="btn btn-
+
+dark">
+                            Print/طباعة
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <Button class="btn btn-primary" onclick="GoBack()">
+                            Back To
+
+                            CR
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-5 printableArea"
+         id="printableArea">
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Staff Date :
+
+                    @Model.StaffDate.ToString("dd-MM-yyyy")
+
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Print Date :
+
+                    @Model.TransDate.ToString("dd-MM-yyyy | hh: mm:ss tt")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Location :
+
+                    @ViewBag.Location
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Staff :
+
+                    @ViewBag.Salesman
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Shift Type :
+
+                    @Model.ShiftType
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Cheques :
+
+                    @Model.Cheques.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Online :
+
+                    @Model.Online.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Talabat :
+
+                    @Model.Talabat.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Knet :
+
+                    @Model.Knet.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Visa :
+
+                    @Model.Visa.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Reserve :
+
+                    @Model.Reserve.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Expense :
+
+                    @Model.Expense.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    20Kd :
+
+                    @Model.TwentyKd
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    10Kd :
+
+                    @Model.TenKd
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    5Kd :
+
+                    @Model.FiveKd
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>1Kd : @Model.OneKd</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    1/2Kd :
+
+                    @Model.HalfKd
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    1/4Kd :
+
+                    @Model.QuarterKd
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    100Fils :
+
+                    @Model.HundFils
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    50Fils :
+
+                    @Model.FiftyFils
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    20Fils :
+
+                    @Model.TwentyFils
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    10Fils :
+
+                    @Model.TenFils
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    5Fils :
+
+                    @Model.FiveFils
+                </h1>
+            </div>
+        </div>        <div class="row">
+            <div class="col-12">
+                <hr />
+                <h1>
+                    Net Cash :
+
+                    @Model.NetBalance.ToString("0.000")
+                </h1>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function GoBack() {
+            var link = "@Url.Action("Index", "CashRegister")";
+            window.location.href = link;
+        }
+    </script>
+}

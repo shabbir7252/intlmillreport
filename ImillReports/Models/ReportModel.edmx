@@ -644,20 +644,9 @@
           <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="A_Symbol" Type="nchar" MaxLength="10" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'IMILL.dbo.intlmill_cash_register' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="intlmill_cash_register">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="trans_date_time" />
-            <PropertyRef Name="location" />
-            <PropertyRef Name="salesman" />
-            <PropertyRef Name="shift_type" />
-            <PropertyRef Name="shift_count" />
-            <PropertyRef Name="total_cash" />
-            <PropertyRef Name="net_cash" />
-            <PropertyRef Name="total_sales" />
-            <PropertyRef Name="net_sales" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="trans_date_time" Type="smalldatetime" Nullable="false" />
@@ -689,6 +678,12 @@ warning 6002: The table/view 'IMILL.dbo.intlmill_cash_register' does not have a 
           <Property Name="total_sales" Type="money" Nullable="false" />
           <Property Name="net_sales" Type="money" Nullable="false" />
           <Property Name="staff_date" Type="varchar" MaxLength="10" />
+          <Property Name="IsVerified" Type="bit" />
+          <Property Name="ActualStaffDate" Type="smalldatetime" />
+          <Property Name="Sman_Cd" Type="smallint" />
+          <Property Name="Locat_Cd" Type="smallint" />
+          <Property Name="CrOid" Type="int" />
+          <Property Name="UpdatedOn" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="SM_Location">
           <Key>
@@ -1499,6 +1494,8 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <Parameter Name="toDate" Type="smalldatetime" Mode="In" />
           <Parameter Name="locationArray" Type="varchar(max)" Mode="In" />
           <Parameter Name="voucherTypeArray" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fromHoDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="toHoDate" Type="smalldatetime" Mode="In" />
         </Function>
         <Function Name="spICSTransDetail_GetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="intArray" Type="varchar(max)" Mode="In" />
@@ -1512,42 +1509,9 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <EntitySet Name="ICS_Transaction_Details" EntityType="Self.ICS_Transaction_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICS_Transaction_Types" EntityType="Self.ICS_Transaction_Types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICS_Unit" EntityType="Self.ICS_Unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="intlmill_cash_register" EntityType="Self.intlmill_cash_register" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SM_Location" EntityType="Self.SM_Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SM_SALESMAN" EntityType="Self.SM_SALESMAN" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="intlmill_cash_register" EntityType="Self.intlmill_cash_register" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [intlmill_cash_register].[id] AS [id], 
-    [intlmill_cash_register].[trans_date_time] AS [trans_date_time], 
-    [intlmill_cash_register].[location] AS [location], 
-    [intlmill_cash_register].[salesman] AS [salesman], 
-    [intlmill_cash_register].[shift_type] AS [shift_type], 
-    [intlmill_cash_register].[shift_count] AS [shift_count], 
-    [intlmill_cash_register].[cheque] AS [cheque], 
-    [intlmill_cash_register].[other] AS [other], 
-    [intlmill_cash_register].[carriage] AS [carriage], 
-    [intlmill_cash_register].[online] AS [online], 
-    [intlmill_cash_register].[knet] AS [knet], 
-    [intlmill_cash_register].[visa] AS [visa], 
-    [intlmill_cash_register].[reserve] AS [reserve], 
-    [intlmill_cash_register].[expense] AS [expense], 
-    [intlmill_cash_register].[total_cash] AS [total_cash], 
-    [intlmill_cash_register].[net_cash] AS [net_cash], 
-    [intlmill_cash_register].[d_20000] AS [d_20000], 
-    [intlmill_cash_register].[d_10000] AS [d_10000], 
-    [intlmill_cash_register].[d_5000] AS [d_5000], 
-    [intlmill_cash_register].[d_1000] AS [d_1000], 
-    [intlmill_cash_register].[d_0500] AS [d_0500], 
-    [intlmill_cash_register].[d_0250] AS [d_0250], 
-    [intlmill_cash_register].[d_0100] AS [d_0100], 
-    [intlmill_cash_register].[d_0050] AS [d_0050], 
-    [intlmill_cash_register].[d_0020] AS [d_0020], 
-    [intlmill_cash_register].[d_0010] AS [d_0010], 
-    [intlmill_cash_register].[d_0005] AS [d_0005], 
-    [intlmill_cash_register].[total_sales] AS [total_sales], 
-    [intlmill_cash_register].[net_sales] AS [net_sales], 
-    [intlmill_cash_register].[staff_date] AS [staff_date]
-    FROM [dbo].[intlmill_cash_register] AS [intlmill_cash_register]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Alt_Unit_Details_Product" Association="Self.FK_Alt_Unit_Details_Product">
             <End Role="ICS_Item" EntitySet="ICS_Item" />
             <End Role="ICS_Item_Unit_Details" EntitySet="ICS_Item_Unit_Details" />
@@ -1734,12 +1698,6 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
     <edmx:ConceptualModels>
       <Schema Namespace="IMILLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="IMILLEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="spICSTrans_GetAll" ReturnType="Collection(IMILLModel.spICSTrans_GetAll_Result)">
-            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="toDate" Mode="In" Type="DateTime" />
-            <Parameter Name="locationArray" Mode="In" Type="String" />
-            <Parameter Name="voucherTypeArray" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spIUD_GetAll" ReturnType="Collection(IMILLModel.spIUD_GetAll_Result)" />
           <EntitySet Name="GL_Ledger" EntityType="IMILLModel.GL_Ledger" />
           <EntitySet Name="ICS_Item" EntityType="IMILLModel.ICS_Item" />
@@ -1750,7 +1708,6 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <EntitySet Name="ICS_Unit" EntityType="IMILLModel.ICS_Unit" />
           <EntitySet Name="SM_Location" EntityType="IMILLModel.SM_Location" />
           <EntitySet Name="SM_SALESMAN" EntityType="IMILLModel.SM_SALESMAN" />
-          <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
           <AssociationSet Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd" Association="IMILLModel.FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
             <End Role="GL_Ledger" EntitySet="GL_Ledger" />
             <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
@@ -1935,23 +1892,16 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
             <Parameter Name="intArray" Mode="In" Type="String" />
             <Parameter Name="prodArray" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spICSTrans_GetAll" ReturnType="Collection(IMILLModel.spICSTrans_GetAll_Result)">
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+            <Parameter Name="locationArray" Mode="In" Type="String" />
+            <Parameter Name="voucherTypeArray" Mode="In" Type="String" />
+            <Parameter Name="fromHoDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toHoDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
         </EntityContainer>
-        <ComplexType Name="spICSTrans_GetAll_Result">
-          <Property Type="Int64" Name="Entry_Id" Nullable="false" />
-          <Property Type="DateTime" Name="Voucher_Date" Nullable="false" Precision="16" />
-          <Property Type="String" Name="L_Sman_Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="A_Sman_Name" Nullable="true" MaxLength="50" />
-          <Property Type="Int64" Name="Voucher_No" Nullable="false" />
-          <Property Type="Int16" Name="Locat_Cd" Nullable="false" />
-          <Property Type="String" Name="L_Short_Name" Nullable="false" MaxLength="20" />
-          <Property Type="String" Name="A_Short_Name" Nullable="true" MaxLength="20" />
-          <Property Type="Int16" Name="Voucher_Type" Nullable="false" />
-          <Property Type="String" Name="L_Voucher_Name" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="A_Voucher_Name" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="Group_Cd" Nullable="false" />
-          <Property Type="String" Name="L_Ldgr_Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="A_Ldgr_Name" Nullable="true" MaxLength="100" />
-        </ComplexType>
         <ComplexType Name="spIUD_GetAll_Result">
           <Property Type="Int64" Name="Unit_Entry_Id" Nullable="false" />
           <Property Type="Int16" Name="Alt_Unit_Cd" Nullable="false" />
@@ -2951,50 +2901,6 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <NavigationProperty Name="GL_Ledger" Relationship="IMILLModel.FK_GL_Ledger_Salesman_Default_Sman_Cd" FromRole="SM_SALESMAN" ToRole="GL_Ledger" />
           <NavigationProperty Name="ICS_Transaction" Relationship="IMILLModel.FK_ICS_Transaction_Salesman" FromRole="SM_SALESMAN" ToRole="ICS_Transaction" />
         </EntityType>
-        <EntityType Name="intlmill_cash_register">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="trans_date_time" />
-            <PropertyRef Name="location" />
-            <PropertyRef Name="salesman" />
-            <PropertyRef Name="shift_type" />
-            <PropertyRef Name="shift_count" />
-            <PropertyRef Name="total_cash" />
-            <PropertyRef Name="net_cash" />
-            <PropertyRef Name="total_sales" />
-            <PropertyRef Name="net_sales" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="trans_date_time" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="salesman" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="shift_type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="shift_count" Type="Int32" Nullable="false" />
-          <Property Name="cheque" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="other" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="carriage" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="online" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="knet" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="visa" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="reserve" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="expense" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="total_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="net_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="d_20000" Type="Int32" />
-          <Property Name="d_10000" Type="Int32" />
-          <Property Name="d_5000" Type="Int32" />
-          <Property Name="d_1000" Type="Int32" />
-          <Property Name="d_0500" Type="Int32" />
-          <Property Name="d_0250" Type="Int32" />
-          <Property Name="d_0100" Type="Int32" />
-          <Property Name="d_0050" Type="Int32" />
-          <Property Name="d_0020" Type="Int32" />
-          <Property Name="d_0010" Type="Int32" />
-          <Property Name="d_0005" Type="Int32" />
-          <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="staff_date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
         <Association Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
           <End Type="IMILLModel.GL_Ledger" Role="GL_Ledger" Multiplicity="0..1" />
           <End Type="IMILLModel.ICS_Transaction" Role="ICS_Transaction" Multiplicity="*" />
@@ -3549,32 +3455,69 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <Property Type="String" Name="BaseUnit" Nullable="false" MaxLength="20" />
           <Property Type="String" Name="SellUnit" Nullable="false" MaxLength="20" />
         </ComplexType>
+        <ComplexType Name="spICSTrans_GetAll_Result">
+          <Property Type="Int64" Name="Entry_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Voucher_Date" Nullable="false" Precision="16" />
+          <Property Type="String" Name="L_Sman_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="A_Sman_Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="Voucher_No" Nullable="false" />
+          <Property Type="Int16" Name="Locat_Cd" Nullable="false" />
+          <Property Type="String" Name="L_Short_Name" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="A_Short_Name" Nullable="true" MaxLength="20" />
+          <Property Type="Int16" Name="Voucher_Type" Nullable="false" />
+          <Property Type="String" Name="L_Voucher_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="A_Voucher_Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Group_Cd" Nullable="false" />
+          <Property Type="String" Name="L_Ldgr_Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="A_Ldgr_Name" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="intlmill_cash_register">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trans_date_time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="salesman" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="shift_type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="shift_count" Type="Int32" Nullable="false" />
+          <Property Name="cheque" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="other" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="carriage" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="online" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="knet" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="visa" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="reserve" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="expense" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="total_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="net_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="d_20000" Type="Int32" />
+          <Property Name="d_10000" Type="Int32" />
+          <Property Name="d_5000" Type="Int32" />
+          <Property Name="d_1000" Type="Int32" />
+          <Property Name="d_0500" Type="Int32" />
+          <Property Name="d_0250" Type="Int32" />
+          <Property Name="d_0100" Type="Int32" />
+          <Property Name="d_0050" Type="Int32" />
+          <Property Name="d_0020" Type="Int32" />
+          <Property Name="d_0010" Type="Int32" />
+          <Property Name="d_0005" Type="Int32" />
+          <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="staff_date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsVerified" Type="Boolean" />
+          <Property Name="ActualStaffDate" Type="DateTime" Precision="0" />
+          <Property Name="Sman_Cd" Type="Int16" />
+          <Property Name="Locat_Cd" Type="Int16" />
+          <Property Name="CrOid" Type="Int32" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="0" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="IMILLModelStoreContainer" CdmEntityContainer="IMILLEntities">
-          <FunctionImportMapping FunctionImportName="spICSTrans_GetAll" FunctionName="IMILLModel.Store.spICSTrans_GetAll">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="IMILLModel.spICSTrans_GetAll_Result">
-                <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
-                <ScalarProperty Name="Voucher_Date" ColumnName="Voucher_Date" />
-                <ScalarProperty Name="L_Sman_Name" ColumnName="L_Sman_Name" />
-                <ScalarProperty Name="A_Sman_Name" ColumnName="A_Sman_Name" />
-                <ScalarProperty Name="Voucher_No" ColumnName="Voucher_No" />
-                <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
-                <ScalarProperty Name="L_Short_Name" ColumnName="L_Short_Name" />
-                <ScalarProperty Name="A_Short_Name" ColumnName="A_Short_Name" />
-                <ScalarProperty Name="Voucher_Type" ColumnName="Voucher_Type" />
-                <ScalarProperty Name="L_Voucher_Name" ColumnName="L_Voucher_Name" />
-                <ScalarProperty Name="A_Voucher_Name" ColumnName="A_Voucher_Name" />
-                <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
-                <ScalarProperty Name="L_Ldgr_Name" ColumnName="L_Ldgr_Name" />
-                <ScalarProperty Name="A_Ldgr_Name" ColumnName="A_Ldgr_Name" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="GL_Ledger">
             <EntityTypeMapping TypeName="IMILLModel.GL_Ledger">
               <MappingFragment StoreEntitySet="GL_Ledger">
@@ -4483,9 +4426,53 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spICSTransDetail_GetAll" FunctionName="IMILLModel.Store.spICSTransDetail_GetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
+                <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
+                <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
+                <ScalarProperty Name="IUDBaseQty" ColumnName="IUDBaseQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="FC_Prod_Dis" ColumnName="FC_Prod_Dis" />
+                <ScalarProperty Name="FC_Amount" ColumnName="FC_Amount" />
+                <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+                <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+                <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+                <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spICSTrans_GetAll" FunctionName="IMILLModel.Store.spICSTrans_GetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="IMILLModel.spICSTrans_GetAll_Result">
+                <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+                <ScalarProperty Name="Voucher_Date" ColumnName="Voucher_Date" />
+                <ScalarProperty Name="L_Sman_Name" ColumnName="L_Sman_Name" />
+                <ScalarProperty Name="A_Sman_Name" ColumnName="A_Sman_Name" />
+                <ScalarProperty Name="Voucher_No" ColumnName="Voucher_No" />
+                <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+                <ScalarProperty Name="L_Short_Name" ColumnName="L_Short_Name" />
+                <ScalarProperty Name="A_Short_Name" ColumnName="A_Short_Name" />
+                <ScalarProperty Name="Voucher_Type" ColumnName="Voucher_Type" />
+                <ScalarProperty Name="L_Voucher_Name" ColumnName="L_Voucher_Name" />
+                <ScalarProperty Name="A_Voucher_Name" ColumnName="A_Voucher_Name" />
+                <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
+                <ScalarProperty Name="L_Ldgr_Name" ColumnName="L_Ldgr_Name" />
+                <ScalarProperty Name="A_Ldgr_Name" ColumnName="A_Ldgr_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="intlmill_cash_register">
             <EntityTypeMapping TypeName="IMILLModel.intlmill_cash_register">
               <MappingFragment StoreEntitySet="intlmill_cash_register">
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CrOid" ColumnName="CrOid" />
+                <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+                <ScalarProperty Name="Sman_Cd" ColumnName="Sman_Cd" />
+                <ScalarProperty Name="ActualStaffDate" ColumnName="ActualStaffDate" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="staff_date" ColumnName="staff_date" />
                 <ScalarProperty Name="net_sales" ColumnName="net_sales" />
                 <ScalarProperty Name="total_sales" ColumnName="total_sales" />
@@ -4519,24 +4506,6 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spICSTransDetail_GetAll" FunctionName="IMILLModel.Store.spICSTransDetail_GetAll">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
-                <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
-                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
-                <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
-                <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
-                <ScalarProperty Name="IUDBaseQty" ColumnName="IUDBaseQty" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="FC_Prod_Dis" ColumnName="FC_Prod_Dis" />
-                <ScalarProperty Name="FC_Amount" ColumnName="FC_Amount" />
-                <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
-                <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
-                <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
-                <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

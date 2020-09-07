@@ -1,22 +1,234 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="619d0fb3-5606-4801-9fe1-2d6d34e56150" name="Default Changelist" comment="" />
+    <list default="true" id="619d0fb3-5606-4801-9fe1-2d6d34e56150" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.IntlmillReportApps/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IntlmillReportApps/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.IntlmillReportApps/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IntlmillReportApps/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/IntlmillReportApps/v16/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/IntlmillReportApps/v16/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/App_Start/BundleConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/App_Start/BundleConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/App_Start/RouteConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/App_Start/RouteConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/compatibility/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Content/ej2/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Content/ej2/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Contracts/IBaseRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Contracts/IBaseRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Contracts/ICashRegisterRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Contracts/ICashRegisterRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Controllers/CashRegisterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Controllers/CashRegisterController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Controllers/DashboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Controllers/DashboardController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Controllers/LocationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Controllers/LocationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Controllers/SalesReportController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Controllers/SalesReportController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Global.asax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Global.asax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/ImillReports.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/ImillReports.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Models/ReportModel.Context.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Models/ReportModel.Context.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Models/ReportModel.edmx" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Models/ReportModel.edmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Models/ReportModel.edmx.diagram" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Models/ReportModel.edmx.diagram" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Models/intlmill_cash_register.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Models/intlmill_cash_register.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Properties/PublishProfiles/FolderProfile.pubxml.user" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Properties/PublishProfiles/FolderProfile.pubxml.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Repository/BaseRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Repository/BaseRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Repository/CashRegisterRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Repository/CashRegisterRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Repository/DashboardRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Repository/DashboardRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Repository/LocationRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Repository/LocationRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Repository/SalesReportRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Repository/SalesReportRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Repository/SalesmanRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Repository/SalesmanRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Scripts/ej2/ej2.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Scripts/ej2/ej2.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Scripts/ej2/ej2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Scripts/ej2/ej2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Scripts/ej2/ej2.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Scripts/ej2/ej2.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/ViewModels/CashRegisterViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/ViewModels/CashRegisterViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/ViewModels/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/ViewModels/DashboardViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/ViewModels/SalesReportViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/ViewModels/SalesReportViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/CashRegister/CashRegVsSalesRpt.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/CashRegister/CashRegVsSalesRpt.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/CashRegister/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/CashRegister/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/Dashboard/BranchSales.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/Dashboard/BranchSales.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/SalesReport/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/SalesReport/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/SalesReport/SalesDetailReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/SalesReport/SalesDetailReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/SalesReport/SalesHourlyReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/SalesReport/SalesHourlyReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/bin/ImillReports.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/bin/ImillReports.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/bin/ImillReports.dll.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/bin/ImillReports.dll.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/bin/ImillReports.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/bin/ImillReports.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/bin/Syncfusion.EJ2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/bin/Syncfusion.EJ2.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/bin/Syncfusion.EJ2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/bin/Syncfusion.EJ2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/bin/Syncfusion.Licensing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/bin/Syncfusion.Licensing.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/DesignTimeResolveAssemblyReferences.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/DesignTimeResolveAssemblyReferences.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/ImillReports.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/TempPE/Models.ReportModel.Designer.cs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/TempPE/Models.ReportModel.Designer.cs.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/TempPE/Models.ReportModel.cs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/TempPE/Models.ReportModel.cs.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/edmxResourcesToEmbed/Models/ReportModel.csdl" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/edmxResourcesToEmbed/Models/ReportModel.csdl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/edmxResourcesToEmbed/Models/ReportModel.msl" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/edmxResourcesToEmbed/Models/ReportModel.msl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Debug/edmxResourcesToEmbed/Models/ReportModel.ssdl" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Debug/edmxResourcesToEmbed/Models/ReportModel.ssdl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/compatibility/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Content/ej2/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Models/ReportModel.edmx.diagram" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Models/ReportModel.edmx.diagram" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Scripts/ej2/ej2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Scripts/ej2/ej2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Scripts/ej2/ej2.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Scripts/ej2/ej2.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/CashRegister/CashRegVsSalesRpt.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/CashRegister/CashRegVsSalesRpt.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/CashRegister/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/CashRegister/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/Dashboard/BranchSales.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/Dashboard/BranchSales.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/SalesReport/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/SalesReport/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/SalesReport/SalesDetailReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/SalesReport/SalesDetailReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/SalesReport/SalesHourlyReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/SalesReport/SalesHourlyReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/ImillReports.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/ImillReports.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/ImillReports.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/ImillReports.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/Syncfusion.EJ2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/Syncfusion.EJ2.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/Syncfusion.Licensing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/Source/bin/Syncfusion.Licensing.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/compatibility/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Content/ej2/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Models/ReportModel.edmx.diagram" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Models/ReportModel.edmx.diagram" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Scripts/ej2/ej2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Scripts/ej2/ej2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Scripts/ej2/ej2.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Scripts/ej2/ej2.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/CashRegister/CashRegVsSalesRpt.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/CashRegister/CashRegVsSalesRpt.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/CashRegister/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/CashRegister/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/Dashboard/BranchSales.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/Dashboard/BranchSales.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/SalesReport/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/SalesReport/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/SalesReport/SalesDetailReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/SalesReport/SalesDetailReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/SalesReport/SalesHourlyReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/SalesReport/SalesHourlyReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/App_global.asax.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/App_global.asax.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/ImillReports.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/ImillReports.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/ImillReports.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/ImillReports.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/Syncfusion.EJ2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/Syncfusion.EJ2.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/Syncfusion.Licensing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/AspnetCompileMerge/TempBuildDir/bin/Syncfusion.Licensing.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/ImillReports.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/bootstrap4.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/bootstrap4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/compatibility/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/fabric.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/fabric.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/highcontrast.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/highcontrast.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/material.css" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Content/ej2/material.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Models/ReportModel.edmx.diagram" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Models/ReportModel.edmx.diagram" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Scripts/ej2/ej2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Scripts/ej2/ej2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Scripts/ej2/ej2.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Scripts/ej2/ej2.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/CashRegister/CashRegVsSalesRpt.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/CashRegister/CashRegVsSalesRpt.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/CashRegister/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/CashRegister/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/Dashboard/BranchSales.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/Dashboard/BranchSales.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/SalesReport/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/SalesReport/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/SalesReport/SalesDetailReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/SalesReport/SalesDetailReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/SalesReport/SalesHourlyReport.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/SalesReport/SalesHourlyReport.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/App_global.asax.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/App_global.asax.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/ImillReports.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/ImillReports.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/ImillReports.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/ImillReports.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/Syncfusion.EJ2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/Syncfusion.EJ2.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/Syncfusion.Licensing.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/Package/PackageTmp/bin/Syncfusion.Licensing.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/TempPE/Models.ReportModel.Designer.cs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/TempPE/Models.ReportModel.Designer.cs.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/TempPE/Models.ReportModel.cs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/TempPE/Models.ReportModel.cs.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/TransformWebConfig/original/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/TransformWebConfig/original/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/TransformWebConfig/transformed/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/TransformWebConfig/transformed/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/edmxResourcesToEmbed/Models/ReportModel.csdl" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/edmxResourcesToEmbed/Models/ReportModel.csdl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/edmxResourcesToEmbed/Models/ReportModel.msl" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/edmxResourcesToEmbed/Models/ReportModel.msl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/obj/Release/edmxResourcesToEmbed/Models/ReportModel.ssdl" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/obj/Release/edmxResourcesToEmbed/Models/ReportModel.ssdl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImillReports/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/ImillReports/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/Syncfusion.EJ2.JavaScript.17.4.0.55.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/bootstrap4.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/compatibility/bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/compatibility/bootstrap4.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/compatibility/fabric.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/compatibility/highcontrast.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/compatibility/material.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/fabric.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/highcontrast.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Content/ej2/material.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Scripts/ej2/ej2.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Scripts/ej2/ej2.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.JavaScript.17.4.0.55/content/Scripts/ej2/ej2.min.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.MVC5.17.4.0.55/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.MVC5.17.4.0.55/Syncfusion.EJ2.MVC5.17.4.0.55.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.MVC5.17.4.0.55/lib/net45/Syncfusion.EJ2.XML" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.EJ2.MVC5.17.4.0.55/lib/net45/Syncfusion.EJ2.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/Syncfusion.Licensing.17.4.0.55.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/MonoAndroid10/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/Xamarin.Mac/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/Xamarin.iOS10/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/net20/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/net35/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/net40/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/net45/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/net451/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/net46/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/netcoreapp3.0/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/netstandard1.0/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/netstandard1.2/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/netstandard1.4/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/netstandard2.0/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/portable-win+net45+wp80+win81+wpa81/Syncfusion.Licensing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Syncfusion.Licensing.17.4.0.55/lib/uap10.0/Syncfusion.Licensing.dll" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/IntlmillReports/Models/ReportModel.Context.tt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ImillReports/Models/ReportModel.Context.tt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ImillReports/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/ImillReports/Views/Shared/_Layout.cshtml" />
+      </list>
+    </option>
   </component>
   <component name="ProjectId" id="1Yz4p2ODTiKD4eAXQaG3bXgsPiJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="Rider.SolutionExplorerActivator" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -58,6 +270,7 @@
       <updated>1583932267977</updated>
       <workItem from="1583932269817" duration="130000" />
       <workItem from="1588523882163" duration="1243000" />
+      <workItem from="1594049522910" duration="908000" />
     </task>
     <servers />
   </component>
@@ -66,5 +279,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="452" y="36" key="#IntlmillReports" timestamp="1594050427091">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="452" y="36" key="#IntlmillReports/0.0.1536.824@0.0.1536.824" timestamp="1594050427091" />
   </component>
 </project>

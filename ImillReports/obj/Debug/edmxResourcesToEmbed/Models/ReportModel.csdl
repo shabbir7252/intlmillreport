@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="IMILLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="IMILLEntities" annotation:LazyLoadingEnabled="true">
-    <FunctionImport Name="spICSTrans_GetAll" ReturnType="Collection(IMILLModel.spICSTrans_GetAll_Result)">
-      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
-      <Parameter Name="toDate" Mode="In" Type="DateTime" />
-      <Parameter Name="locationArray" Mode="In" Type="String" />
-      <Parameter Name="voucherTypeArray" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="spIUD_GetAll" ReturnType="Collection(IMILLModel.spIUD_GetAll_Result)" />
     <EntitySet Name="GL_Ledger" EntityType="IMILLModel.GL_Ledger" />
     <EntitySet Name="ICS_Item" EntityType="IMILLModel.ICS_Item" />
@@ -17,7 +11,6 @@
     <EntitySet Name="ICS_Unit" EntityType="IMILLModel.ICS_Unit" />
     <EntitySet Name="SM_Location" EntityType="IMILLModel.SM_Location" />
     <EntitySet Name="SM_SALESMAN" EntityType="IMILLModel.SM_SALESMAN" />
-    <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
     <AssociationSet Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd" Association="IMILLModel.FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
       <End Role="GL_Ledger" EntitySet="GL_Ledger" />
       <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
@@ -202,23 +195,16 @@
       <Parameter Name="intArray" Mode="In" Type="String" />
       <Parameter Name="prodArray" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="spICSTrans_GetAll" ReturnType="Collection(IMILLModel.spICSTrans_GetAll_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="locationArray" Mode="In" Type="String" />
+      <Parameter Name="voucherTypeArray" Mode="In" Type="String" />
+      <Parameter Name="fromHoDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toHoDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
   </EntityContainer>
-  <ComplexType Name="spICSTrans_GetAll_Result">
-    <Property Type="Int64" Name="Entry_Id" Nullable="false" />
-    <Property Type="DateTime" Name="Voucher_Date" Nullable="false" Precision="16" />
-    <Property Type="String" Name="L_Sman_Name" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="A_Sman_Name" Nullable="true" MaxLength="50" />
-    <Property Type="Int64" Name="Voucher_No" Nullable="false" />
-    <Property Type="Int16" Name="Locat_Cd" Nullable="false" />
-    <Property Type="String" Name="L_Short_Name" Nullable="false" MaxLength="20" />
-    <Property Type="String" Name="A_Short_Name" Nullable="true" MaxLength="20" />
-    <Property Type="Int16" Name="Voucher_Type" Nullable="false" />
-    <Property Type="String" Name="L_Voucher_Name" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="A_Voucher_Name" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="Group_Cd" Nullable="false" />
-    <Property Type="String" Name="L_Ldgr_Name" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="A_Ldgr_Name" Nullable="true" MaxLength="100" />
-  </ComplexType>
   <ComplexType Name="spIUD_GetAll_Result">
     <Property Type="Int64" Name="Unit_Entry_Id" Nullable="false" />
     <Property Type="Int16" Name="Alt_Unit_Cd" Nullable="false" />
@@ -1218,50 +1204,6 @@
     <NavigationProperty Name="GL_Ledger" Relationship="IMILLModel.FK_GL_Ledger_Salesman_Default_Sman_Cd" FromRole="SM_SALESMAN" ToRole="GL_Ledger" />
     <NavigationProperty Name="ICS_Transaction" Relationship="IMILLModel.FK_ICS_Transaction_Salesman" FromRole="SM_SALESMAN" ToRole="ICS_Transaction" />
   </EntityType>
-  <EntityType Name="intlmill_cash_register">
-    <Key>
-      <PropertyRef Name="id" />
-      <PropertyRef Name="trans_date_time" />
-      <PropertyRef Name="location" />
-      <PropertyRef Name="salesman" />
-      <PropertyRef Name="shift_type" />
-      <PropertyRef Name="shift_count" />
-      <PropertyRef Name="total_cash" />
-      <PropertyRef Name="net_cash" />
-      <PropertyRef Name="total_sales" />
-      <PropertyRef Name="net_sales" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="trans_date_time" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="salesman" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="shift_type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-    <Property Name="shift_count" Type="Int32" Nullable="false" />
-    <Property Name="cheque" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="other" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="carriage" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="online" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="knet" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="visa" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="reserve" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="expense" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="total_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-    <Property Name="net_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-    <Property Name="d_20000" Type="Int32" />
-    <Property Name="d_10000" Type="Int32" />
-    <Property Name="d_5000" Type="Int32" />
-    <Property Name="d_1000" Type="Int32" />
-    <Property Name="d_0500" Type="Int32" />
-    <Property Name="d_0250" Type="Int32" />
-    <Property Name="d_0100" Type="Int32" />
-    <Property Name="d_0050" Type="Int32" />
-    <Property Name="d_0020" Type="Int32" />
-    <Property Name="d_0010" Type="Int32" />
-    <Property Name="d_0005" Type="Int32" />
-    <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-    <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-    <Property Name="staff_date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-  </EntityType>
   <Association Name="FK_Gl_Ledger_ICS_Transaction_Expenses_Ldgr_cd">
     <End Type="IMILLModel.GL_Ledger" Role="GL_Ledger" Multiplicity="0..1" />
     <End Type="IMILLModel.ICS_Transaction" Role="ICS_Transaction" Multiplicity="*" />
@@ -1816,4 +1758,61 @@
     <Property Type="String" Name="BaseUnit" Nullable="false" MaxLength="20" />
     <Property Type="String" Name="SellUnit" Nullable="false" MaxLength="20" />
   </ComplexType>
+  <ComplexType Name="spICSTrans_GetAll_Result">
+    <Property Type="Int64" Name="Entry_Id" Nullable="false" />
+    <Property Type="DateTime" Name="Voucher_Date" Nullable="false" Precision="16" />
+    <Property Type="String" Name="L_Sman_Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="A_Sman_Name" Nullable="true" MaxLength="50" />
+    <Property Type="Int64" Name="Voucher_No" Nullable="false" />
+    <Property Type="Int16" Name="Locat_Cd" Nullable="false" />
+    <Property Type="String" Name="L_Short_Name" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="A_Short_Name" Nullable="true" MaxLength="20" />
+    <Property Type="Int16" Name="Voucher_Type" Nullable="false" />
+    <Property Type="String" Name="L_Voucher_Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="A_Voucher_Name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="Group_Cd" Nullable="false" />
+    <Property Type="String" Name="L_Ldgr_Name" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="A_Ldgr_Name" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <EntityType Name="intlmill_cash_register">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="trans_date_time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="salesman" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="shift_type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="shift_count" Type="Int32" Nullable="false" />
+    <Property Name="cheque" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="other" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="carriage" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="online" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="knet" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="visa" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="reserve" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="expense" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="total_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="net_cash" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="d_20000" Type="Int32" />
+    <Property Name="d_10000" Type="Int32" />
+    <Property Name="d_5000" Type="Int32" />
+    <Property Name="d_1000" Type="Int32" />
+    <Property Name="d_0500" Type="Int32" />
+    <Property Name="d_0250" Type="Int32" />
+    <Property Name="d_0100" Type="Int32" />
+    <Property Name="d_0050" Type="Int32" />
+    <Property Name="d_0020" Type="Int32" />
+    <Property Name="d_0010" Type="Int32" />
+    <Property Name="d_0005" Type="Int32" />
+    <Property Name="total_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="net_sales" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="staff_date" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IsVerified" Type="Boolean" />
+    <Property Name="ActualStaffDate" Type="DateTime" Precision="0" />
+    <Property Name="Sman_Cd" Type="Int16" />
+    <Property Name="Locat_Cd" Type="Int16" />
+    <Property Name="CrOid" Type="Int32" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="0" />
+  </EntityType>
 </Schema>

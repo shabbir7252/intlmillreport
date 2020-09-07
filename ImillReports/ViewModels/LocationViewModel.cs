@@ -24,4 +24,12 @@ namespace ImillReports.ViewModels
         public int LocationId { get; set; }
         public string Name { get; set; }
     }
+
+    public class TaLocation
+    {
+        public int Oid { get; set; }
+        public string NameEn { get; set; }
+        public string NameAr { get; set; }
+        public string DeviceCode { get; set; }
+    }
 }

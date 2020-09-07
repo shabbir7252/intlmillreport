@@ -24,8 +24,9 @@ namespace ImillReports
                 "~/Scripts/mainscripts.bundle.js",
                 "~/Scripts/index2.js",
                 "~/Scripts/chart.min.js",
-                "~/Scripts/site.js",
-                "~/Scripts/ej2/ej2.min.js"));
+                "~/Scripts/site.js"
+                // "~/Scripts/ej2/ej2.min.js"
+                ));
 
             bundles.Add(new StyleBundle("~/bundles/Bootstrap").Include(
                 "~/Content/stylesheets/bootstrap.min.css"

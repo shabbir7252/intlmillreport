@@ -1,0 +1,146 @@
+﻿@model IEnumerable<Cash_Register.ViewModels.CRegister>
+
+@{
+    ViewBag.Title = "Records";
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="row">
+        <div class="col-4 text-center mx-auto">
+            <div class="alert alert-warning text-center" role="alert">
+                @ViewBag.Message
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-11 mx-auto">
+        <div class="row">
+            <div class="col-6">
+                <h4 class="mb-0 pt-1">Cash Register System | نظام كشف الصندوق</h4>
+            </div>
+            <div class="col-6 text-right">
+                <div class="row">
+                    <div class="col-9 pt-2">
+                        <h6><span class="pl-2">@ViewBag.CRLocationAr</span> | <span class="pr-2">@ViewBag.Salesman</span></h6>
+                    </div>
+                    <div class="col-3">
+                        <Button class="btn btn-primary" onclick="GoBack()">Back</Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+
+<div class="row">
+    <div class="col-11">
+        <table class="table table-sm table-bordered text-center">
+            <tr>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Oid)
+                    </th>*@
+                <th>
+                    Transaction Date
+                </th>
+                <th>
+                    Staff Date
+                </th>
+                <th>
+                    Shift Type
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Cheques)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Talabat)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Online)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Knet)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Visa)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Expense)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Reserve)
+                    </th>*@
+                <th>
+                    Net Balance
+                </th>
+                <th>Actions</th>
+            </tr>
+
+            @foreach (var item in Model.OrderByDescending(x => x.TransDate))
+            {
+                <tr>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Oid)
+                        </td>*@
+                    <td>
+                        @item.TransDate.ToString("dd-MM-yyyy hh:mm:ss tt")
+                    </td>
+                    <td>
+                        @item.StaffDate.ToString("dd-MM-yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShiftType)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Cheques)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Talabat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Online)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Knet)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Visa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Expense)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reserve)
+                        </td>*@
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NetBalance)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "CashRegister", new { oid = item.Oid }, null) |
+                        @Html.ActionLink("Delete", "Delete", "CashRegister", new { oid = item.Oid, salesmanOid = item.Salesman }, null) |
+                        @Html.ActionLink("Print", "Print", "CashRegister", new { oid = item.Oid }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function GoBack() {
+            var link = "@Url.Action("Index", "CashRegister")"
+                            window.location.href = link;
+        }
+    </script>
+}

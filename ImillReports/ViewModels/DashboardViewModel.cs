@@ -48,10 +48,8 @@ namespace ImillReports.ViewModels
 
         // Total Returns(HO)
         public decimal? SalesReturnHO { get; set; }
-
         public List<SalesMonthItem> SalesMonthItems { get; set; }
         public decimal? TotalSales { get; internal set; }
-
         public List<Product> Top5ProductsByAmount { get; set; }
         public List<Product> Top5HoProductsByAmount { get; internal set; }
         public List<Product> Top5ProductsByKg { get; internal set; }
@@ -59,6 +57,15 @@ namespace ImillReports.ViewModels
         public List<Product> Top5ProductsByQty { get; internal set; }
         public List<Product> Top5ProductsHoByQty { get; internal set; }
         public List<Product> Top5ProdDetailsByAmount { get; internal set; }
+        public decimal? TotalBranchOnlineCash { get; internal set; }
+        public decimal? TotalBranchOnlineKnet { get; internal set; }
+        public decimal? TotalBranchOnlineCc { get; internal set; }
+        public decimal? TotalBranchOnlineReturn { get; internal set; }
+        public decimal? TotalTalabat { get; internal set; }
+        public int TalabatTransCount { get; internal set; }
+        public int TotalOnlineTransCount { get; internal set; }
+        public int TotalBranchCount { get; internal set; }
+        public int TotalHOCount { get; internal set; }
     }
 
     public class Product
@@ -71,7 +78,6 @@ namespace ImillReports.ViewModels
         public decimal SellQuantity { get; internal set; }
         public long ProductId { get; internal set; }
         public List<ProductDetail> ProductDetails { get; set; }
-        public decimal PercentageAllItem { get; internal set; }
     }
 
     public class ProductDetail
@@ -84,6 +90,7 @@ namespace ImillReports.ViewModels
         public decimal SellQuantity { get; internal set; }
         public long ProductId { get; internal set; }
         public decimal PercentageAllItem { get; internal set; }
+        public string CustomerAr { get; internal set; }
     }
 
     public class SalesMonthItem
@@ -98,13 +105,23 @@ namespace ImillReports.ViewModels
         public string TotalCashSales { get; internal set; }
         public string TotalKnetSales { get; internal set; }
         public string TotalCreditCardSales { get; internal set; }
-        public string TotalCarraigeSales { get; internal set; }
-        public string TotalOnlineSales { get; internal set; }
+        public string TotalTalabatSales { get; internal set; }
+        public string TotalWebOrderSales { get; internal set; }
         public string SalesReturnBranches { get; internal set; }
-        public string TotalSales { get; internal set; }
         public string TotalHOSales { get; internal set; }
         public string TotalHOSalesCash { get; internal set; }
         public string TotalHOSalesCredit { get; internal set; }
         public string SalesReturnHO { get; internal set; }
+        public string GrandTotal { get; internal set; }
+        public decimal? TotalWebOrderCash { get; internal set; }
+        public decimal? TotalWebOrderKnet { get; internal set; }
+        public decimal? TotalWebOrderCc { get; internal set; }
+        public decimal TotalWebOrderReturn { get; internal set; }
+        public decimal OnlineSales { get; internal set; }
+        public int TotalWebOrderCount { get; internal set; }
+        public int TotalTalabatTransCount { get; internal set; }
+        public int OnlineTransCount { get; internal set; }
+        public int TotalBranchCount { get; internal set; }
+        public int TotalHoCount { get; internal set; }
     }
 }

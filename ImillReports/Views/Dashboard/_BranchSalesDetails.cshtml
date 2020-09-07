@@ -1,0 +1,407 @@
+﻿@using ImillReports.ViewModels
+@{
+    var DSTop5BranchProdByVal = (List<Product>)ViewBag.DSTop5BranchProdByVal;
+    var DSTop5HoProdByVal = (List<Product>)ViewBag.DSTop5HoProdByVal;
+
+    var DSTop5ProdByKg = (List<Product>)ViewBag.DSTop5ProdByKg;
+    var DSTop5ProdHoByKg = (List<Product>)ViewBag.DSTop5ProdHoByKg;
+
+    var DSTop5ProdByQty = (List<Product>)ViewBag.DSTop5ProdByQty;
+    var DSTop5ProdHoByQty = (List<Product>)ViewBag.DSTop5ProdHoByQty;
+}
+
+<div class="row mb-5">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 10 Product By Value</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5BranchProdByVal.OrderByDescending(x => x.Amount))
+                            {
+                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.Amount.Value.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+
+                                <tr class="p">
+                                    <td colspan="6" class="hiddenRow">
+                                        <div class="accordian-body collapse p-3" id="demo1">
+                                            <h4></h4>
+                                            <table class="table table-bordered" style="border-collapse:collapse;">
+                                                <thead style="background-color: #fff8dc;">
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>Amount</th>
+                                                        <th>Overall %</th>
+                                                        <th>Branch %</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: #fffaf0">
+
+                                                    @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.Amount))
+                                                    {
+
+                                                        <tr>
+                                                            <td>@detail.Location</td>
+                                                            <td>@detail.Amount.Value.ToString("0.000")</td>
+                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                            <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 10 Product By Value (HO)</h5>
+                <table class="table table-bordered" style="border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>NameAr</th>
+                            <th>Amount</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prod in DSTop5HoProdByVal.OrderByDescending(x => x.Amount))
+                        {
+                            <tr colspan="6" data-toggle="collapse" data-target="#demoHo1" class="accordion-toggle">
+                                <td>@prod.Name</td>
+                                <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                <td>@prod.Amount.Value.ToString("0.000")</td>
+                                <td>@prod.Percentage.ToString("0.00")</td>
+                            </tr>
+
+                            <tr class="p">
+                                <td colspan="6" class="hiddenRow">
+                                    <div class="accordian-body collapse p-3" id="demoHo1">
+                                        <h4></h4>
+                                        <table class="table table-bordered" style="border-collapse:collapse;">
+                                            <thead style="background-color: #fff8dc;">
+                                                <tr>
+                                                    <th>Customer</th>
+                                                    <th>Amount</th>
+                                                    <th>Overall %</th>
+                                                    <th>Client %</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: #fffaf0">
+
+                                                @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.Amount))
+                                                {
+
+                                                    <tr>
+                                                        <td>@detail.CustomerAr</td>
+                                                        <td>@detail.Amount.Value.ToString("0.000")</td>
+                                                        <td>@detail.Percentage.ToString("0.00")</td>
+                                                        <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row mb-5">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 10 Product By Kg</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Sell Quantity</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5ProdByKg.OrderByDescending(x => x.SellQuantity))
+                            {
+                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.SellQuantity.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+
+                                <tr class="p">
+                                    <td colspan="6" class="hiddenRow">
+                                        <div class="accordian-body collapse p-3" id="demo1">
+                                            <h4></h4>
+                                            <table class="table table-bordered" style="border-collapse:collapse;">
+                                                <thead style="background-color: #b4baff;">
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>Sell Quantity</th>
+                                                        <th>Overall %</th>
+                                                        <th>Branch %</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: #edefff">
+
+                                                    @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                    {
+
+                                                        <tr>
+                                                            <td>@detail.Location</td>
+                                                            <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                            <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            @*<p>Amount : <span></span></p>
+                                                <p>Percentage : <span></span> </p>
+                                                <p>Location : <span></span> </p>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 10 Product By Kg (HO)</h5>
+                <table class="table table-bordered" style="border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>NameAr</th>
+                            <th>Sell Quantity</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prod in DSTop5ProdHoByKg.OrderByDescending(x => x.SellQuantity))
+                        {
+                            <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                <td>@prod.Name</td>
+                                <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                <td>@prod.SellQuantity.ToString("0.000")</td>
+                                <td>@prod.Percentage.ToString("0.00")</td>
+                            </tr>
+
+                            <tr class="p">
+                                <td colspan="6" class="hiddenRow">
+                                    <div class="accordian-body collapse p-3" id="demo1">
+                                        <h4></h4>
+                                        <table class="table table-bordered" style="border-collapse:collapse;">
+                                            <thead style="background-color: #b4baff;">
+                                                <tr>
+                                                    <th>Customer</th>
+                                                    <th>Sell Quantity</th>
+                                                    <th>Overall %</th>
+                                                    <th>Client %</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: #edefff">
+
+                                                @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                {
+
+                                                    <tr>
+                                                        <td>@detail.CustomerAr</td>
+                                                        <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                        <td>@detail.Percentage.ToString("0.00")</td>
+                                                        <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mb-5">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 10 Product By Qty</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NameAr</th>
+                                <th>Sell Quantity</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in DSTop5ProdByQty.OrderByDescending(x => x.SellQuantity))
+                            {
+                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <td>@prod.Name</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                    <td>@prod.SellQuantity.ToString("0.000")</td>
+                                    <td>@prod.Percentage.ToString("0.00")</td>
+                                </tr>
+
+                                <tr class="p">
+                                    <td colspan="6" class="hiddenRow">
+                                        <div class="accordian-body collapse p-3" id="demo1">
+                                            <h4></h4>
+                                            <table class="table table-bordered" style="border-collapse:collapse;">
+                                                <thead style="background-color: #b4baff;">
+                                                    <tr>
+                                                        <th>Location</th>
+                                                        <th>Sell Quantity</th>
+                                                        <th>Overall %</th>
+                                                        <th>Branch %</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="background-color: #edefff">
+
+                                                    @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                    {
+
+                                                        <tr>
+                                                            <td>@detail.Location</td>
+                                                            <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                            <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            @*<p>Amount : <span></span></p>
+                                                <p>Percentage : <span></span> </p>
+                                                <p>Location : <span></span> </p>*@
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 10 Product By Qty (HO)</h5>
+                <table class="table table-bordered" style="border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>NameAr</th>
+                            <th>Sell Quantity</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prod in DSTop5ProdHoByQty.OrderByDescending(x => x.SellQuantity))
+                        {
+                            <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                <td>@prod.Name</td>
+                                <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                <td>@prod.SellQuantity.ToString("0.000")</td>
+                                <td>@prod.Percentage.ToString("0.00")</td>
+                            </tr>
+
+                            <tr class="p">
+                                <td colspan="6" class="hiddenRow">
+                                    <div class="accordian-body collapse p-3" id="demo1">
+                                        <h4></h4>
+                                        <table class="table table-bordered" style="border-collapse:collapse;">
+                                            <thead style="background-color: #b4baff;">
+                                                <tr>
+                                                    <th>Customer</th>
+                                                    <th>Sell Quantity</th>
+                                                    <th>Overall %</th>
+                                                    <th>Client %</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="background-color: #edefff">
+
+                                                @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                {
+
+                                                    <tr>
+                                                        <td>@detail.CustomerAr</td>
+                                                        <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                        <td>@detail.Percentage.ToString("0.00")</td>
+                                                        <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $('.accordion-toggle').click(function () {
+        $('.hiddenRow').hide();
+        $(this).next('tr').find('.hiddenRow').show();
+    });
+</script>

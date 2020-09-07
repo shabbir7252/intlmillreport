@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "SyncSalesData";
+}
+
+<h2>Page is for Syncing Sales Data with new transactions tables</h2>
+
+
+
+@section scripts {
+    <script>
+
+        //SyncAllSalesReport();
+        //const interval = setInterval(function () {
+        //    SyncAllSalesReport()
+        //}, 600000);
+
+       //  SyncSalesMonthReport();
+
+
+        function SyncAllSalesReport() {
+            var daysCount = 13;
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesSync", "SalesReport")',
+                data: { days: daysCount },
+                success: function (response) {
+                    console.log("Sales : ", response);
+                    SyncAllSalesDetailReport(daysCount);
+                },
+                error: function (ex) {
+                    console.log("Sales : ", ex);
+                }
+
+            });
+        }
+
+        function SyncAllSalesDetailReport(daysCount) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesDetailSync", "SalesReport")',
+                data: { days : daysCount },
+                success: function (response) {
+                    console.log("Sales Detail : ", response);
+                },
+                error: function (ex) {
+                    console.log("Sales Detail : ", ex);
+                }
+
+            });
+        }
+
+
+        function SyncSalesMonthReport() {
+            var month = 8;
+            var year = 2020;
+            var from = 23;
+            var to = 23;
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesMonthSync", "SalesReport")',
+                data: {
+                    year: year,
+                    month: month,
+                    from: from,
+                    to: to
+                },
+                success: function (response) {
+                    console.log("Sales Month: ", response);
+                    SyncSalesDetailMonthReport(year, month, from, to);
+                },
+                error: function (ex) {
+                    console.log("Sales Month: ", ex);
+                }
+
+            });
+        }
+
+        function SyncSalesDetailMonthReport(year, month, from, to) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesDetailMonthSync", "SalesReport")',
+                data: {
+                    year: year,
+                    month: month,
+                    from: from,
+                    to: to
+                },
+                success: function (response) {
+                    console.log("Sales Detail Month: ", response);
+                },
+                error: function (ex) {
+                    console.log("Sales Detail Month: ", ex);
+                }
+
+            });
+        }
+
+
+
+
+        // for 2019 data
+        var date = new Date(2019, 1, 1);
+        var endDate = new Date(2019, 12, 31);
+        Date.prototype.addDays = function (days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        };
+
+        SyncSalesMonth2019Report();
+        const interval = setInterval(function () {
+            SyncSalesMonth2019Report();
+        }, 600000);
+
+        function SyncSalesMonth2019Report() {
+            var year = 2019;
+            var month = date.getMonth();
+            var from = date.getDate();
+            var to = date.addDays(2).getDate();
+            if (date > endDate) {
+                console.log("2019 Ended!");
+            } else {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetSalesMonthSync", "SalesReport")',
+                    data: {
+                        year: year,
+                        month: month,
+                        from: from,
+                        to: to
+                    },
+                    success: function (response) {
+                        console.log("Sales Month: ", response);
+                        SyncSalesDetailMonth2019Report(year, month, from, to);
+                    },
+                    error: function (ex) {
+                        console.log("Sales Month: ", ex);
+                    }
+                });
+            }
+        }
+
+        function SyncSalesDetailMonth2019Report(year, month, from, to) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesDetailMonthSync", "SalesReport")',
+                data: {
+                    year: year,
+                    month: month,
+                    from: from,
+                    to: to
+                },
+                success: function (response) {
+                    console.log("Sales Detail Month: ", response);
+                    date = date.addDays(3);
+                },
+                error: function (ex) {
+                    console.log("Sales Detail Month: ", ex);
+                }
+
+            });
+        }
+
+    </script>
+}

@@ -1,26 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="IMILLModelStoreContainer" CdmEntityContainer="IMILLEntities">
-    <FunctionImportMapping FunctionImportName="spICSTrans_GetAll" FunctionName="IMILLModel.Store.spICSTrans_GetAll">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="IMILLModel.spICSTrans_GetAll_Result">
-          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
-          <ScalarProperty Name="Voucher_Date" ColumnName="Voucher_Date" />
-          <ScalarProperty Name="L_Sman_Name" ColumnName="L_Sman_Name" />
-          <ScalarProperty Name="A_Sman_Name" ColumnName="A_Sman_Name" />
-          <ScalarProperty Name="Voucher_No" ColumnName="Voucher_No" />
-          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
-          <ScalarProperty Name="L_Short_Name" ColumnName="L_Short_Name" />
-          <ScalarProperty Name="A_Short_Name" ColumnName="A_Short_Name" />
-          <ScalarProperty Name="Voucher_Type" ColumnName="Voucher_Type" />
-          <ScalarProperty Name="L_Voucher_Name" ColumnName="L_Voucher_Name" />
-          <ScalarProperty Name="A_Voucher_Name" ColumnName="A_Voucher_Name" />
-          <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
-          <ScalarProperty Name="L_Ldgr_Name" ColumnName="L_Ldgr_Name" />
-          <ScalarProperty Name="A_Ldgr_Name" ColumnName="A_Ldgr_Name" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
     <EntitySetMapping Name="GL_Ledger">
       <EntityTypeMapping TypeName="IMILLModel.GL_Ledger">
         <MappingFragment StoreEntitySet="GL_Ledger">
@@ -929,9 +909,53 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spICSTransDetail_GetAll" FunctionName="IMILLModel.Store.spICSTransDetail_GetAll">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
+          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+          <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
+          <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
+          <ScalarProperty Name="IUDBaseQty" ColumnName="IUDBaseQty" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="FC_Prod_Dis" ColumnName="FC_Prod_Dis" />
+          <ScalarProperty Name="FC_Amount" ColumnName="FC_Amount" />
+          <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+          <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+          <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+          <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spICSTrans_GetAll" FunctionName="IMILLModel.Store.spICSTrans_GetAll">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="IMILLModel.spICSTrans_GetAll_Result">
+          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+          <ScalarProperty Name="Voucher_Date" ColumnName="Voucher_Date" />
+          <ScalarProperty Name="L_Sman_Name" ColumnName="L_Sman_Name" />
+          <ScalarProperty Name="A_Sman_Name" ColumnName="A_Sman_Name" />
+          <ScalarProperty Name="Voucher_No" ColumnName="Voucher_No" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="L_Short_Name" ColumnName="L_Short_Name" />
+          <ScalarProperty Name="A_Short_Name" ColumnName="A_Short_Name" />
+          <ScalarProperty Name="Voucher_Type" ColumnName="Voucher_Type" />
+          <ScalarProperty Name="L_Voucher_Name" ColumnName="L_Voucher_Name" />
+          <ScalarProperty Name="A_Voucher_Name" ColumnName="A_Voucher_Name" />
+          <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
+          <ScalarProperty Name="L_Ldgr_Name" ColumnName="L_Ldgr_Name" />
+          <ScalarProperty Name="A_Ldgr_Name" ColumnName="A_Ldgr_Name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <EntitySetMapping Name="intlmill_cash_register">
       <EntityTypeMapping TypeName="IMILLModel.intlmill_cash_register">
         <MappingFragment StoreEntitySet="intlmill_cash_register">
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="CrOid" ColumnName="CrOid" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="Sman_Cd" ColumnName="Sman_Cd" />
+          <ScalarProperty Name="ActualStaffDate" ColumnName="ActualStaffDate" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
           <ScalarProperty Name="staff_date" ColumnName="staff_date" />
           <ScalarProperty Name="net_sales" ColumnName="net_sales" />
           <ScalarProperty Name="total_sales" ColumnName="total_sales" />
@@ -965,23 +989,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="spICSTransDetail_GetAll" FunctionName="IMILLModel.Store.spICSTransDetail_GetAll">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
-          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
-          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
-          <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
-          <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
-          <ScalarProperty Name="IUDBaseQty" ColumnName="IUDBaseQty" />
-          <ScalarProperty Name="Qty" ColumnName="Qty" />
-          <ScalarProperty Name="FC_Prod_Dis" ColumnName="FC_Prod_Dis" />
-          <ScalarProperty Name="FC_Amount" ColumnName="FC_Amount" />
-          <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
-          <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
-          <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
-          <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

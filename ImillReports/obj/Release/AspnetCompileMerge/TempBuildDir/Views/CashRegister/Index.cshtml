@@ -23,6 +23,10 @@
     }
 </style>
 
+@Html.EJS().Toast("success-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Record is verified and Updated").Render()
+@Html.EJS().Toast("error-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be saved! Please try again by refereshing page").Render()
+@Html.EJS().Toast("info-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please select or deselect atleast 1 value").Render()
+
 <div class="container-fluid">
     @if (ViewBag.validation == "true")
     {
@@ -41,14 +45,14 @@
                 @using (Html.BeginForm("Index", "CashRegister", FormMethod.Get))
                 {
                     <div class="row p-3">
-                        <div class="col-3">
-                            @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.startDate).Render()
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("fromDate").Format("dd/MMM/yyyy").Value(ViewBag.startDate).Render()
                         </div>
-                        <div class="col-3">
-                            @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Render()
                         </div>
 
-                        <div class="col-3">
+                        <div class="col-2">
                             @Html.EJS().CheckBox("takeCount").Name("takeCount").Value("true").Label("Shift Count").Checked(ViewBag.takeCount).Render()
                         </div>
 
@@ -60,6 +64,13 @@
                 }
             </div>
             <div class="card mt-3">
+
+                <div class="row">
+                    <div class="col-2 mt-3 ml-4">
+                        <button type="button" onclick="Verify()" class="btn btn-raised bg-amber waves-effect waves-light">Verify</button>
+                    </div>
+                </div>
+
                 <div class="body">
 
                     <div class="preloader loading">
@@ -72,82 +83,100 @@
                     </div>
                     <h5 class="text-center loading-text mt-2">Loading...</h5>
 
+                    <div class="control-section">
 
-                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
-               {
-                   col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("LocationShortName").Width("80").HeaderText("Short Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("StaffDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm a" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("ShiftCount").Width("80").HeaderText("Shift Count").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("ShiftType").Width("80").HeaderText("Shift Type").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Carriage").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Cheque").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Online").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Knet").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Visa").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Cash").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Expense").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Reserve").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("TotalSales").Width("80").HeaderText("Total Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("NetSales").Width("80").HeaderText("Total Sales").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("NetAmount").Width("80").HeaderText("Total Cash").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                        @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
                    {
-                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Cash", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                       col.Field("IsVerified").Template("#idtemplate").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
+                       col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
+                       col.Field("TransDateTime").Width("100").HeaderText("Trans Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("LocationShortName").Width("80").HeaderText("Short Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("StaffDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ShiftCount").Width("80").HeaderText("Shift Count").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ShiftType").Width("80").HeaderText("Shift Type").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Carriage").Width("80").Format("N3").HeaderText("Talabat").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Cheque").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Online").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Knet").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Visa").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Cash").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Expense").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Reserve").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("TotalSales").Width("80").HeaderText("Total Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NetSales").Width("80").HeaderText("Total Sales").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NetAmount").Width("80").HeaderText("Total Cash").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                       page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                       {
+                           agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Cash", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Carriage", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Carriage", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Cheque", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Cheque", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Online", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Online", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Knet", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Knet", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Visa", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Visa", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "TotalSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "TotalSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "NetSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "NetSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "NetAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "NetAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Reserve", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           },
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Reserve", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               },
 
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "Expense", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           }
-                       }).Add();
-                   }).DataBound("dataBound").Render()
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "Expense", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               }
+                           }).Add();
+                       }).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+                    </div>
+                    <script id="idtemplate" type="text/x-template">
+                        <div class="template_checkbox">
+                            ${if(IsVerified === 1)}
+                            <input type="checkbox" class="myClass" checked>
+                            ${else}
+                            <input type="checkbox" class="myClass" onchange="OnDeselected($event)"> ${/if}
+                        </div>
+                    </script>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
 @section scripts {
+
+
+
     <script>
 
         $('.preloader').hide();
@@ -157,14 +186,120 @@
            this.autoFitColumns(['Location', 'StaffDate', 'ShiftCount', 'ShiftType', 'Carriage', 'Cheque', 'Online', 'Expense', 'Reserve', 'TotalSales', 'NetSales', 'NetAmount', 'Cash', 'Knet', 'Visa']);
         }
 
-        //function load() {
-        //    var grid = document.getElementById('Grid').ej2_instances[0];
-        //    var rowHeight = grid.getRowHeight();  //height of the each row
-        //    var gridHeight = grid.height;  //grid height
-        //    var pageSize = grid.pageSettings.pageSize;   //initial page size
-        //    var pageResize = 25; //new page size is obtained here
-        //    grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
-        //}
+        var verificationIds = [];
+        var deVerifiedIds = [];
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+                deVerifiedIds = [];
+            } else {
+                if (args.row.length > 1) {
+                    deVerifiedIds = [];
+                    args.row.forEach(function (item, i) {
+                        deVerifiedIds.push(item.cells[1].innerHTML);
+                    });
+
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row[0].cells[1].innerHTML);
+                    // var deselectedId = +args.data[0].Oid;
+
+                    if (deVerifiedIds.length === 0) {
+                        deVerifiedIds.push(deselectedId);
+                    } else {
+                        var add = true;
+                        deVerifiedIds.some(function (item, i) {
+                            if (item === deselectedId) {
+                                add = false;
+                            }
+                        });
+                        if (add) {
+                            deVerifiedIds.push(deselectedId);
+                        }
+                    }
+
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+
+                verificationIds.some(function (item, i) {
+                    deVerifiedIds.some(function (item2, i2) {
+                        if (item === item2) {
+                            deVerifiedIds.splice(i2, 1);
+                        }
+                    });
+                });
+
+            } else {
+
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+
+                deVerifiedIds.some(function (item, i) {
+                    if (item === selectedId) {
+                        deVerifiedIds.splice(i, 1);
+                    }
+                });
+            }
+        }
+
+        function Verify() {
+
+            if (verificationIds.length === 0 && deVerifiedIds.length === 0) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                 $.ajax({
+                    type: 'POST',
+                     data: {
+                         verifiedIds: verificationIds,
+                         deVerifiedIds: deVerifiedIds,
+                     },
+                    url: '@Url.Action("UpdateVerifiedIds", "CashRegister")',
+                    dataType: 'json',
+                     success: function (response) {
+                         if (response === true) {
+                             setTimeout(() => {
+                                 var toastObj = document.getElementById('success-toast').ej2_instances[0];
+                                 toastObj.target = document.body;
+                                 toastObj.show();
+                             }, 1000);
+                             verificationIds = [];
+                             deVerifiedIds = [];
+                         } else {
+                             setTimeout(() => {
+                                 var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                 toastObj.target = document.body;
+                                 toastObj.show();
+                             }, 1000);
+                         }
+                    },
+                    error: function (ex) {
+                        setTimeout(() => {
+                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            toastObj.target = document.body;
+                            toastObj.show();
+                        }, 1000);
+                    }
+                });
+            }
+        }
+
 
         function toolbarClick(args) {
             var gridObj = document.getElementById("Grid").ej2_instances[0];

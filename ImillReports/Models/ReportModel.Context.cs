@@ -38,7 +38,25 @@ namespace ImillReports.Models
         public virtual DbSet<SM_SALESMAN> SM_SALESMAN { get; set; }
         public virtual DbSet<intlmill_cash_register> intlmill_cash_register { get; set; }
     
-        public virtual ObjectResult<spICSTrans_GetAll_Result> spICSTrans_GetAll(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string locationArray, string voucherTypeArray)
+        public virtual ObjectResult<spIUD_GetAll_Result> spIUD_GetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spIUD_GetAll_Result>("spIUD_GetAll");
+        }
+    
+        public virtual ObjectResult<spICSTransDetail_GetAll_Result> spICSTransDetail_GetAll(string intArray, string prodArray)
+        {
+            var intArrayParameter = intArray != null ?
+                new ObjectParameter("intArray", intArray) :
+                new ObjectParameter("intArray", typeof(string));
+    
+            var prodArrayParameter = prodArray != null ?
+                new ObjectParameter("prodArray", prodArray) :
+                new ObjectParameter("prodArray", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTransDetail_GetAll_Result>("spICSTransDetail_GetAll", intArrayParameter, prodArrayParameter);
+        }
+    
+        public virtual ObjectResult<spICSTrans_GetAll_Result> spICSTrans_GetAll(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string locationArray, string voucherTypeArray, Nullable<System.DateTime> fromHoDate, Nullable<System.DateTime> toHoDate)
         {
             var fromDateParameter = fromDate.HasValue ?
                 new ObjectParameter("fromDate", fromDate) :
@@ -56,25 +74,15 @@ namespace ImillReports.Models
                 new ObjectParameter("voucherTypeArray", voucherTypeArray) :
                 new ObjectParameter("voucherTypeArray", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTrans_GetAll_Result>("spICSTrans_GetAll", fromDateParameter, toDateParameter, locationArrayParameter, voucherTypeArrayParameter);
-        }
+            var fromHoDateParameter = fromHoDate.HasValue ?
+                new ObjectParameter("fromHoDate", fromHoDate) :
+                new ObjectParameter("fromHoDate", typeof(System.DateTime));
     
-        public virtual ObjectResult<spIUD_GetAll_Result> spIUD_GetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spIUD_GetAll_Result>("spIUD_GetAll");
-        }
+            var toHoDateParameter = toHoDate.HasValue ?
+                new ObjectParameter("toHoDate", toHoDate) :
+                new ObjectParameter("toHoDate", typeof(System.DateTime));
     
-        public virtual ObjectResult<spICSTransDetail_GetAll_Result> spICSTransDetail_GetAll(string intArray, string prodArray)
-        {
-            var intArrayParameter = intArray != null ?
-                new ObjectParameter("intArray", intArray) :
-                new ObjectParameter("intArray", typeof(string));
-    
-            var prodArrayParameter = prodArray != null ?
-                new ObjectParameter("prodArray", prodArray) :
-                new ObjectParameter("prodArray", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTransDetail_GetAll_Result>("spICSTransDetail_GetAll", intArrayParameter, prodArrayParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTrans_GetAll_Result>("spICSTrans_GetAll", fromDateParameter, toDateParameter, locationArrayParameter, voucherTypeArrayParameter, fromHoDateParameter, toHoDateParameter);
         }
     }
 }

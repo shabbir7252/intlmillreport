@@ -1,10 +1,6 @@
-﻿using ImillReports.Contracts;
+﻿using System.Web.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using ImillReports.Contracts;
 
 namespace ImillReports.Controllers
 {
@@ -12,10 +8,8 @@ namespace ImillReports.Controllers
     public class LocationController : Controller
     {
         private readonly ILocationRepository _locationRepository;
-        public LocationController(ILocationRepository locationRepository)
-        {
+        public LocationController(ILocationRepository locationRepository) =>
             _locationRepository = locationRepository;
-        }
 
         public LocationController() { }
 

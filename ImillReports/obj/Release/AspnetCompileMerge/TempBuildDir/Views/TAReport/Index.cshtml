@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "Time Attendance Report";
+    ViewBag.SubTitle = "All transactions of Time and Attendance as report";
+
+    var test = ViewBag.DataSource;
+    var etst2 = "";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+
+    @*<div class="row">
+            <div class="col-6 mx-auto text-center">
+                <h2 class="bg-yellow text-dark">Under Development</h2>
+            </div>
+        </div>*@
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("Index", "TAReport", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("fromDate").Format("dd/MMM/yyyy").Value(ViewBag.startDate).Render()
+                        </div>
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Render()
+                        </div>
+
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="card mt-3">
+
+                <div class="body">
+
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+               {
+                   col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("EmployeeId").Width("80").HeaderText("Emp Id").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("EmployeeName").HeaderText("Employee").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("Temperature").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ShiftStart").HeaderText("Shift Start").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ShiftEnd").Width("100").HeaderText("Shift End").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("PunchIn").Width("100").HeaderText("Punch In").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("PunchOut").Width("100").HeaderText("Punch Out").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LateIn").HeaderText("Late In").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("EarlyOut").HeaderText("Early Out").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TotalHoursWorked").HeaderText("Total Hours Worked").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("DeviceCode").Width("80").HeaderText("Device Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Render()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+
+
+    <script>
+
+        function dataBound(args) {
+            this.autoFitColumns(['Location']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "TimeAttendanceReport.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+    </script>
+}
+

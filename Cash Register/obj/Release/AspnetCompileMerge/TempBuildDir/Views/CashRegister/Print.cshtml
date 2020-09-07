@@ -1,0 +1,94 @@
+﻿@model Cash_Register.ViewModels.CRegister
+
+@{
+    ViewBag.Title = "Print";
+}
+
+<style>
+    @@media print {
+        .print {
+            display: none;
+        }
+    }
+</style>
+
+<div class="row">
+    <div class="col-6"><h2></h2></div>
+    <div class="col-6"><h2 class="text-right"></h2></div>
+</div>
+
+<div class="row">
+    <div class="col-12 text-center mb-3 print">
+        <button onclick="window.print();" class="btn btn-dark">Print/طباعة</button>
+    </div>
+    <div class="col-6 mx-auto" id="printableArea">
+
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        Cash Register System
+                        <br />
+                        نظام كشف الصندوق
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Staff Date</td>
+                    <td>@Model.StaffDate.ToString("dd-MM-yyyy")</td>
+
+                </tr>
+                <tr>
+                    <td>Print Date</td>
+                    <td>@Model.TransDate.ToString("dd-MM-yyyy | hh:mm:ss tt")</td>
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>@ViewBag.Location</td>
+                </tr>
+                <tr>
+                    <td>Staff</td>
+                    <td>@ViewBag.Salesman</td>
+                </tr>
+                <tr>
+                    <td>Shift Type</td>
+                    <td class="text-capitalize">@Model.ShiftType</td>
+                </tr>
+                <tr>
+                    <td>Cheques</td>
+                    <td>@Model.Cheques.ToString("0.000")</td>
+                </tr>
+                <tr>
+                    <td>Online</td>
+                    <td>@Model.Online.ToString("0.000")</td>
+                </tr>
+                <tr>
+                    <td>Talabat</td>
+                    <td>@Model.Talabat.ToString("0.000")</td>
+                </tr>
+                <tr>
+                    <td>Knet</td>
+                    <td>@Model.Knet.ToString("0.000")</td>
+                </tr>
+                <tr>
+                    <td>Visa</td>
+                    <td>@Model.Visa.ToString("0.000")</td>
+                </tr>
+                <tr>
+                    <td>Reserve</td>
+                    <td>@Model.Reserve.ToString("0.000")</td>
+                </tr>
+                <tr>
+                    <td>Expense</td>
+                    <td>@Model.Expense.ToString("0.000")</td>
+                </tr>
+                <tr style="border: 3px double black">
+                    <td>Net Cash</td>
+                    <td>@Model.NetBalance.ToString("0.000")</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

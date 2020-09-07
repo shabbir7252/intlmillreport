@@ -1,6 +1,6 @@
-﻿@using ImillReports.ViewModels
+﻿@*@using ImillReports.ViewModels*@
 @{
-    ViewBag.Title = "Branch Sales Dashboard";
+    ViewBag.Title = "SALES ANALYTICS";
     ViewBag.SubTitle = "";
 
     var fromDate = ViewBag.fromDate;
@@ -9,15 +9,16 @@
     var fromD = ViewBag.fromD;
     var toD = ViewBag.toD;
     var jsonResult = ViewBag.jsonResult;
+    var jsonResult2 = ViewBag.jsonResult2;
 
-    var DSTop5BranchProdByVal = (List<Product>)ViewBag.DSTop5BranchProdByVal;
-    var DSTop5HoProdByVal = (List<Product>)ViewBag.DSTop5HoProdByVal;
+    //var DSTop5BranchProdByVal = (List<Product>)ViewBag.DSTop5BranchProdByVal;
+    //var DSTop5HoProdByVal = (List<Product>)ViewBag.DSTop5HoProdByVal;
 
-    var DSTop5ProdByKg = (List<Product>)ViewBag.DSTop5ProdByKg;
-    var DSTop5ProdHoByKg = (List<Product>)ViewBag.DSTop5ProdHoByKg;
-    
-    var DSTop5ProdByQty = (List<Product>)ViewBag.DSTop5ProdByQty;
-    var DSTop5ProdHoByQty = (List<Product>)ViewBag.DSTop5ProdHoByQty;
+    //var DSTop5ProdByKg = (List<Product>)ViewBag.DSTop5ProdByKg;
+    //var DSTop5ProdHoByKg = (List<Product>)ViewBag.DSTop5ProdHoByKg;
+
+    //var DSTop5ProdByQty = (List<Product>)ViewBag.DSTop5ProdByQty;
+    //var DSTop5ProdHoByQty = (List<Product>)ViewBag.DSTop5ProdHoByQty;
 
 }
 
@@ -76,545 +77,994 @@
     <div class="row clearfix">
         <div class="col-12">
             <div class="card">
-                @using (Html.BeginForm("BranchSales", "Dashboard", FormMethod.Get))
-                {
-                    <div class="row p-3">
-                        <div class="col-3">
-                            @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(@fromD).Render()
-                        </div>
-                        <div class="col-3">
-                            @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(@toD).Render()
-                        </div>
-
-                        <div class="col-2">
-                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
-                        </div>
+                @*@using (Html.BeginForm("BranchSales", "Dashboard", FormMethod.Get))
+                    {*@
+                <div class="row p-3">
+                    <div class="col-3">
+                        @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(@fromD).Render()
                     </div>
-                }
+                    <div class="col-3">
+                        @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(@toD).Render()
+                    </div>
+
+                    <div class="col-2">
+                        @*<button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>*@
+                        <button class="btn btn-raised bg-black waves-effect waves-light" onclick="GetRecords();GetRecordsDetail()">Get Records</button>
+                    </div>
+                </div>
+                @*}*@
             </div>
         </div>
     </div>
 
-    <div class="row clearfix">
+    <div class="preloader loading">
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+    </div>
+    <h5 class="text-center loading-text mt-2">Loading Sales Data. Please Wait (<span id="secondsCounter"></span>)...</h5>
+    <div class="branch-sales mb-5"></div>
 
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card info-box-2 l-amber">
-                <div class="body">
-                    <div class="content col-12">
-                        <div class="text">Total Branch Sales</div>
-                        <div class="number" id="totalBranchSales"></div>
-                        <hr />
-                        <h5>@ViewBag.BRSalesPercent%</h5>
-                        <div class="progress m-b-5">
-                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.BRSalesPercent" aria-valuemin="@ViewBag.BRSalesPercent"
-                                 aria-valuemax="100" style="width:@ViewBag.BRSalesPercent%">
-                                <span class="sr-only">@ViewBag.BRSalesPercent% Complete</span>
-                            </div>
-                        </div>
-                    </div>
+
+    <div class="preloader-detail loading">
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+    </div>
+    <h5 class="text-center loading-detail-text mt-2">Loading Top 10 Details. Please Wait...</h5>
+    <div class="branch-sales-detail mb-5"></div>
+
+    @*<div class="row">
+            <div class="col-12">
+                <div class="card l-blush px-3 pt-2 text-center" style="border-radius: 5px;box-shadow: 0 25px 22px -20px firebrick;border: 1px solid burlywood;">
+                    <h3 class="text" style="font-weight:300">Total Sales : <span id="totalSales"></span></h3>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-12">
-            <div class="card info-box-2 l-blush">
-                <div class="body">
-                    <div class="content col-12">
-                        <div class="text">Total HO Sales</div>
-                        <div class="number" id="totalHOSales"></div>
-                        <hr />
-                        <h5>@ViewBag.HOSalesPercent%</h5>
-                        <div class="progress m-b-5">
-                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesPercent" aria-valuemin="@ViewBag.HOSalesPercent"
-                                 aria-valuemax="100" style="width:@ViewBag.HOSalesPercent%">
-                                <span class="sr-only">@ViewBag.HOSalesPercent% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="row clearfix">
 
-        <div class="col-lg-2 col-md-6 col-sm-12">
-            <div class="card info-box-2 l-parpl">
-                <div class="body">
-                    <div class="content col-12">
-                        <div class="text">HO Sales (Cash)</div>
-                        <div class="number" id="totalHOSalesCash"></div>
-                        <hr />
-                        <h5>@ViewBag.HOSalesCashPercent%</h5>
-                        <div class="progress m-b-5">
-                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesCashPercent" aria-valuemin="@ViewBag.HOSalesCashPercent"
-                                 aria-valuemax="100" style="width:@ViewBag.HOSalesCashPercent%">
-                                <span class="sr-only">@ViewBag.HOSalesCashPercent% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-2 col-md-6 col-sm-12">
-            <div class="card info-box-2 l-seagreen">
-                <div class="body">
-                    <div class="content col-12">
-                        <div class="text">HO Sales (Credit)</div>
-                        <div class="number" id="totalHOSalesCredit"></div>
-                        <hr />
-                        <h5>@ViewBag.HOSalesCreditPercent%</h5>
-                        <div class="progress m-b-5">
-                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesCreditPercent" aria-valuemin="@ViewBag.HOSalesCreditPercent"
-                                 aria-valuemax="100" style="width:@ViewBag.HOSalesCreditPercent%">
-                                <span class="sr-only">@ViewBag.HOSalesCreditPercent% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-2 col-md-6 col-sm-12">
-            <div class="card info-box-2 l-blue">
-                <div class="body">
-                    <div class="content col-12">
-                        <div class="text">HO Sales Return</div>
-                        <div class="number" id="salesReturnHO"></div>
-                        <hr />
-                        <h5>@ViewBag.HOSalesReturnPercent%</h5>
-                        <div class="progress m-b-5">
-                            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="@ViewBag.HOSalesReturnPercent" aria-valuemin="@ViewBag.HOSalesReturnPercent"
-                                 aria-valuemax="100" style="width:@ViewBag.HOSalesReturnPercent%">
-                                <span class="sr-only">@ViewBag.HOSalesReturnPercent% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @*<div class="col-lg-2 col-md-6 col-sm-12">
-                <div class="card info-box-2 l-khaki">
-                    <div class="body">
+            <div class="col-6">
+                <div class="card info-box-2 l-amber">
+                    <div class="body" style="min-height: 420px;">
                         <div class="content col-12">
-                            <div class="text">Sales Return (Branches)</div>
-                            <div class="number" id="salesReturnBranches"></div>
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <div class="text" style="font-size: 22px;">Branch Sales</div>
+                                    <h2 class="text-muted" id="totalBranchSales"></h2>
+                                </div>
+                                <div class="col-6 pt-4">
+                                    <h5>@ViewBag.BRSalesPercent%</h5>
+                                    <div class="progress m-b-5">
+                                        <div class="progress-bar progress-bar-danger progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BRSalesPercent" aria-valuemin="@ViewBag.BRSalesPercent"
+                                             aria-valuemax="100" style="width:@ViewBag.BRSalesPercent%">
+                                            <span class="sr-only">@ViewBag.BRSalesPercent% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Cash </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalCashSales"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.BRCashPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-danger progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BRCashPercent" aria-valuemin="@ViewBag.BRCashPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.BRCashPercent%">
+                                                    <span class="sr-only">@ViewBag.BRCashPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Knet </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalKnetSales"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.BRKnetPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-danger progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BRKnetPercent" aria-valuemin="@ViewBag.BRKnetPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.BRKnetPercent%">
+                                                    <span class="sr-only">@ViewBag.BRKnetPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Credit Card </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalCreditCardSales"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.BRCCPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-danger progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BRCCPercent" aria-valuemin="@ViewBag.BRCCPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.BRCCPercent%">
+                                                    <span class="sr-only">@ViewBag.BRCCPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Sales Return </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="salesReturnBranches"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>0%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                                     aria-valuemax="100" style="width:0">
+                                                    <span class="sr-only">0</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>*@
+            </div>
 
-    </div>
+            <div class="col-6">
+                <div class="card info-box-2 l-parpl">
+                    <div class="body" style="min-height: 420px;">
+                        <div class="content col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text" style="font-size: 22px;">HO Sales</div>
+                                    <h2 class="text-muted" id="totalHOSales"></h2>
+                                </div>
+                                <div class="col-6 pt-4">
+                                    <h5>@ViewBag.HOSalesPercent%</h5>
+                                    <div class="progress m-b-5">
+                                        <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.HOSalesPercent" aria-valuemin="@ViewBag.HOSalesPercent"
+                                             aria-valuemax="100" style="width:@ViewBag.HOSalesPercent%">
+                                            <span class="sr-only">@ViewBag.HOSalesPercent% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
 
-    <div class="row clearfix">
-        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
-            <div class="card tasks_report">
-                <div class="header">
-                    <h4>Cash</h4>
-                    <hr />
-                </div>
-                <div class="body" style="padding-top: 0 !important">
-                    <input type="text" class="knob dial1" value="@ViewBag.BRCashPercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#824ED2" readonly>
-                    <h5 id="totalCashSales" class="m-t-20"></h5>
-                    @*<hr />
-                        <small class="displayblock">@ViewBag.BRCashPercent %</small>*@
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Cash </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalHOSalesCash"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.HOSalesCashPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.HOSalesCashPercent" aria-valuemin="@ViewBag.HOSalesCashPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.HOSalesCashPercent%">
+                                                    <span class="sr-only">@ViewBag.HOSalesCashPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Credit </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalHOSalesCredit"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.HOSalesCreditPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.HOSalesCreditPercent" aria-valuemin="@ViewBag.HOSalesCreditPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.HOSalesCreditPercent%">
+                                                    <span class="sr-only">@ViewBag.HOSalesCreditPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Sales Return</h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="salesReturnHO"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.HOSalesReturnPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.HOSalesReturnPercent" aria-valuemin="@ViewBag.HOSalesReturnPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.HOSalesReturnPercent%">
+                                                    <span class="sr-only">@ViewBag.HOSalesReturnPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
-            <div class="card tasks_report">
-                <div class="header">
-                    <h4>KNET</h4>
-                    <hr />
-                </div>
-                <div class="body" style="padding-top: 0 !important">
-                    <input type="text" class="knob dial2" value="@ViewBag.BRKnetPercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#ffa07a" readonly>
-                    <h5 id="totalKnetSales" class="m-t-20"></h5>
-                    @*<hr />
-                        <small class="displayblock">@ViewBag.BRKnetPercent %</small>*@
+            <div class="col-12">
+                <div class="card info-box-2 l-blue">
+                    <div class="row body" style="min-height: 420px;">
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="text" style="font-size: 22px;">Online Sales</div>
+                                            <h2 class="text-muted" id="onlineSales"></h2>
+                                        </div>
+                                        <div class="col-6 pt-4">
+                                            <h5>@ViewBag.OnlineSalesPercent%</h5>
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.OnlineSalesPercent" aria-valuemin="@ViewBag.OnlineSalesPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.OnlineSalesPercent%">
+                                                    <span class="sr-only">@ViewBag.OnlineSalesPercent% Complete</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="row">
+
+                                        <div class="col-6">
+                                            <div class="text" style="font-size: 22px;">Order Count</div>
+                                            <h2 class="text-muted" id="onlineTransCount"></h2>
+                                        </div>
+
+                                        <div class="col-6 pt-4">
+                                            <h5>@ViewBag.OnlineCountPercent%</h5>
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.OnlineCountPercent" aria-valuemin="@ViewBag.OnlineCountPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.OnlineCountPercent%">
+                                                    <span class="sr-only">@ViewBag.OnlineCountPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text" style="font-size: 22px;">Website Orders</div>
+                                    <h2 class="text-muted" id="totalWebOrderSales"></h2>
+
+                                    <div class="text" style="font-size: 22px;">Order Count</div>
+                                    <h2 class="text-muted" id="totalWebOrderCount"></h2>
+
+                                </div>
+                                <div class="col-6 pt-4">
+                                    <h5>@ViewBag.WebOrderPercent%</h5>
+                                    <div class="progress m-b-5">
+                                        <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.WebOrderPercent" aria-valuemin="@ViewBag.WebOrderPercent"
+                                             aria-valuemax="100" style="width:@ViewBag.WebOrderPercent%">
+                                            <span class="sr-only">@ViewBag.WebOrderPercent% Complete</span>
+                                        </div>
+                                    </div>
+
+                                    <h5 class="mt-4 pt-2">@ViewBag.WebOrderTransPercent%</h5>
+                                    <div class="progress m-b-5">
+                                        <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.WebOrderTransPercent" aria-valuemin="@ViewBag.WebOrderTransPercent"
+                                             aria-valuemax="100" style="width:@ViewBag.WebOrderTransPercent%">
+                                            <span class="sr-only">@ViewBag.WebOrderTransPercent% Complete</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Cash </h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalWebOrderCash"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.WebOrderCashPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.WebOrderCashPercent" aria-valuemin="@ViewBag.WebOrderCashPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.WebOrderCashPercent%">
+                                                    <span class="sr-only">@ViewBag.WebOrderCashPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Knet</h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalWebOrderKnet"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.WebOrderKnetPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.WebOrderKnetPercent" aria-valuemin="@ViewBag.WebOrderKnetPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.WebOrderKnetPercent%">
+                                                    <span class="sr-only">@ViewBag.WebOrderKnetPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Credit Card</h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalWebOrderCc"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.WebOrderCcPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.WebOrderCcPercent" aria-valuemin="@ViewBag.WebOrderCcPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.WebOrderCcPercent%">
+                                                    <span class="sr-only">@ViewBag.WebOrderCcPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row pt-2">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Sales Return</h5></div>
+                                        <div class="col-6"><h5 class="text-left" id="totalWebOrderReturn"></h5></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4"><h6>@ViewBag.WebOrderReturnPercent%</h6></div>
+                                        <div class="col-6">
+                                            <div class="progress m-b-5">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.WebOrderReturnPercent" aria-valuemin="@ViewBag.WebOrderReturnPercent"
+                                                     aria-valuemax="100" style="width:@ViewBag.WebOrderReturnPercent%">
+                                                    <span class="sr-only">@ViewBag.WebOrderReturnPercent% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text" style="font-size: 22px;">Talabat Orders</div>
+                                    <h2 class="text-muted" id="totalTalabatSales"></h2>
+
+                                    <div class="text" style="font-size: 22px;">Order Count</div>
+                                    <h2 class="text-muted" id="totalTalabatTransCount"></h2>
+
+                                </div>
+                                <div class="col-6 pt-4">
+                                    <h5>@ViewBag.TalabatPercent%</h5>
+                                    <div class="progress m-b-5">
+                                        <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.TalabatPercent" aria-valuemin="@ViewBag.TalabatPercent"
+                                             aria-valuemax="100" style="width:@ViewBag.TalabatPercent%">
+                                            <span class="sr-only">@ViewBag.TalabatPercent% Complete</span>
+                                        </div>
+                                    </div>
+
+                                    <h5 class="mt-4 pt-2">@ViewBag.TalabatTransPercent%</h5>
+                                    <div class="progress m-b-5">
+                                        <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.TalabatTransPercent" aria-valuemin="@ViewBag.TalabatTransPercent"
+                                             aria-valuemax="100" style="width:@ViewBag.TalabatTransPercent%">
+                                            <span class="sr-only">@ViewBag.TalabatTransPercent% Complete</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
-            <div class="card tasks_report">
-                <div class="header">
-                    <h4>Credit Card</h4>
-                    <hr />
-                </div>
-                <div class="body" style="padding-top: 0 !important">
-                    <input type="text" class="knob dial3" value="@ViewBag.BRCCPercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#8fbc8f" readonly>
-                    <h5 id="totalCreditCardSales" class="m-t-20"></h5>
-                    @*<small class="displayblock">@ViewBag.BRCCPercent %</small>*@
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="body">
+
+                        <div class="row">
+                            <div class="col-6 pt-4 mt-5">
+                                <canvas id="barChart" style="width:100%"></canvas>
+                            </div>
+
+                            <div class="col-6">
+                                @(Html.EJS().AccumulationChart("container").Series(series => {
+                                series.DataLabel(dl => dl.Visible(true).Name("text").Position(Syncfusion.EJ2.Charts.AccumulationLabelPosition.Outside).Font(ft => ft.FontWeight("600")))
+                                .XName("x").YName("y").Name("")
+                                .Type(Syncfusion.EJ2.Charts.AccumulationType.Pie)
+                                .Radius("80%")
+                                .StartAngle(0)
+                                .EndAngle(360)
+                                .DataSource(ViewBag.dataSourcePie).Add();
+                            }).EnableSmartLabels(true)
+                            .EnableAnimation(true)
+                            .Title("")
+                            .LegendSettings(ls => ls.Visible(true))
+                            .Tooltip(tp => tp.Enable(true).Format("${point.x} : <b>${point.y}</b>")).Render())
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
-        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
-            <div class="card tasks_report">
-                <div class="header">
-                    <h4>Carriage</h4>
-                    <hr />
-                </div>
-                <div class="body" style="padding-top: 0 !important">
-                    <input type="text" class="knob dial4" value="@ViewBag.BRCarraigePercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#00adef" readonly>
-                    <h5 id="totalCarraigeSales" class="m-t-20"></h5>
-                    @*<small class="displayblock">@ViewBag.BRCarraigePercent %</small>*@
-                </div>
-            </div>
-        </div>
+    @*<div class="row mb-5">
 
-        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
-            <div class="card tasks_report">
-                <div class="header">
-                    <h4>Online</h4>
-                    <hr />
-                </div>
-                <div class="body" style="padding-top: 0 !important">
-                    <input type="text" class="knob dial1" value="@ViewBag.BROnlinePercent" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#00ced1" readonly>
-                    <h5 id="totalOnlineSales" class="m-t-20"></h5>
-                    @*<small class="displayblock">@ViewBag.BROnlinePercent %</small>*@
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-2 col-md-6 col-sm-12 text-center">
-            <div class="card tasks_report">
-                <div class="header">
-                    <h4>Sales Return</h4>
-                    <hr />
-                </div>
-                <div class="body" style="padding-top: 0 !important">
-                    <input type="text" class="knob dial2" value="0" data-width="90" data-height="90" data-thickness="0.1" data-fgColor="#ffa07a" readonly>
-                    <h5 id="salesReturnBranches" class="m-t-20"></h5>
-                    @*<small class="displayblock">@ViewBag.BRsalesReturnPercent %</small>*@
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row mb-5">
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 10 Product By Value</h5>
-                    <table class="table table-bordered" style="border-collapse:collapse;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NameAr</th>
-                                <th>Amount</th>
-                                <th>Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var prod in DSTop5BranchProdByVal)
-                            {
-                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-                                    <td>@prod.Name</td>
-                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
-                                    <td>@prod.Amount.Value.ToString("0.000")</td>
-                                    <td>@prod.Percentage.ToString("0.00")</td>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Product By Value</h5>
+                        <table class="table table-bordered" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>NameAr</th>
+                                    <th>Amount</th>
+                                    <th>Percentage</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var prod in DSTop5BranchProdByVal.OrderByDescending(x => x.Amount))
+                                {
+                                    <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                        <td>@prod.Name</td>
+                                        <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                        <td>@prod.Amount.Value.ToString("0.000")</td>
+                                        <td>@prod.Percentage.ToString("0.00")</td>
+                                    </tr>
 
-                                <tr class="p">
-                                    <td colspan="6" class="hiddenRow">
-                                        <div class="accordian-body collapse p-3" id="demo1">
-                                            <h4></h4>
-                                            <table class="table table-bordered" style="border-collapse:collapse;">
-                                                <thead style="background-color: #fff8dc;">
-                                                    <tr>
-                                                        <th>Location</th>
-                                                        <th>Amount</th>
-                                                        <th>Percentage</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="background-color: #fffaf0">
-
-                                                    @foreach (var detail in prod.ProductDetails)
-                                                    {
-
+                                    <tr class="p">
+                                        <td colspan="6" class="hiddenRow">
+                                            <div class="accordian-body collapse p-3" id="demo1">
+                                                <h4></h4>
+                                                <table class="table table-bordered" style="border-collapse:collapse;">
+                                                    <thead style="background-color: #fff8dc;">
                                                         <tr>
-                                                            <td>@detail.Location</td>
-                                                            <td>@detail.Amount.Value.ToString("0.000")</td>
-                                                            <td>@detail.Percentage.ToString("0.00")</td>
+                                                            <th>Location</th>
+                                                            <th>Amount</th>
+                                                            <th>Overall %</th>
+                                                            <th>Branch %</th>
                                                         </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #fffaf0">
 
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            @*<p>Amount : <span></span></p>
-                                <p>Percentage : <span></span> </p>
-                                <p>Location : <span></span> </p>*@
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                                        @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.Amount))
+                                                        {
+
+                                                            <tr>
+                                                                <td>@detail.Location</td>
+                                                                <td>@detail.Amount.Value.ToString("0.000")</td>
+                                                                <td>@detail.Percentage.ToString("0.00")</td>
+                                                                <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 10 Product By Value (HO)</h5>
-                    <table class="table table-bordered" style="border-collapse:collapse;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NameAr</th>
-                                <th>Amount</th>
-                                <th>Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var prod in DSTop5HoProdByVal)
-                            {
-                                <tr colspan="6">
-                                    <td>@prod.Name</td>
-                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
-                                    <td>@prod.Amount.Value.ToString("0.000")</td>
-                                    <td>@prod.Percentage.ToString("0.00")</td>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Product By Value (HO)</h5>
+                        <table class="table table-bordered" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>NameAr</th>
+                                    <th>Amount</th>
+                                    <th>Percentage</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+                            </thead>
+                            <tbody>
+                                @foreach (var prod in DSTop5HoProdByVal.OrderByDescending(x => x.Amount))
+                                {
+                                    <tr colspan="6" data-toggle="collapse" data-target="#demoHo1" class="accordion-toggle">
+                                        <td>@prod.Name</td>
+                                        <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                        <td>@prod.Amount.Value.ToString("0.000")</td>
+                                        <td>@prod.Percentage.ToString("0.00")</td>
+                                    </tr>
 
-    </div>
-
-    <div class="row mb-5">
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 10 Product By Kg</h5>
-                    <table class="table table-bordered" style="border-collapse:collapse;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NameAr</th>
-                                <th>Sell Quantity</th>
-                                <th>Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var prod in DSTop5ProdByKg)
-                            {
-                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-                                    <td>@prod.Name</td>
-                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
-                                    <td>@prod.SellQuantity.ToString("0.000")</td>
-                                    <td>@prod.Percentage.ToString("0.00")</td>
-                                </tr>
-
-                                <tr class="p">
-                                    <td colspan="6" class="hiddenRow">
-                                        <div class="accordian-body collapse p-3" id="demo1">
-                                            <h4></h4>
-                                            <table class="table table-bordered" style="border-collapse:collapse;">
-                                                <thead style="background-color: #b4baff;">
-                                                    <tr>
-                                                        <th>Location</th>
-                                                        <th>Sell Quantity</th>
-                                                        <th>Overall %</th>
-                                                        <th>Branch %</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="background-color: #edefff">
-
-                                                    @foreach (var detail in prod.ProductDetails)
-                                                    {
-
-                                                    <tr>
-                                                        <td>@detail.Location</td>
-                                                        <td>@detail.SellQuantity.ToString("0.000")</td>
-                                                        <td>@detail.Percentage.ToString("0.00")</td>
-                                                        <td>@detail.PercentageAllItem.ToString("0.00")</td>
-                                                    </tr>
-
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            @*<p>Amount : <span></span></p>
-                                            <p>Percentage : <span></span> </p>
-                                            <p>Location : <span></span> </p>*@
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 10 Product By Kg (HO)</h5>
-                    <table class="table table-bordered" style="border-collapse:collapse;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NameAr</th>
-                                <th>Sell Quantity</th>
-                                <th>Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var prod in DSTop5ProdHoByKg)
-                            {
-                                <tr colspan="6">
-                                    <td>@prod.Name</td>
-                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
-                                    <td>@prod.SellQuantity.ToString("0.000")</td>
-                                    <td>@prod.Percentage.ToString("0.00")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row mb-5">
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 10 Product By Qty</h5>
-                    <table class="table table-bordered" style="border-collapse:collapse;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NameAr</th>
-                                <th>Sell Quantity</th>
-                                <th>Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var prod in DSTop5ProdByQty)
-                            {
-                                <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-                                    <td>@prod.Name</td>
-                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
-                                    <td>@prod.SellQuantity.ToString("0.000")</td>
-                                    <td>@prod.Percentage.ToString("0.00")</td>
-                                </tr>
-
-                                <tr class="p">
-                                    <td colspan="6" class="hiddenRow">
-                                        <div class="accordian-body collapse p-3" id="demo1">
-                                            <h4></h4>
-                                            <table class="table table-bordered" style="border-collapse:collapse;">
-                                                <thead style="background-color: #b4baff;">
-                                                    <tr>
-                                                        <th>Location</th>
-                                                        <th>Sell Quantity</th>
-                                                        <th>Overall %</th>
-                                                        <th>Branch %</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="background-color: #edefff">
-
-                                                    @foreach (var detail in prod.ProductDetails)
-                                                    {
-
+                                    <tr class="p">
+                                        <td colspan="6" class="hiddenRow">
+                                            <div class="accordian-body collapse p-3" id="demoHo1">
+                                                <h4></h4>
+                                                <table class="table table-bordered" style="border-collapse:collapse;">
+                                                    <thead style="background-color: #fff8dc;">
                                                         <tr>
-                                                            <td>@detail.Location</td>
-                                                            <td>@detail.SellQuantity.ToString("0.000")</td>
-                                                            <td>@detail.Percentage.ToString("0.00")</td>
-                                                            <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            <th>Customer</th>
+                                                            <th>Amount</th>
+                                                            <th>Overall %</th>
+                                                            <th>Client %</th>
                                                         </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #fffaf0">
 
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            @*<p>Amount : <span></span></p>
-                                            <p>Percentage : <span></span> </p>
-                                            <p>Location : <span></span> </p>*@
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                                        @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.Amount))
+                                                        {
+
+                                                            <tr>
+                                                                <td>@detail.CustomerAr</td>
+                                                                <td>@detail.Amount.Value.ToString("0.000")</td>
+                                                                <td>@detail.Percentage.ToString("0.00")</td>
+                                                                <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Top 10 Product By Qty (HO)</h5>
-                    <table class="table table-bordered" style="border-collapse:collapse;">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NameAr</th>
-                                <th>Sell Quantity</th>
-                                <th>Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var prod in DSTop5ProdHoByQty)
-                            {
-                                <tr colspan="6">
-                                    <td>@prod.Name</td>
-                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
-                                    <td>@prod.SellQuantity.ToString("0.000")</td>
-                                    <td>@prod.Percentage.ToString("0.00")</td>
+        </div>*@
+
+    @*<div class="row mb-5">
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Product By Kg</h5>
+                        <table class="table table-bordered" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>NameAr</th>
+                                    <th>Sell Quantity</th>
+                                    <th>Percentage</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var prod in DSTop5ProdByKg.OrderByDescending(x => x.SellQuantity))
+                                {
+                                    <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                        <td>@prod.Name</td>
+                                        <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                        <td>@prod.SellQuantity.ToString("0.000")</td>
+                                        <td>@prod.Percentage.ToString("0.00")</td>
+                                    </tr>
+
+                                    <tr class="p">
+                                        <td colspan="6" class="hiddenRow">
+                                            <div class="accordian-body collapse p-3" id="demo1">
+                                                <h4></h4>
+                                                <table class="table table-bordered" style="border-collapse:collapse;">
+                                                    <thead style="background-color: #b4baff;">
+                                                        <tr>
+                                                            <th>Location</th>
+                                                            <th>Sell Quantity</th>
+                                                            <th>Overall %</th>
+                                                            <th>Branch %</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #edefff">
+
+                                                        @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                        {
+
+                                                            <tr>
+                                                                <td>@detail.Location</td>
+                                                                <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                                <td>@detail.Percentage.ToString("0.00")</td>
+                                                                <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Product By Kg (HO)</h5>
+                        <table class="table table-bordered" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>NameAr</th>
+                                    <th>Sell Quantity</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var prod in DSTop5ProdHoByKg.OrderByDescending(x => x.SellQuantity))
+                                {
+                                    <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                        <td>@prod.Name</td>
+                                        <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                        <td>@prod.SellQuantity.ToString("0.000")</td>
+                                        <td>@prod.Percentage.ToString("0.00")</td>
+                                    </tr>
+
+                                    <tr class="p">
+                                        <td colspan="6" class="hiddenRow">
+                                            <div class="accordian-body collapse p-3" id="demo1">
+                                                <h4></h4>
+                                                <table class="table table-bordered" style="border-collapse:collapse;">
+                                                    <thead style="background-color: #b4baff;">
+                                                        <tr>
+                                                            <th>Customer</th>
+                                                            <th>Sell Quantity</th>
+                                                            <th>Overall %</th>
+                                                            <th>Client %</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #edefff">
+
+                                                        @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                        {
+
+                                                            <tr>
+                                                                <td>@detail.CustomerAr</td>
+                                                                <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                                <td>@detail.Percentage.ToString("0.00")</td>
+                                                                <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+
+    @*<div class="row mb-5">
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Product By Qty</h5>
+                        <table class="table table-bordered" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>NameAr</th>
+                                    <th>Sell Quantity</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var prod in DSTop5ProdByQty.OrderByDescending(x => x.SellQuantity))
+                                {
+                                    <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                        <td>@prod.Name</td>
+                                        <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                        <td>@prod.SellQuantity.ToString("0.000")</td>
+                                        <td>@prod.Percentage.ToString("0.00")</td>
+                                    </tr>
+
+                                    <tr class="p">
+                                        <td colspan="6" class="hiddenRow">
+                                            <div class="accordian-body collapse p-3" id="demo1">
+                                                <h4></h4>
+                                                <table class="table table-bordered" style="border-collapse:collapse;">
+                                                    <thead style="background-color: #b4baff;">
+                                                        <tr>
+                                                            <th>Location</th>
+                                                            <th>Sell Quantity</th>
+                                                            <th>Overall %</th>
+                                                            <th>Branch %</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #edefff">
+
+                                                        @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                        {
+
+                                                            <tr>
+                                                                <td>@detail.Location</td>
+                                                                <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                                <td>@detail.Percentage.ToString("0.00")</td>
+                                                                <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Product By Qty (HO)</h5>
+                        <table class="table table-bordered" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>NameAr</th>
+                                    <th>Sell Quantity</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var prod in DSTop5ProdHoByQty.OrderByDescending(x => x.SellQuantity))
+                                {
+                                    <tr colspan="6" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                        <td>@prod.Name</td>
+                                        <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@prod.NameAr</td>
+                                        <td>@prod.SellQuantity.ToString("0.000")</td>
+                                        <td>@prod.Percentage.ToString("0.00")</td>
+                                    </tr>
+
+                                    <tr class="p">
+                                        <td colspan="6" class="hiddenRow">
+                                            <div class="accordian-body collapse p-3" id="demo1">
+                                                <h4></h4>
+                                                <table class="table table-bordered" style="border-collapse:collapse;">
+                                                    <thead style="background-color: #b4baff;">
+                                                        <tr>
+                                                            <th>Customer</th>
+                                                            <th>Sell Quantity</th>
+                                                            <th>Overall %</th>
+                                                            <th>Client %</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #edefff">
+
+                                                        @foreach (var detail in prod.ProductDetails.OrderByDescending(x => x.SellQuantity))
+                                                        {
+
+                                                            <tr>
+                                                                <td>@detail.CustomerAr</td>
+                                                                <td>@detail.SellQuantity.ToString("0.000")</td>
+                                                                <td>@detail.Percentage.ToString("0.00")</td>
+                                                                <td>@detail.PercentageAllItem.ToString("0.00")</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
 
 </div>
 
 
 @section scripts {
     <script>
-        //function rowSelected(args) {
-        //    alert("row index: " + args.row.getAttribute('aria-rowindex'));
-        //}
 
-        $('.accordion-toggle').click(function () {
-            $('.hiddenRow').hide();
-            $(this).next('tr').find('.hiddenRow').show();
+        //$(".sec-online-sales").hide();
+        //$(".btn-online-sales").click(function () {
+        //    $(".sec-online-sales").toggle();
+        //});
+
+        //$('.accordion-toggle').click(function () {
+        //    $('.hiddenRow').hide();
+        //    $(this).next('tr').find('.hiddenRow').show();
+        //});
+
+        // branch-sales-detail
+
+        $('.preloader').hide();
+        $('.loading-text').hide();
+        
+        function GetRecords() {
+
+            $('.preloader').show();
+            $('.loading-text').show();
+            $('.branch-sales').html("");
+
+            var counter = 0;
+            var myInterval = setInterval(function () {
+                ++counter;
+                $('#secondsCounter').html(counter);
+            }, 1000);
+
+            var fromDate = $('#fromDate').val();
+            var toDate = $('#toDate').val();
+
+            $.ajax({
+                type: 'GET',
+                data: { fromDate: fromDate, toDate: toDate},
+                url: '@Url.Action("BranchSalesRecord", "Dashboard")',
+                success: function (response) {
+
+                    clearInterval(myInterval);
+                    $('.preloader').hide();
+                    $('.loading-text').hide();
+                    $('.branch-sales').html(response);
+                    $('#secondsCounter').html("");
+                    var data = localStorage.getItem("ColumnChartData");
+                    var c = document.getElementById("barChart");
+                    var ctx = c.getContext("2d");
+                    var myBarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: JSON.parse((data.replace(/(&quot\;)/g, "\""))).ChartData,
+                        options: {
+                            responsive: true,
+                            legend: false
+                        }
+                    });
+                },
+                error: function (ex) {
+                    alert(ex);
+                    $('.preloader').hide();
+                }
+
+            });
+        }
+
+        $('.preloader-detail').hide();
+        $('.loading-detail-text').hide();
+
+        function GetRecordsDetail() {
+
+            $('.preloader-detail').show();
+            $('.loading-detail-text').show();
+            $('.branch-sales-detail').html("");
+
+            var detailCounter = 0;
+            var myDetailInterval = setInterval(function () {
+                ++detailCounter;
+                $('#secondsDetailCounter').html(detailCounter);
+            }, 1000);
+
+            var fromDate = $('#fromDate').val();
+            var toDate = $('#toDate').val();
+
+            $.ajax({
+                type: 'GET',
+                data: { fromD: fromDate, toD: toDate},
+                url: '@Url.Action("BranchSalesDetailRecord", "Dashboard")',
+                success: function (response) {
+                    detailCounter = 0;
+                    clearInterval(myDetailInterval);
+                    $('.preloader-detail').hide();
+                    $('.loading-detail-text').hide();
+                    $('.branch-sales-detail').html(response);
+                    $('#secondsDetailCounter').html("");
+                },
+                error: function (ex) {
+                    alert(ex);
+                    $('.preloader-detail').hide();
+                }
+            });
+        }
+
+        $(function () {
+            GetRecords();
+            GetRecordsDetail();
         });
-
-        var fromD = "@fromDate";
-        var toD = "@toDate";
-        var data = "@jsonResult";
-
-        var tData = JSON.parse(data.replace(/(&quot\;)/g, "\""));
-
-        document.getElementById("totalBranchSales").innerText = tData.TotalBranchSales;
-        document.getElementById("totalCashSales").innerText = tData.TotalCashSales;
-        document.getElementById("totalKnetSales").innerText = tData.TotalKnetSales;
-        document.getElementById("totalCreditCardSales").innerText = tData.TotalCreditCardSales;
-        document.getElementById("totalCarraigeSales").innerText = tData.TotalCarraigeSales;
-        document.getElementById("totalOnlineSales").innerText = tData.TotalOnlineSales;
-        document.getElementById("salesReturnBranches").innerText = tData.SalesReturnBranches;
-
-        document.getElementById("totalHOSales").innerText = tData.TotalHOSales;
-        document.getElementById("totalHOSalesCash").innerText = tData.TotalHOSalesCash;
-        document.getElementById("totalHOSalesCredit").innerText = tData.TotalHOSalesCredit;
-        document.getElementById("salesReturnHO").innerText = tData.SalesReturnHO;
 
     </script>
 }

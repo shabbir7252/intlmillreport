@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using ImillReports.Models;
 using ImillReports.ViewModels;
 
 namespace ImillReports.Contracts
@@ -6,7 +8,21 @@ namespace ImillReports.Contracts
     public interface ISalesReportRepository
     {
         SalesReportViewModel GetSalesReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray);
+        SalesReportViewModel GetSalesTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray);
         SalesReportViewModel GetSalesDetailReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
+        List<TransDetailsViewModel> GetSalesDetailTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
+        SalesReportDashboard GetSalesDashboardTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
         SalesPeakHourViewModel GetSalesHourlyReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypeArray);
+        string GetSales(int days);
+        string GetSalesDetail(int days);
+
+        SalesReportDashboard GetSalesRecordDashboardTrans(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray);
+
+
+
+        string GetSalesDashboardTransTest(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
+
+        string GetSalesMonth(int year, int month, int from, int to);
+        string GetSalesDetailMonth(int year, int month, int from, int to);
     }
 }

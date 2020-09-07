@@ -4,11 +4,23 @@
     ViewBag.Title = "";
 }
 
+<style>
+    body {
+        background-image: url('../../Content/Images/DryFruit_Background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .card {
+        box-shadow: 0 10px 20px 0px lightgrey;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row clearfix">
         <div class="col-lg-3 mx-auto">
             <div class="row">
-                <div class="col-6 mx-auto">
+                <div class="col-7 mx-auto">
                     <img class="img-fluid" src="~/Content/Images/InternationalMill.png" alt="Imill logo" />
                 </div>
             </div>
@@ -32,7 +44,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.Password, new { @class = "col-md-12 mt-3 control-label" })
                                         <div class="col-md-12">
-                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @style = "border: 1px solid black; border-radius: 5px; padding: 0 10px;", @autocomplete="off" })
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @style = "border: 1px solid black; border-radius: 5px; padding: 0 10px;", @autocomplete = "off" })
                                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
