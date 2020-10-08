@@ -88,6 +88,7 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li><a href="@Url.Action("SalesHourlyReport", "SalesReport")">Sales Hourly Report</a></li>
+                                <li><a href="@Url.Action("DailyConsumption", "SalesReport")">Daily Consumption Report</a></li>
                             }
                         </ul>
                     </li>

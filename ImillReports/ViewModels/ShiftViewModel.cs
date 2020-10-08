@@ -13,5 +13,6 @@ namespace ImillReports.ViewModels
         public string NameAr { get; set; }
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
+        public string DisplayText { get; internal set; }
     }
 }

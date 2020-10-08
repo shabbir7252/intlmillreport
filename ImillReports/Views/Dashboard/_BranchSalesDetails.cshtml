@@ -11,7 +11,7 @@
 }
 
 <div class="row mb-5">
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") || User.IsInRole("HO"))
     {
         <div class="col-lg-6">
             <div class="card">
@@ -139,7 +139,7 @@
 
 
 <div class="row mb-5">
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") || User.IsInRole("HO"))
     {
         <div class="col-lg-6">
             <div class="card">
@@ -269,7 +269,7 @@
 </div>
 
 <div class="row mb-5">
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") || User.IsInRole("HO"))
     {
         <div class="col-lg-6">
             <div class="card">

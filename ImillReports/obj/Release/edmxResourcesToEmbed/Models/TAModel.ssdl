@@ -36,12 +36,13 @@
     <Property Name="TransactionType" Type="char" MaxLength="1" />
     <Property Name="DeviceCode" Type="nvarchar" MaxLength="100" />
     <Property Name="Timestamp" Type="bigint" Nullable="false" />
-    <Property Name="Temperature" Type="float" />
+    <Property Name="Temperature" Type="decimal" Precision="12" Scale="3" />
     <Property Name="pushed" Type="bit" />
     <Property Name="TransactionDateTime" Type="datetime" />
     <Property Name="CardID" Type="varchar" MaxLength="50" />
     <Property Name="Maskflag" Type="bigint" />
     <Property Name="Permission" Type="bigint" />
+    <Property Name="IsManual" Type="bit" />
   </EntityType>
   <EntityType Name="tbl_Location">
     <Key>
@@ -75,7 +76,8 @@
     <Property Name="Employee" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="LocationName" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="LocationOid" Type="int" Nullable="false" />
-    <Property Name="Temperature" Type="nchar" MaxLength="10" />
+    <Property Name="TemperatureIn" Type="nchar" MaxLength="10" />
+    <Property Name="TemperatureOut" Type="nchar" MaxLength="10" />
     <Property Name="PunchIn" Type="datetime" Nullable="false" />
     <Property Name="PunchOut" Type="datetime" Nullable="false" />
     <Property Name="LateIn" Type="time" Precision="7" Nullable="false" />

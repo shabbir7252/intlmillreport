@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using ImillReports.Contracts;
+using System.Collections.Generic;
 
 namespace ImillReports.Controllers
 {
@@ -50,6 +51,18 @@ namespace ImillReports.Controllers
             var tAreport = _iTARepository.GetTAReport(fromDate, toDate);
             ViewBag.DataSource = tAreport;
             return View();
+        }
+
+        public string GetTASync(int year, int month, int from, int toYear, int toMonth, int to)
+        {
+            return $"{_iTARepository.SyncTAReport(year, month, from, toYear, toMonth, to)} Date : ({from}-{month}-{year}) to ({to}-{toMonth}-{toYear})";
+        }
+
+        [HttpPost]
+        public bool DeleteTransactions(List<int> verifiedIds)
+        {
+            _iTARepository.DeleteTransactions(verifiedIds);
+            return true;
         }
     }
 }

@@ -679,6 +679,7 @@
     <Property Name="Locat_Cd" Type="smallint" />
     <Property Name="CrOid" Type="int" />
     <Property Name="UpdatedOn" Type="smalldatetime" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <EntityType Name="SM_Location">
     <Key>

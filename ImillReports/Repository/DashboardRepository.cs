@@ -31,7 +31,7 @@ namespace ImillReports.Repository
             //5 - Total Returns - HO(Cash & Corporate)
             //6 - Total Returns - Only Branches(Excluding HO and ARD)
 
-            var dashboardTransaction = _salesReportRepository.GetSalesDashboardTransaction(fromDate, toDate, "", "", "");
+            var dashboardTransaction = _salesReportRepository.GetSalesDashboardTransaction(fromDate, toDate, "", "", "", false);
 
             //var salesOfMonth = _salesReportRepository.GetSalesReport(fromDate, toDate, "", "");
             //var salesDetailsOfMonth = _salesReportRepository.GetSalesDetailReport(fromDate, toDate, "", "", ""); 
@@ -1204,7 +1204,7 @@ namespace ImillReports.Repository
             //5 - Total Returns - HO(Cash & Corporate)
             //6 - Total Returns - Only Branches(Excluding HO and ARD)
 
-            var dashboardTransaction = _salesReportRepository.GetSalesDashboardTransaction(fromDate, toDate, "", "", "");
+            var dashboardTransaction = _salesReportRepository.GetSalesDashboardTransaction(fromDate, toDate, "", "", "", false);
             var salesDetailsOfMonth = dashboardTransaction.SRItemsTransDetails;
 
             var locations = _locationRepository.GetLocations();

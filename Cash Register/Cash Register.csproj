@@ -185,6 +185,7 @@
     <Compile Include="ViewModels\CRLocation.cs" />
     <Compile Include="ViewModels\CRReserveAmount.cs" />
     <Compile Include="ViewModels\CRSalesman.cs" />
+    <Compile Include="ViewModels\CRSerial.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />

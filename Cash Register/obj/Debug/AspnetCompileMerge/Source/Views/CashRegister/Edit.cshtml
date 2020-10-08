@@ -286,9 +286,25 @@ onkeydown="return false"
                             <div class="col-8">
                                 <div class="form-group">
                                     <select id="ddlPeriod" class="custom-select custom-select-lg" dir="rtl" style="max-width: 100%;" tabindex="4" onchange="ChangePeriod()">
-                                        <option value="" selected="@Model.ShiftType == '' ? 'selected: '''">Select Period</option>
-                                        <option value="morning" selected="@Model.ShiftType == 'am' ? 'selected: '''">صباحاً(Morning)</option>
-                                        <option value="evening" selected="@Model.ShiftType == 'pm' ? 'selected: '''">مساءاً(Evening)</option>
+                                        <option value="">Select Period</option>
+                                        @if (Model.ShiftType == "am")
+                                        {
+                                            <option value="morning" selected="selected">صباحاً(Morning)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="morning">صباحاً(Morning)</option>
+                                        }
+
+                                        @if (Model.ShiftType == "pm")
+                                        {
+                                            <option value="evening" selected="selected">مساءاً(Evening)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="evening">مساءاً(Evening)</option>
+                                        }
+
                                     </select>
                                 </div>
                             </div>
@@ -725,7 +741,7 @@ onkeydown="return false"
         var salesman = -1;
         var period = '';
         var skip = true;
-        
+
         function MakeAsDefaultInput(value) {
             skip = true;
             defaultInputId = value;

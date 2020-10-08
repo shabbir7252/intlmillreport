@@ -1,4 +1,5 @@
 ﻿using Cash_Register.ViewModels;
+using System;
 using System.Collections.Generic;
 
 namespace Cash_Register.Contracts
@@ -12,5 +13,6 @@ namespace Cash_Register.Contracts
         CRegister GetCashRegister(int oid);
         List<CRegister> GetSalesmanCashRegister(short oid);
         bool DeleteCashRegRecord(int oid);
+        long GetSerialNo(DateTime date);
     }
 }

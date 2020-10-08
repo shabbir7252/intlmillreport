@@ -1,0 +1,352 @@
+﻿@{
+    ViewBag.Title = "Add Items";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    // toolbarItems.Add("Print");
+    // toolbarItems.Add("ExcelExport");
+    // toolbarItems.Add("ColumnChooser");
+
+    // TODO:
+    // 7. Configure the design with mobile responsive.
+    // 8. Update quantity :
+    //      i.  Edit popup / Increase button to add quantity.
+    //      ii. If new value is added with same transdate, unitid and itemid then add the quantity in node.
+
+    // DONE :
+    // 1. Add Datetime, ItemId, UnitId, Quantity, Add to grid button, save button.
+    // 2. Add to grid button functionality to add the item in itemList.
+    // 3. Add Grid to show record from itemList.
+    // 4. Write a success function :
+    //      i.  Add a bootstrap modal and show if value is not saved.
+    //      ii. In same bootstrap modal show exit button to list view or continue to add and remain on same page. Also clear the grid and itemlist in JS function.
+    //     iii. For error do the same with only okay button.
+    // 5. Delete the values through checkbox selection or on node.
+    // 6. After saving redirect to print page to print the currently saved list.
+
+}
+
+
+<style>
+    .fixed-top {
+        z-index: 1 !important;
+    }
+</style>
+
+<div class="container">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row mt-3">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-12">
+                            @Html.EJS().DatePicker("transDate").Format("dd-MM-yyyy").Placeholder("Transaction Date").Value(ViewBag.transDate).Render()
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            @Html.EJS().MultiSelect("items").ShowDropDownIcon().AllowFiltering(true).Filtering("OnItemFiltering").Placeholder("Select Items").DataSource(
+                            (IEnumerable<object>)ViewBag.Items
+                            ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                            new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "NameEn", Value = "Oid" }).ActionBegin("OnItemBegin").DataBound("OnItemBound").Render()
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            @Html.EJS().DropDownList("unit").AllowFiltering(true).Filtering("OnUnitFiltering").Placeholder("Select Unit").DataSource(
+                          (IEnumerable<object>)ViewBag.Units).Fields(
+                          new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "NameEn", Value = "Oid" }).ActionBegin("OnUnitBegin").DataBound("OnUnitBound").Render()
+                        </div>
+
+                        <div class="col-12 mt-4 mb-4">
+                            @Html.EJS().TextBox("quantity").Placeholder("Quantity").Type("number").Render()
+                        </div>
+
+                        <div class="col-6">
+                            <button type="button" class="btn btn-secondary btn-sm btn-block add-to-grid" onclick="AddToGrid()">Add To Grid</button>
+                        </div>
+
+                        <div class="col-6">
+                            <button type="button" class="btn btn-primary btn-block btn-sm btn-block save-items" onclick="SaveItems()">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="col-12">
+
+            @Html.EJS().Grid("Grid").Height("auto").Width("auto").Columns(col =>
+       {
+           col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("ItemName").Width("80").HeaderText("Item Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("UnitName").Width("80").HeaderText("Unit Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("Quantity").Width("80").HeaderText("Quantity").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+       }).DataBound("dataBound").Toolbar(toolbarItems).Render()
+        </div>
+
+        <div class="col-3 mt-4 mx-auto">
+            <button type="button" class="btn btn-info btn-block btn-sm btn-block clear-items" onclick="ClearGrid()">Clear</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="response-message" tabindex="-1" role="dialog" aria-labelledby="ResponseMessageLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="text-center modal-message"></h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="margin: 0 auto !important;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+
+    <script>
+        var itemList = [];
+        var btnSave = $('.save-items');
+        CheckItemList();
+
+        function DisableSaveBtn() {
+            btnSave.prop('disabled', true);
+        }
+
+        function EnableSaveBtn() {
+            btnSave.prop('disabled', false);
+        }
+
+        function CheckItemList() {
+            if (itemList.length > 0) {
+                EnableSaveBtn();
+            } else {
+                DisableSaveBtn()
+            }
+        }
+
+        function dataBound(args) {
+            this.autoFitColumns(['TransDate', 'ItemName', 'UnitName', 'Quantity']);
+        }
+
+        // ***********************  Item Filtering and Searching  ***********************
+
+        function OnItemFiltering(e) {
+            var CBObj = document.getElementById("items").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('items').select(['NameEn', 'Oid']);
+                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selected = [];
+        function OnItemBegin(e) {
+            this.fields = {
+                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemSearch(e) {
+            if (selected.indexOf(e) == -1)
+                selected.push(e);
+        }
+
+        function OnItemBound(e) {
+            this.value = selected;
+        }
+
+        // ***********************  End Item Filtering and Searching  ***********************
+
+        // ***********************  Unit Filtering and Searching  ***********************
+
+        function OnUnitFiltering(e) {
+            var CBObj = document.getElementById("unit").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('unit').select(['NameEn', 'Oid']);
+                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selectedUnit = [];
+        function OnUnitBegin(e) {
+            this.fields = {
+                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                unitSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function unitSearch(e) {
+            if (selectedUnit.indexOf(e) == -1)
+                selectedUnit.push(e);
+        }
+
+        function OnUnitBound(e) {
+            this.value = selectedUnit;
+        }
+
+        // ***********************  End Unit Filtering and Searching  ***********************
+
+
+        // ***********************  Add To Grid  ***********************
+
+        function AddToGrid() {
+            var transDate = $('#transDate').val();
+            // var transDate = document.getElementById('transDate').ej2_instances[0].value;
+
+            var itemDataSource = document.getElementById('items').ej2_instances[0].dataSource;
+            var items = document.getElementById('items').ej2_instances[0].value;
+
+            var unitDataSource = document.getElementById('unit').ej2_instances[0].dataSource;
+            var unit = document.getElementById('unit').ej2_instances[0].value;
+
+            var quantity = document.getElementById('quantity').ej2_instances[0].value;
+
+            if (items === null || items.length < 1) {
+                alert('Please Select atleast 1 item!');
+            } else if (unit === null) {
+                alert('Please Select Unit');
+            } else if (quantity === null || quantity < 1) {
+                alert('Invalid Quantity!');
+            } else {
+                items.forEach(function (currentValue, index, arr) {
+
+                    itemList.some(function (elem, i) {
+                        if (elem.ItemId === currentValue && elem.UnitId === unit) {
+                            itemList.splice(i, 1);
+                        }
+                    });
+
+                    var itemName = '';
+                    itemDataSource.some(function (elem, i) {
+                        if (elem.Oid === currentValue) {
+                            itemName = elem.NameEn;
+                        }
+                    });
+
+                    var unitName = '';
+                    unitDataSource.some(function (elem, i) {
+                        if (elem.Oid === unit) {
+                            unitName = elem.NameEn;
+                        }
+                    });
+
+                    var item = {
+                        'TransDate': transDate,
+                        'ItemId': currentValue,
+                        'ItemName': itemName,
+                        'UnitId': unit,
+                        'UnitName': unitName,
+                        'Quantity': quantity
+                    };
+
+                    itemList.push(item);
+                });
+
+                console.log('Item List', itemList);
+                CheckItemList();
+
+                var grid = document.getElementById('Grid').ej2_instances[0];
+                grid.dataSource = itemList;
+                grid.refresh();
+            }
+        }
+
+        // ***********************  End Add To Grid  ***********************
+
+
+        function SaveItems() {
+
+            if (itemList.length > 0) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SaveItems", "Home")',
+                    data: { itemList: itemList },
+                    success: function (response) {
+                        console.log('response', response);
+
+                        $('.modal-message').html(response.Message);
+                        $('#response-message').modal('show');
+
+                        if (response.ReponseId === 1) {
+                            itemList = [];
+                            CheckItemList();
+
+                            document.getElementById('transDate').ej2_instances[0].value = null;
+                            document.getElementById('items').ej2_instances[0].value = null;
+                            document.getElementById('unit').ej2_instances[0].value = null;
+                            document.getElementById('quantity').ej2_instances[0].value = null;
+
+                            // ClearGrid();
+                            // debugger;
+                            // var link = "@Url.Action("PrintItems", "Home", new { itemList = -1 })";
+                            // link = link.replace('-1', itemList);
+                            window.location.href = '/Home/PrintItems?itemList=' + itemList;
+                        }
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+
+            } else {
+                alert('Please add value to grid!');
+                CheckItemList();
+            }
+
+        }
+
+        function ClearGrid() {
+            itemList = [];
+            CheckItemList();
+
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            grid.dataSource = itemList;
+            grid.refresh();
+        }
+
+    </script>
+}

@@ -1,0 +1,147 @@
+﻿@using Syncfusion.EJ2.Grids;
+@{
+    ViewBag.Title = "Item Inventory";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("Print");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    toolbarItems.Add(new { text = "Delete Record(s)", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
+
+    // TODO:
+
+    // 4. Configure the design with mobile responsive.
+    // 5. Update quantity :
+    //      i.  Edit popup / Increase button to add quantity.
+    // 6. Update the record in popup.
+
+    // DONE :
+    // 1. Add Grid to show record.
+    // 2. Delete the values through checkbox selection or on node.
+    // 3. Show Bootstrap alert on success delete or Error.
+
+}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+            @Html.EJS().Grid("Grid").DataSource(
+               (IEnumerable<object>)
+               ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+           {
+               col.Field("IsVerified").Type("checkbox").AllowFiltering(true).AllowSorting(true).Add();
+               col.Field("Oid").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+               col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(TextAlign.Center).Format(new { type = "dateTime", format = "dd-MM-yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("ItemId").Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("ItemName").Width("80").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("UnitId").Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("UnitName").Width("80").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Quantity").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+           }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(FilterType.Menu)).PageSettings(
+               page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).Aggregates(agg =>
+                    {
+                   agg.Columns(new List<GridAggregateColumn>() {
+                        new GridAggregateColumn() {
+                           Field = "Quantity", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                       } }).Add();
+                    }).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select =>
+                    select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="response-message" tabindex="-1" role="dialog" aria-labelledby="ResponseMessageLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text-center modal-message"></h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="margin: 0 auto !important;" class="btn btn-secondary" data-dismiss="modal" onclick="CheckResponse()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var responseId = -1;
+        var verificationIds = [];
+
+        function dataBound(args) {
+            this.autoFitColumns(['IsVerified', 'TransDate', 'ItemName', 'UnitName', 'Quantity']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "ItemInventory.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRec') {
+
+            if (verificationIds.length === 0) {
+                alert('Select atleast 1 record');
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("Delete", "Home")',
+                    success: function (response) {
+                        console.log('response', response);
+                        responseId = response.ReponseId
+                        $('.modal-message').html(response.Message);
+                        $('#response-message').modal('show');
+                },
+                    error: function (ex) {
+                        alert("Error Occured While Deleting!");
+                    }
+                });
+                }
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row.cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function CheckResponse() {
+            if (responseId === 1) {
+                window.location.reload();
+            }
+        }
+
+    </script>
+}

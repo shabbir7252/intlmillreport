@@ -55,7 +55,7 @@
                             @Html.EJS().MultiSelect("employees").ShowDropDownIcon().AllowFiltering(true).Filtering("onEmpFiltering").Value(ViewBag.Employees).Placeholder("Select Employees").DataSource(
                            (IEnumerable<object>)ViewBag.Employees
                            ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
-                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "NameAr", Value = "Oid" }).ActionBegin("onEmpBegin").DataBound("onEmpBound").Render()
+                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "DisplayText", Value = "Oid" }).ActionBegin("onEmpBegin").DataBound("onEmpBound").Render()
                         </div>
 
                         <div class="col-2 emp">
@@ -75,7 +75,7 @@
                         <div class="col-2">
                             @Html.EJS().DropDownList("shifts").AllowFiltering(true).Filtering("onShiftFiltering").Placeholder("Select Shift").DataSource(
                           (IEnumerable<object>)ViewBag.Shifts).Fields(
-                          new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "NameEn", Value = "Oid" }).ActionBegin("onShiftBegin").DataBound("onShiftBound").Render()
+                          new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "DisplayText", Value = "Oid" }).ActionBegin("onShiftBegin").DataBound("onShiftBound").Render()
                         </div>
 
                     </div>
@@ -109,7 +109,7 @@
 
                                col.Field("IsVerified").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
                                col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
-                               col.Field("EmpId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                               col.Field("EmpId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
                                col.Field("EmpName").Width("80").HeaderText("Emp Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("EmpNameAr").Width("80").HeaderText("Emp NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("LocationOid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).ShowInColumnChooser(false).Add();
@@ -188,7 +188,7 @@
         var selectedShifts = [];
         function onShiftBegin(e) {
             this.fields = {
-                text: 'NameEn', value: 'Oid', itemCreated: function (e) {
+                text: 'DisplayText', value: 'Oid', itemCreated: function (e) {
                     var count = 0;
                     if (count === 0) {
                         for (let i = 0; i < e.dataSource.length; i++) {
@@ -300,8 +300,8 @@
             if (e.text == '')
                 e.updateData(CBObj.dataSource);
             else {
-                var query = new ej.data.Query().from('shifts').select(['NameEn', 'Oid']);
-                query = (e.text !== '') ? query.where('NameEn', 'contains', e.text, true) : query;
+                var query = new ej.data.Query().from('shifts').select(['DisplayText', 'Oid']);
+                query = (e.text !== '') ? query.where('DisplayText', 'contains', e.text, true) : query;
                 e.updateData(CBObj.dataSource, query);
             }
         }
@@ -476,7 +476,7 @@
         var selectedEmployees = [];
         function onEmpBegin(e) {
             this.fields = {
-                text: 'NameAr', value: 'Oid', itemCreated: function (e) {
+                text: 'DisplayText', value: 'Oid', itemCreated: function (e) {
                     var count = 0;
                     if (count === 0) {
                         for (let i = 0; i < e.dataSource.length; i++) {
@@ -502,8 +502,8 @@
             if (e.text == '')
                 e.updateData(CBObj.dataSource);
             else {
-                var query = new ej.data.Query().from('employees').select(['NameAr', 'Oid']);
-                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
+                var query = new ej.data.Query().from('employees').select(['DisplayText', 'Oid']);
+                query = (e.text !== '') ? query.where('DisplayText', 'contains', e.text, true) : query;
                 e.updateData(CBObj.dataSource, query);
             }
         }
@@ -545,6 +545,12 @@
                 var sd = new Date(fromDateObj);
                 var from = sd.getDate().toString() + '-' + sd.getMonth().toString() + '-' + sd.getFullYear().toString();
 
+                var ed = toDateObj !== null ? new Date(toDateObj) : null
+                debugger;
+                if (toDateObj !== null) {
+                    ed.setMonth(ed.getMonth());
+                }
+
                 $.ajax({
                     type: 'POST',
                         data: {
@@ -553,7 +559,7 @@
                             location: locationObj === null ? "" : locationObj.toString(),
                             fromDate: from,
                             toDate: toDateObj !== null
-                                ? new Date(toDateObj).getDate().toString() + '-' + new Date(toDateObj).getMonth().toString() + '-' + new Date(toDateObj).getFullYear().toString()
+                                ? ed.getDate().toString() + '-' + (ed.getMonth() + 1).toString() + '-' + ed.getFullYear().toString()
                                 : toDateObj
                         },
                     url: '@Url.Action("AddAllocation", "ManageTimeAttendance")',
@@ -583,6 +589,7 @@
                             }
                     },
                     error: function (ex) {
+                        console.log('Error Allocation : ', ex);
                         setTimeout(() => {
                             var toastObj = document.getElementById('error-toast').ej2_instances[0];
                             toastObj.target = document.body;

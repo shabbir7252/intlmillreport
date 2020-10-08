@@ -139,7 +139,7 @@ namespace Cash_Register.Controllers.Api
                     }
 
                     var localSalesman = salesmans.FirstOrDefault(x => x.Sman_Cd == imillSalesman.Sman_Cd);
-                    if(localSalesman.Locat_Cd != imillSalesman.Locat_Cd)
+                    if (localSalesman.Locat_Cd != imillSalesman.Locat_Cd)
                     {
                         cmd.CommandText = $"Update CR_Salesman Set Default_locat_cd = {imillSalesman.Locat_Cd} Where Sman_Cd = {imillSalesman.Sman_Cd}";
                         cmd.ExecuteNonQuery();
@@ -152,7 +152,7 @@ namespace Cash_Register.Controllers.Api
                 //    var imillSalesMan = imillSalesmans.FirstOrDefault(x => x.Sman_Cd == localSalesman.Sman_Cd);
                 //    if (imillSalesMan.Locat_Cd != localSalesman.Locat_Cd)
                 //    {
-                        
+
                 //    }
 
                 //}
@@ -230,7 +230,8 @@ namespace Cash_Register.Controllers.Api
                     {
                         string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
                         SqlConnection sqlConnection = new SqlConnection(connectionString);
-                        var query = $"Delete From intlmill_cash_register Where CrOid = {rec.Oid} and Locat_Cd = {rec.LocationId}";
+                        // var query = $"Delete From intlmill_cash_register Where CrOid = {rec.Oid} and Locat_Cd = {rec.LocationId}";
+                        var query = $"Update intlmill_cash_register Set UpdatedOn = '{DateTime.Now:MM-dd-yyyy HH:mm:ss}', IsDeleted = 1 Where CrOid = {rec.Oid} and Locat_Cd = {rec.LocationId}";
                         SqlCommand cmd = new SqlCommand(query, sqlConnection);
                         sqlConnection.Open();
                         cmd.ExecuteNonQuery();
@@ -269,7 +270,9 @@ namespace Cash_Register.Controllers.Api
                                 $"total_sales = {rec.Cheques + rec.Talabat + rec.Online + rec.Knet + rec.Visa + rec.Reserve + rec.Expense + rec.NetBalance}," +
                                 $"net_sales = {(rec.Cheques + rec.Talabat + rec.Online + rec.Knet + rec.Visa + rec.Reserve + rec.Expense + rec.NetBalance) - rec.Reserve}," +
                                 $"staff_date = '{rec.StaffDate:dd-MM-yyyy}'," +
-                                $"Sman_Cd = {rec.Salesman} " +
+                                $"Sman_Cd = {rec.Salesman}," +
+                                $"IsDeleted = 0," +
+                                $"SerialNo = {rec.SerialNo} " +
                                 $"Where CrOid = {rec.Oid} and Locat_Cd = {rec.LocationId}";
 
                             string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
@@ -286,11 +289,11 @@ namespace Cash_Register.Controllers.Api
                                             "(trans_date_time, location, salesman, shift_type, shift_count, cheque, carriage, " +
                                             "online, knet, visa, reserve, expense, total_cash, net_cash, d_20000, d_10000, d_5000, " +
                                             "d_1000, d_0500, d_0250, d_0100, d_0050, d_0020, d_0010, d_0005, total_sales, net_sales, " +
-                                            "staff_date, Sman_Cd, Locat_Cd, CrOid) " +
+                                            "staff_date, Sman_Cd, Locat_Cd, CrOid, IsDeleted, SerialNo) " +
                                             "VALUES (@trans_date_time, @location, @salesman, @shift_type, @shift_count, @cheque, @carriage, " +
                                             "@online, @knet, @visa, @reserve, @expense, @total_cash, @net_cash, @d_20000, @d_10000, @d_5000, " +
                                             "@d_1000, @d_0500, @d_0250, @d_0100, @d_0050, @d_0020, @d_0010, @d_0005, @total_sales, @net_sales, " +
-                                            "@staff_date, @Sman_Cd, @Locat_Cd, @CrOid) ";
+                                            "@staff_date, @Sman_Cd, @Locat_Cd, @CrOid, @IsDeleted, @SerialNo) ";
 
                             string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
                             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -326,6 +329,8 @@ namespace Cash_Register.Controllers.Api
                             cmd.Parameters.Add("@Sman_Cd", SqlDbType.SmallInt).Value = rec.Salesman;
                             cmd.Parameters.Add("@Locat_Cd", SqlDbType.SmallInt).Value = rec.LocationId;
                             cmd.Parameters.Add("@CrOid", SqlDbType.Int).Value = rec.Oid;
+                            cmd.Parameters.Add("@IsDeleted", SqlDbType.Bit).Value = false;
+                            cmd.Parameters.Add("@SerialNo", SqlDbType.BigInt).Value = rec.SerialNo;
 
                             sqlConnection.Open();
                             cmd.ExecuteNonQuery();
@@ -345,6 +350,45 @@ namespace Cash_Register.Controllers.Api
             return "True";
         }
 
+        [HttpGet]
+        [Route("api/GetSerialSetting")]
+        public string GetSerialSetting()
+        {
+            var command = "";
+            try
+            {
+                var count = CheckBackDaysCol();
+                if(count < 1)
+                {
+                    AddBackDaysCol();
+                }
+                var imillSerial = GetSerial();
+
+                var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
+
+                var con = new SQLiteConnection(cs);
+                con.Open();
+                var cmd = new SQLiteCommand(con);
+
+                //Delete from CR_Serial;
+                //INSERT INTO CR_Serial VALUES('2020-09-14', 258);
+                // command = $"update CR_Serial Set Date = '{imillSerial.Date:yyyy-MM-dd}', SerialNumber = {imillSerial.SerialNumber}";
+
+                command = $"Delete from CR_Serial;INSERT INTO CR_Serial VALUES('{imillSerial.Date:yyyy-MM-dd}', {imillSerial.SerialNumber}, {imillSerial.BackDays});";
+                cmd.CommandText = command;
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                con.Close();
+                con.Dispose();
+            }
+            catch (Exception ex)
+            {
+                return $"false : {ex.Message}";
+                throw;
+            }
+            return $"true : {command}";
+        }
 
         #region Local Sql Lite Functions
 
@@ -516,7 +560,8 @@ namespace Cash_Register.Controllers.Api
                             FiveFils = rdr.GetInt32(24),
                             NetBalance = rdr.GetDecimal(25),
                             IsSynced = rdr.GetBoolean(26),
-                            IsDeleted = rdr.GetBoolean(27)
+                            IsDeleted = rdr.GetBoolean(27),
+                            SerialNo = rdr.GetInt64(28)
                         });
                 }
 
@@ -636,6 +681,51 @@ namespace Cash_Register.Controllers.Api
             }
 
             return true;
+        }
+
+        private int CheckBackDaysCol()
+        {
+            var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
+
+            var con = new SQLiteConnection(cs);
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = $"SELECT COUNT(*) AS CNTREC FROM pragma_table_info('CR_Serial') WHERE name='BackDays'"
+            };
+
+            var rdr = cmd.ExecuteReader();
+            var count = 0;
+
+            while (rdr.Read())
+            {
+                count = rdr.GetInt32(0);
+            }
+
+            cmd.Dispose();
+            con.Close();
+            con.Dispose();
+
+            return count;
+        }
+
+        private void AddBackDaysCol()
+        {
+            var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
+
+            var con = new SQLiteConnection(cs);
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = $"ALTER TABLE CR_Serial ADD COLUMN BackDays INT"
+            };
+
+            cmd.ExecuteReader();
+            cmd.Dispose();
+            con.Close();
+            con.Dispose();
         }
 
         #endregion
@@ -805,6 +895,32 @@ namespace Cash_Register.Controllers.Api
             connection.Close();
 
             return cRegisters.Count() > 0;
+        }
+
+        private CRSerial GetSerial()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["reportconnection"].ConnectionString;
+            var connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            var sqlQuery = "select * from Settings";
+            var sqlCommand = new SqlCommand(sqlQuery, connection);
+            var dataReader = sqlCommand.ExecuteReader();
+
+            var crSerial = new CRSerial();
+
+            while (dataReader.Read())
+            {
+                crSerial.Date = DateTime.Parse(dataReader.GetValue(0).ToString());
+                crSerial.SerialNumber = long.Parse(dataReader.GetValue(1).ToString());
+                crSerial.BackDays = int.Parse(dataReader.GetValue(2).ToString());
+            }
+
+            dataReader.Close();
+            sqlCommand.Dispose();
+            connection.Close();
+
+            return crSerial;
         }
 
         #endregion

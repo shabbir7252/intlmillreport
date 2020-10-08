@@ -25,11 +25,12 @@ namespace ImillReports.Models
         public string TransactionType { get; set; }
         public string DeviceCode { get; set; }
         public long Timestamp { get; set; }
-        public Nullable<double> Temperature { get; set; }
+        public Nullable<decimal> Temperature { get; set; }
         public Nullable<bool> pushed { get; set; }
         public Nullable<System.DateTime> TransactionDateTime { get; set; }
         public string CardID { get; set; }
         public Nullable<long> Maskflag { get; set; }
         public Nullable<long> Permission { get; set; }
+        public Nullable<bool> IsManual { get; set; }
     }
 }

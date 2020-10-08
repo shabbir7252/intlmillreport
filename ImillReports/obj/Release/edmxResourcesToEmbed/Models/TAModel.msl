@@ -24,29 +24,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tbl_EmpTransaction">
-      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpTransaction">
-        <MappingFragment StoreEntitySet="tbl_EmpTransaction">
-          <ScalarProperty Name="Permission" ColumnName="Permission" />
-          <ScalarProperty Name="Maskflag" ColumnName="Maskflag" />
-          <ScalarProperty Name="CardID" ColumnName="CardID" />
-          <ScalarProperty Name="TransactionDateTime" ColumnName="TransactionDateTime" />
-          <ScalarProperty Name="pushed" ColumnName="pushed" />
-          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-          <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
-          <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-          <ScalarProperty Name="TransactionSecond" ColumnName="TransactionSecond" />
-          <ScalarProperty Name="TransactionMinute" ColumnName="TransactionMinute" />
-          <ScalarProperty Name="TransactionHour" ColumnName="TransactionHour" />
-          <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
-          <ScalarProperty Name="TransactionMonth" ColumnName="TransactionMonth" />
-          <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
-          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tbl_Employees">
       <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Employees">
         <MappingFragment StoreEntitySet="tbl_Employees">
@@ -70,6 +47,30 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tbl_EmpTransaction">
+      <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpTransaction">
+        <MappingFragment StoreEntitySet="tbl_EmpTransaction">
+          <ScalarProperty Name="IsManual" ColumnName="IsManual" />
+          <ScalarProperty Name="Permission" ColumnName="Permission" />
+          <ScalarProperty Name="Maskflag" ColumnName="Maskflag" />
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+          <ScalarProperty Name="TransactionDateTime" ColumnName="TransactionDateTime" />
+          <ScalarProperty Name="pushed" ColumnName="pushed" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+          <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+          <ScalarProperty Name="TransactionSecond" ColumnName="TransactionSecond" />
+          <ScalarProperty Name="TransactionMinute" ColumnName="TransactionMinute" />
+          <ScalarProperty Name="TransactionHour" ColumnName="TransactionHour" />
+          <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+          <ScalarProperty Name="TransactionMonth" ColumnName="TransactionMonth" />
+          <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tbl_Transactions">
       <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Transactions">
         <MappingFragment StoreEntitySet="tbl_Transactions">
@@ -81,7 +82,8 @@
           <ScalarProperty Name="LateIn" ColumnName="LateIn" />
           <ScalarProperty Name="PunchOut" ColumnName="PunchOut" />
           <ScalarProperty Name="PunchIn" ColumnName="PunchIn" />
-          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="TemperatureOut" ColumnName="TemperatureOut" />
+          <ScalarProperty Name="TemperatureIn" ColumnName="TemperatureIn" />
           <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
           <ScalarProperty Name="LocationName" ColumnName="LocationName" />
           <ScalarProperty Name="Employee" ColumnName="Employee" />

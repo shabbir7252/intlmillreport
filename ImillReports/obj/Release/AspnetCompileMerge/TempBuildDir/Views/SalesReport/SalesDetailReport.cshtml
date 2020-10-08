@@ -64,7 +64,7 @@
                         <div class="col-2">
                             @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm aa").Placeholder("To").Value(ViewBag.endDate).Render()
                         </div>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("HO"))
                         {
                             <div class="col-2">
                                 @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
@@ -459,7 +459,7 @@
 
             var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
             // var locationObj = document.getElementById('locationStringArray').ej2_instances[0]; // MultiSelect Instance of location
-            var locationObj = '@User.IsInRole("Admin")' === 'True' || '@User.IsInRole("Sales")' === 'True' ? document.getElementById('locationStringArray').ej2_instances[0].value : ["84","1"]; // MultiSelect Instance of location
+            var locationObj = '@User.IsInRole("Admin")' === 'True' || '@User.IsInRole("Sales")' === 'True' || '@User.IsInRole("HO")' === 'True' ? document.getElementById('locationStringArray').ej2_instances[0].value : ["84","1"]; // MultiSelect Instance of location
             var productObj = document.getElementById('productStringArray').ej2_instances[0]; // MultiSelect Instance of product
             var productArObj = document.getElementById('productArStringArray').ej2_instances[0]; // MultiSelect Instance of product
             var vouchertypeObj = document.getElementById('voucherTypeStringArray').ej2_instances[0]; // MultiSelect Instance of voucher Type

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImillReports", "ImillReport
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cash Register", "Cash Register\Cash Register.csproj", "{35DD469D-103F-4207-B8F2-0CB2D5980651}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemInventory", "ItemInventory\ItemInventory.csproj", "{53AFAB3A-7762-420C-B941-6ADEFB06928E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{35DD469D-103F-4207-B8F2-0CB2D5980651}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35DD469D-103F-4207-B8F2-0CB2D5980651}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35DD469D-103F-4207-B8F2-0CB2D5980651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53AFAB3A-7762-420C-B941-6ADEFB06928E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53AFAB3A-7762-420C-B941-6ADEFB06928E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53AFAB3A-7762-420C-B941-6ADEFB06928E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53AFAB3A-7762-420C-B941-6ADEFB06928E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

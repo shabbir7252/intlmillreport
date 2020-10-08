@@ -35,6 +35,7 @@ namespace Cash_Register.ViewModels
         public int ShiftCount { get; set; }
         public bool IsSynced { get; internal set; }
         public bool IsDeleted { get; internal set; }
+        public long SerialNo { get; set; }
     }
 
     public class ShiftCount

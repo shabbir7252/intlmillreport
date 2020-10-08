@@ -71,6 +71,7 @@ namespace ImillReports.Repository
             }
         }
 
+        // In Use
         private IQueryable<ICS_Transaction> GetTransactions(DateTime? fromDate, DateTime? toDate, DateTime fromHoDate, DateTime toHoDate)
         {
             return _context.ICS_Transaction
@@ -99,10 +100,11 @@ namespace ImillReports.Repository
                                         x.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                         x.ICS_Transaction_Types.Voucher_Type == 2035 ||
                                         x.ICS_Transaction_Types.Voucher_Type == 2036)
-                                        && x.GL_Ledger2.Group_Cd != 329
+                                        // && x.GL_Ledger2.Group_Cd != 329
                                         );
         }
 
+        // In Use
         public SalesReportViewModel GetSalesTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray)
         {
             if (fromDate == null) fromDate = DateTime.Now;
@@ -267,17 +269,19 @@ namespace ImillReports.Repository
             };
         }
 
-        public SalesReportDashboard GetSalesDashboardTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray)
+        // In Use
+        public SalesReportDashboard GetSalesDashboardTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray, bool showGroupCD)
         {
             try
             {
                 if (fromDate == null) fromDate = DateTime.Now;
                 if (toDate == null) toDate = DateTime.Now;
 
-                //var fromHoDate = fromDate.Value.Date;
-                //var toHoDate = toDate.Value.Date;
-
                 var transactions = GetSalesTransaction(fromDate, toDate, locationArray, voucherTypesArray).SalesReportItems;
+
+                if (!showGroupCD)
+                    transactions = transactions.Where(x => x.GroupCD != 329).ToList();
+
 
                 var entryIdArray = new List<long>();
                 entryIdArray.AddRange(from item in transactions select item.EntryId);
@@ -481,6 +485,7 @@ namespace ImillReports.Repository
             }
         }
 
+        // In Use
         public List<TransDetailsViewModel> GetSalesDetailTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray)
         {
             try
@@ -515,7 +520,7 @@ namespace ImillReports.Repository
                 //        transactionDetails.AddRange(_report.Trans_Detail_2020.Where(x => entries.Contains(x.EntryId.Value)).ToList());
                 //}
 
-                var result = GetSalesDashboardTransaction(fromDate, toDate, locationArray, voucherTypesArray, productStringArray);
+                var result = GetSalesDashboardTransaction(fromDate, toDate, locationArray, voucherTypesArray, productStringArray, false);
                 return result.SRItemsTransDetails;
             }
             catch (Exception ex)
@@ -884,9 +889,10 @@ namespace ImillReports.Repository
             }
         }
 
+        // In Use
         public SalesPeakHourViewModel GetSalesHourlyReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray)
         {
-            var salesReportItems = GetSalesTransaction(fromDate, toDate, locationArray, "").SalesReportItems;
+            var salesReportItems = GetSalesTransaction(fromDate, toDate, locationArray, "").SalesReportItems.Where(x => x.GroupCD != 329);
             var salesPeakHourItems = new List<SalesPeakHourItem>();
             var hoursCount = 24;
 
@@ -937,6 +943,7 @@ namespace ImillReports.Repository
             };
         }
 
+        // Method is used for Syncing Sales Data
         public string GetSales(int days)
         {
             try
@@ -1120,6 +1127,7 @@ namespace ImillReports.Repository
             return "true";
         }
 
+        // Method is used for Syncing Sales Detail Data
         public string GetSalesDetail(int days)
         {
             try
@@ -1261,6 +1269,7 @@ namespace ImillReports.Repository
             return "true";
         }
 
+        // In Use
         public SalesReportDashboard GetSalesRecordDashboardTrans(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray)
         {
             try
@@ -1271,7 +1280,7 @@ namespace ImillReports.Repository
                 var fromHoDate = fromDate.Value.Date;
                 var toHoDate = toDate.Value.Date;
 
-                var transactions = GetSalesTransaction(fromDate, toDate, locationArray, voucherTypesArray).SalesReportItems;
+                var transactions = GetSalesTransaction(fromDate, toDate, locationArray, voucherTypesArray).SalesReportItems.Where(x => x.GroupCD != 329).ToList();
 
                 return new SalesReportDashboard
                 {
@@ -1867,6 +1876,77 @@ namespace ImillReports.Repository
             {
                 SalesReportItems = salesReportItems
             };
+        }
+
+        public List<DailyConsumptionVM> GetDailyConsumptionTrans(DateTime? fromDate, DateTime? toDate)
+        {
+            var salesDetails = GetSalesDashboardTransaction(fromDate, toDate, "", "", "", true).SRItemsTransDetails.Where(x => x.LocationId == 1);
+
+            var dailyConsumptions = new List<DailyConsumptionVM>();
+
+            var ledgerIds = new int[] {53917, 53331, 53334, 53649, 53333, 53357, 53593, 53818,
+                             53739, 53877, 53899, 54273, 53756, 54625, 54561, 54536,
+                             54631, 54342, 54827, 54901, 54967, 54015, 54096, 54103,
+                             54133, 53332};
+
+            foreach (var item in salesDetails.GroupBy(x => x.ProdId))
+            {
+                var branchLedgers = item.Where(x => ledgerIds.ToList().Contains(x.CustomerId.Value));
+
+                var sellBranchQtyKg = branchLedgers.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
+                var sellBranchQtyGm = branchLedgers.Where(x => x.BaseUnitId == 42).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+                var totalBranchSellKgQty = sellBranchQtyKg + sellBranchQtyGm;
+
+                var totalBranchSellQty = branchLedgers.Where(x => x.BaseUnitId != 40 &&
+                                                                  x.BaseUnitId != 42 &&
+                                                                  x.ProdId != 19595).Sum(x => x.SellQuantity);
+
+                var sellQtyKg = item.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
+                var sellQtyGm = item.Where(x => x.BaseUnitId == 42).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+                var totalSellKgQty = sellQtyKg + sellQtyGm;
+
+                var totalSellQty = item.Where(x => x.BaseUnitId != 40 &&
+                                                   x.BaseUnitId != 42 &&
+                                                   x.ProdId != 19595).Sum(x => x.SellQuantity);
+
+                var creditVoucher = item.Where(x => x.VoucherId == 2021);
+                var sellCreditQtyKg = creditVoucher.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
+                var sellCreditQtyGm = creditVoucher.Where(x => x.BaseUnitId == 42).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+                var totalSellCreditKgQty = sellCreditQtyKg + sellCreditQtyGm;
+
+                var totalCreditSellQty = creditVoucher.Where(x => x.BaseUnitId != 40 &&
+                                                   x.BaseUnitId != 42 &&
+                                                   x.ProdId != 19595).Sum(x => x.SellQuantity);
+
+
+                var cashVoucher = item.Where(x => x.VoucherId == 2022);
+                var sellCashQtyKg = cashVoucher.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
+                var sellCashQtyGm = cashVoucher.Where(x => x.BaseUnitId == 42).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+                var totalSellCashKgQty = sellCashQtyKg + sellCashQtyGm;
+
+                var totalCashSellQty = cashVoucher.Where(x => x.BaseUnitId != 40 &&
+                                                   x.BaseUnitId != 42 &&
+                                                   x.ProdId != 19595).Sum(x => x.SellQuantity);
+
+                decimal totalBranchQty = totalBranchSellKgQty != 0 ? totalBranchSellKgQty.Value : totalBranchSellQty.Value;
+                decimal creditQty = totalSellCreditKgQty != 0 ? totalSellCreditKgQty.Value : totalCreditSellQty.Value;
+                decimal cashQty = totalSellCashKgQty != 0 ? totalSellCashKgQty.Value : totalCashSellQty.Value;
+
+                dailyConsumptions.Add(new DailyConsumptionVM
+                {
+                    Oid = item.FirstOrDefault().Oid,
+                    ItemOid = item.Key,
+                    ItemNameEn = item.FirstOrDefault().ProductNameEn,
+                    ItemNameAr = item.FirstOrDefault().ProductNameAr,
+                    BaseUnit = totalSellKgQty != 0 ? "Kg" : item.FirstOrDefault().BaseUnit,
+                    TotalQty = totalSellKgQty != 0 ? totalSellKgQty : totalSellQty,
+                    TotalBranchQty = totalBranchQty,
+                    CreditQty = Math.Abs(creditQty - totalBranchQty),
+                    CashQty = cashQty
+                });
+            }
+
+            return dailyConsumptions;
         }
     }
 }

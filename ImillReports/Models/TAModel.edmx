@@ -41,12 +41,13 @@
           <Property Name="TransactionType" Type="char" MaxLength="1" />
           <Property Name="DeviceCode" Type="nvarchar" MaxLength="100" />
           <Property Name="Timestamp" Type="bigint" Nullable="false" />
-          <Property Name="Temperature" Type="float" />
+          <Property Name="Temperature" Type="decimal" Precision="12" Scale="3" />
           <Property Name="pushed" Type="bit" />
           <Property Name="TransactionDateTime" Type="datetime" />
           <Property Name="CardID" Type="varchar" MaxLength="50" />
           <Property Name="Maskflag" Type="bigint" />
           <Property Name="Permission" Type="bigint" />
+          <Property Name="IsManual" Type="bit" />
         </EntityType>
         <EntityType Name="tbl_Location">
           <Key>
@@ -80,7 +81,8 @@
           <Property Name="Employee" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="LocationOid" Type="int" Nullable="false" />
-          <Property Name="Temperature" Type="nchar" MaxLength="10" />
+          <Property Name="TemperatureIn" Type="nchar" MaxLength="10" />
+          <Property Name="TemperatureOut" Type="nchar" MaxLength="10" />
           <Property Name="PunchIn" Type="datetime" Nullable="false" />
           <Property Name="PunchOut" Type="datetime" Nullable="false" />
           <Property Name="LateIn" Type="time" Precision="7" Nullable="false" />
@@ -176,7 +178,6 @@
         <EntityContainer Name="FCCUNVDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tbl_Location" EntityType="Self.tbl_Location" />
           <EntitySet Name="tbl_Shift" EntityType="Self.tbl_Shift" />
-          <EntitySet Name="tbl_EmpTransaction" EntityType="FCCUNVDBModel.tbl_EmpTransaction" />
           <EntitySet Name="tbl_Employees" EntityType="FCCUNVDBModel.tbl_Employees" />
           <EntitySet Name="tbl_EmpLocShiftMap" EntityType="FCCUNVDBModel.tbl_EmpLocShiftMap" />
           <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Employees" Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Employees">
@@ -191,30 +192,9 @@
             <End Role="tbl_Shift" EntitySet="tbl_Shift" />
             <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
           </AssociationSet>
+          <EntitySet Name="tbl_EmpTransaction" EntityType="FCCUNVDBModel.tbl_EmpTransaction" />
           <EntitySet Name="tbl_Transactions" EntityType="FCCUNVDBModel.tbl_Transactions" />
           </EntityContainer>
-        <EntityType Name="tbl_EmpTransaction">
-          <Key>
-            <PropertyRef Name="Timestamp" />
-          </Key>
-          <Property Name="EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TransactionYear" Type="Int32" />
-          <Property Name="TransactionMonth" Type="Int32" />
-          <Property Name="TransactionDate" Type="Int32" />
-          <Property Name="TransactionHour" Type="Int32" />
-          <Property Name="TransactionMinute" Type="Int32" />
-          <Property Name="TransactionSecond" Type="Int32" />
-          <Property Name="TransactionType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="DeviceCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Timestamp" Type="Int64" Nullable="false" />
-          <Property Name="Temperature" Type="Double" />
-          <Property Name="pushed" Type="Boolean" />
-          <Property Name="TransactionDateTime" Type="DateTime" Precision="3" />
-          <Property Name="CardID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Maskflag" Type="Int64" />
-          <Property Name="Permission" Type="Int64" />
-        </EntityType>
         <EntityType Name="tbl_Employees">
           <Key>
             <PropertyRef Name="Oid" />
@@ -276,6 +256,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tbl_EmpTransaction">
+          <Key>
+            <PropertyRef Name="Timestamp" />
+          </Key>
+          <Property Name="EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionYear" Type="Int32" />
+          <Property Name="TransactionMonth" Type="Int32" />
+          <Property Name="TransactionDate" Type="Int32" />
+          <Property Name="TransactionHour" Type="Int32" />
+          <Property Name="TransactionMinute" Type="Int32" />
+          <Property Name="TransactionSecond" Type="Int32" />
+          <Property Name="TransactionType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="DeviceCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="Int64" Nullable="false" />
+          <Property Name="Temperature" Type="Decimal" Precision="12" Scale="3" />
+          <Property Name="pushed" Type="Boolean" />
+          <Property Name="TransactionDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CardID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Maskflag" Type="Int64" />
+          <Property Name="Permission" Type="Int64" />
+          <Property Name="IsManual" Type="Boolean" />
+        </EntityType>
         <EntityType Name="tbl_Transactions">
           <Key>
             <PropertyRef Name="Oid" />
@@ -287,7 +290,8 @@
           <Property Name="Employee" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LocationName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LocationOid" Type="Int32" Nullable="false" />
-          <Property Name="Temperature" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="TemperatureIn" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="TemperatureOut" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="PunchIn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PunchOut" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LateIn" Type="Time" Nullable="false" Precision="7" />
@@ -326,29 +330,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmpTransaction">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpTransaction">
-              <MappingFragment StoreEntitySet="tbl_EmpTransaction">
-                <ScalarProperty Name="Permission" ColumnName="Permission" />
-                <ScalarProperty Name="Maskflag" ColumnName="Maskflag" />
-                <ScalarProperty Name="CardID" ColumnName="CardID" />
-                <ScalarProperty Name="TransactionDateTime" ColumnName="TransactionDateTime" />
-                <ScalarProperty Name="pushed" ColumnName="pushed" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
-                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-                <ScalarProperty Name="TransactionSecond" ColumnName="TransactionSecond" />
-                <ScalarProperty Name="TransactionMinute" ColumnName="TransactionMinute" />
-                <ScalarProperty Name="TransactionHour" ColumnName="TransactionHour" />
-                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
-                <ScalarProperty Name="TransactionMonth" ColumnName="TransactionMonth" />
-                <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_Employees">
             <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Employees">
               <MappingFragment StoreEntitySet="tbl_Employees">
@@ -372,6 +353,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmpTransaction">
+            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpTransaction">
+              <MappingFragment StoreEntitySet="tbl_EmpTransaction">
+                <ScalarProperty Name="IsManual" ColumnName="IsManual" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+                <ScalarProperty Name="Maskflag" ColumnName="Maskflag" />
+                <ScalarProperty Name="CardID" ColumnName="CardID" />
+                <ScalarProperty Name="TransactionDateTime" ColumnName="TransactionDateTime" />
+                <ScalarProperty Name="pushed" ColumnName="pushed" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="TransactionSecond" ColumnName="TransactionSecond" />
+                <ScalarProperty Name="TransactionMinute" ColumnName="TransactionMinute" />
+                <ScalarProperty Name="TransactionHour" ColumnName="TransactionHour" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="TransactionMonth" ColumnName="TransactionMonth" />
+                <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbl_Transactions">
             <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Transactions">
               <MappingFragment StoreEntitySet="tbl_Transactions">
@@ -383,7 +388,8 @@
                 <ScalarProperty Name="LateIn" ColumnName="LateIn" />
                 <ScalarProperty Name="PunchOut" ColumnName="PunchOut" />
                 <ScalarProperty Name="PunchIn" ColumnName="PunchIn" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="TemperatureOut" ColumnName="TemperatureOut" />
+                <ScalarProperty Name="TemperatureIn" ColumnName="TemperatureIn" />
                 <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="Employee" ColumnName="Employee" />

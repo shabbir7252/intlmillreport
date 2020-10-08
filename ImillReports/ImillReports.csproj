@@ -691,6 +691,7 @@
     <Content Include="Views\ManageTimeAttendance\Employees.cshtml" />
     <Content Include="Views\ManageTimeAttendance\Locations.cshtml" />
     <Content Include="Views\ManageTimeAttendance\Shifts.cshtml" />
+    <Content Include="Views\SalesReport\DailyConsumption.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Location\" />

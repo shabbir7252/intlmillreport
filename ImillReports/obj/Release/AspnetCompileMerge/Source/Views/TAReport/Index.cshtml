@@ -3,8 +3,12 @@
     ViewBag.Title = "Time Attendance Report";
     ViewBag.SubTitle = "All transactions of Time and Attendance as report";
 
-    var test = ViewBag.DataSource;
-    var etst2 = "";
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("Print");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    toolbarItems.Add(new { text = "Delete Record(s)", tooltipText = "Delete the transaction records", id = "deleteRecords", prefixIcon = "e-delete" });
 }
 
 <style>
@@ -25,6 +29,10 @@
     }
 </style>
 
+
+@Html.EJS().Toast("success-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Record(s) Deleted").Render()
+@Html.EJS().Toast("error-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be delete! Please try again by refereshing page").Render()
+@Html.EJS().Toast("info-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please select atleast 1 record").Render()
 
 
 <div class="container-fluid">
@@ -70,22 +78,27 @@
 
                     @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
                {
+                   col.Field("Oid").Width("30").ShowInColumnChooser(false).Visible(false).Add();
+                   col.Field("IsVerified").Type("checkbox").Width("30").AllowFiltering(true).AllowSorting(true).Add();
                    col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("EmployeeId").Width("80").HeaderText("Emp Id").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("EmployeeName").HeaderText("Employee").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Temperature").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TemperatureIn").HeaderText("Temperature In").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TemperatureOut").HeaderText("Temperature Out").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("ShiftStart").HeaderText("Shift Start").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("ShiftEnd").Width("100").HeaderText("Shift End").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("PunchIn").Width("100").HeaderText("Punch In").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("PunchOut").Width("100").HeaderText("Punch Out").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("LateIn").HeaderText("Late In").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("EarlyOut").HeaderText("Early Out").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("TotalHoursWorked").HeaderText("Total Hours Worked").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TotalWorkingHours").HeaderText("Total Hours Worked").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("DeviceCode").Width("80").HeaderText("Device Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("IsOpened").Width("80").DisplayAsCheckBox(true).HeaderText("Is opened for backdated entry").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
 
                }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Render()
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").RowSelected("OnSelected").RowDeselected("OnDeselected").SelectionSettings(select =>
+                       select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
                 </div>
             </div>
         </div>
@@ -98,9 +111,17 @@
 
     <script>
 
+        var verificationIds = [];
+
         function dataBound(args) {
             this.autoFitColumns(['Location']);
         }
+
+
+        function dataBound(args) {
+            this.autoFitColumns(['IsVerified', 'TransDate', 'EmployeeId', 'EmployeeName', 'Location', 'TemperatureIn', 'TemperatureOut', 'ShiftStart', 'ShiftEnd', 'PunchIn', 'PunchOut', 'LateIn', 'EarlyOut', 'TotalWorkingHours', 'DeviceCode', 'IsOpened']);
+        }
+
 
         function toolbarClick(args) {
             var gridObj = document.getElementById("Grid").ej2_instances[0];
@@ -109,6 +130,83 @@
                     fileName: "TimeAttendanceReport.xlsx"
                 };
                 gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRecords') {
+
+            if (verificationIds.length === 0) {
+                setTimeout(() => {
+                    var toastObj = document.getElementById('info-toast').ej2_instances[0];
+                    toastObj.target = document.body;
+                    toastObj.show();
+                }, 1000);
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("DeleteTransactions", "TAReport")',
+                    success: function (response) {
+
+                        console.log("f : ", response);
+                        if (response === "True") {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('success-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+
+                            verificationIds = [];
+
+                            window.location.reload();
+
+                        } else {
+                            setTimeout(() => {
+                                var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                toastObj.target = document.body;
+                                toastObj.show();
+                            }, 1000);
+                        }
+                },
+                    error: function (ex) {
+                        setTimeout(() => {
+                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            toastObj.target = document.body;
+                            toastObj.show();
+                        }, 1000);
+                    }
+                });
+
+            }
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row[0].cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
             }
         }
 

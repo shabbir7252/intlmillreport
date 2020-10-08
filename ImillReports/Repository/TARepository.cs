@@ -16,8 +16,15 @@ namespace ImillReports.Repository
             _context = context;
         }
 
-        public List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate)
+        public string SyncTAReport(int year, int month, int from, int toYear, int toMonth, int to)
         {
+            var fromDate = new DateTime(year, month, from, 00, 00, 00);
+            var toDate = new DateTime(toYear, toMonth, to, 23, 59, 59);
+
+            var fetchedTrans = _context.tbl_Transactions.Where(a => a.TransDate >= fromDate && a.TransDate <= toDate);
+            _context.tbl_Transactions.RemoveRange(fetchedTrans);
+            _context.SaveChanges();
+
             var empTransactions = _context.tbl_EmpTransaction.Where(x => x.TransactionDateTime >= fromDate &&
                                                                          x.TransactionDateTime <= toDate)
                                                              .GroupBy(a => a.EmployeeID).ToList();
@@ -28,7 +35,7 @@ namespace ImillReports.Repository
 
             foreach (var item in empTransactions)
             {
-                for (var i = fromDate.Value.Date; i <= toDate.Value.Date; i.AddDays(1))
+                for (var i = fromDate.Date; i <= toDate.Date; i.AddDays(1))
                 {
                     var iFirstTime = new DateTime(i.Year, i.Month, i.Day, 00, 00, 00);
                     var iLastTime = new DateTime(i.Year, i.Month, i.Day, 23, 59, 59);
@@ -44,8 +51,8 @@ namespace ImillReports.Repository
                             var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
                                                                                     ? lastRecord.TransactionDateTime
                                                                                     : firstRecord.TransactionDateTime;
-                            var val = 0;
-                            var empId = int.TryParse(firstRecord.EmployeeID, out val) == true ? int.Parse(firstRecord.EmployeeID) : 0;
+                            // var val = 0;
+                            var empId = int.TryParse(firstRecord.EmployeeID, out int val) == true ? int.Parse(firstRecord.EmployeeID) : 0;
                             var employeeName = "";
                             tbl_Shift shift = null;
                             TimeSpan? shiftStart = null;
@@ -91,7 +98,8 @@ namespace ImillReports.Repository
                                     EmployeeName = employeeName,
                                     Location = locationNameAr,
                                     LocationId = locationOid,
-                                    Temperature = firstRecord.Temperature,
+                                    TemperatureIn = firstRecord.Temperature,
+                                    TemperatureOut = lastRecord.Temperature,
                                     PunchIn = punchIn,
                                     PunchOut = punchOut,
                                     ShiftStart = shiftStart,
@@ -111,11 +119,11 @@ namespace ImillReports.Repository
                 }
             }
 
-            var from = fromDate.Value.Date;
-            var to = toDate.Value.Date;
+            var fromDateObj = fromDate.Date;
+            var toDateObj = toDate.Date;
 
             var dbTransactions = new List<tbl_Transactions>();
-            var transactions = _context.tbl_Transactions.Where(x => x.TransDate >= from && x.TransDate <= to);
+            var transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDateObj && x.TransDate <= toDateObj);
             foreach (var item in tAModels)
             {
                 if (!transactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId))
@@ -133,7 +141,8 @@ namespace ImillReports.Repository
                             LocationOid = item.LocationId,
                             PunchIn = item.PunchIn.Value,
                             PunchOut = item.PunchOut.Value,
-                            Temperature = item.Temperature.Value.ToString(),
+                            TemperatureIn = item.TemperatureIn.ToString(),
+                            TemperatureOut = item.TemperatureOut.ToString(),
                             TotalHoursWorked = decimal.Parse(item.TotalHoursWorked.TotalHours.ToString()),
                             TransDate = item.TransDate.Value,
                             ShiftStart = item.ShiftStart,
@@ -154,7 +163,8 @@ namespace ImillReports.Repository
                     trans.LocationOid = item.LocationId;
                     trans.PunchIn = item.PunchIn.Value;
                     trans.PunchOut = item.PunchOut.Value;
-                    trans.Temperature = item.Temperature.Value.ToString();
+                    trans.TemperatureIn = item.TemperatureIn.ToString();
+                    trans.TemperatureOut = item.TemperatureOut.ToString();
                     trans.TotalHoursWorked = decimal.Parse(item.TotalHoursWorked.TotalHours.ToString());
                     trans.TransDate = item.TransDate.Value;
                     trans.ShiftStart = item.ShiftStart;
@@ -171,6 +181,44 @@ namespace ImillReports.Repository
             _context.tbl_Transactions.AddRange(dbTransactions);
             _context.SaveChanges();
 
+            return "True";
+        }
+
+        public List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate)
+        {
+            if (fromDate == null) fromDate = DateTime.Now;
+            if (toDate == null) toDate = DateTime.Now;
+
+            var tAModels = new List<TimeAttendanceViewModel>();
+            var transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate);
+
+            foreach (var item in transactions)
+            {
+                if (!tAModels.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId))
+                {
+                    tAModels.Add(new TimeAttendanceViewModel
+                    {
+                        Oid = item.Oid,
+                        DeviceCode = item.DeviceCode,
+                        EarlyOut = item.EarlyOut,
+                        EmployeeName = item.Employee,
+                        EmployeeId = item.EmployeeId,
+                        LateIn = item.LateIn,
+                        Location = item.LocationName,
+                        LocationId = item.LocationOid,
+                        PunchIn = item.PunchIn,
+                        PunchOut = item.PunchOut,
+                        TemperatureIn = decimal.Parse(item.TemperatureIn),
+                        TemperatureOut = decimal.Parse(item.TemperatureOut),
+                        TotalWorkingHours = item.TotalHoursWorked,
+                        TransDate = item.TransDate,
+                        ShiftStart = item.ShiftStart,
+                        ShiftEnd = item.ShiftEnd,
+                        IsOpened = item.IsOpened
+                    });
+                }
+            }
+
             return tAModels;
         }
 
@@ -184,13 +232,17 @@ namespace ImillReports.Repository
                 foreach (var oid in employees)
                 {
                     var empObj = _context.tbl_Employees.FirstOrDefault(x => x.Oid == oid);
+                    var shiftOid = int.Parse(shift);
+                    var locationOid = int.Parse(location); 
 
-                    flag = _context.tbl_EmpLocShiftMap.Any(x => x.EmpId == empObj.Oid && x.fromDate >= fromDate && x.toDate <= toDate);
+                    flag = _context.tbl_EmpLocShiftMap.Any(x => x.EmpId == empObj.Oid && 
+                                                                x.ShiftOid == shiftOid && 
+                                                                x.LocationOid == locationOid && 
+                                                                x.fromDate >= fromDate && 
+                                                                x.toDate <= toDate);
 
                     if (!flag)
                     {
-                        var shiftOid = int.Parse(shift);
-                        var locationOid = int.Parse(location);
                         var shiftObj = _context.tbl_Shift.FirstOrDefault(x => x.Oid == shiftOid);
                         var locationObj = _context.tbl_Location.FirstOrDefault(x => x.Oid == locationOid);
 
@@ -384,7 +436,8 @@ namespace ImillReports.Repository
                     Oid = emp.Oid,
                     NameEn = emp.NameEn,
                     NameAr = emp.NameAr,
-                    EmployeeId = emp.EmployeeID.Value
+                    EmployeeId = emp.EmployeeID.Value,
+                    DisplayText = $"{emp.EmployeeID.Value}-{emp.NameAr}"
                 });
 
             return model;
@@ -420,7 +473,8 @@ namespace ImillReports.Repository
                     NameEn = shift.NameEn,
                     NameAr = shift.NameAr,
                     StartTime = shift.StartTime,
-                    EndTime = shift.EndTime
+                    EndTime = shift.EndTime,
+                    DisplayText = $"({shift.Code}) - {shift.NameEn}"
                 });
 
             return model;
@@ -442,6 +496,21 @@ namespace ImillReports.Repository
                         if (!string.IsNullOrEmpty(shift))
                             record.ShiftOid = int.Parse(shift);
 
+                        _context.SaveChanges();
+                    }
+                }
+        }
+
+        public void DeleteTransactions(List<int> verifiedIds)
+        {
+            if (verifiedIds.Count() > 0)
+                foreach (var id in verifiedIds)
+                {
+                    var record = _context.tbl_Transactions.FirstOrDefault(x => x.Oid == id);
+
+                    if (record != null)
+                    {
+                        _context.tbl_Transactions.Remove(record);
                         _context.SaveChanges();
                     }
                 }

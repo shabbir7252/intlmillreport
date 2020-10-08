@@ -14,16 +14,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 18:59:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>08/20/2020 00:12:10</publishTime>
+      <publishTime>09/22/2020 13:35:51</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>08/20/2020 00:12:10</publishTime>
+      <publishTime>09/22/2020 13:35:51</publishTime>
     </File>
     <File Include="bin/Cash Register.dll">
-      <publishTime>08/20/2020 00:11:53</publishTime>
+      <publishTime>09/22/2020 12:45:00</publishTime>
     </File>
     <File Include="bin/Cash Register.pdb">
-      <publishTime>08/20/2020 00:11:53</publishTime>
+      <publishTime>09/22/2020 12:45:00</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>09/14/2019 17:01:18</publishTime>
@@ -344,7 +344,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2020 21:28:48</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>08/20/2020 00:11:58</publishTime>
+      <publishTime>09/22/2020 13:35:34</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>07/06/2020 21:36:31</publishTime>
@@ -830,19 +830,19 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2020 22:05:34</publishTime>
     </File>
     <File Include="Views/CashRegister/CRRecords.cshtml">
-      <publishTime>07/20/2020 12:27:51</publishTime>
+      <publishTime>09/08/2020 21:10:21</publishTime>
     </File>
     <File Include="Views/CashRegister/Edit.cshtml">
-      <publishTime>08/03/2020 23:27:35</publishTime>
+      <publishTime>08/30/2020 15:36:16</publishTime>
     </File>
     <File Include="Views/CashRegister/GetRecords.cshtml">
       <publishTime>07/18/2020 00:23:32</publishTime>
     </File>
     <File Include="Views/CashRegister/Index.cshtml">
-      <publishTime>08/03/2020 23:27:49</publishTime>
+      <publishTime>09/14/2020 17:59:50</publishTime>
     </File>
     <File Include="Views/CashRegister/Print.cshtml">
-      <publishTime>07/22/2020 11:22:06</publishTime>
+      <publishTime>09/14/2020 18:07:50</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>07/18/2020 18:11:06</publishTime>
@@ -851,7 +851,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2020 21:28:48</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>07/20/2020 12:27:22</publishTime>
+      <publishTime>09/14/2020 15:33:25</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>07/06/2020 21:28:48</publishTime>
@@ -860,7 +860,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2020 21:28:48</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/20/2020 00:11:54</publishTime>
+      <publishTime>09/22/2020 11:51:26</publishTime>
     </File>
   </ItemGroup>
 </Project>

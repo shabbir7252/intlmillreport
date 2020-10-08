@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "Daily Consumption Report";
+    ViewBag.SubTitle = "Analyse the total quantity of each item delivered";
+    var test = ViewBag.DataSource;
+    var test2 = "";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("DailyConsumption", "SalesReport", FormMethod.Get))
+                {
+                <div class="row p-3">
+                    <div class="col-3">
+                        @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.startDate).Render()
+                    </div>
+
+                    <div class="col-3">
+                        @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
+                    </div>
+
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-raised bg-black waves-effect waves-light getRecords">Get Records</button>
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="card mt-3">
+                <div class="body">
+
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
+               {
+                   col.Field("ItemNameEn").HeaderText("Item NameEn").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("ItemNameAr").HeaderText("Item NameAr").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("BaseUnit").Visible(false).HeaderText("Unit").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TotalQty").HeaderText("Total Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("TotalBranchQty").HeaderText("Branch Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CreditQty").HeaderText("Credit Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CashQty").HeaderText("Cash Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                   {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "TotalQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "TotalBranchQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "CreditQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "CashQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }
+                       }).Add();
+                   }).DataBound("dataBound").Load("load").Render()
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function dataBound(args) {
+            this.autoFitColumns(['ItemNameEn', 'ItemNameAr', 'TotalQty', 'TotalBranchQty', 'CreditQty', 'CashQty', 'BaseUnit']);
+        }
+
+        function load() {
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            var rowHeight = grid.getRowHeight();  //height of the each row
+            var gridHeight = grid.height;  //grid height
+            var pageSize = grid.pageSettings.pageSize;   //initial page size
+            var pageResize = 25; //new page size is obtained here
+            grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "DailyConsumption.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+    </script>
+}

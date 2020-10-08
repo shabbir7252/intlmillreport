@@ -10,7 +10,6 @@ namespace ImillReports.ViewModels
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string DeviceCode { get; set; }
-        public double? Temperature { get; set; }
         public DateTime? TransDate { get; set; }
         public string Location { get; internal set; }
         public DateTime? PunchIn { get; internal set; }
@@ -23,6 +22,11 @@ namespace ImillReports.ViewModels
         public TimeSpan TotalHoursWorked { get; set; }
         public string PersonId { get; set; }
         public bool IsOpened { get; internal set; }
+        public string Temp { get; internal set; }
+        public decimal? TotalWorkingHours { get; internal set; }
+        public decimal? TemperatureIn { get; internal set; }
+        public decimal? TemperatureOut { get; internal set; }
+        public int Oid { get; internal set; }
     }
 
     public class AllocationMapViewModel
@@ -50,5 +54,6 @@ namespace ImillReports.ViewModels
         public string NameEn { get; set; }
         public string NameAr { get; set; }
         public int EmployeeId { get; set; }
+        public string DisplayText { get; set; }
     }
 }

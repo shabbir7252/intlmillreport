@@ -50,5 +50,6 @@ namespace ImillReports.Models
         public Nullable<short> Locat_Cd { get; set; }
         public Nullable<int> CrOid { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     }
 }

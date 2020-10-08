@@ -56,27 +56,6 @@
                 <th>
                     Shift Type
                 </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.Cheques)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Talabat)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Online)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Knet)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Visa)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Expense)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Reserve)
-                    </th>*@
                 <th>
                     Net Balance
                 </th>
@@ -86,9 +65,6 @@
             @foreach (var item in Model.OrderByDescending(x => x.TransDate))
             {
                 <tr>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.Oid)
-                        </td>*@
                     <td>
                         @item.TransDate.ToString("dd-MM-yyyy hh:mm:ss tt")
                     </td>
@@ -98,36 +74,44 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ShiftType)
                     </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.Cheques)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Talabat)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Online)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Knet)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Visa)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Expense)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reserve)
-                        </td>*@
-
                     <td>
                         @Html.DisplayFor(modelItem => item.NetBalance)
                     </td>
-
                     <td>
-                        @Html.ActionLink("Edit", "Edit", "CashRegister", new { oid = item.Oid }, null) |
-                        @Html.ActionLink("Delete", "Delete", "CashRegister", new { oid = item.Oid, salesmanOid = item.Salesman }, null) |
+                        @Html.ActionLink("Edit", "Edit", "CashRegister", new { oid = item.Oid }, null) 
+                        @*@Html.ActionLink("Delete", "Delete", "CashRegister", new { oid = item.Oid, salesmanOid = item.Salesman }, new { onclick = "return confirm('Are you sure you wish to delete this record\\nهل تريد حذف هذا السجل؟?');" }) |*@
+                        <a class="text-danger mx-3" href="#" data-toggle="modal" data-target="#exampleModal-@item.Oid">Delete</a> 
                         @Html.ActionLink("Print", "Print", "CashRegister", new { oid = item.Oid }, null)
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal-@item.Oid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Entry : @item.StaffDate.ToString("dd-MM-yyyy") | @item.ShiftType | @Html.DisplayFor(modelItem => item.NetBalance) KD</h5>
+                                        <button type="button" class="close pb-0" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true" style="font-size: xxx-large;top: -15px;position: relative;">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h3>هل أنت متأكد من حذف؟</h3>
+                                                <h4>Delete this record?</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No --- لا</button>
+                                        @using (Html.BeginForm("Delete", "CashRegister", new { oid = item.Oid, salesmanOid = item.Salesman }))
+                                        {
+                                            <button type="submit" class="btn btn-danger">Delete --- حذف</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
             }
@@ -135,6 +119,8 @@
         </table>
     </div>
 </div>
+
+
 
 @section scripts {
     <script>

@@ -79,6 +79,7 @@ namespace Cash_Register.Repository
                 cRegister.TenFils = rdr.GetInt32(23);
                 cRegister.FiveFils = rdr.GetInt32(24);
                 cRegister.NetBalance = rdr.GetDecimal(25);
+                cRegister.SerialNo = rdr.GetInt64(28);
             }
 
             cmd.Dispose();
@@ -128,8 +129,8 @@ namespace Cash_Register.Repository
 
             var cmd = new SQLiteCommand(con)
             {
-                CommandText = $"Select * from CashRegister where (IsDeleted IS NULL OR IsDeleted = 0) AND Salesman = {oid} AND TransDate >= date('now','-1 day','localtime')"
-                // CommandText = $"Select * from CashRegister where (IsDeleted IS NULL OR IsDeleted = 0) AND Salesman = {oid}"
+                // CommandText = $"Select * from CashRegister where (IsDeleted IS NULL OR IsDeleted = 0) AND Salesman = {oid} AND StaffDate >= date('now','-1 day','localtime')"
+                CommandText = $"Select * from CashRegister where (IsDeleted IS NULL OR IsDeleted = 0) AND Salesman = {oid}"
             };
 
             var rdr = cmd.ExecuteReader();
@@ -172,7 +173,9 @@ namespace Cash_Register.Repository
             con.Close();
             con.Dispose();
 
-            return cRegisters;
+            var backDate = GetBackDays();
+            var creg = cRegisters.Where(x => x.StaffDate >= DateTime.Now.AddDays(-backDate).Date).ToList();
+            return creg;
         }
 
         public int GetShiftCount(ShiftCount shiftCount)
@@ -226,12 +229,12 @@ namespace Cash_Register.Repository
                 {
                     CommandText = $"INSERT INTO CashRegister(Oid, TransDate, StaffDate, LocatCd, Salesman, ShiftType, " +
                     $"ShiftCount, Cheques, Talabat, Online, Knet, Visa, Expense, 'Reserve', TwentyKd, TenKd, FiveKd, OneKd, HalfKd, " +
-                    $"QuarterKd, HundFils, FiftyFils, TwentyFils, TenFils, FiveFils, NetBalance, IsSynced, IsDeleted) " +
+                    $"QuarterKd, HundFils, FiftyFils, TwentyFils, TenFils, FiveFils, NetBalance, IsSynced, IsDeleted, SerialNo) " +
                     $"VALUES({cRegister.Oid}, '{cRegister.TransDate:yyyy-MM-dd HH:mm:ss}', '{cRegister.StaffDate: yyyy-MM-dd}', {cRegister.LocationId},{cRegister.Salesman}," +
                     $"'{cRegister.ShiftType}', {cRegister.ShiftCount}, {cRegister.Cheques}, {cRegister.Talabat}, {cRegister.Online}," +
                     $"{cRegister.Knet}, {cRegister.Visa}, {cRegister.Expense}, {cRegister.Reserve}, {cRegister.TwentyKd}, {cRegister.TenKd}, " +
                     $"{cRegister.FiveKd}, {cRegister.OneKd}, {cRegister.HalfKd}, {cRegister.QuarterKd}, {cRegister.HundFils}, {cRegister.FiftyFils}, " +
-                    $"{cRegister.TwentyFils}, {cRegister.TenFils}, {cRegister.FiveFils}, {cRegister.NetBalance}, {cRegister.IsSynced}, {cRegister.IsDeleted})"
+                    $"{cRegister.TwentyFils}, {cRegister.TenFils}, {cRegister.FiveFils}, {cRegister.NetBalance}, {cRegister.IsSynced}, {cRegister.IsDeleted}, {cRegister.SerialNo})"
                 };
 
                 cmd.ExecuteNonQuery();
@@ -283,7 +286,8 @@ namespace Cash_Register.Repository
                     $"FiveFils={cRegister.FiveFils}," +
                     $"NetBalance={cRegister.NetBalance}," +
                     $"IsSynced={0}," +
-                    $"IsDeleted={0}" +
+                    $"IsDeleted={0}," +
+                    $"SerialNo={cRegister.SerialNo} " +
                     $" Where Oid = {cRegister.Oid}"
                 };
 
@@ -299,6 +303,65 @@ namespace Cash_Register.Repository
             {
                 return 0;
             }
+        }
+
+        public long GetSerialNo(DateTime dateTime)
+        {
+            var con = new SQLiteConnection(cs);
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = $"select * from CR_Serial"
+            };
+
+            var rdr = cmd.ExecuteReader();
+
+            var crSerial = new CRSerial();
+            while (rdr.Read())
+            {
+                crSerial.Date = DateTime.Parse(rdr.GetString(0));
+                crSerial.SerialNumber = rdr.GetInt64(1);
+                crSerial.BackDays = rdr.GetInt32(2);
+            }
+
+            cmd.Dispose();
+            con.Close();
+            con.Dispose();
+
+            var differenceDays = (DateTime.Now.Date - crSerial.Date.Date).TotalDays;
+            
+            if(dateTime != null || dateTime != DateTime.MinValue)
+                differenceDays = (dateTime.Date - crSerial.Date.Date).TotalDays;
+
+            var serial = crSerial.SerialNumber + differenceDays;
+
+            return (long)serial;
+        }
+
+        public int GetBackDays()
+        {
+            var con = new SQLiteConnection(cs);
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = $"select * from CR_Serial"
+            };
+
+            var rdr = cmd.ExecuteReader();
+
+            var crSerial = new CRSerial();
+            while (rdr.Read())
+            {
+                crSerial.BackDays = rdr.GetInt32(2);
+            }
+
+            cmd.Dispose();
+            con.Close();
+            con.Dispose();
+
+            return crSerial.BackDays != 0 ? crSerial.BackDays : 1;
         }
     }
 }

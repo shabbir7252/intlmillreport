@@ -1,16 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using Syncfusion.EJ2.QueryBuilder;
 using System.Web.Script.Serialization;
-using Microsoft.AspNet.Identity;
-using System.IO;
-using System.Text;
 
 namespace ImillReports.Controllers
 {
@@ -42,6 +42,8 @@ namespace ImillReports.Controllers
         private readonly string PageName = "SalesDetailReport";
 
         public SalesReportController() { }
+
+        #region Sales Report
 
         [HttpGet]
         public ActionResult Index(DateTime? fromDate, DateTime? toDate, string[] locationStringArray, string[] voucherTypeStringArray)
@@ -448,7 +450,7 @@ namespace ImillReports.Controllers
             //var locationString = string.Join(",", locationList.Select(n => n.ToString()).ToArray());
 
             var salesReportViewModel = _salesReportRepository.GetSalesTransaction(from, to, locations, voucherType);
-            var source = salesReportViewModel.SalesReportItems;
+            var source = salesReportViewModel.SalesReportItems.Where(x => x.GroupCD != 329);
 
             var result = new ContentResult
             {
@@ -458,6 +460,30 @@ namespace ImillReports.Controllers
 
             return result;
         }
+
+        public string GetSalesSync(int days)
+        {
+            return _salesReportRepository.GetSales(days);
+        }
+
+        public string GetSalesDetailSync(int days)
+        {
+            return _salesReportRepository.GetSalesDetail(days);
+        }
+
+        public string GetSalesMonthSync(int year, int month, int from, int to)
+        {
+            return $"{_salesReportRepository.GetSalesMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
+        }
+
+        public string GetSalesDetailMonthSync(int year, int month, int from, int to)
+        {
+            return $"{_salesReportRepository.GetSalesDetailMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
+        }
+
+        #endregion
+
+        #region Sales Hourly Report
 
         [Authorize(Roles = "Admin,Sales")]
         public ActionResult SalesHourlyReport(DateTime? fromDate, string[] locationStringArray)
@@ -964,8 +990,43 @@ namespace ImillReports.Controllers
             return View();
         }
 
+        #endregion
+
+        #region Daily Consumption Report
+
+        public ActionResult DailyConsumption(DateTime? fromDate, DateTime? toDate)
+        {
+            if (fromDate == null)
+            {
+                var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+                fromDate = fDate;
+                ViewBag.startDate = fDate;
+            }
+
+            if (toDate == null)
+            {
+                var tDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+                toDate = tDate;
+                ViewBag.endDate = tDate;
+            }
+
+            ViewBag.startDate = fromDate;
+            ViewBag.endDate = toDate;
+            ViewBag.validation = "false";
+
+            if (toDate < fromDate) ViewBag.validation = "true";
+
+            var result = _salesReportRepository.GetDailyConsumptionTrans(fromDate, toDate);
+            ViewBag.DataSource = result.OrderByDescending(x => x.TotalQty);
+
+            return View();
+        }
+
+        #endregion
+
+        #region Column Chooser
         public bool SaveColumnChooser(List<ColumnChooserItem> columnChooserItems) =>
-            _baseRepository.SaveColumnChooser(columnChooserItems, PageName, User.Identity.GetUserId());
+          _baseRepository.SaveColumnChooser(columnChooserItems, PageName, User.Identity.GetUserId());
 
         private void SetSalesDetailsColChooserVal()
         {
@@ -1059,25 +1120,7 @@ namespace ImillReports.Controllers
             }
         }
 
-        public string GetSalesSync(int days)
-        {
-            return _salesReportRepository.GetSales(days);
-        }
-
-        public string GetSalesDetailSync(int days)
-        {
-            return _salesReportRepository.GetSalesDetail(days);
-        }
-
-        public string GetSalesMonthSync(int year, int month, int from, int to)
-        {
-            return $"{_salesReportRepository.GetSalesMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
-        }
-
-        public string GetSalesDetailMonthSync(int year, int month, int from, int to)
-        {
-            return $"{_salesReportRepository.GetSalesDetailMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
-        }
+        #endregion
 
     }
 }

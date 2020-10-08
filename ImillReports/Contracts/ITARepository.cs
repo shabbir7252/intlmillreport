@@ -11,6 +11,7 @@ namespace ImillReports.Contracts
     public interface ITARepository
     {
         List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate);
+        string SyncTAReport(int year, int month, int from, int toYear, int toMonth, int to);
         List<ShiftViewModel> GetShifts();
         List<TaLocation> GetLocations();
         List<AllocationMapViewModel> GetEmpAllocations();
@@ -24,5 +25,6 @@ namespace ImillReports.Contracts
         void DeleteShifts(List<int> verifiedIds);
         int AddAllocation(DateTime fromDate, DateTime? toDate, List<int> employees, string shift, string location);
         void DeleteAllocations(List<int> verifiedIds);
+        void DeleteTransactions(List<int> verifiedIds);
     }
 }

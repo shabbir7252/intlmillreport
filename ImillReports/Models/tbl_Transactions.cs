@@ -21,7 +21,8 @@ namespace ImillReports.Models
         public string Employee { get; set; }
         public string LocationName { get; set; }
         public int LocationOid { get; set; }
-        public string Temperature { get; set; }
+        public string TemperatureIn { get; set; }
+        public string TemperatureOut { get; set; }
         public System.DateTime PunchIn { get; set; }
         public System.DateTime PunchOut { get; set; }
         public System.TimeSpan LateIn { get; set; }

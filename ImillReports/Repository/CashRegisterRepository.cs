@@ -110,9 +110,11 @@ namespace ImillReports.Repository
 
             var staffDateCRContext = _context.intlmill_cash_register.Where(x => x.trans_date_time >= fromDateDed1 &&
                                                                                 x.trans_date_time <= toDateAdd1 &&
+                                                                                (!x.IsDeleted.Value || x.IsDeleted == null) &&
                                                                                 // !string.IsNullOrEmpty(x.staff_date) &&
                                                                                 x.location != "نموذج" &&
-                                                                                x.location != "نموذج\r\n").ToList();
+                                                                                x.location != "نموذج\r\n" && 
+                                                                                x.Locat_Cd != 73).ToList();
 
             foreach (var rec in staffDateCRContext)
             {
@@ -235,7 +237,8 @@ namespace ImillReports.Repository
                 var salesReportFromDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 05, 00, 00);
                 var salesReportToDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 04, 59, 00).AddDays(1);
 
-                var salesReportItems = _salesReportRepository.GetSalesTransaction(salesReportFromDate, salesReportToDate, locationId.ToString(), "").SalesReportItems;
+                var salesReportItems = _salesReportRepository.GetSalesTransaction(salesReportFromDate, salesReportToDate, locationId.ToString(), "")
+                                                             .SalesReportItems.Where(x => x.GroupCD != 329);
 
                 var crKnet = item.Sum(x => x.Knet);
                 var crVisa = item.Sum(x => x.Visa);

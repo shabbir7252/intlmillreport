@@ -7,6 +7,7 @@
     @Styles.Render("~/Content/css")
     <link href="~/Content/gijgo/combined/gijgo.min.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body class="pt-3">
     <div class="container-fluid body-content">
@@ -25,12 +26,12 @@
 <script>
     const href = "https://localhost:44385";
     const interval = setInterval(function () {
-        $.get(href + "/api/GetLocations");
-        $.get(href + "/api/GetPin");
-        $.get(href + "/api/GetSalesmans");
-        $.get(href + "/api/GetReserveAmount");
-        $.get(href + "/api/SyncCashRegister");
-        
+            $.get(href + "/api/GetLocations");
+            $.get(href + "/api/GetPin");
+            $.get(href + "/api/GetSalesmans");
+            $.get(href + "/api/GetReserveAmount");
+            $.get(href + "/api/SyncCashRegister");
+            $.get(href + "/api/GetSerialSetting");
         }, 5000);
 </script>
 

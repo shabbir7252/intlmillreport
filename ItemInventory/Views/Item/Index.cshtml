@@ -1,0 +1,187 @@
+﻿@using Syncfusion.EJ2.Grids;
+
+@{
+    ViewBag.Title = "Item Master";
+
+    List<object> commands = new List<object>();
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "e-flat" } });
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("Print");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    toolbarItems.Add(new { text = "Delete Item(s)", tooltipText = "Delete the records", id = "deleteItem", prefixIcon = "e-delete" });
+
+    // TODO:
+    // 5. Configure the design with mobile responsive.
+    // 6. Edit the record.
+
+    // DONE :
+    // 1. Add NameEn, NameAr, Add to grid button, save button.
+    // 2. Add Grid to show record.
+    // 3. Write a success function :
+    //      i.  Add a bootstrap modal and show if value is saved.
+    //     iii. For error do the same.
+    // 4. Delete the values through checkbox selection or on node.
+
+}
+
+<div class="container">
+
+    <div class="row p-3">
+        <div class="col-12 mt-4">
+            @Html.EJS().TextBox("NameEn").Placeholder("Name En").Render()
+        </div>
+        <div class="col-12 mt-4">
+            @Html.EJS().TextBox("NameAr").Placeholder("Name Ar").Render()
+        </div>
+        <div class="col-6 mx-auto mt-4">
+            <button type="button" class="btn btn-primary btn-block" onclick="AddItem()">Add Item</button>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            @Html.EJS().Grid("Grid").DataSource(
+               (IEnumerable<object>)
+               ViewBag.DataSource).EnablePersistence(false).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+           {
+               col.Field("IsVerified").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
+               col.Field("Oid").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+               col.Field("NameEn").Width("80").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("NameAr").Width("80").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.HeaderText("Actions").Width("60").Commands(commands).Add();
+
+           }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(FilterType.Menu)).PageSettings(
+               page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select =>
+               select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="response-message" tabindex="-1" role="dialog" aria-labelledby="ResponseMessageLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text-center modal-message"></h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="margin: 0 auto !important;" class="btn btn-secondary" data-dismiss="modal" onclick="CheckResponse()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var responseId = -1;
+        var verificationIds = [];
+
+        function dataBound(args) {
+            this.autoFitColumns(['NameEn', 'NameAr', 'Actions']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "ItemMaster.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteItem') {
+
+            if (verificationIds.length === 0) {
+                alert('Select atleast 1 item');
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("Delete", "Item")',
+                    success: function (response) {
+                        console.log('response', response);
+                        responseId = response.ReponseId
+                        $('.modal-message').html(response.Message);
+                        $('#response-message').modal('show');
+                },
+                    error: function (ex) {
+                        alert("Error Occured While Saving!");
+                    }
+                });
+                }
+            }
+        }
+
+        function AddItem() {
+
+            var nameEn = document.getElementById('NameEn').ej2_instances[0].value;
+            var nameAr = document.getElementById('NameAr').ej2_instances[0].value;
+
+            if (nameEn === null || nameEn === '') {
+                alert('Enter NameEn');
+            } else if (nameAr === null || nameAr === '') {
+                alert('Enter NameAr');
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SaveItem", "Item")',
+                    data: {
+                        nameEn: nameEn,
+                        nameAr: nameAr
+                    },
+                    success: function (response) {
+                        console.log('response', response);
+                        responseId = response.ReponseId
+                        $('.modal-message').html(response.Message);
+                        $('#response-message').modal('show');
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+
+            }
+        }
+
+        function CheckResponse() {
+            if (responseId === 1) {
+                window.location.reload();
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row[0].cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+    </script>
+}

@@ -1814,5 +1814,6 @@
     <Property Name="Locat_Cd" Type="Int16" />
     <Property Name="CrOid" Type="Int32" />
     <Property Name="UpdatedOn" Type="DateTime" Precision="0" />
+    <Property Name="IsDeleted" Type="Boolean" />
   </EntityType>
 </Schema>

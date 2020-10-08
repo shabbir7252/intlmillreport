@@ -33,7 +33,7 @@ namespace Cash_Register.Controllers
                 short locationId = short.Parse(Request.Cookies["locationId"].Value);
                 ViewBag.Salesmans = _salesmanRepository.GetSalesmans(locationId);
                 ViewBag.reserveAmount = _locationRepository.GetReserveAmount(locationId);
-
+                //ViewBag.SerialNo = _cashRegisterRepository.GetSerialNo(DateTime.Now);
                 return View();
             }
 
@@ -89,7 +89,8 @@ namespace Cash_Register.Controllers
                 Visa = visa ?? 0,
                 ShiftCount = _cashRegisterRepository.GetShiftCount(shiftCount),
                 IsDeleted = false,
-                IsSynced = false
+                IsSynced = false,
+                SerialNo = _cashRegisterRepository.GetSerialNo(date)
             };
 
             var result = _cashRegisterRepository.SaveCashRegister(cRegister);
@@ -139,7 +140,8 @@ namespace Cash_Register.Controllers
                 Visa = visa ?? 0,
                 ShiftCount = 1,
                 IsDeleted = false,
-                IsSynced = false
+                IsSynced = false,
+                SerialNo = _cashRegisterRepository.GetSerialNo(date)
             };
 
             var result = _cashRegisterRepository.UpdateCashRegister(cRegister);

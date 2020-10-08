@@ -11,7 +11,7 @@ namespace ImillReports.Contracts
         SalesReportViewModel GetSalesTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray);
         SalesReportViewModel GetSalesDetailReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
         List<TransDetailsViewModel> GetSalesDetailTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
-        SalesReportDashboard GetSalesDashboardTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray);
+        SalesReportDashboard GetSalesDashboardTransaction(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray, bool showGroupCD);
         SalesPeakHourViewModel GetSalesHourlyReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypeArray);
         string GetSales(int days);
         string GetSalesDetail(int days);
@@ -24,5 +24,6 @@ namespace ImillReports.Contracts
 
         string GetSalesMonth(int year, int month, int from, int to);
         string GetSalesDetailMonth(int year, int month, int from, int to);
+        List<DailyConsumptionVM> GetDailyConsumptionTrans(DateTime? fromDate, DateTime? toDate);
     }
 }

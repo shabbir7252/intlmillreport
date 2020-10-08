@@ -145,4 +145,19 @@ namespace ImillReports.ViewModels
         public Nullable<int> CustomerId { get; set; }
         public Nullable<int> Year { get; set; }
     }
+
+    public class DailyConsumptionVM
+    {
+        public int Oid { get; set; }
+        public long? ItemOid { get; set; }
+        public string ItemNameEn { get; set; }
+        public string ItemNameAr { get; set; }
+        public decimal? TotalKgQty { get; set; }
+        public decimal? TotalQty { get; set; }
+        public decimal? TotalBranchKgQty { get; set; }
+        public decimal? TotalBranchQty { get; set; }
+        public decimal? CreditQty { get; set; }
+        public decimal? CashQty { get; set; }
+        public string BaseUnit { get; set; }
+    }
 }

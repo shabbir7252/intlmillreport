@@ -48,7 +48,7 @@
                         <div class="col-3">
                             @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
                         </div>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("HO"))
                         {
                             <div class="col-3" id="locationDiv">
                                 @Html.EJS().MultiSelect("locationStringArray").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.locationVal).Placeholder("Select locations").EnableGroupCheckBox(true).DataSource(
@@ -258,7 +258,7 @@
             var toDate = $('#toDate').val();
 
             var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-            var locationObj = '@User.IsInRole("Admin")' === 'True' || '@User.IsInRole("Sales")' === 'True' ? document.getElementById('locationStringArray').ej2_instances[0].value : ["84","1"]; // MultiSelect Instance of location
+            var locationObj = '@User.IsInRole("Admin")' === 'True' || '@User.IsInRole("Sales")' === 'True' || '@User.IsInRole("HO")' === 'True' ? document.getElementById('locationStringArray').ej2_instances[0].value : ["84","1"]; // MultiSelect Instance of location
             var vouchertypeObj = document.getElementById('voucherTypeStringArray').ej2_instances[0]; // MultiSelect Instance of voucher Type
 
             $.ajax({

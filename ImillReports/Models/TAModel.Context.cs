@@ -27,9 +27,9 @@ namespace ImillReports.Models
     
         public virtual DbSet<tbl_Location> tbl_Location { get; set; }
         public virtual DbSet<tbl_Shift> tbl_Shift { get; set; }
-        public virtual DbSet<tbl_EmpTransaction> tbl_EmpTransaction { get; set; }
         public virtual DbSet<tbl_Employees> tbl_Employees { get; set; }
         public virtual DbSet<tbl_EmpLocShiftMap> tbl_EmpLocShiftMap { get; set; }
+        public virtual DbSet<tbl_EmpTransaction> tbl_EmpTransaction { get; set; }
         public virtual DbSet<tbl_Transactions> tbl_Transactions { get; set; }
     }
 }
