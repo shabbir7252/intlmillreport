@@ -5,7 +5,6 @@ using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
 using System.Collections.Generic;
-using Syncfusion.EJ2.Linq;
 
 namespace ImillReports.Controllers
 {
