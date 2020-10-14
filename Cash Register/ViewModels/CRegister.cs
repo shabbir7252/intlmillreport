@@ -15,6 +15,7 @@ namespace Cash_Register.ViewModels
         public string ShiftType { get; set; }
         public decimal Cheques { get; set; }
         public decimal Talabat { get; set; }
+        public decimal Deliveroo { get; set; }
         public decimal Online { get; set; }
         public decimal Knet { get; set; }
         public decimal Visa { get; set; }

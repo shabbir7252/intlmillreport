@@ -19,10 +19,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 18:59:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>09/26/2020 12:31:24</publishTime>
+      <publishTime>10/14/2020 12:26:05</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>09/26/2020 12:31:24</publishTime>
+      <publishTime>10/14/2020 12:26:05</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>11/16/2019 03:00:22</publishTime>
@@ -31,10 +31,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/16/2019 03:00:40</publishTime>
     </File>
     <File Include="bin/ImillReports.dll">
-      <publishTime>09/26/2020 12:30:50</publishTime>
+      <publishTime>10/14/2020 12:25:52</publishTime>
     </File>
     <File Include="bin/ImillReports.pdb">
-      <publishTime>09/26/2020 12:30:50</publishTime>
+      <publishTime>10/14/2020 12:25:52</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>04/24/2018 12:47:38</publishTime>
@@ -832,13 +832,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/23/2020 16:22:31</publishTime>
     </File>
     <File Include="Models/ReportModel.edmx.diagram">
-      <publishTime>09/08/2020 13:53:03</publishTime>
+      <publishTime>10/09/2020 15:44:20</publishTime>
     </File>
     <File Include="Models/TAModel.edmx.diagram">
       <publishTime>09/11/2020 12:28:51</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>09/26/2020 12:31:10</publishTime>
+      <publishTime>10/14/2020 12:25:54</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>03/18/2020 13:11:03</publishTime>
@@ -952,10 +952,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/18/2020 13:11:21</publishTime>
     </File>
     <File Include="Views/CashRegister/CashRegVsSalesRpt.cshtml">
-      <publishTime>07/05/2020 12:34:49</publishTime>
+      <publishTime>10/09/2020 16:35:32</publishTime>
     </File>
     <File Include="Views/CashRegister/Index.cshtml">
-      <publishTime>08/30/2020 15:59:37</publishTime>
+      <publishTime>10/14/2020 12:12:59</publishTime>
     </File>
     <File Include="Views/Dashboard/BranchSales.cshtml">
       <publishTime>08/17/2020 10:54:35</publishTime>
@@ -964,10 +964,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/15/2020 17:49:13</publishTime>
     </File>
     <File Include="Views/Dashboard/SyncSalesData.cshtml">
-      <publishTime>09/26/2020 11:07:49</publishTime>
+      <publishTime>10/08/2020 16:56:20</publishTime>
     </File>
     <File Include="Views/Dashboard/_BranchGraphs.cshtml">
-      <publishTime>09/12/2020 16:03:02</publishTime>
+      <publishTime>10/08/2020 17:09:55</publishTime>
     </File>
     <File Include="Views/Dashboard/_BranchSalesDetails.cshtml">
       <publishTime>09/12/2020 15:59:31</publishTime>
@@ -1000,7 +1000,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/18/2020 13:11:22</publishTime>
     </File>
     <File Include="Views/ManageTimeAttendance/AllocateShiftLocation.cshtml">
-      <publishTime>09/16/2020 18:05:22</publishTime>
+      <publishTime>09/28/2020 16:52:22</publishTime>
     </File>
     <File Include="Views/ManageTimeAttendance/Employees.cshtml">
       <publishTime>08/31/2020 20:59:35</publishTime>
@@ -1012,7 +1012,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/11/2020 13:39:44</publishTime>
     </File>
     <File Include="Views/SalesReport/DailyConsumption.cshtml">
-      <publishTime>09/26/2020 12:17:18</publishTime>
+      <publishTime>09/26/2020 13:32:36</publishTime>
     </File>
     <File Include="Views/SalesReport/Index.cshtml">
       <publishTime>09/12/2020 16:06:40</publishTime>
@@ -1033,7 +1033,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/18/2020 13:11:22</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>09/26/2020 12:24:29</publishTime>
+      <publishTime>09/26/2020 14:05:11</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>03/18/2020 13:11:22</publishTime>

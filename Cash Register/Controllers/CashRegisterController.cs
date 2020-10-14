@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using Cash_Register.Contracts;
 using Cash_Register.ViewModels;
@@ -40,7 +39,7 @@ namespace Cash_Register.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public int SaveCashRegister(DateTime date, short salesman, string period, decimal? cheques, decimal? talabat,
+        public int SaveCashRegister(DateTime date, short salesman, string period, decimal? cheques, decimal? talabat, decimal? deliveroo,
             decimal? online, decimal? knet, decimal? visa, decimal? expense, int? twentykd, int? tenkd, int? fivekd, int? onekd,
             int? halfkd, int? quarterkd, int? hundfils, int? fiftyfils, int? twentyfils, int? tenfils, int? fivefils, decimal? netBalance)
         {
@@ -82,6 +81,7 @@ namespace Cash_Register.Controllers
                 Reserve = _locationRepository.GetReserveAmount(locationId),
                 Salesman = salesman,
                 Talabat = talabat ?? 0,
+                Deliveroo = deliveroo ?? 0,
                 TenFils = tenfils ?? 0,
                 TenKd = tenkd ?? 0,
                 TwentyFils = twentyfils ?? 0,
@@ -104,7 +104,7 @@ namespace Cash_Register.Controllers
         }
 
 
-        public int UpdateCashRegister(int oid, DateTime date, short salesman, string period, decimal? cheques, decimal? talabat,
+        public int UpdateCashRegister(int oid, DateTime date, short salesman, string period, decimal? cheques, decimal? talabat, decimal? deliveroo,
            decimal? online, decimal? knet, decimal? visa, decimal? expense, int? twentykd, int? tenkd, int? fivekd, int? onekd,
            int? halfkd, int? quarterkd, int? hundfils, int? fiftyfils, int? twentyfils, int? tenfils, int? fivefils, decimal? netBalance)
         {
@@ -133,6 +133,7 @@ namespace Cash_Register.Controllers
                 QuarterKd = quarterkd ?? 0,
                 Reserve = _locationRepository.GetReserveAmount(locationId),
                 Talabat = talabat ?? 0,
+                Deliveroo = deliveroo ?? 0,
                 TenFils = tenfils ?? 0,
                 TenKd = tenkd ?? 0,
                 TwentyFils = twentyfils ?? 0,

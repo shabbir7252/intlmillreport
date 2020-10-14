@@ -88,15 +88,16 @@
                         @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
                    {
                        col.Field("IsVerified").Template("#idtemplate").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
-                       col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
-                       col.Field("TransDateTime").Width("100").HeaderText("Trans Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("LocationShortName").Width("80").HeaderText("Short Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("StaffDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("Salesman").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("ShiftCount").Width("80").HeaderText("Shift Count").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("ShiftType").Width("80").HeaderText("Shift Type").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Oid").Width("80").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
+                       col.Field("TransDateTime").AllowEditing(false).Width("100").HeaderText("Trans Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Location").AllowEditing(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("LocationShortName").AllowEditing(false).Width("80").HeaderText("Short Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("StaffDate").EditType("datetimepickeredit").Width("200").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Salesman").AllowEditing(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ShiftCount").AllowEditing(false).Width("80").HeaderText("Shift Count").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ShiftType").EditType("dropdownedit").Width("80").HeaderText("Shift Type").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Carriage").Width("80").Format("N3").HeaderText("Talabat").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Deliveroo").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Cheque").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Online").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Knet").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
@@ -104,58 +105,67 @@
                        col.Field("Cash").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Expense").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Reserve").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("TotalSales").Width("80").HeaderText("Total Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("NetSales").Width("80").HeaderText("Total Sales").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("NetAmount").Width("80").HeaderText("Total Cash").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                       page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
-                       {
-                           agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Cash", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                       col.Field("TotalSales").AllowEditing(false).Width("80").HeaderText("Total Amount").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NetSales").AllowEditing(false).Width("80").HeaderText("Total Sales").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NetAmount").AllowEditing(false).Width("80").HeaderText("Total Cash").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(page =>
+                   { page.PageSizes(true); page.PageSize(25); }).EditSettings(edit =>
+                   {
+                       edit.AllowEditing(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
+                   }).Toolbar(new List<string>() { "Search", "Print", "Update", "Cancel", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                   {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Carriage", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Cash", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Cheque", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Carriage", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Online", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Deliveroo", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Knet", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Cheque", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Visa", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Online", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "TotalSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Knet", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "NetSales", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Visa", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "NetAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "TotalSales", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Reserve", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "NetSales", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
 
-                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                                   Field = "Expense", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                               }
-                           }).Add();
-                       }).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "NetAmount", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Reserve", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Expense", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }
+                       }).Add();
+                   }).ActionBegin("ActionBegin").DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+
                     </div>
                     <script id="idtemplate" type="text/x-template">
                         <div class="template_checkbox">
@@ -183,133 +193,133 @@
         $('.loading-text').hide();
 
         function dataBound(args) {
-           this.autoFitColumns(['Location', 'StaffDate', 'ShiftCount', 'ShiftType', 'Carriage', 'Cheque', 'Online', 'Expense', 'Reserve', 'TotalSales', 'NetSales', 'NetAmount', 'Cash', 'Knet', 'Visa']);
+            this.autoFitColumns(['Location', 'ShiftCount', 'ShiftType', 'Carriage', 'Deliveroo', 'Cheque', 'Online', 'Expense', 'Reserve', 'TotalSales', 'NetSales', 'NetAmount', 'Cash', 'Knet', 'Visa']);
         }
 
-        var verificationIds = [];
-        var deVerifiedIds = [];
+                var verificationIds = [];
+                var deVerifiedIds = [];
 
-        function OnDeselected(args) {
-            if (args.row.length === 0) {
-                deVerifiedIds = [];
-            } else {
-                if (args.row.length > 1) {
-                    deVerifiedIds = [];
-                    args.row.forEach(function (item, i) {
-                        deVerifiedIds.push(item.cells[1].innerHTML);
-                    });
-
-                    verificationIds = [];
-                } else {
-                    var deselectedId = +(args.row[0].cells[1].innerHTML);
-                    // var deselectedId = +args.data[0].Oid;
-
-                    if (deVerifiedIds.length === 0) {
-                        deVerifiedIds.push(deselectedId);
+                function OnDeselected(args) {
+                    if (args.row.length === 0) {
+                        deVerifiedIds = [];
                     } else {
-                        var add = true;
+                        if (args.row.length > 1) {
+                            deVerifiedIds = [];
+                            args.row.forEach(function (item, i) {
+                                deVerifiedIds.push(item.cells[1].innerHTML);
+                            });
+
+                            verificationIds = [];
+                        } else {
+                            var deselectedId = +(args.row[0].cells[1].innerHTML);
+                            // var deselectedId = +args.data[0].Oid;
+
+                            if (deVerifiedIds.length === 0) {
+                                deVerifiedIds.push(deselectedId);
+                            } else {
+                                var add = true;
+                                deVerifiedIds.some(function (item, i) {
+                                    if (item === deselectedId) {
+                                        add = false;
+                                    }
+                                });
+                                if (add) {
+                                    deVerifiedIds.push(deselectedId);
+                                }
+                            }
+
+                            verificationIds.some(function (item, i) {
+                                if (item === deselectedId) {
+                                    verificationIds.splice(i, 1);
+                                }
+                            });
+                        }
+                    }
+                }
+
+                function OnSelected(args) {
+                    if (typeof args.data.Oid === 'undefined') {
+                        verificationIds = [];
+                        args.data.forEach(function (item, i) {
+                            verificationIds.push(item.Oid);
+                        });
+
+                        verificationIds.some(function (item, i) {
+                            deVerifiedIds.some(function (item2, i2) {
+                                if (item === item2) {
+                                    deVerifiedIds.splice(i2, 1);
+                                }
+                            });
+                        });
+
+                    } else {
+
+                        var selectedId = args.data.Oid;
+                        verificationIds.push(selectedId);
+
                         deVerifiedIds.some(function (item, i) {
-                            if (item === deselectedId) {
-                                add = false;
+                            if (item === selectedId) {
+                                deVerifiedIds.splice(i, 1);
                             }
                         });
-                        if (add) {
-                            deVerifiedIds.push(deselectedId);
-                        }
                     }
-
-                    verificationIds.some(function (item, i) {
-                        if (item === deselectedId) {
-                            verificationIds.splice(i, 1);
-                        }
-                    });
                 }
-            }
-        }
 
-        function OnSelected(args) {
-            if (typeof args.data.Oid === 'undefined') {
-                verificationIds = [];
-                args.data.forEach(function (item, i) {
-                    verificationIds.push(item.Oid);
-                });
+                function Verify() {
 
-                verificationIds.some(function (item, i) {
-                    deVerifiedIds.some(function (item2, i2) {
-                        if (item === item2) {
-                            deVerifiedIds.splice(i2, 1);
-                        }
-                    });
-                });
-
-            } else {
-
-                var selectedId = args.data.Oid;
-                verificationIds.push(selectedId);
-
-                deVerifiedIds.some(function (item, i) {
-                    if (item === selectedId) {
-                        deVerifiedIds.splice(i, 1);
-                    }
-                });
-            }
-        }
-
-        function Verify() {
-
-            if (verificationIds.length === 0 && deVerifiedIds.length === 0) {
-                setTimeout(() => {
-                    var toastObj = document.getElementById('info-toast').ej2_instances[0];
-                    toastObj.target = document.body;
-                    toastObj.show();
-                }, 1000);
-            } else {
-                 $.ajax({
-                    type: 'POST',
-                     data: {
-                         verifiedIds: verificationIds,
-                         deVerifiedIds: deVerifiedIds,
-                     },
-                    url: '@Url.Action("UpdateVerifiedIds", "CashRegister")',
-                    dataType: 'json',
-                     success: function (response) {
-                         if (response === true) {
-                             setTimeout(() => {
-                                 var toastObj = document.getElementById('success-toast').ej2_instances[0];
-                                 toastObj.target = document.body;
-                                 toastObj.show();
-                             }, 1000);
-                             verificationIds = [];
-                             deVerifiedIds = [];
-                         } else {
-                             setTimeout(() => {
-                                 var toastObj = document.getElementById('error-toast').ej2_instances[0];
-                                 toastObj.target = document.body;
-                                 toastObj.show();
-                             }, 1000);
-                         }
-                    },
-                    error: function (ex) {
+                    if (verificationIds.length === 0 && deVerifiedIds.length === 0) {
                         setTimeout(() => {
-                            var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                            var toastObj = document.getElementById('info-toast').ej2_instances[0];
                             toastObj.target = document.body;
                             toastObj.show();
                         }, 1000);
+                    } else {
+        $.ajax({
+                        type: 'POST',
+            data: {
+                            verifiedIds: verificationIds,
+                deVerifiedIds: deVerifiedIds,
+            },
+        url: '@Url.Action("UpdateVerifiedIds", "CashRegister")',
+        dataType: 'json',
+            success: function (response) {
+                                if (response === true) {
+                                    setTimeout(() => {
+                                        var toastObj = document.getElementById('success-toast').ej2_instances[0];
+                                        toastObj.target = document.body;
+                                        toastObj.show();
+                                    }, 1000);
+                                    verificationIds = [];
+                                    deVerifiedIds = [];
+                                } else {
+                                    setTimeout(() => {
+                                        var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                        toastObj.target = document.body;
+                                        toastObj.show();
+                                    }, 1000);
+                                }
+                            },
+        error: function (ex) {
+                                setTimeout(() => {
+                                    var toastObj = document.getElementById('error-toast').ej2_instances[0];
+                                    toastObj.target = document.body;
+                                    toastObj.show();
+                                }, 1000);
+                            }
+                        });
                     }
-                });
-            }
-        }
+                }
 
 
-        function toolbarClick(args) {
-            var gridObj = document.getElementById("Grid").ej2_instances[0];
-            if (args.item.id === 'Grid_excelexport') {
-                var excelExportProperties = {
-                    fileName: "CashRegisterReport.xlsx"
-                };
-                gridObj.excelExport(excelExportProperties);
+                function toolbarClick(args) {
+                    var gridObj = document.getElementById("Grid").ej2_instances[0];
+                    if (args.item.id === 'Grid_excelexport') {
+                        var excelExportProperties = {
+        fileName: "CashRegisterReport.xlsx"
+                        };
+                    gridObj.excelExport(excelExportProperties);
+                }
             }
-        }
 
          @*$(".getRecords").click(function () {
 
@@ -348,6 +358,39 @@
 
             });
         });*@
+
+        function ActionBegin(args) {
+            if (args.requestType === 'save') {
+                debugger;
+                var staffDate = JSON.stringify(new Date(args.data.StaffDate) + 1).slice(1, 11);
+
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Update", "CashRegister")',
+                    data: {
+                        oid: args.data.Oid,
+                        staffDate: staffDate,
+                        shiftType: args.data.ShiftType,
+                        talabat: args.data.Carriage,
+                        deliveroo: args.data.Deliveroo !== null ? args.data.Deliveroo : 0,
+                        cheque: args.data.Cheque,
+                        online: args.data.Online,
+                        knet: args.data.Knet,
+                        visa: args.data.Visa,
+                        cash: args.data.Cash,
+                        expense: args.data.Expense,
+                        reserve: args.data.Reserve
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                        $('.preloader').hide();
+                    }
+                });
+            }
+        }
 
     </script>
 }

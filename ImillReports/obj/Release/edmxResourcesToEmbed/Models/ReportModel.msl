@@ -950,6 +950,8 @@
     <EntitySetMapping Name="intlmill_cash_register">
       <EntityTypeMapping TypeName="IMILLModel.intlmill_cash_register">
         <MappingFragment StoreEntitySet="intlmill_cash_register">
+          <ScalarProperty Name="deliveroo" ColumnName="deliveroo" />
+          <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
           <ScalarProperty Name="CrOid" ColumnName="CrOid" />

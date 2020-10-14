@@ -51,5 +51,7 @@ namespace ImillReports.Models
         public Nullable<int> CrOid { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public Nullable<long> SerialNo { get; set; }
+        public Nullable<decimal> deliveroo { get; set; }
     }
 }

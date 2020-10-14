@@ -24,11 +24,13 @@ namespace ImillReports.Repository
                              x.Voucher_Type == 2022 ||
                              x.Voucher_Type == 2025 ||
                              x.Voucher_Type == 2026 ||
+                             x.Voucher_Type == 2030 ||
                              // below are sales return type Id
                              x.Voucher_Type == 202 ||
                              x.Voucher_Type == 2023 ||
                              x.Voucher_Type == 2035 ||
-                             x.Voucher_Type == 2036);
+                             x.Voucher_Type == 2036 ||
+                             x.Voucher_Type == 2037);
 
             var voucherTypeItems = new List<VoucherTypeItem>();
 

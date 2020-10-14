@@ -94,12 +94,14 @@ namespace ImillReports.Repository
                                         x.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                         x.ICS_Transaction_Types.Voucher_Type == 2025 ||
                                         x.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                        x.ICS_Transaction_Types.Voucher_Type == 2030 ||
 
                                         // Sales Return Voucher Type Id
                                         x.ICS_Transaction_Types.Voucher_Type == 202 ||
                                         x.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                         x.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                        x.ICS_Transaction_Types.Voucher_Type == 2036)
+                                        x.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                        x.ICS_Transaction_Types.Voucher_Type == 2037)
                                         // && x.GL_Ledger2.Group_Cd != 329
                                         );
         }
@@ -585,7 +587,8 @@ namespace ImillReports.Repository
                     AmountRecieved = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                     ? -transaction.Voucher_Amt_FC
                                     : transaction.Voucher_Amt_FC,
 
@@ -594,14 +597,16 @@ namespace ImillReports.Repository
                     SalesReturn = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                     ? -transaction.Net_Amt_FC
                                     : 0,
 
                     NetAmount = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                     ? -transaction.Net_Amt_FC
                                     : transaction.Net_Amt_FC,
 
@@ -609,13 +614,15 @@ namespace ImillReports.Repository
                             transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                             transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                             transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                            transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                            transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                            transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                             string.IsNullOrEmpty(transaction.Credit_Card_Type)
                                 ? transaction.Net_Amt_FC
                                 : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                    transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                    transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                   transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                   transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                   transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                    string.IsNullOrEmpty(transaction.Credit_Card_Type)
                                         ? -transaction.Net_Amt_FC
                                         : 0,
@@ -624,14 +631,16 @@ namespace ImillReports.Repository
                             transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                             transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                             transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                            transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                            transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                            transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                            !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                            (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                 ? transaction.Net_Amt_FC
                                 : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                    transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                    transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                   transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                   transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                   transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                    !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                    (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                              ? -transaction.Net_Amt_FC
@@ -641,14 +650,16 @@ namespace ImillReports.Repository
                             transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                             transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                             transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                            transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                            transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                            transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                  !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                  transaction.Credit_Card_Type == "CC"
                                     ? transaction.Net_Amt_FC
                                     : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                        !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                        transaction.Credit_Card_Type == "CC"
                                            ? -transaction.Net_Amt_FC
@@ -792,13 +803,15 @@ namespace ImillReports.Repository
                         Discount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036
+                               trans.VoucherId == 2036 ||
+                               trans.VoucherId == 2037
                                 ? -detail.FC_Prod_Dis
                                 : detail.FC_Prod_Dis,
                         Amount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036
+                               trans.VoucherId == 2036 ||
+                               trans.VoucherId == 2037
                                 ? -detail.FC_Amount
                                 : detail.FC_Amount,
                         Year = trans.InvDateTime.Year,
@@ -978,7 +991,8 @@ namespace ImillReports.Repository
                         AmountRecieved = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                         ? -transaction.Voucher_Amt_FC
                                         : transaction.Voucher_Amt_FC,
 
@@ -987,14 +1001,16 @@ namespace ImillReports.Repository
                         SalesReturn = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                         ? -transaction.Net_Amt_FC
                                         : 0,
 
                         NetAmount = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                         ? -transaction.Net_Amt_FC
                                         : transaction.Net_Amt_FC,
 
@@ -1002,13 +1018,15 @@ namespace ImillReports.Repository
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                 string.IsNullOrEmpty(transaction.Credit_Card_Type)
                                     ? transaction.Net_Amt_FC
                                     : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                        string.IsNullOrEmpty(transaction.Credit_Card_Type)
                                             ? -transaction.Net_Amt_FC
                                             : 0,
@@ -1017,14 +1035,16 @@ namespace ImillReports.Repository
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                     ? transaction.Net_Amt_FC
                                     : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                        !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                        (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                                  ? -transaction.Net_Amt_FC
@@ -1034,14 +1054,16 @@ namespace ImillReports.Repository
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                      !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                      transaction.Credit_Card_Type == "CC"
                                         ? transaction.Net_Amt_FC
                                         : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                           transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                            !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                            transaction.Credit_Card_Type == "CC"
                                                ? -transaction.Net_Amt_FC
@@ -1176,13 +1198,15 @@ namespace ImillReports.Repository
                         Discount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036
+                               trans.VoucherId == 2036 ||
+                               trans.VoucherId == 2037
                                 ? -detail.FC_Prod_Dis
                                 : detail.FC_Prod_Dis,
                         Amount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036
+                               trans.VoucherId == 2036 ||
+                               trans.VoucherId == 2037
                                 ? -detail.FC_Amount
                                 : detail.FC_Amount,
                         Year = trans.InvDateTime.Year,
@@ -1376,7 +1400,8 @@ namespace ImillReports.Repository
                         AmountRecieved = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                         ? -transaction.Voucher_Amt_FC
                                         : transaction.Voucher_Amt_FC,
 
@@ -1385,14 +1410,16 @@ namespace ImillReports.Repository
                         SalesReturn = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                         ? -transaction.Net_Amt_FC
                                         : 0,
 
                         NetAmount = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                     transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                         ? -transaction.Net_Amt_FC
                                         : transaction.Net_Amt_FC,
 
@@ -1400,13 +1427,15 @@ namespace ImillReports.Repository
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                 string.IsNullOrEmpty(transaction.Credit_Card_Type)
                                     ? transaction.Net_Amt_FC
                                     : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                        string.IsNullOrEmpty(transaction.Credit_Card_Type)
                                             ? -transaction.Net_Amt_FC
                                             : 0,
@@ -1415,14 +1444,16 @@ namespace ImillReports.Repository
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                     ? transaction.Net_Amt_FC
                                     : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                        !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                        (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                                  ? -transaction.Net_Amt_FC
@@ -1432,14 +1463,16 @@ namespace ImillReports.Repository
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
                                 transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026) &&
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
                                      !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                      transaction.Credit_Card_Type == "CC"
                                         ? transaction.Net_Amt_FC
                                         : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                           transaction.ICS_Transaction_Types.Voucher_Type == 2036) &&
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                            !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                            transaction.Credit_Card_Type == "CC"
                                                ? -transaction.Net_Amt_FC
@@ -1636,13 +1669,15 @@ namespace ImillReports.Repository
                         Discount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036
+                               trans.VoucherId == 2036 ||
+                               trans.VoucherId == 2037
                                 ? -detail.FC_Prod_Dis
                                 : detail.FC_Prod_Dis,
                         Amount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036
+                               trans.VoucherId == 2036 ||
+                               trans.VoucherId == 2037
                                 ? -detail.FC_Amount
                                 : detail.FC_Amount,
                         Year = trans.InvDateTime.Year,

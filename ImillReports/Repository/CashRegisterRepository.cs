@@ -43,7 +43,8 @@ namespace ImillReports.Repository
                     locationId = item.Locat_Cd.Value;
                     locationName = locations.FirstOrDefault(a => a.LocationId == item.Locat_Cd.Value).NameAr;
                     locationShort = locations.FirstOrDefault(a => a.LocationId == item.Locat_Cd.Value).ShortName;
-                } else
+                }
+                else
                 {
                     var keyName = item.location == "الأفنيوز"
                         ? "مجمع الأفنيوز"
@@ -68,6 +69,7 @@ namespace ImillReports.Repository
 
                 cashRegisterItem.Oid = item.id;
                 cashRegisterItem.Carriage = item.carriage;
+                cashRegisterItem.Deliveroo = item.deliveroo;
                 cashRegisterItem.Cash = item.total_cash;
                 cashRegisterItem.Cheque = item.cheque;
                 cashRegisterItem.Knet = item.knet;
@@ -111,9 +113,8 @@ namespace ImillReports.Repository
             var staffDateCRContext = _context.intlmill_cash_register.Where(x => x.trans_date_time >= fromDateDed1 &&
                                                                                 x.trans_date_time <= toDateAdd1 &&
                                                                                 (!x.IsDeleted.Value || x.IsDeleted == null) &&
-                                                                                // !string.IsNullOrEmpty(x.staff_date) &&
                                                                                 x.location != "نموذج" &&
-                                                                                x.location != "نموذج\r\n" && 
+                                                                                x.location != "نموذج\r\n" &&
                                                                                 x.Locat_Cd != 73).ToList();
 
             foreach (var rec in staffDateCRContext)
@@ -132,8 +133,6 @@ namespace ImillReports.Repository
                 }
                 else
                 {
-                    //if (_baseRepository.CheckDate(rec.staff_date))
-                    //{
                     try
                     {
                         var staffDate = Convert.ToDateTime(rec.staff_date, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
@@ -145,12 +144,6 @@ namespace ImillReports.Repository
                         rec.ActualStaffDate = rec.trans_date_time.Date;
                         rec.staff_date = rec.trans_date_time.Date.ToString("dd-MM-yyyy");
                     }
-                    //}
-                    //else
-                    //{
-                    //    rec.ActualStaffDate = rec.trans_date_time.Date;
-                    //    rec.staff_date = rec.trans_date_time.Date.ToString("dd-MM-yyyy");
-                    //}
                 }
             }
 
@@ -165,41 +158,12 @@ namespace ImillReports.Repository
 
             if (!takeCount)
             {
-                // cashRegister = cashRegister.GroupBy(x => new { x.salesman }).Select(x => x.OrderByDescending(t => t.shift_count).FirstOrDefault());
                 var modifiedResult = result.GroupBy(x => new { x.StaffDate, x.SalesmanType }).Select(x => x.OrderByDescending(t => t.ShiftCount).FirstOrDefault());
                 return new CashRegisterViewModel
                 {
                     CashRegisterItems = modifiedResult.ToList()
                 };
             }
-
-            // var cashRegisterItems = new List<CashRegisterItem>();
-
-            //foreach (var item in cashRegister)
-            //{
-            //    var cashRegisterItem = new CashRegisterItem
-            //    {
-            //        Carriage = item.carriage,
-            //        Cash = item.total_cash,
-            //        Cheque = item.cheque,
-            //        Knet = item.knet,
-            //        Expense = item.expense,
-            //        Location = item.location,
-            //        Online = item.online,
-            //        Salesman = item.salesman,
-            //        TransDateTime = item.trans_date_time,
-            //        Visa = item.visa,
-            //        Reserve = item.reserve,
-            //        ShiftCount = item.shift_count
-            //    };
-
-            //    var totalSales = item.cheque + item.carriage + item.online + item.knet + item.visa + item.total_cash;
-            //    cashRegisterItem.TotalSales = totalSales;
-            //    cashRegisterItem.NetSales = totalSales - item.reserve;
-            //    cashRegisterItem.NetAmount = item.total_cash - item.reserve - item.expense;
-
-            //    cashRegisterItems.Add(cashRegisterItem);
-            //}
 
             return new CashRegisterViewModel
             {
@@ -209,19 +173,6 @@ namespace ImillReports.Repository
 
         public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt(DateTime? fromDate, DateTime? toDate)
         {
-            //var date = fromDate.Value.Date.ToString("dd-MM-yyyy");
-            //var cashRegister = _context.intlmill_cash_register.Where(x => x.staff_date == date && x.staff_date != null && (x.location != "نموذج" && x.location != "نموذج\r\n")).ToList();
-
-            //var result = GetCashRegisterItems(cashRegister);
-
-            //foreach (var item in result)
-            //{
-            //    if (item.StaffDate.Date != fromDate.Value.Date)
-            //        item.StaffDate = fromDate.Value.Date;
-            //}
-
-            // var modifiedResult = result.GroupBy(x => new { x.Salesman, x.StaffDate }).Select(x => x.OrderByDescending(t => t.ShiftCount).FirstOrDefault());
-
             var result = GetCashRegister(fromDate, fromDate, false).CashRegisterItems;
 
             var cashRegisters = result.GroupBy(x => new { x.Location, x.StaffDate });
@@ -244,11 +195,12 @@ namespace ImillReports.Repository
                 var crVisa = item.Sum(x => x.Visa);
                 var crOnline = item.Sum(x => x.Online);
                 var crTalabat = item.Sum(x => x.Carriage);
+                var crDeliveroo = item.Sum(x => x.Deliveroo);
                 var crReserve = item.Sum(x => x.Reserve);
                 var crExpense = item.Sum(x => x.Expense);
                 var crCash = item.Sum(x => x.NetAmount) + crExpense;
 
-                var totalCrSales = crKnet + crVisa + crOnline + crTalabat + crCash;
+                var totalCrSales = crKnet + crVisa + crOnline + crTalabat + crDeliveroo + crCash;
 
 
                 #region Innova Talabat
@@ -268,6 +220,26 @@ namespace ImillReports.Repository
                 var talabatNet = talabatCashNet + talabatKnetNet + talabatCcNet;
 
                 var talabat = talabatNet != null ? (decimal)talabatNet : 0;
+
+                #endregion
+
+                #region Innova Deliveroo
+
+                var deliverooCash = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Cash);
+                var deliverooCashReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Cash);
+                var deliverooCashNet = deliverooCash - Math.Abs(deliverooCashReturn != null ? (decimal)deliverooCashReturn : 0);
+
+                var deliverooKnet = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Knet);
+                var deliverooKnetReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Knet);
+                var deliverooKnetNet = deliverooKnet - Math.Abs(deliverooKnetReturn != null ? (decimal)deliverooKnetReturn : 0);
+
+                var deliverooCc = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.CreditCard);
+                var deliverooCcReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.CreditCard);
+                var deliverooCcNet = deliverooCc - Math.Abs(deliverooCcReturn != null ? (decimal)deliverooCcReturn : 0);
+
+                var deliverooNet = deliverooCashNet + deliverooKnetNet + deliverooCcNet;
+
+                var deliveroo = deliverooNet != null ? (decimal)deliverooNet : 0;
 
                 #endregion
 
@@ -302,10 +274,10 @@ namespace ImillReports.Repository
 
                 #endregion
 
-                var cash = salesReportItems.Sum(a => a.Cash) - onlineCashNet - talabatCashNet - Math.Abs(knetReturn);
-                var knet = salesReportItems.Sum(a => a.Knet) - onlineKnetNet - talabatKnetNet + Math.Abs(knetReturn);
-                var cc = salesReportItems.Sum(a => a.CreditCard) - onlineCcNet - talabatCcNet;
-                var totalInnovaSales = cash + knet + cc + talabat + online;
+                var cash = salesReportItems.Sum(a => a.Cash) - onlineCashNet - talabatCashNet - deliverooCashNet - Math.Abs(knetReturn);
+                var knet = salesReportItems.Sum(a => a.Knet) - onlineKnetNet - talabatKnetNet - deliverooKnetNet + Math.Abs(knetReturn);
+                var cc = salesReportItems.Sum(a => a.CreditCard) - onlineCcNet - talabatCcNet - deliverooCcNet;
+                var totalInnovaSales = cash + knet + cc + talabat + deliveroo + online;
 
                 var cashRegVsSalesItem = new CashRegVsSalesItem
                 {
@@ -320,6 +292,7 @@ namespace ImillReports.Repository
                     CRVisa = crVisa,
                     CROnline = crOnline,
                     CRTalabat = crTalabat,
+                    CRDeliveroo = crDeliveroo,
                     CRReserve = crReserve,
                     CRKnetVisa = crKnet + crVisa,
                     TotalCRSales = totalCrSales,
@@ -329,6 +302,7 @@ namespace ImillReports.Repository
                     CreditCard = cc,
                     Online = online,
                     Talabat = talabat,
+                    Deliveroo = deliveroo,
                     KnetVisa = knet + cc,
                     TotalInnovaSales = totalInnovaSales,
 
@@ -336,6 +310,7 @@ namespace ImillReports.Repository
                     KnetDiff = crKnet - knet,
                     CcDiff = crVisa - cc,
                     TalabatDiff = crTalabat - talabat,
+                    DeliverooDiff = crDeliveroo - deliveroo,
                     OnlineDiff = crOnline - online,
                     KnetVisaDiff = (crKnet + crVisa) - (knet + cc),
                     TotalDiff = totalCrSales - totalInnovaSales
@@ -396,6 +371,43 @@ namespace ImillReports.Repository
             }
 
             return true;
+        }
+
+        public string Update(CashRegUpdateVM cashRegUpdateVM)
+        {
+            try
+            {
+                var cashRegister = _context.intlmill_cash_register.FirstOrDefault(x => x.id == cashRegUpdateVM.Oid);
+
+                cashRegister.staff_date = cashRegUpdateVM.StaffDate;
+                cashRegister.shift_type = cashRegUpdateVM.ShiftType;
+                cashRegister.shift_type = cashRegUpdateVM.ShiftType;
+                cashRegister.carriage = cashRegUpdateVM.Talabat;
+                cashRegister.deliveroo = cashRegUpdateVM.Deliveroo;
+                cashRegister.cheque = cashRegUpdateVM.Cheque;
+                cashRegister.online = cashRegUpdateVM.Online;
+                cashRegister.knet = cashRegUpdateVM.Knet;
+                cashRegister.visa = cashRegUpdateVM.Visa;
+                cashRegister.total_cash = cashRegUpdateVM.Cash;
+                cashRegister.expense = cashRegUpdateVM.Expense;
+                cashRegister.reserve = cashRegUpdateVM.Reserve;
+                cashRegister.net_cash = cashRegUpdateVM.Cash - cashRegUpdateVM.Reserve;
+
+                var total_sales = cashRegUpdateVM.Cheque + cashRegUpdateVM.Talabat + cashRegUpdateVM.Online + cashRegUpdateVM.Knet + cashRegUpdateVM.Visa + cashRegUpdateVM.Cash;
+                cashRegister.total_sales = total_sales;
+                cashRegister.net_sales = total_sales - cashRegUpdateVM.Reserve;
+
+                cashRegister.UpdatedOn = DateTime.Now;
+
+                _context.SaveChanges();
+
+                return "Record Updated Successfully";
+
+            }
+            catch (Exception ex)
+            {
+                return $"Error Occurred.{ex.Message}";
+            }
         }
     }
 }

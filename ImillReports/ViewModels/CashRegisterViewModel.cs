@@ -35,6 +35,7 @@ namespace ImillReports.ViewModels
         public DateTime StaffDate { get; internal set; }
         public string SalesmanType { get; internal set; }
         public bool? IsVerified { get; internal set; }
+        public decimal? Deliveroo { get; internal set; }
     }
 
     public class CashRegVsSalesViewModel
@@ -74,5 +75,24 @@ namespace ImillReports.ViewModels
         public decimal? CRTalabat { get; internal set; }
         public decimal Talabat { get; internal set; }
         public decimal? TalabatDiff { get; internal set; }
+        public decimal? CRDeliveroo { get; internal set; }
+        public decimal Deliveroo { get; internal set; }
+        public decimal? DeliverooDiff { get; internal set; }
+    }
+
+    public class CashRegUpdateVM
+    {
+            public int Oid { get; set; }
+            public string StaffDate{ get; set; } 
+            public string ShiftType{ get; set; } 
+            public decimal Talabat{ get; set; }
+            public decimal Deliveroo{ get; set; } 
+            public decimal Cheque{ get; set; } 
+            public decimal Online{ get; set; } 
+            public decimal Knet{ get; set; }
+            public decimal Visa{ get; set; } 
+            public decimal Cash{ get; set; } 
+            public decimal Expense{ get; set; } 
+            public decimal Reserve{ get; set; }
     }
 }

@@ -249,6 +249,7 @@ namespace Cash_Register.Controllers.Api
                                 $"shift_count = {rec.ShiftCount}," +
                                 $"cheque = {rec.Cheques}," +
                                 $"carriage = {rec.Talabat}," +
+                                $"deliveroo = {rec.Deliveroo}," +
                                 $"online = {rec.Online}," +
                                 $"knet = {rec.Knet}," +
                                 $"visa = {rec.Visa}," +
@@ -286,11 +287,11 @@ namespace Cash_Register.Controllers.Api
                         {
                             problemIn = "Insert " + rec.TransDate.ToString();
                             var insertQuery = "INSERT INTO intlmill_cash_register " +
-                                            "(trans_date_time, location, salesman, shift_type, shift_count, cheque, carriage, " +
+                                            "(trans_date_time, location, salesman, shift_type, shift_count, cheque, carriage, deliveroo, " +
                                             "online, knet, visa, reserve, expense, total_cash, net_cash, d_20000, d_10000, d_5000, " +
                                             "d_1000, d_0500, d_0250, d_0100, d_0050, d_0020, d_0010, d_0005, total_sales, net_sales, " +
                                             "staff_date, Sman_Cd, Locat_Cd, CrOid, IsDeleted, SerialNo) " +
-                                            "VALUES (@trans_date_time, @location, @salesman, @shift_type, @shift_count, @cheque, @carriage, " +
+                                            "VALUES (@trans_date_time, @location, @salesman, @shift_type, @shift_count, @cheque, @carriage, @deliveroo, " +
                                             "@online, @knet, @visa, @reserve, @expense, @total_cash, @net_cash, @d_20000, @d_10000, @d_5000, " +
                                             "@d_1000, @d_0500, @d_0250, @d_0100, @d_0050, @d_0020, @d_0010, @d_0005, @total_sales, @net_sales, " +
                                             "@staff_date, @Sman_Cd, @Locat_Cd, @CrOid, @IsDeleted, @SerialNo) ";
@@ -305,6 +306,7 @@ namespace Cash_Register.Controllers.Api
                             cmd.Parameters.Add("@shift_count", SqlDbType.Int).Value = rec.ShiftCount;
                             cmd.Parameters.Add("@cheque", SqlDbType.Money).Value = rec.Cheques;
                             cmd.Parameters.Add("@carriage", SqlDbType.Money).Value = rec.Talabat;
+                            cmd.Parameters.Add("@deliveroo", SqlDbType.Money).Value = rec.Deliveroo;
                             cmd.Parameters.Add("@online", SqlDbType.Money).Value = rec.Online;
                             cmd.Parameters.Add("@knet", SqlDbType.Money).Value = rec.Knet;
                             cmd.Parameters.Add("@visa", SqlDbType.Money).Value = rec.Visa;
@@ -358,7 +360,7 @@ namespace Cash_Register.Controllers.Api
             try
             {
                 var count = CheckBackDaysCol();
-                if(count < 1)
+                if (count < 1)
                 {
                     AddBackDaysCol();
                 }
@@ -387,6 +389,37 @@ namespace Cash_Register.Controllers.Api
                 return $"false : {ex.Message}";
                 throw;
             }
+            return $"true : {command}";
+        }
+
+        [HttpGet]
+        [Route("api/AlterDb")]
+        public string AlterDb()
+        {
+            var command = "";
+            try
+            {
+                var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
+
+                var con = new SQLiteConnection(cs);
+                con.Open();
+                var cmd = new SQLiteCommand(con);
+
+                command = "ALTER TABLE CashRegister ADD COLUMN Deliveroo DECIMAL(2000) DEFAULT 0 NOT NULL ON CONFLICT FAIL";
+
+                cmd.CommandText = command;
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                con.Close();
+                con.Dispose();
+            }
+            catch (Exception ex)
+            {
+                return $"false : {ex.Message}";
+                throw;
+            }
+
             return $"true : {command}";
         }
 
@@ -561,7 +594,8 @@ namespace Cash_Register.Controllers.Api
                             NetBalance = rdr.GetDecimal(25),
                             IsSynced = rdr.GetBoolean(26),
                             IsDeleted = rdr.GetBoolean(27),
-                            SerialNo = rdr.GetInt64(28)
+                            SerialNo = rdr.GetInt64(28),
+                            Deliveroo = rdr.GetDecimal(29)
                         });
                 }
 

@@ -66,6 +66,8 @@ namespace ImillReports.ViewModels
         public int TotalOnlineTransCount { get; internal set; }
         public int TotalBranchCount { get; internal set; }
         public int TotalHOCount { get; internal set; }
+        public decimal? TotalDeliveroo { get; internal set; }
+        public int DeliverooTransCount { get; internal set; }
     }
 
     public class Product
@@ -123,5 +125,7 @@ namespace ImillReports.ViewModels
         public int OnlineTransCount { get; internal set; }
         public int TotalBranchCount { get; internal set; }
         public int TotalHoCount { get; internal set; }
+        public string TotalDeliverooSales { get; internal set; }
+        public int TotalDeliverooTransCount { get; internal set; }
     }
 }

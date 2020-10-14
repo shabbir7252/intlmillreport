@@ -1815,5 +1815,7 @@
     <Property Name="CrOid" Type="Int32" />
     <Property Name="UpdatedOn" Type="DateTime" Precision="0" />
     <Property Name="IsDeleted" Type="Boolean" />
+    <Property Name="SerialNo" Type="Int64" />
+    <Property Name="deliveroo" Type="Decimal" Precision="19" Scale="4" />
   </EntityType>
 </Schema>

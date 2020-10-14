@@ -50,7 +50,7 @@
                         @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
                     </div>
 
-                    <div class="col-2 py-2 mx-auto">
+                    <div class="col-2">
                         <button type="submit" class="btn btn-raised bg-black waves-effect waves-light getRecords">Get Records</button>
                     </div>
                 </div>
@@ -63,6 +63,7 @@
                {
                    col.Field("ItemNameEn").HeaderText("Item NameEn").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("ItemNameAr").HeaderText("Item NameAr").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("BaseUnit").Visible(false).HeaderText("Unit").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("TotalQty").HeaderText("Total Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("TotalBranchQty").HeaderText("Branch Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    col.Field("CreditQty").HeaderText("Credit Quantity").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
@@ -74,7 +75,7 @@
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "TotalQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "TotalBranchKgQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               Field = "TotalBranchQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "CreditQty", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            }, new Syncfusion.EJ2.Grids.GridAggregateColumn() {
@@ -93,7 +94,7 @@
 @section scripts {
     <script>
         function dataBound(args) {
-            this.autoFitColumns(['ItemNameEn', 'ItemNameAr', 'TotalQty', 'TotalBranchQty', 'CreditQty', 'CashQty']);
+            this.autoFitColumns(['ItemNameEn', 'ItemNameAr', 'TotalQty', 'TotalBranchQty', 'CreditQty', 'CashQty', 'BaseUnit']);
         }
 
         function load() {

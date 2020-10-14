@@ -680,6 +680,8 @@
     <Property Name="CrOid" Type="int" />
     <Property Name="UpdatedOn" Type="smalldatetime" />
     <Property Name="IsDeleted" Type="bit" />
+    <Property Name="SerialNo" Type="bigint" />
+    <Property Name="deliveroo" Type="money" />
   </EntityType>
   <EntityType Name="SM_Location">
     <Key>

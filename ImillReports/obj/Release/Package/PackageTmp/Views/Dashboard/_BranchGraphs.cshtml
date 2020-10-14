@@ -592,7 +592,37 @@
 
                             </div>
                         </div>
-                        <br />
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="text" style="font-size: 22px;">Deliveroo Orders</div>
+                                <h2 class="text-muted">@ViewBag.TotalDeliverooSales</h2>
+
+                                <div class="text" style="font-size: 22px;">Order Count</div>
+                                <h2 class="text-muted">@ViewBag.TotalDeliverooTransCount</h2>
+
+                            </div>
+                            <div class="col-6 pt-4">
+                                <h5>@ViewBag.DeliverooPercent%</h5>
+                                <div class="progress m-b-5">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.DeliverooPercent" aria-valuemin="@ViewBag.DeliverooPercent"
+                                         aria-valuemax="100" style="width:@ViewBag.DeliverooPercent%">
+                                        <span class="sr-only">@ViewBag.DeliverooPercent% Complete</span>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4 pt-2">@ViewBag.DeliverooTransPercent%</h5>
+                                <div class="progress m-b-5">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.DeliverooTransPercent" aria-valuemin="@ViewBag.DeliverooTransPercent"
+                                         aria-valuemax="100" style="width:@ViewBag.DeliverooTransPercent%">
+                                        <span class="sr-only">@ViewBag.DeliverooTransPercent% Complete</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

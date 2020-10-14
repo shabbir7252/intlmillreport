@@ -589,6 +589,7 @@
                             }
                     },
                     error: function (ex) {
+                        console.log('Error Allocation : ', ex);
                         setTimeout(() => {
                             var toastObj = document.getElementById('error-toast').ej2_instances[0];
                             toastObj.target = document.body;

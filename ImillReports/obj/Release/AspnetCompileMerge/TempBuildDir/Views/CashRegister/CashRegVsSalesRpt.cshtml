@@ -62,6 +62,16 @@
         background-color: #ffd6d6;
     }
 
+    .e-grid .e-rowcell.custom-deliveroo-css {
+        font-size: 11px;
+        background-color: #bcfaf4;
+    }
+
+    .e-grid .e-headercell.custom-deliveroo-css {
+        font-size: 11px;
+        background-color: #bcfaf4;
+    }
+
     .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
         font-size: 11px;
     }
@@ -117,6 +127,7 @@
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CRKnet", Width = "80", HeaderText = "Knet", Format="N3", CustomAttributes = new { @class = "custom-knet-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CRVisa", Width = "80", HeaderText = "Visa", Format="N3", CustomAttributes = new { @class = "custom-cc-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CRTalabat", Width = "80", HeaderText = "Talabat", Format="N3", CustomAttributes = new { @class = "custom-talabat-css" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "CRDeliveroo", Width = "80", HeaderText = "Deliveroo", Format="N3", CustomAttributes = new { @class = "custom-deliveroo-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CROnline", Width = "80", HeaderText = "Online", Format="N3", CustomAttributes = new { @class = "custom-online-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CRKnetVisa", Width = "80", HeaderText = "Knet + Visa", Format="N3", CustomAttributes = new { @class = "customcss" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "TotalCRSales", Width = "80", Format="N3", HeaderText = "Grand Total", CustomAttributes = new { @class = "custom-css" } },
@@ -128,6 +139,7 @@
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "Knet", Width = "80", Format="N3", CustomAttributes = new { @class = "custom-knet-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CreditCard", Width = "80", HeaderText = "Visa", Format="N3", CustomAttributes = new { @class = "custom-cc-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "Talabat", Width = "80", Format="N3", CustomAttributes = new { @class = "custom-talabat-css" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "Deliveroo", Width = "80", Format="N3", CustomAttributes = new { @class = "custom-deliveroo-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "Online", Width = "80", Format="N3", HeaderText = "Online", CustomAttributes = new { @class = "custom-online-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "KnetVisa", Width = "80", Format="N3", HeaderText = "Knet + Visa", CustomAttributes = new { @class = "custom-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "TotalInnovaSales", Width = "80", Format="N3", HeaderText = "Grand Total", CustomAttributes = new { @class = "custom-css" } },
@@ -138,7 +150,8 @@
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CashDiff", HeaderText="Cash", Width = "80", Format="N3", CustomAttributes = new { @class = "custom-cash-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "KnetDiff", HeaderText="Knet", Width = "80", Format="N3", CustomAttributes = new { @class = "custom-knet-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "CcDiff", Width = "80", HeaderText = "Visa", Format="N3", CustomAttributes = new { @class = "custom-cc-css" } },
-                       new Syncfusion.EJ2.Grids.GridColumn { Field = "TalabatDiff", Width = "80", HeaderText = "TalabatDiff", Format="N3", CustomAttributes = new { @class = "custom-talabat-css" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "TalabatDiff", Width = "80", HeaderText = "Talabat", Format="N3", CustomAttributes = new { @class = "custom-talabat-css" } },
+                       new Syncfusion.EJ2.Grids.GridColumn { Field = "DeliverooDiff", Width = "80", HeaderText = "Deliveroo", Format="N3", CustomAttributes = new { @class = "custom-deliveroo-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "OnlineDiff", Width = "80", Format="N3", HeaderText = "Online", CustomAttributes = new { @class = "custom-online-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "KnetVisaDiff", Width = "80", Format="N3", HeaderText = "Knet + Visa", CustomAttributes = new { @class = "custom-css" } },
                        new Syncfusion.EJ2.Grids.GridColumn { Field = "TotalDiff", Width = "80", Format="N3", HeaderText = "Grand Total", CustomAttributes = new { @class = "custom-css" } },
@@ -160,6 +173,9 @@
                            },
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "CRTalabat", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }, 
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "CRDeliveroo", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            },
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "CROnline", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
@@ -180,6 +196,9 @@
                                Field = "Talabat", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            },
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "Deliveroo", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "Online", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            },
                             new Syncfusion.EJ2.Grids.GridAggregateColumn() {
@@ -196,6 +215,9 @@
                            },
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "TalabatDiff", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           },
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "DeliverooDiff", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
                            },
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                                Field = "OnlineDiff", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
@@ -215,7 +237,7 @@
     <script>
 
         function dataBound(args) {
-            this.autoFitColumns(['Location', 'LocationShortName', 'TransDate', 'CRCash', 'CRKnet', 'CRVisa', 'CRTalabat', 'TotalCRSales', 'Cash', 'Knet', 'CreditCard', 'CROnline', 'Talabat', 'Online', 'TotalInnovaSales', 'CashDiff', 'KnetDiff', 'CcDiff', 'OnlineDiff', 'TotalDiff', 'TalabatDiff']);
+            this.autoFitColumns(['Location', 'LocationShortName', 'TransDate', 'CRCash', 'CRKnet', 'CRVisa', 'CRTalabat', 'CRDeliveroo', 'TotalCRSales', 'Cash', 'Knet', 'CreditCard', 'CROnline', 'Talabat', 'Deliveroo', 'Online', 'TotalInnovaSales', 'CashDiff', 'KnetDiff', 'CcDiff', 'OnlineDiff', 'TotalDiff', 'TalabatDiff', 'DeliverooDiff']);
         }
 
         function toolbarClick(args) {

@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using ImillReports.Contracts;
 using System.Collections.Generic;
+using ImillReports.ViewModels;
 
 namespace ImillReports.Controllers
 {
@@ -12,7 +13,7 @@ namespace ImillReports.Controllers
 
         private readonly ICashRegisterRepository _cashRegisterRepository;
 
-        public CashRegisterController(ICashRegisterRepository cashRegisterRepository) => 
+        public CashRegisterController(ICashRegisterRepository cashRegisterRepository) =>
             _cashRegisterRepository = cashRegisterRepository;
 
         public CashRegisterController() { }
@@ -21,7 +22,8 @@ namespace ImillReports.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index(DateTime? fromDate, DateTime? toDate, bool? takeCount)
         {
-            var _takeCount = takeCount == null ? false : takeCount == true ? true : false;
+            // var _takeCount = takeCount == null ? false : takeCount == true ? true : false;
+            var _takeCount = takeCount != null && takeCount == true;
 
             if (fromDate == null)
                 fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
@@ -35,38 +37,6 @@ namespace ImillReports.Controllers
             ViewBag.takeCount = _takeCount;
 
             if (toDate < fromDate) ViewBag.validation = "true";
-
-
-            //if (fromDate.Value.Date == DateTime.Now.Date || fromDate == null)
-            //{
-            //    var cashRegisterItems = new List<CashRegisterItem>();
-            //    var cashRegisterItem = new CashRegisterItem
-            //    {
-            //        Carriage = 0,
-            //        Cash = 0,
-            //        Cheque = 0,
-            //        Expense = 0,
-            //        Knet = 0,
-            //        Location = "",
-            //        NetAmount = 0,
-            //        NetSales = 0,
-            //        Online = 0,
-            //        Reserve = 0,
-            //        Salesman = "",
-            //        ShiftCount = 0,
-            //        ShiftType = "",
-            //        TotalSales = 0,
-            //        TransDate = DateTime.Now,
-            //        TransDateTime = DateTime.Now,
-            //        Visa = 0,
-            //        StaffDate = DateTime.Now
-            //    };
-
-            //    cashRegisterItems.Add(cashRegisterItem);
-            //    ViewBag.DataSource = cashRegisterItems;
-            //    return View();
-            //}
-
 
             var cashRegister = _cashRegisterRepository.GetCashRegister(fromDate, toDate, _takeCount);
             ViewBag.DataSource = cashRegister.CashRegisterItems;
@@ -126,7 +96,7 @@ namespace ImillReports.Controllers
             ViewBag.validation = "false";
 
             if (toDate < fromDate) ViewBag.validation = "true";
-            
+
             var cashRegVsSalesRpt = _cashRegisterRepository.GetCashRegisterVsSalesRpt(fromDate, toDate);
 
             ViewBag.DataSource = cashRegVsSalesRpt.CashRegVsSalesItems;
@@ -139,6 +109,31 @@ namespace ImillReports.Controllers
         {
             var result = _cashRegisterRepository.UpdateVerifiedIds(verifiedIds, deVerifiedIds);
             return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public string Update(int oid, string staffDate, string shiftType, decimal talabat,
+                                   decimal deliveroo, decimal cheque, decimal online, decimal knet,
+                                   decimal visa, decimal cash, decimal expense, decimal reserve)
+        {
+            var cashRegUpdateVM = new CashRegUpdateVM
+            {
+                Oid = oid,
+                Cash = cash,
+                Cheque = cheque,
+                Deliveroo = deliveroo,
+                Expense = expense,
+                Knet = knet,
+                Online = online,
+                Reserve = reserve,
+                ShiftType = shiftType,
+                StaffDate = staffDate,
+                Talabat = talabat,
+                Visa = visa
+            };
+
+            return _cashRegisterRepository.Update(cashRegUpdateVM);
         }
 
     }

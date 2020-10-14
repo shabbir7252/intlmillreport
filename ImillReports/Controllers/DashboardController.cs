@@ -16,6 +16,7 @@ namespace ImillReports.Controllers
         public DashboardController(IDashboardRepository dashboardRepository) =>
             _dashboardRepository = dashboardRepository;
 
+        // in use
         public ActionResult SyncSalesData()
         {
             return View();
@@ -44,6 +45,7 @@ namespace ImillReports.Controllers
             return View();
         }
 
+        // used
         public JsonResult BarChartData(SalesOfMonthViewModel salesOfMonth)
         {
             //var fromDate = DateTime.Parse(fromD);
@@ -284,6 +286,7 @@ namespace ImillReports.Controllers
             return Json(JSONresult, JsonRequestBehavior.AllowGet);
         }
 
+        // Used
         private ChartData BranchSalesData(string fromD, string toD)
         {
             var fromDate = DateTime.Parse(fromD);
@@ -327,6 +330,9 @@ namespace ImillReports.Controllers
             var totalTalabatSales = salesOfMonth.TotalTalabat ?? 0;
             var talabatTransCount = salesOfMonth.TalabatTransCount;
 
+            var totalDeliverooSales = salesOfMonth.TotalDeliveroo ?? 0;
+            var deliverooTransCount = salesOfMonth.DeliverooTransCount;
+
             var onlineSales = totalwebOrderSales + totalTalabatSales;
             var onlineTransCount = webOrderCount + talabatTransCount;
 
@@ -339,6 +345,9 @@ namespace ImillReports.Controllers
 
             ViewBag.TalabatPercent = onlineSales != 0 ? Math.Round(100 / onlineSales * totalTalabatSales, 2) : 0;
             ViewBag.TalabatTransPercent = onlineTransCount != 0 ? Math.Round(100 / (decimal)onlineTransCount * talabatTransCount, 2) : 0;
+
+            ViewBag.DeliverooPercent = onlineSales != 0 ? Math.Round(100 / onlineSales * totalDeliverooSales, 2) : 0;
+            ViewBag.DeliverooTransPercent = onlineTransCount != 0 ? Math.Round(100 / (decimal)onlineTransCount * deliverooTransCount, 2) : 0;
 
             #endregion
 
@@ -414,6 +423,9 @@ namespace ImillReports.Controllers
                 TotalTalabatSales = totalTalabatSales.ToString("0.###"),
                 TotalTalabatTransCount = talabatTransCount,
 
+                TotalDeliverooSales = totalDeliverooSales.ToString("0.###"),
+                TotalDeliverooTransCount = deliverooTransCount,
+
                 OnlineSales = onlineSales,
                 OnlineTransCount = onlineTransCount
 
@@ -427,6 +439,7 @@ namespace ImillReports.Controllers
             };
         }
 
+        // Used
         public ActionResult BranchSales(DateTime? fromDate, DateTime? toDate)
         {
             if (User.IsInRole("Sales"))
@@ -622,6 +635,11 @@ namespace ImillReports.Controllers
 
         //}
 
+        // used
+
+        // Used
+
+        // Used
         public ActionResult BranchSalesRecord(DateTime fromDate, DateTime toDate)
         {
             if (fromDate == null)
@@ -639,6 +657,7 @@ namespace ImillReports.Controllers
 
         }
 
+        // used
         private ChartData BranchSalesRecordData(string fromD, string toD)
         {
             var fromDate = DateTime.Parse(fromD);
@@ -678,12 +697,14 @@ namespace ImillReports.Controllers
             var totalwebOrderSales = webOrderCash + webOrderKnet + webOrderCc - Math.Abs(webOrderReturns);
             var webOrderCount = salesOfMonth.TotalOnlineTransCount;
 
-
             var totalTalabatSales = salesOfMonth.TotalTalabat ?? 0;
             var talabatTransCount = salesOfMonth.TalabatTransCount;
 
-            var onlineSales = totalwebOrderSales + totalTalabatSales;
-            var onlineTransCount = webOrderCount + talabatTransCount;
+            var totalDeliverooSales = salesOfMonth.TotalDeliveroo ?? 0;
+            var deliverooTransCount = salesOfMonth.DeliverooTransCount;
+
+            var onlineSales = totalwebOrderSales + totalTalabatSales + totalDeliverooSales;
+            var onlineTransCount = webOrderCount + talabatTransCount + deliverooTransCount;
 
             ViewBag.WebOrderPercent = onlineSales != 0 ? Math.Round(100 / onlineSales * totalwebOrderSales, 2) : 0;
             ViewBag.WebOrderCashPercent = (webOrderCash + webOrderKnet + webOrderCc) != 0 ? Math.Round(100 / (webOrderCash + webOrderKnet + webOrderCc) * webOrderCash, 2) : 0;
@@ -694,6 +715,9 @@ namespace ImillReports.Controllers
 
             ViewBag.TalabatPercent = onlineSales != 0 ? Math.Round(100 / onlineSales * totalTalabatSales, 2) : 0;
             ViewBag.TalabatTransPercent = onlineTransCount != 0 ? Math.Round(100 / (decimal)onlineTransCount * talabatTransCount, 2) : 0;
+
+            ViewBag.DeliverooPercent = onlineSales != 0 ? Math.Round(100 / onlineSales * totalDeliverooSales, 2) : 0;
+            ViewBag.DeliverooTransPercent = onlineTransCount != 0 ? Math.Round(100 / (decimal)onlineTransCount * deliverooTransCount, 2) : 0;
 
             #endregion
 
@@ -737,6 +761,8 @@ namespace ImillReports.Controllers
             ViewBag.TotalWebOrderCount = webOrderCount;
             ViewBag.TotalTalabatSales = totalTalabatSales.ToString("0.###");
             ViewBag.TotalTalabatTransCount = talabatTransCount;
+            ViewBag.TotalDeliverooSales = totalDeliverooSales.ToString("0.###");
+            ViewBag.TotalDeliverooTransCount = deliverooTransCount;
             ViewBag.OnlineSales = onlineSales;
             ViewBag.OnlineTransCount = onlineTransCount;
 
@@ -767,6 +793,9 @@ namespace ImillReports.Controllers
                 TotalTalabatSales = totalTalabatSales.ToString("0.###"),
                 TotalTalabatTransCount = talabatTransCount,
 
+                TotalDeliverooSales = totalDeliverooSales.ToString("0.###"),
+                TotalDeliverooTransCount = deliverooTransCount,
+
                 OnlineSales = onlineSales,
                 OnlineTransCount = onlineTransCount
 
@@ -780,6 +809,7 @@ namespace ImillReports.Controllers
             };
         }
 
+        // used
         public ActionResult BranchSalesDetailRecord(string fromD, string toD)
         {
             var fromDate = DateTime.Parse(fromD);

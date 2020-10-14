@@ -80,6 +80,7 @@ namespace Cash_Register.Repository
                 cRegister.FiveFils = rdr.GetInt32(24);
                 cRegister.NetBalance = rdr.GetDecimal(25);
                 cRegister.SerialNo = rdr.GetInt64(28);
+                cRegister.Deliveroo = rdr.GetDecimal(29);
             }
 
             cmd.Dispose();
@@ -228,10 +229,10 @@ namespace Cash_Register.Repository
                 var cmd = new SQLiteCommand(con)
                 {
                     CommandText = $"INSERT INTO CashRegister(Oid, TransDate, StaffDate, LocatCd, Salesman, ShiftType, " +
-                    $"ShiftCount, Cheques, Talabat, Online, Knet, Visa, Expense, 'Reserve', TwentyKd, TenKd, FiveKd, OneKd, HalfKd, " +
+                    $"ShiftCount, Cheques, Talabat, Deliveroo, Online, Knet, Visa, Expense, 'Reserve', TwentyKd, TenKd, FiveKd, OneKd, HalfKd, " +
                     $"QuarterKd, HundFils, FiftyFils, TwentyFils, TenFils, FiveFils, NetBalance, IsSynced, IsDeleted, SerialNo) " +
                     $"VALUES({cRegister.Oid}, '{cRegister.TransDate:yyyy-MM-dd HH:mm:ss}', '{cRegister.StaffDate: yyyy-MM-dd}', {cRegister.LocationId},{cRegister.Salesman}," +
-                    $"'{cRegister.ShiftType}', {cRegister.ShiftCount}, {cRegister.Cheques}, {cRegister.Talabat}, {cRegister.Online}," +
+                    $"'{cRegister.ShiftType}', {cRegister.ShiftCount}, {cRegister.Cheques}, {cRegister.Talabat}, {cRegister.Deliveroo}, {cRegister.Online}," +
                     $"{cRegister.Knet}, {cRegister.Visa}, {cRegister.Expense}, {cRegister.Reserve}, {cRegister.TwentyKd}, {cRegister.TenKd}, " +
                     $"{cRegister.FiveKd}, {cRegister.OneKd}, {cRegister.HalfKd}, {cRegister.QuarterKd}, {cRegister.HundFils}, {cRegister.FiftyFils}, " +
                     $"{cRegister.TwentyFils}, {cRegister.TenFils}, {cRegister.FiveFils}, {cRegister.NetBalance}, {cRegister.IsSynced}, {cRegister.IsDeleted}, {cRegister.SerialNo})"
@@ -268,6 +269,7 @@ namespace Cash_Register.Repository
                     $"ShiftCount = {cRegister.ShiftCount}," +
                     $"Cheques = {cRegister.Cheques}," +
                     $"Talabat = {cRegister.Talabat}," +
+                    $"Deliveroo = {cRegister.Deliveroo}," +
                     $"Online = {cRegister.Online}," +
                     $"Knet = {cRegister.Knet}," +
                     $"Visa = {cRegister.Visa}," +

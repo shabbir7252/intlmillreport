@@ -1104,6 +1104,7 @@ namespace ImillReports.Repository
                                                                   x.VoucherId != 2025 &&
                                                                   x.VoucherId != 2035 &&
                                                                   x.VoucherId != 2026 &&
+                                                                  x.VoucherId != 2037 &&
                                                                   x.VoucherId != 2036).Sum(a => a.NetAmount);
 
                 var salesMonthItem = new SalesMonthItem
@@ -1127,9 +1128,15 @@ namespace ImillReports.Repository
             var talabatTransSrCount = branchSalesTransDetail.Count(x => x.VoucherId == 2035);
             var talabatTransNetCount = talabatTransCount - talabatTransSrCount;
 
+            var deliverooTransCount = branchSalesTransDetail.Count(x => x.VoucherId == 2030);
+            var deliverooTransSrCount = branchSalesTransDetail.Count(x => x.VoucherId == 2037);
+            var deliverooTransNetCount = deliverooTransCount - deliverooTransSrCount;
+
             var onlineTransCount = branchSalesTransDetail.Count(x => x.VoucherId == 2026);
             var onlineTransSrCount = branchSalesTransDetail.Count(x => x.VoucherId == 2036);
             var onlineTransNetCount = onlineTransCount - onlineTransSrCount;
+
+            #region Talabat
 
             var branchTalabatSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2025);
             var branchTalabatSalesReturn = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2035);
@@ -1146,6 +1153,28 @@ namespace ImillReports.Repository
             var brTalabatSrAmount = branchTalabatSalesReturn.Sum(a => a.NetAmount) ?? 0;
             var brTalabatSalesAmount = branchTalabatSales.Sum(a => a.NetAmount) ?? 0;
 
+            #endregion
+
+            #region Deliveroo
+
+            var branchDeliverooSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2030);
+            var branchDeliverooSalesReturn = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2037);
+
+            var branchDeliverooSalesReturnCash = branchDeliverooSalesReturn.Sum(x => x.Cash) != null ? (decimal)branchDeliverooSalesReturn.Sum(x => x.Cash) : 0;
+            var branchDeliverooSalesCash = branchDeliverooSales.Sum(x => x.Cash) - Math.Abs(branchDeliverooSalesReturnCash);
+
+            var branchDeliverooSalesReturnKnet = branchDeliverooSalesReturn.Sum(x => x.Knet) != null ? (decimal)branchDeliverooSalesReturn.Sum(x => x.Knet) : 0;
+            var branchDeliverooSalesKnet = branchDeliverooSales.Sum(x => x.Knet) - Math.Abs(branchDeliverooSalesReturnKnet);
+
+            var branchDeliverooSalesReturnCc = branchDeliverooSalesReturn.Sum(x => x.CreditCard) != null ? (decimal)branchDeliverooSalesReturn.Sum(x => x.CreditCard) : 0;
+            var branchDeliverooSalesCc = branchDeliverooSales.Sum(x => x.CreditCard) - Math.Abs(branchDeliverooSalesReturnCc);
+
+            var brDeliverooSrAmount = branchDeliverooSalesReturn.Sum(a => a.NetAmount) ?? 0;
+            var brDeliverooSalesAmount = branchDeliverooSales.Sum(a => a.NetAmount) ?? 0;
+
+            #endregion
+
+            #region Branch Online Sales 
 
             var branchOnlineSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2026);
             var branchOnlineSalesReturn = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2036);
@@ -1159,8 +1188,13 @@ namespace ImillReports.Repository
             var branchOnlineSalesReturnCc = branchOnlineSalesReturn.Sum(x => x.CreditCard) != null ? (decimal)branchOnlineSalesReturn.Sum(x => x.CreditCard) : 0;
             var branchOnlineSalesCc = branchOnlineSales.Sum(x => x.CreditCard) - Math.Abs(branchOnlineSalesReturnCc);
 
-            var brOnlineSrNet = branchOnlineSalesReturn.Sum(x => x.NetAmount) ?? 0;
-            var branchSalesReturn = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(a => a.SalesReturn) + Math.Abs(brOnlineSrNet) + Math.Abs(brTalabatSrAmount);
+            var brOnlineSrNet = branchOnlineSalesReturn.Sum(x => x.NetAmount) ?? 0; 
+
+            #endregion
+
+            var branchSalesReturn = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(a => a.SalesReturn) + Math.Abs(brOnlineSrNet)
+                                                                                                                             + Math.Abs(brTalabatSrAmount)
+                                                                                                                             + Math.Abs(brDeliverooSrAmount);
 
             return new SalesOfMonthViewModel
             {
@@ -1169,11 +1203,11 @@ namespace ImillReports.Repository
                 TotalSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(a => a.NetAmount),
                 TotalBranchSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2026 || x.VoucherId != 2036)).Sum(a => a.NetAmount),
 
-                TotalBranchCash = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2023 && x.VoucherId != 202)).Sum(a => a.Cash) - branchOnlineSalesCash - branchTalabatSalesCash,
-                TotalBranchKnet = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2023 && x.VoucherId != 202)).Sum(a => a.Knet) - branchOnlineSalesKnet - branchTalabatSalesKnet,
-                TotalBranchCC = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2023 && x.VoucherId != 202)).Sum(a => a.CreditCard) - branchOnlineSalesCc - branchTalabatSalesCc,
-                TotalBranchCarraige = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2025).Sum(a => a.NetAmount),
-                TotalBranchCount = branchSTDCount - (talabatTransCount + talabatTransSrCount + onlineTransCount + onlineTransSrCount),
+                TotalBranchCash = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2023 && x.VoucherId != 202)).Sum(a => a.Cash) - branchOnlineSalesCash - branchTalabatSalesCash - branchDeliverooSalesCash,
+                TotalBranchKnet = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2023 && x.VoucherId != 202)).Sum(a => a.Knet) - branchOnlineSalesKnet - branchTalabatSalesKnet - branchDeliverooSalesKnet,
+                TotalBranchCC = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2023 && x.VoucherId != 202)).Sum(a => a.CreditCard) - branchOnlineSalesCc - branchTalabatSalesCc - branchDeliverooSalesCc,
+                TotalBranchCarraige = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.VoucherId == 2025 && x.VoucherId == 2030).Sum(a => a.NetAmount),
+                TotalBranchCount = branchSTDCount - (talabatTransCount + talabatTransSrCount + onlineTransCount + onlineTransSrCount + deliverooTransCount + deliverooTransSrCount),
 
                 TotalBranchOnline = branchOnlineSales.Sum(a => a.NetAmount),
                 TotalBranchOnlineCash = branchOnlineSales.Sum(a => a.Cash),
@@ -1184,6 +1218,9 @@ namespace ImillReports.Repository
 
                 TotalTalabat = brTalabatSalesAmount - Math.Abs(brTalabatSrAmount),
                 TalabatTransCount = talabatTransNetCount,
+
+                TotalDeliveroo = brDeliverooSalesAmount - Math.Abs(brDeliverooSrAmount),
+                DeliverooTransCount = deliverooTransNetCount,
 
                 SalesReturnBranches = branchSalesReturn,
 
