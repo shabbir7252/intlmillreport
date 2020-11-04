@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ItemInventory.Models.TransactionDetail>
+@{
+    ViewBag.Title = "GetTransactionDetails";
+}
+
+<style>
+    .navbar {
+        display: none !important;
+    }
+</style>
+
+<div class="container" dir="rtl">
+    <div class="row">
+        <div class="col-12 text-right">
+            <h5 class="text-right d-inline-block">
+                <span class="text-muted text-right d-inline-block">تاريخ</span> : @ViewBag.TransDate
+            </h5>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        @*<div class="col-2"><p class="text-muted text-right">رقم الطلب</p></div>
+            <div class="col-10"><h5 class="text-right mt-0">@ViewBag.TransactionNumber</h5></div>*@
+
+        <div class="col-12 text-right">
+            <h5 class="text-right d-inline-block">
+                <span class="text-muted text-right d-inline-block">رقم الطلب</span> : @ViewBag.TransactionNumber
+            </h5>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        @*<div class="col-2"><p class="text-muted text-right">اسم الموظف</p></div>
+            <div class="col-10"><h5 class="text-right">@ViewBag.RequestedBy</h5></div>*@
+
+        <div class="col-12 text-right">
+            <h5 class="text-right d-inline-block"><span class="text-muted text-right d-inline-block">اسم الموظف</span> : @ViewBag.RequestedBy</h5>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        @*<div class="col-2"><p class="text-muted text-right">ملاحظات</p></div>
+            <div class="col-10"><h5 class="text-right">@ViewBag.Comments</h5></div>*@
+
+        <div class="col-12 text-right">
+            <h5 class="text-right d-inline-block">
+                <span class="text-muted text-right d-inline-block">ملاحظات</span> : @ViewBag.Comments
+            </h5>
+        </div>
+    </div>
+
+</div>
+
+
+<table class="table table-striped mt-5" dir="rtl">
+    <thead>
+        <tr>
+            <th scope="col" class="text-right">اسم العنصر</th>
+            <th scope="col" class="text-right">إسم الوحدة</th>
+            <th scope="col" class="text-right">كمية</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-right">@item.ItemNameAr</td>
+                <td class="text-right">@item.UnitNameAr</td>
+                <td class="text-right">@item.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -15,7 +15,7 @@ namespace ItemInventory.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.DataSource = db.Units.Where(x => !x.IsDeleted.Value || x.IsDeleted == null).ToList();
+            // ViewBag.DataSource = db.Units.Where(x => !x.IsDeleted.Value || x.IsDeleted == null).ToList();
             return View();
         }
 
@@ -32,20 +32,20 @@ namespace ItemInventory.Controllers
                 }
                 else
                 {
-                    var unit = new Unit
-                    {
-                        CreatedBy = User.Identity.Name,
-                        CreatedOn = DateTime.Now,
-                        NameEn = nameEn,
-                        NameAr = nameAr,
-                        IsDeleted = false
-                    };
+                    //var unit = new Unit
+                    //{
+                    //    CreatedBy = User.Identity.Name,
+                    //    CreatedOn = DateTime.Now,
+                    //    NameEn = nameEn,
+                    //    NameAr = nameAr,
+                    //    IsDeleted = false
+                    //};
 
-                    db.Units.Add(unit);
-                    db.SaveChanges();
+                    //db.Units.Add(unit);
+                    //db.SaveChanges();
 
-                    source.ReponseId = 1;
-                    source.Message = "Record Saved Successfully!";
+                    //source.ReponseId = 1;
+                    //source.Message = "Record Saved Successfully!";
                 }
             }
             catch (Exception)
@@ -78,13 +78,13 @@ namespace ItemInventory.Controllers
                 }
                 else
                 {
-                    var units = db.Units.Where(x => verifiedIds.Contains(x.Oid));
-                    foreach (var rec in units)
-                        rec.IsDeleted = true;
+                    //var units = db.Units.Where(x => verifiedIds.Contains(x.Oid));
+                    //foreach (var rec in units)
+                    //    rec.IsDeleted = true;
 
-                    db.SaveChanges();
-                    source.ReponseId = 1;
-                    source.Message = "Record Deleted Successfully!";
+                    //db.SaveChanges();
+                    //source.ReponseId = 1;
+                    //source.Message = "Record Deleted Successfully!";
                 }
             }
             catch (Exception)

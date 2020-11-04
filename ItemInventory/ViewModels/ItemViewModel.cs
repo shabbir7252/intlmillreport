@@ -21,4 +21,13 @@ namespace ItemInventory.ViewModels
         public int ReponseId { get; set; }
         public string Message { get; set; }
     }
+
+    public class ItemsViewModel
+    {
+        public long Oid { get; set; }
+        public string NameEn { get; set; }
+        public string NameAr { get; set; }
+        public int Unit_Cd { get; set; }
+        public string PartNumber { get; set; }
+    }
 }

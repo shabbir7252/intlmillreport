@@ -5,34 +5,53 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ImillItemInventoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Inventory">
+        <EntityType Name="ItemPartNumber">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartNumber" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TransactionDetails">
           <Key>
             <PropertyRef Name="Oid" />
           </Key>
           <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TransDate" Type="datetime" Nullable="false" />
-          <Property Name="ItemOid" Type="int" Nullable="false" />
-          <Property Name="ItemName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="UnitOid" Type="int" Nullable="false" />
-          <Property Name="UnitName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ItemOid" Type="bigint" Nullable="false" />
+          <Property Name="ItemNameEn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ItemNameAr" Type="nvarchar" MaxLength="50" />
+          <Property Name="UnitOid" Type="bigint" Nullable="false" />
+          <Property Name="UnitNameEn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UnitNameAr" Type="nvarchar" MaxLength="50" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="UpdatedOn" Type="datetime" />
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="TransactionNumber" Type="bigint" Nullable="false" />
+          <Property Name="TransactionId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Item">
+        <EntityType Name="Transactions">
           <Key>
             <PropertyRef Name="Oid" />
           </Key>
           <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NameEn" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="NameAr" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TransDate" Type="datetime" Nullable="false" />
+          <Property Name="TransactionNumber" Type="bigint" Nullable="false" />
+          <Property Name="TransNum" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ItemsCount" Type="int" Nullable="false" />
+          <Property Name="IsEmailSent" Type="bit" Nullable="false" />
+          <Property Name="IsPrinted" Type="bit" Nullable="false" />
+          <Property Name="EmailSentOn" Type="datetime" />
+          <Property Name="PrintedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="RequestedBy" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="500" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="UpdatedOn" Type="datetime" />
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -47,96 +66,216 @@
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="FullnameEn" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FullnameAr" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="IsRegForEmail" Type="bit" Nullable="false" />
+          <Property Name="IsActiveDropDown" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TransactionDetails_Transactions">
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ImillItemInventoryModelStoreContainer">
-          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemPartNumber" EntityType="Self.ItemPartNumber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TransactionDetails_Transactions" Association="Self.FK_TransactionDetails_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ImillItemInventoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Inventory">
+        <EntityContainer Name="ImillItemInventoryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ItemPartNumbers" EntityType="ImillItemInventoryModel.ItemPartNumber" />
+          <EntitySet Name="Users" EntityType="ImillItemInventoryModel.User" />
+          <EntitySet Name="TransactionDetails" EntityType="ImillItemInventoryModel.TransactionDetail" />
+          <EntitySet Name="Transactions" EntityType="ImillItemInventoryModel.Transaction" />
+          <AssociationSet Name="FK_TransactionDetails_Transactions" Association="ImillItemInventoryModel.FK_TransactionDetails_Transactions">
+            <End Role="Transaction" EntitySet="Transactions" />
+            <End Role="TransactionDetail" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <EntitySet Name="Units" EntityType="ImillItemInventoryModel.Unit" />
+        </EntityContainer>
+        <EntityType Name="ItemPartNumber">
           <Key>
             <PropertyRef Name="Oid" />
           </Key>
           <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemOid" Type="Int32" Nullable="false" />
-          <Property Name="UnitOid" Type="Int32" Nullable="false" />
+          <Property Name="PartNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FullnameEn" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FullnameAr" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsRegForEmail" Type="Boolean" Nullable="false" />
+          <Property Name="IsActiveDropDown" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ItemOid" Type="Int64" Nullable="false" />
+          <Property Name="ItemNameEn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemNameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UnitOid" Type="Int64" Nullable="false" />
+          <Property Name="UnitNameEn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UnitNameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ItemName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UnitName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionNumber" Type="Int64" Nullable="false" />
+          <Property Name="TransactionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Transaction" Relationship="ImillItemInventoryModel.FK_TransactionDetails_Transactions" FromRole="TransactionDetail" ToRole="Transaction" />
         </EntityType>
-        <EntityType Name="Item">
+        <EntityType Name="Transaction">
           <Key>
             <PropertyRef Name="Oid" />
           </Key>
           <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NameEn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionNumber" Type="Int64" Nullable="false" />
+          <Property Name="ItemsCount" Type="Int32" Nullable="false" />
+          <Property Name="IsEmailSent" Type="Boolean" Nullable="false" />
+          <Property Name="IsPrinted" Type="Boolean" Nullable="false" />
+          <Property Name="EmailSentOn" Type="DateTime" Precision="3" />
+          <Property Name="PrintedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="RequestedBy" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="TransactionDetails" Relationship="ImillItemInventoryModel.FK_TransactionDetails_Transactions" FromRole="Transaction" ToRole="TransactionDetail" />
+          <Property Name="TransNum" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="FK_TransactionDetails_Transactions">
+          <End Type="ImillItemInventoryModel.Transaction" Role="Transaction" Multiplicity="1" />
+          <End Type="ImillItemInventoryModel.TransactionDetail" Role="TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="TransactionDetail">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Unit">
           <Key>
             <PropertyRef Name="Oid" />
           </Key>
           <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NameEn" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NameEn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NameAr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
-        <EntityContainer Name="ImillItemInventoryEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Inventories" EntityType="Self.Inventory" />
-          <EntitySet Name="Items" EntityType="Self.Item" />
-          <EntitySet Name="Units" EntityType="Self.Unit" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ImillItemInventoryModelStoreContainer" CdmEntityContainer="ImillItemInventoryEntities">
-          <EntitySetMapping Name="Inventories">
-            <EntityTypeMapping TypeName="ImillItemInventoryModel.Inventory">
-              <MappingFragment StoreEntitySet="Inventory">
-                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+          <EntitySetMapping Name="ItemPartNumbers">
+            <EntityTypeMapping TypeName="ImillItemInventoryModel.ItemPartNumber">
+              <MappingFragment StoreEntitySet="ItemPartNumber">
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
-                <ScalarProperty Name="ItemOid" ColumnName="ItemOid" />
-                <ScalarProperty Name="UnitOid" ColumnName="UnitOid" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="ImillItemInventoryModel.Item">
-              <MappingFragment StoreEntitySet="Item">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ImillItemInventoryModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IsActiveDropDown" ColumnName="IsActiveDropDown" />
+                <ScalarProperty Name="IsRegForEmail" ColumnName="IsRegForEmail" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="FullnameAr" ColumnName="FullnameAr" />
+                <ScalarProperty Name="FullnameEn" ColumnName="FullnameEn" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
-                <ScalarProperty Name="NameEn" ColumnName="NameEn" />
-                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetails">
+            <EntityTypeMapping TypeName="ImillItemInventoryModel.TransactionDetail">
+              <MappingFragment StoreEntitySet="TransactionDetails">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="TransactionNumber" ColumnName="TransactionNumber" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UnitNameAr" ColumnName="UnitNameAr" />
+                <ScalarProperty Name="UnitNameEn" ColumnName="UnitNameEn" />
+                <ScalarProperty Name="UnitOid" ColumnName="UnitOid" />
+                <ScalarProperty Name="ItemNameAr" ColumnName="ItemNameAr" />
+                <ScalarProperty Name="ItemNameEn" ColumnName="ItemNameEn" />
+                <ScalarProperty Name="ItemOid" ColumnName="ItemOid" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="ImillItemInventoryModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransNum" ColumnName="TransNum" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PrintedOn" ColumnName="PrintedOn" />
+                <ScalarProperty Name="EmailSentOn" ColumnName="EmailSentOn" />
+                <ScalarProperty Name="IsPrinted" ColumnName="IsPrinted" />
+                <ScalarProperty Name="IsEmailSent" ColumnName="IsEmailSent" />
+                <ScalarProperty Name="ItemsCount" ColumnName="ItemsCount" />
+                <ScalarProperty Name="TransactionNumber" ColumnName="TransactionNumber" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -144,17 +283,17 @@
             <EntityTypeMapping TypeName="ImillItemInventoryModel.Unit">
               <MappingFragment StoreEntitySet="Unit">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Oid" ColumnName="Oid" />
-                <ScalarProperty Name="NameEn" ColumnName="NameEn" />
-                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+                <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

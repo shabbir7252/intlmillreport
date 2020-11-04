@@ -309,36 +309,21 @@ namespace Cash_Register.Repository
 
         public long GetSerialNo(DateTime dateTime)
         {
-            var con = new SQLiteConnection(cs);
-            con.Open();
+            long serial = 0;
 
-            var cmd = new SQLiteCommand(con)
+            while (serial == 0 || serial > 1000)
             {
-                CommandText = $"select * from CR_Serial"
-            };
+                var crSerial = GetCrSerial();
 
-            var rdr = cmd.ExecuteReader();
+                var differenceDays = (DateTime.Now.Date - crSerial.Date.Date).TotalDays;
 
-            var crSerial = new CRSerial();
-            while (rdr.Read())
-            {
-                crSerial.Date = DateTime.Parse(rdr.GetString(0));
-                crSerial.SerialNumber = rdr.GetInt64(1);
-                crSerial.BackDays = rdr.GetInt32(2);
+                if (dateTime != null || dateTime != DateTime.MinValue)
+                    differenceDays = (dateTime.Date - crSerial.Date.Date).TotalDays;
+
+                serial = (long)(crSerial.SerialNumber + differenceDays);
             }
 
-            cmd.Dispose();
-            con.Close();
-            con.Dispose();
-
-            var differenceDays = (DateTime.Now.Date - crSerial.Date.Date).TotalDays;
-            
-            if(dateTime != null || dateTime != DateTime.MinValue)
-                differenceDays = (dateTime.Date - crSerial.Date.Date).TotalDays;
-
-            var serial = crSerial.SerialNumber + differenceDays;
-
-            return (long)serial;
+            return serial;
         }
 
         public int GetBackDays()
@@ -364,6 +349,33 @@ namespace Cash_Register.Repository
             con.Dispose();
 
             return crSerial.BackDays != 0 ? crSerial.BackDays : 1;
+        }
+
+        private CRSerial GetCrSerial()
+        {
+            var con = new SQLiteConnection(cs);
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = $"select * from CR_Serial"
+            };
+
+            var rdr = cmd.ExecuteReader();
+
+            var crSerial = new CRSerial();
+            while (rdr.Read())
+            {
+                crSerial.Date = DateTime.Parse(rdr.GetString(0));
+                crSerial.SerialNumber = rdr.GetInt64(1);
+                crSerial.BackDays = rdr.GetInt32(2);
+            }
+
+            cmd.Dispose();
+            con.Close();
+            con.Dispose();
+
+            return crSerial;
         }
     }
 }

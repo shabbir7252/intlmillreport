@@ -55,5 +55,6 @@ namespace ImillReports.ViewModels
         public string NameAr { get; set; }
         public int EmployeeId { get; set; }
         public string DisplayText { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

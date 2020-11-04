@@ -25,5 +25,6 @@ namespace ImillReports.Contracts
         string GetSalesMonth(int year, int month, int from, int to);
         string GetSalesDetailMonth(int year, int month, int from, int to);
         List<DailyConsumptionVM> GetDailyConsumptionTrans(DateTime? fromDate, DateTime? toDate);
+        void GetReportByItemGroup(DateTime? fromDate, DateTime? toDate);
     }
 }

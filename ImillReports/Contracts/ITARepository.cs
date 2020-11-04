@@ -10,7 +10,7 @@ namespace ImillReports.Contracts
 {
     public interface ITARepository
     {
-        List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate);
+        List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate, int[] employees);
         string SyncTAReport(int year, int month, int from, int toYear, int toMonth, int to);
         List<ShiftViewModel> GetShifts();
         List<TaLocation> GetLocations();

@@ -1,0 +1,418 @@
+﻿@using Syncfusion.EJ2.Grids;
+@{
+    ViewBag.Title = "Request Details";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    toolbarItems.Add(new { text = "Delete", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
+
+    List<object> commands = new List<object>();
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+}
+
+<style>
+    #items_popup > .e-content > ul > li,
+    #unit_popup > .e-content > ul > li {
+        font-size: 16px;
+    }
+</style>
+
+<div class="container">
+    <div class="row mt-4">
+
+        <div class="col-12 mb-4 text-right">
+            <small class="text-muted">رقم الطلب</small>
+            <h6>@ViewBag.TransactionNumber</h6>
+
+            <small class="text-muted">تاريخ</small>
+            <h6>@ViewBag.TransDate</h6>
+
+            <small class="text-muted">ملاحظات</small>
+            <h6>@ViewBag.Comments</h6>
+
+        </div>
+
+        <div class="col-12 loading-placeholder" style="display:none">
+            <div class="d-flex align-items-center mb-3">
+                <strong><span class="loading-text"></span></strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4 col-update">
+            <div class="row">
+
+                <div class="col-6">
+                    <button class="btn btn-primary btn-block" onclick="Update()">تحديث</button>
+                </div>
+
+                <div class="col-6">
+                    <button class="btn btn-dark btn-block" onclick="CancelUpdate()">إلغاء</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 inv-grid-container">
+
+            @Html.EJS().Grid("Grid").EnableRtl(true).DataSource(
+              (IEnumerable<object>)
+              ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+          {
+              col.Field("IsVerified").Type("checkbox").AllowFiltering(true).AllowSorting(true).Add();
+              col.Field("Oid").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+              col.Field("ItemNameAr").HeaderText("اسم العنصر").TextAlign(TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+              col.Field("UnitNameAr").HeaderText("إسم الوحدة").TextAlign(TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+              col.Field("Quantity").HeaderText("كمية").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+              // col.Field("TransactionNumber").HeaderText("Transaction Number").Width("80").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+              col.HeaderText("Actions").Width("110").Commands(commands).Add();
+
+          }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(FilterType.Menu)).PageSettings(
+              page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).Aggregates(agg =>
+                   {
+                  agg.Columns(new List<GridAggregateColumn>() {
+                       new GridAggregateColumn() {
+                          Field = "Quantity", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                      } }).Add();
+                   }).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select =>
+                   select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+        </div>
+
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="EditModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditModal">Edit</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mt-4 item-container">
+                        @Html.EJS().DropDownList("items").Enabled(true).AllowFiltering(true).EnableRtl(true).Filtering("OnItemFiltering").Placeholder("حدد العناصر").DataSource(
+                      (IEnumerable<object>)ViewBag.Items).Fields(
+                      new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "NameAr", Value = "Oid" }).Change("OnItemChange").ActionBegin("OnItemBegin").DataBound("OnItemBound").Render()
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        @Html.EJS().DropDownList("unit").Enabled(true).AllowFiltering(true).EnableRtl(true).Filtering("OnUnitFiltering").Placeholder("وحدة").DataSource(
+                      (IEnumerable<object>)ViewBag.Units).Fields(
+                      new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "NameAr", Value = "Oid" }).ActionBegin("OnUnitBegin").DataBound("OnUnitBound").Render()
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        @Html.EJS().TextBox("quantity").Placeholder("كمية").Type("number").EnableRtl(true).Render()
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">أغلق</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="UpdateGrid()">تحديث</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var responseId = -1;
+        var verificationIds = [];
+        var rowOid = 0;
+        var colUpdate = $('.col-update');
+        colUpdate.hide();
+
+        function commandClick(args) {
+
+            var type = args.commandColumn.type;
+
+            if (type === 'Edit') {
+                $('#EditModal').modal('show');
+                rowOid = args.rowData.Oid
+                document.getElementById('items').ej2_instances[0].value = args.rowData.ItemId;
+                document.getElementById('quantity').ej2_instances[0].value = args.rowData.Quantity;
+            }
+        }
+
+        function UpdateGrid() {
+            
+            var itemDataSource = document.getElementById('items').ej2_instances[0].dataSource;
+            var item = document.getElementById('items').ej2_instances[0].value;
+
+            var itemNameEn = '';
+            var itemNameAr = '';
+            itemDataSource.some(function (elem, i) {
+                if (elem.Oid === item) {
+                    itemNameEn = elem.NameEn;
+                    itemNameAr = elem.NameAr;
+                }
+            });
+
+            var unitDataSource = document.getElementById('unit').ej2_instances[0].dataSource;
+            var unit = document.getElementById('unit').ej2_instances[0].value;
+
+            var unitNameEn = '';
+            var unitNameAr = '';
+            unitDataSource.some(function (elem, i) {
+                if (elem.Oid === unit) {
+                    unitNameEn = elem.NameEn;
+                    unitNameAr = elem.NameAr;
+                }
+            });
+
+            var quantity = document.getElementById('quantity').ej2_instances[0].value;
+
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            var gridDs = grid.dataSource;
+
+            console.log('gridDs 4 update : ', gridDs);
+
+            gridDs.some(function (elem, i) {
+                if (elem.Oid === rowOid) {
+                    elem.ItemId = item;
+                    elem.ItemNameEn = itemNameEn;
+                    elem.ItemNameAr = itemNameAr;
+                    elem.UnitId = unit;
+                    elem.UnitNameEn = unitNameEn;
+                    elem.UnitNameAr = unitNameAr;
+                    elem.Quantity = +quantity;
+                }
+            });
+
+            grid.dataSource = gridDs;
+            grid.refresh();
+
+            colUpdate.show();
+        }
+
+        function Update() {
+
+            var r = confirm("Are you sure you want to update these changes? Once updated it will not revert.");
+            if (r === true) {
+
+                $('.loading-text').html("Sending Email...");
+                $('.loading-placeholder').show();
+                $('.inv-grid-container').hide();
+                colUpdate.hide();
+
+                var grid = document.getElementById('Grid').ej2_instances[0];
+                var gridDs = grid.dataSource;
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        transactionDetailVM : gridDs
+                    },
+                    url: '@Url.Action("UpdateTransaction", "Home")',
+                    success: function (response) {
+                        console.log('response', response);
+                        $('.loading-text').html("Printing...");
+
+                        setTimeout(function () {
+                            $('.loading-placeholder').hide();
+                            $('.inv-grid-container').show();
+                        }, 1000);
+
+
+                        //setTimeout(function () {
+                        //    if (response.ReponseId === 1) {
+                        //        var r = confirm("Email has been sent. Do you want to print?");
+                        //        if (r === true) {
+                        //            var itemList = [];
+                        //            window.location.href = '/Home/PrintItems?itemList=' + itemList;
+                        //            $('.loading-placeholder').hide();
+                        //            $('.inv-grid-container').show();
+                        //            colUpdate.hide();
+                        //        } else {
+                        //            $('.loading-placeholder').hide();
+                        //            $('.inv-grid-container').show();
+                        //            colUpdate.hide();
+                        //        }
+                        //    } else {
+                        //        $('.loading-placeholder').hide();
+                        //        $('.inv-grid-container').show();
+                        //        colUpdate.show();
+                        //    }
+                        //}, 2000);
+                    },
+                    error: function (ex) {
+                        alert("Error Occured While Email/Print!");
+                        $('.loading-placeholder').hide();
+                        $('.inv-grid-container').show();
+                        colUpdate.show();
+                    }
+                });
+            }
+        }
+
+        function CancelUpdate() {
+            var r = confirm("Are you sure you want to cancel the changes?");
+            if (r === true) {
+                window.location.reload();
+            }
+        }
+
+        function dataBound(args) {
+            this.autoFitColumns(['IsVerified', 'ItemNameEn', 'UnitNameEn', 'Quantity', 'TransactionNumber']);
+        }
+
+        function toolbarClick(args) {
+
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+
+                var excelExportProperties = {
+                    fileName: "MaterialRequestDetails.xlsx"
+                };
+
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRec') {
+                if (verificationIds.length === 0) {
+                    alert('Select atleast 1 record');
+                } else {
+                    $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("DeleteTransDetails", "Home")',
+                    success: function (response) {
+                        console.log('response', response);
+                        responseId = response.ReponseId
+                        $('.modal-message').html(response.Message);
+                        $('#response-message').modal('show');
+                },
+                    error: function (ex) {
+                        alert("Error Occured While Deleting!");
+                    }
+                });
+                }
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row.cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function CheckResponse() {
+            if (responseId === 1) {
+                window.location.reload();
+            }
+        }
+
+
+
+        // ***********************  Item Filtering and Searching  ***********************
+
+        function OnItemFiltering(e) {
+            var CBObj = document.getElementById("items").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('items').select(['NameAr', 'Oid']);
+                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selected = [];
+        function OnItemBegin(e) {
+            this.fields = {
+                text: 'NameAr', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemSearch(e) {
+            if (selected.indexOf(e) == -1)
+                selected.push(e);
+        }
+
+        function OnItemBound(e) {
+            this.value = selected;
+        }
+
+        function OnItemChange(args) {
+            var unit = document.getElementById('unit').ej2_instances[0];
+            unit.value = args.itemData.Unit_Cd;
+        }
+
+        // ***********************  End Item Filtering and Searching  ***********************
+
+        // ***********************  Unit Filtering and Searching  ***********************
+
+        function OnUnitFiltering(e) {
+            var CBObj = document.getElementById("unit").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('unit').select(['NameAr', 'Oid']);
+                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selectedUnit = [];
+        function OnUnitBegin(e) {
+            this.fields = {
+                text: 'NameAr', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                unitSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function unitSearch(e) {
+            if (selectedUnit.indexOf(e) == -1)
+                selectedUnit.push(e);
+        }
+
+        function OnUnitBound(e) {
+            this.value = selectedUnit;
+        }
+
+        // ***********************  End Unit Filtering and Searching  ***********************
+
+    </script>
+}

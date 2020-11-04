@@ -25,8 +25,10 @@ namespace ItemInventory.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Inventory> Inventories { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<ItemPartNumber> ItemPartNumbers { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<TransactionDetail> TransactionDetails { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
     }
 }

@@ -1983,5 +1983,103 @@ namespace ImillReports.Repository
 
             return dailyConsumptions;
         }
+
+        public void GetReportByItemGroup(DateTime? fromDate, DateTime? toDate)
+        {
+            var salesDetails = GetSalesDetailTransaction(fromDate, toDate, "", "", "");
+            // prod_cd is prodId
+            // get item list and its group from item table and group table
+
+            var salesProdGroup = salesDetails.GroupBy(x => x.ProdId);
+            var itemGroups = _context.ICS_Item_Group.ToList();
+            var items = _context.ICS_Item.ToList();
+            var salesDetailsByItemGroups = (from item in salesProdGroup.Where(x => x.Key.HasValue)
+                                            let salesItem = items.FirstOrDefault(x => x.Prod_Cd == item.Key.Value)
+                                            let itemGroup = itemGroups.FirstOrDefault(x => x.Group_Cd == salesItem.Group_Cd)
+                                            select new SalesItemGroup
+                                            {
+                                                ProdId = salesItem.Prod_Cd,
+                                                ProdNameEn = salesItem.L_Prod_Name,
+                                                ProdNameAr = salesItem.A_Prod_Name,
+                                                GroupCd = itemGroup.Group_Cd,
+                                                ParentGroupCd = itemGroup.M_Group_Cd,
+                                                GroupNameEn = itemGroup.L_Group_Name,
+                                                GroupNameAr = itemGroup.A_Group_Name,
+                                                TotalAmount = item.Sum(x => x.Amount)
+                                            }).ToList();
+
+            var salesItemGroups = salesDetailsByItemGroups.GroupBy(x => x.GroupCd).ToList();
+
+            var ignoreList = new List<int>();
+
+            foreach (var group in salesItemGroups)
+            {
+                var rootId = group.Key;
+                decimal totalAmount = 0;
+
+                while (rootId != 1)
+                {
+                    if (!ignoreList.Any(x => x == rootId))
+                    {
+                        var result = GetParentDetails(rootId, salesItemGroups);
+
+                        ignoreList.Add(rootId);
+                        ignoreList.AddRange(result.GroupCdToIgnore);
+                        rootId = result.GroupCd;
+                        totalAmount += result.Amount.Value;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            //foreach(var groupItem in salesDetailsByItemGroups)
+            //{
+            //    var itemGroupByParent = groupItem.GroupBy(x => x.ParentGroupCd);
+            //    var amount = itemGroupByParent.Sum(x => x.Sum(a => a.TotalAmount));
+            //    var groupCd = itemGroupByParent.FirstOrDefault().Key;
+
+            //    while(groupCd != 1)
+            //    {
+            //        var itemGroupParent = salesDetailsByItemGroups.Where(x => x.Key == groupCd).GroupBy(a => a.FirstOrDefault().ParentGroupCd);
+            //        amount += itemGroupParent.Sum(x => x.Sum(a => a.Sum(b => b.TotalAmount)));
+            //        groupC  d = itemGroupParent.FirstOrDefault().Key;
+            //    }
+            //}
+
+        }
+
+        public SalesByItemGroupResponse GetParentDetails(int groupCd, List<IGrouping<int, SalesItemGroup>> salesItemGroups)
+        {
+            var selectedGroup = salesItemGroups.FirstOrDefault(x => x.Key == groupCd);
+            var resGroupCd = selectedGroup.FirstOrDefault().ParentGroupCd;
+            var listofInt = new List<int>();
+
+            if (resGroupCd != 1)
+            {
+                var groupItems = salesItemGroups.Where(x => x.Where(a => a.ParentGroupCd == resGroupCd).FirstOrDefault().ParentGroupCd == resGroupCd);
+                var groupCdList = groupItems.Select(x => x.Select(a => a.GroupCd));
+                var totalAmount = groupItems.Sum(x => x.Sum(a => a.TotalAmount));
+
+                
+                foreach (var list in groupCdList) listofInt.AddRange(list);
+
+                return new SalesByItemGroupResponse
+                {
+                    Amount = totalAmount,
+                    GroupCd = resGroupCd,
+                    GroupCdToIgnore = listofInt
+                };
+            }
+
+            return new SalesByItemGroupResponse
+            {
+                Amount = 0,
+                GroupCd = resGroupCd,
+                GroupCdToIgnore = listofInt
+            };
+        }
     }
 }

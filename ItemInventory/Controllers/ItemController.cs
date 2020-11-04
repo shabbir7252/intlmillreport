@@ -1,11 +1,10 @@
-﻿using ItemInventory.Models;
-using ItemInventory.ViewModels;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using ItemInventory.Models;
+using ItemInventory.ViewModels;
+using System.Collections.Generic;
 
 namespace ItemInventory.Controllers
 {
@@ -16,7 +15,7 @@ namespace ItemInventory.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.DataSource = db.Items.Where(x => !x.IsDeleted.Value || x.IsDeleted == null).ToList();
+            // ViewBag.DataSource = db.Items.Where(x => !x.IsDeleted.Value || x.IsDeleted == null).ToList();
             return View();
         }
 
@@ -33,20 +32,20 @@ namespace ItemInventory.Controllers
                 }
                 else
                 {
-                    var item = new Item
-                    {
-                        CreatedBy = User.Identity.Name,
-                        CreatedOn = DateTime.Now,
-                        NameEn = nameEn,
-                        NameAr = nameAr,
-                        IsDeleted = false
-                    };
+                    //var item = new Item
+                    //{
+                    //    CreatedBy = User.Identity.Name,
+                    //    CreatedOn = DateTime.Now,
+                    //    NameEn = nameEn,
+                    //    NameAr = nameAr,
+                    //    IsDeleted = false
+                    //};
 
-                    db.Items.Add(item);
-                    db.SaveChanges();
+                    //db.Items.Add(item);
+                    //db.SaveChanges();
 
-                    source.ReponseId = 1;
-                    source.Message = "Record Saved Successfully!";
+                    //source.ReponseId = 1;
+                    //source.Message = "Record Saved Successfully!";
                 }
             }
             catch (Exception)
@@ -79,13 +78,13 @@ namespace ItemInventory.Controllers
                 }
                 else
                 {
-                    var items = db.Items.Where(x => verifiedIds.Contains(x.Oid));
-                    foreach (var rec in items)
-                        rec.IsDeleted = true;
+                    //var items = db.Items.Where(x => verifiedIds.Contains(x.Oid));
+                    //foreach (var rec in items)
+                    //    rec.IsDeleted = true;
                     
-                    db.SaveChanges();
-                    source.ReponseId = 1;
-                    source.Message = "Record Saved Successfully!";
+                    //db.SaveChanges();
+                    //source.ReponseId = 1;
+                    //source.Message = "Record Saved Successfully!";
                 }
             }
             catch (Exception)

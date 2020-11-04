@@ -1,0 +1,83 @@
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Cash Register.dll.config
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Cash Register.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Cash Register.pdb
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\csc.exe
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\csc.exe.config
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\csc.rsp
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\csi.exe
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\csi.rsp
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.CodeAnalysis.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.CSharp.Core.targets
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\Microsoft.VisualBasic.Core.targets
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\System.AppContext.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\System.Collections.Immutable.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\System.Diagnostics.StackTrace.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\System.IO.FileSystem.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\System.IO.FileSystem.Primitives.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\System.Reflection.Metadata.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\vbc.exe
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\vbc.exe.config
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\vbc.rsp
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\VBCSCompiler.exe
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\roslyn\VBCSCompiler.exe.config
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Antlr3.Runtime.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\EntityFramework.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\EntityFramework.SqlServer.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Microsoft.Web.Infrastructure.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Newtonsoft.Json.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Data.SQLite.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Data.SQLite.EF6.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Data.SQLite.Linq.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Net.Http.Formatting.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Runtime.CompilerServices.Unsafe.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Threading.Tasks.Extensions.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Helpers.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Http.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Http.WebHost.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Mvc.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Optimization.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Razor.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.WebPages.Deployment.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.WebPages.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.WebPages.Razor.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Abstractions.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Container.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Mvc.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\WebActivatorEx.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\WebGrease.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\EntityFramework.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\EntityFramework.SqlServer.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Newtonsoft.Json.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Data.SQLite.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Data.SQLite.dll.config
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Net.Http.Formatting.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Runtime.CompilerServices.Unsafe.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Threading.Tasks.Extensions.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Http.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Http.WebHost.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Helpers.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Mvc.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Optimization.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.Razor.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.WebPages.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.WebPages.Deployment.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\System.Web.WebPages.Razor.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Abstractions.pdb
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Container.pdb
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Mvc.pdb
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Mvc.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Antlr3.Runtime.pdb
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csprojAssemblyReference.cache
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csproj.CoreCompileInputs.cache
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csproj.CopyComplete
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.pdb

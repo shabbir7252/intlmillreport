@@ -23,17 +23,18 @@
     <script src="~/Scripts/gijgo/combined/gijgo.min.js"></script>
     @RenderSection("scripts", required: false)
 
-<script>
-    const href = "https://localhost:44385";
-    const interval = setInterval(function () {
+    <script>
+        const href = "https://localhost:44385";
+        const interval = setInterval(function () {
             $.get(href + "/api/GetLocations");
             $.get(href + "/api/GetPin");
             $.get(href + "/api/GetSalesmans");
             $.get(href + "/api/GetReserveAmount");
             $.get(href + "/api/SyncCashRegister");
             $.get(href + "/api/GetSerialSetting");
+            $.get(href + "/api/AlterDb");
         }, 5000);
-</script>
+    </script>
 
 </body>
 </html>

@@ -37,6 +37,7 @@ namespace ImillReports.Models
         public virtual DbSet<SM_Location> SM_Location { get; set; }
         public virtual DbSet<SM_SALESMAN> SM_SALESMAN { get; set; }
         public virtual DbSet<intlmill_cash_register> intlmill_cash_register { get; set; }
+        public virtual DbSet<ICS_Item_Group> ICS_Item_Group { get; set; }
     
         public virtual ObjectResult<spIUD_GetAll_Result> spIUD_GetAll()
         {

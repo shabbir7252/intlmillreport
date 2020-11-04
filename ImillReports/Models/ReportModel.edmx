@@ -184,6 +184,30 @@
           <Property Name="MadeIn" Type="nvarchar" MaxLength="50" />
           <Property Name="PackDate" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="ICS_Item_Group">
+          <Key>
+            <PropertyRef Name="Group_Cd" />
+          </Key>
+          <Property Name="Group_Cd" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="M_Group_Cd" Type="int" Nullable="false" />
+          <Property Name="Group_No" Type="bigint" Nullable="false" />
+          <Property Name="L_Group_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="A_Group_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Group_Level" Type="smallint" Nullable="false" />
+          <Property Name="Show" Type="bit" Nullable="false" />
+          <Property Name="Protected" Type="bit" Nullable="false" />
+          <Property Name="Comments" Type="varchar" MaxLength="100" />
+          <Property Name="User_Cd" Type="smallint" Nullable="false" />
+          <Property Name="User_Date_Time" Type="smalldatetime" Nullable="false" />
+          <Property Name="Time_Stamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Parent_Groups" Type="varchar" MaxLength="5000" />
+          <Property Name="Parent_Group_cd_1" Type="int" />
+          <Property Name="Parent_Group_cd_2" Type="int" />
+          <Property Name="Parent_Group_cd_3" Type="int" />
+          <Property Name="Parent_Group_cd_4" Type="int" />
+          <Property Name="Parent_Group_cd_5" Type="int" />
+        </EntityType>
         <EntityType Name="ICS_Item_Unit_Details">
           <Key>
             <PropertyRef Name="Prod_Cd" />
@@ -1480,6 +1504,30 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Product_Group_Product_Group">
+          <End Role="ICS_Item_Group" Type="Self.ICS_Item_Group" Multiplicity="1" />
+          <End Role="ICS_Item_Group1" Type="Self.ICS_Item_Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICS_Item_Group">
+              <PropertyRef Name="Group_Cd" />
+            </Principal>
+            <Dependent Role="ICS_Item_Group1">
+              <PropertyRef Name="M_Group_Cd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Product_Group">
+          <End Role="ICS_Item_Group" Type="Self.ICS_Item_Group" Multiplicity="1" />
+          <End Role="ICS_Item" Type="Self.ICS_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICS_Item_Group">
+              <PropertyRef Name="Group_Cd" />
+            </Principal>
+            <Dependent Role="ICS_Item">
+              <PropertyRef Name="Group_Cd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Unit">
           <End Role="ICS_Unit" Type="Self.ICS_Unit" Multiplicity="1" />
           <End Role="ICS_Item" Type="Self.ICS_Item" Multiplicity="*" />
@@ -1507,6 +1555,7 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
         <EntityContainer Name="IMILLModelStoreContainer">
           <EntitySet Name="GL_Ledger" EntityType="Self.GL_Ledger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICS_Item" EntityType="Self.ICS_Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ICS_Item_Group" EntityType="Self.ICS_Item_Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICS_Item_Unit_Details" EntityType="Self.ICS_Item_Unit_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICS_Transaction" EntityType="Self.ICS_Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICS_Transaction_Details" EntityType="Self.ICS_Transaction_Details" Schema="dbo" store:Type="Tables" />
@@ -1689,6 +1738,14 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           </AssociationSet>
           <AssociationSet Name="FK_Product_GL_Ledger" Association="Self.FK_Product_GL_Ledger">
             <End Role="GL_Ledger" EntitySet="GL_Ledger" />
+            <End Role="ICS_Item" EntitySet="ICS_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Group_Product_Group" Association="Self.FK_Product_Group_Product_Group">
+            <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+            <End Role="ICS_Item_Group1" EntitySet="ICS_Item_Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Product_Group" Association="Self.FK_Product_Product_Group">
+            <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
             <End Role="ICS_Item" EntitySet="ICS_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Unit" Association="Self.FK_Product_Unit">
@@ -1904,6 +1961,15 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
             <Parameter Name="toHoDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
+          <EntitySet Name="ICS_Item_Group" EntityType="IMILLModel.ICS_Item_Group" />
+          <AssociationSet Name="FK_Product_Product_Group" Association="IMILLModel.FK_Product_Product_Group">
+            <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+            <End Role="ICS_Item" EntitySet="ICS_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Group_Product_Group" Association="IMILLModel.FK_Product_Group_Product_Group">
+            <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+            <End Role="ICS_Item_Group1" EntitySet="ICS_Item_Group" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="spIUD_GetAll_Result">
           <Property Type="Int64" Name="Unit_Entry_Id" Nullable="false" />
@@ -2124,6 +2190,7 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <NavigationProperty Name="ICS_Item_Unit_Details" Relationship="IMILLModel.FK_Alt_Unit_Details_Product" FromRole="ICS_Item" ToRole="ICS_Item_Unit_Details" />
           <NavigationProperty Name="ICS_Transaction_Details" Relationship="IMILLModel.FK_ICS_Transaction_Details_Product" FromRole="ICS_Item" ToRole="ICS_Transaction_Details" />
           <NavigationProperty Name="ICS_Unit" Relationship="IMILLModel.FK_Product_Unit" FromRole="ICS_Item" ToRole="ICS_Unit" />
+          <NavigationProperty Name="ICS_Item_Group" Relationship="IMILLModel.FK_Product_Product_Group" FromRole="ICS_Item" ToRole="ICS_Item_Group" />
         </EntityType>
         <EntityType Name="ICS_Item_Unit_Details">
           <Key>
@@ -3518,6 +3585,57 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
           <Property Name="SerialNo" Type="Int64" />
           <Property Name="deliveroo" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
+        <EntityType Name="ICS_Item_Group">
+          <Key>
+            <PropertyRef Name="Group_Cd" />
+          </Key>
+          <Property Name="Group_Cd" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="M_Group_Cd" Type="Int32" Nullable="false" />
+          <Property Name="Group_No" Type="Int64" Nullable="false" />
+          <Property Name="L_Group_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="A_Group_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Group_Level" Type="Int16" Nullable="false" />
+          <Property Name="Show" Type="Boolean" Nullable="false" />
+          <Property Name="Protected" Type="Boolean" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="User_Cd" Type="Int16" Nullable="false" />
+          <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Time_Stamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="row_id" Type="Guid" Nullable="false" />
+          <Property Name="Parent_Groups" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="Parent_Group_cd_1" Type="Int32" />
+          <Property Name="Parent_Group_cd_2" Type="Int32" />
+          <Property Name="Parent_Group_cd_3" Type="Int32" />
+          <Property Name="Parent_Group_cd_4" Type="Int32" />
+          <Property Name="Parent_Group_cd_5" Type="Int32" />
+          <NavigationProperty Name="ICS_Item" Relationship="IMILLModel.FK_Product_Product_Group" FromRole="ICS_Item_Group" ToRole="ICS_Item" />
+          <NavigationProperty Name="ICS_Item_Group1" Relationship="IMILLModel.FK_Product_Group_Product_Group" FromRole="ICS_Item_Group" ToRole="ICS_Item_Group1" />
+          <NavigationProperty Name="ICS_Item_Group2" Relationship="IMILLModel.FK_Product_Group_Product_Group" FromRole="ICS_Item_Group1" ToRole="ICS_Item_Group" />
+        </EntityType>
+        <Association Name="FK_Product_Product_Group">
+          <End Type="IMILLModel.ICS_Item_Group" Role="ICS_Item_Group" Multiplicity="1" />
+          <End Type="IMILLModel.ICS_Item" Role="ICS_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICS_Item_Group">
+              <PropertyRef Name="Group_Cd" />
+            </Principal>
+            <Dependent Role="ICS_Item">
+              <PropertyRef Name="Group_Cd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Group_Product_Group">
+          <End Type="IMILLModel.ICS_Item_Group" Role="ICS_Item_Group" Multiplicity="1" />
+          <End Type="IMILLModel.ICS_Item_Group" Role="ICS_Item_Group1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICS_Item_Group">
+              <PropertyRef Name="Group_Cd" />
+            </Principal>
+            <Dependent Role="ICS_Item_Group1">
+              <PropertyRef Name="M_Group_Cd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4512,6 +4630,31 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
                 <ScalarProperty Name="location" ColumnName="location" />
                 <ScalarProperty Name="trans_date_time" ColumnName="trans_date_time" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ICS_Item_Group">
+            <EntityTypeMapping TypeName="IMILLModel.ICS_Item_Group">
+              <MappingFragment StoreEntitySet="ICS_Item_Group">
+                <ScalarProperty Name="Parent_Group_cd_5" ColumnName="Parent_Group_cd_5" />
+                <ScalarProperty Name="Parent_Group_cd_4" ColumnName="Parent_Group_cd_4" />
+                <ScalarProperty Name="Parent_Group_cd_3" ColumnName="Parent_Group_cd_3" />
+                <ScalarProperty Name="Parent_Group_cd_2" ColumnName="Parent_Group_cd_2" />
+                <ScalarProperty Name="Parent_Group_cd_1" ColumnName="Parent_Group_cd_1" />
+                <ScalarProperty Name="Parent_Groups" ColumnName="Parent_Groups" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="Time_Stamp" ColumnName="Time_Stamp" />
+                <ScalarProperty Name="User_Date_Time" ColumnName="User_Date_Time" />
+                <ScalarProperty Name="User_Cd" ColumnName="User_Cd" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Protected" ColumnName="Protected" />
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="Group_Level" ColumnName="Group_Level" />
+                <ScalarProperty Name="A_Group_Name" ColumnName="A_Group_Name" />
+                <ScalarProperty Name="L_Group_Name" ColumnName="L_Group_Name" />
+                <ScalarProperty Name="Group_No" ColumnName="Group_No" />
+                <ScalarProperty Name="M_Group_Cd" ColumnName="M_Group_Cd" />
+                <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

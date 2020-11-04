@@ -66,6 +66,15 @@
                             @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Render()
                         </div>
 
+                        <div class="col-3">
+
+                            @Html.EJS().MultiSelect("employees").ShowDropDownIcon().AllowFiltering(true).Filtering("onEmployeesfiltering").Placeholder("Select Employees").DataSource(
+                         (IEnumerable<object>)ViewBag.Employees
+                         ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                         new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "DisplayText", Value = "EmployeeId" }).ActionBegin("onEmployeesBegin").DataBound("onEmployeesBound").Render()
+
+                        </div>
+
                         <div class="col-2">
                             <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
                         </div>
@@ -97,7 +106,14 @@
                    col.Field("IsOpened").Width("80").DisplayAsCheckBox(true).HeaderText("Is opened for backdated entry").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
 
                }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").RowSelected("OnSelected").RowDeselected("OnDeselected").SelectionSettings(select =>
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").Aggregates(agg =>
+                   {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "TotalWorkingHours", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           }
+                       }).Add();
+                   }).RowSelected("OnSelected").RowDeselected("OnDeselected").SelectionSettings(select =>
                        select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
                 </div>
             </div>
@@ -209,6 +225,47 @@
                 }
             }
         }
+
+
+
+        // ***********************  Employees Filtering and Searching  ***********************
+
+        function onEmployeesfiltering(e) {
+            var CBObj = document.getElementById("employees").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('employees').select(['DisplayText', 'EmployeeId']);
+                query = (e.text !== '') ? query.where('DisplayText', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selectedEmployees = [];
+        function onEmployeesBegin(e) {
+            this.fields = {
+                text: 'DisplayText', value: 'EmployeeId', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                EmployeesSearch(e.curData.EmployeeId); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function EmployeesSearch(e) {
+            if (selectedEmployees.indexOf(e) == -1)
+                selectedEmployees.push(e);
+        }
+
+        function onEmployeesBound(e) {
+            this.value = selectedEmployees;
+        }
+
+        // ***********************  Employees Filtering and Searching  ***********************
 
     </script>
 }

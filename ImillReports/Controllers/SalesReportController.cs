@@ -4,7 +4,9 @@ using System.Text;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using Syncfusion.XlsIO;
 using ImillReports.Models;
+using System.Configuration;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -427,28 +429,6 @@ namespace ImillReports.Controllers
 
         public ContentResult GetSalesReport(DateTime from, DateTime to, string locations, string voucherType)
         {
-            //var locationList = new List<int>();
-            //var locationStringArray = locations.Split(',');
-
-            //foreach (var item in locationStringArray)
-            //{
-            //    var id = int.Parse(item);
-            //    if ((LocationType)id == LocationType.Coops)
-            //    {
-            //        var locationIds = _baseRepository.GetLocationIds(LocationType.Coops);
-            //        foreach (var locationId in locationIds)
-            //            locationList.Add(locationId);
-            //    }
-            //    else if ((LocationType)id == LocationType.Mall)
-            //    {
-            //        var locationIds = _baseRepository.GetLocationIds(LocationType.Mall);
-            //        foreach (var locationId in locationIds)
-            //            locationList.Add(locationId);
-            //    }
-            //}
-
-            //var locationString = string.Join(",", locationList.Select(n => n.ToString()).ToArray());
-
             var salesReportViewModel = _salesReportRepository.GetSalesTransaction(from, to, locations, voucherType);
             var source = salesReportViewModel.SalesReportItems.Where(x => x.GroupCD != 329);
 
@@ -457,6 +437,42 @@ namespace ImillReports.Controllers
                 Content = JsonConvert.SerializeObject(source),
                 ContentType = "application/json"
             };
+
+            var exportData = source.ToList().Select(x => new SalesReportItemFromXcel
+            {
+                Amount = x.AmountRecieved,
+                Cash = x.Cash,
+                CustomerName = x.CustomerName,
+                CustomerNameAr = x.CustomerNameAr,
+                Date = x.InvDateTime,
+                Discount = x.Discount,
+                Invoice = x.InvoiceNumber,
+                Knet = x.Knet,
+                Location = x.Location,
+                Salesman = x.Salesman,
+                TotalAmount = x.NetAmount,
+                Visa = x.CreditCard,
+                Voucher = x.Voucher
+            }).ToList();
+
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Xlsx;
+                IWorkbook workbook = application.Workbooks.Create(1);
+                IWorksheet worksheet = workbook.Worksheets[0];
+
+                //Import data to worksheet
+                worksheet.ImportData(exportData, 1, 1, true);
+
+                var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
+                var reportNamePath = $"{cs}SalesReport.xlsx";
+                
+                //Save the file in the given path
+                Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
+                workbook.SaveAs(excelStream);
+                excelStream.Dispose();
+            }
 
             return result;
         }
@@ -479,6 +495,38 @@ namespace ImillReports.Controllers
         public string GetSalesDetailMonthSync(int year, int month, int from, int to)
         {
             return $"{_salesReportRepository.GetSalesDetailMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
+        }
+
+        #endregion
+
+        #region Sales Report By Item group
+
+        [HttpGet]
+        public ActionResult ItemGroupSales(DateTime? fromDate, DateTime? toDate)
+        {
+            if (fromDate == null)
+            {
+                var fDate = new DateTime(DateTime.Now.Year, 10, 1, 10, 00, 00);
+                fromDate = fDate;
+                ViewBag.startDate = fDate;
+            }
+
+            if (toDate == null)
+            {
+                var tDate = new DateTime(DateTime.Now.Year, 10, 1, 11, 00, 00);
+                toDate = tDate;
+                ViewBag.endDate = tDate;
+            }
+
+            ViewBag.startDate = fromDate;
+            ViewBag.endDate = toDate;
+            ViewBag.validation = "false";
+
+            if (toDate < fromDate) ViewBag.validation = "true";
+
+            _salesReportRepository.GetReportByItemGroup(fromDate, toDate);
+
+            return View();
         }
 
         #endregion

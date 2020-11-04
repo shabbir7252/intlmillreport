@@ -112,7 +112,7 @@
                    { page.PageSizes(true); page.PageSize(25); }).EditSettings(edit =>
                    {
                        edit.AllowEditing(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
-                   }).Toolbar(new List<string>() { "Search", "Print", "Update", "Cancel", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                   }).Toolbar(new List<string>() { "Search", "Update", "Cancel", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
                    {
                        agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
 
@@ -359,11 +359,22 @@
             });
         });*@
 
+        function formatDateToString(date) {
+            var dd = (date.getDate() < 10 ? '0' : '')
+                + date.getDate();
+
+            var MM = ((date.getMonth() + 1) < 10 ? '0' : '')
+                + (date.getMonth() + 1);
+
+            return dd + "-" + MM + "-" + date.getFullYear();
+        } 
+
         function ActionBegin(args) {
             if (args.requestType === 'save') {
-                debugger;
-                var staffDate = JSON.stringify(new Date(args.data.StaffDate) + 1).slice(1, 11);
 
+                var date = formatDateToString(new Date(args.data.StaffDate));
+                var staffDate = JSON.stringify(date).slice(1, 11);
+                // console.log('staffDate : ', staffDate);
                 $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Update", "CashRegister")',

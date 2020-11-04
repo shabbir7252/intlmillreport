@@ -1,0 +1,11 @@
+﻿
+  {
+    "FromAddress": "shabbir.i@intlmill.com",
+    "ToAddress": "shabbir7252@live.com",
+    "Password": "Saif@5253",
+    "Subject": "Item Records",
+    "Body": "Please find the attached PDF for Item Records",
+    "Host": "smtp.office365.com",
+    "Port": 587,
+    "EnableSsl": true
+  }

@@ -203,9 +203,9 @@ onkeydown="return false"
                         {
                             <button type="submit" class="btn btn-secondary">
                                 @*<svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z" />
-                                    <path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-                                </svg>*@
+                                        <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z" />
+                                        <path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                                    </svg>*@
                                 <svg width="25px" height="25px" viewBox="0 0 16 16" class="bi bi-power" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z" />
                                     <path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z" />
@@ -318,6 +318,8 @@ onkeydown="return false"
                             </div>
                         </div>
                     </div>
+
+
                     <div class="col-5 offset-1">
                         <div class="row">
                             <div class="col-6">
@@ -325,7 +327,7 @@ onkeydown="return false"
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="20kd" value="0" tabindex="11" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('20kd'); DisableDot()">
+                                    <input type="number" class="form-control" id="20kd" value="0" tabindex="12" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('20kd'); DisableDot()">
                                 </div>
                             </div>
                         </div>
@@ -352,7 +354,35 @@ onkeydown="return false"
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="10kd" value="0" tabindex="12" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('10kd'); DisableDot()">
+                                    <input type="number" class="form-control" id="10kd" value="0" tabindex="13" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('10kd'); DisableDot()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="deliveroo">Deliveroo/ديليفرو</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="deliveroo" value="0.000" tabindex="7" onfocus="MakeAsDefaultInput('deliveroo')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5 offset-1">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="5kd">5 Kd</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="5kd" value="0" tabindex="14" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('5kd'); DisableDot()">
                                 </div>
                             </div>
                         </div>
@@ -367,23 +397,35 @@ onkeydown="return false"
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="online" value="0.000" tabindex="7" onfocus="MakeAsDefaultInput('online');">
+                                    <input type="text" class="form-control" id="online" value="0.000" tabindex="8" onfocus="MakeAsDefaultInput('online');">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-5 offset-1">
+
+                    <div class="col-6">
                         <div class="row">
-                            <div class="col-6">
-                                <label for="5kd">5 Kd</label>
+                            <div class="col-lg-2 p-0 text-right">
+                                <label for="1kd">1 Kd</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="5kd" value="0" tabindex="13" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('5kd'); DisableDot()">
+                                    <input type="number" class="form-control" id="1kd" value="0" tabindex="15" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('1kd'); DisableDot()">
                                 </div>
                             </div>
+
+                            <div class="col-lg-2 p-0 text-right">
+                                <label for="halfkd">1/2 Kd</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="halfkd" value="0" tabindex="16" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('halfkd'); DisableDot()">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -394,21 +436,33 @@ onkeydown="return false"
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="knet" value="0.000" tabindex="8" onfocus="MakeAsDefaultInput('knet');">
+                                    <input type="text" class="form-control" id="knet" value="0.000" tabindex="9" onfocus="MakeAsDefaultInput('knet');">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-5 offset-1">
+
+                    <div class="col-6">
                         <div class="row">
-                            <div class="col-6">
-                                <label for="1kd">1 Kd</label>
+
+                            <div class="col-lg-2 p-0 text-right">
+                                <label for="quarterkd">1/4 Kd</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="1kd" value="0" tabindex="14" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('1kd'); DisableDot()">
+                                    <input type="number" class="form-control" id="quarterkd" value="0" tabindex="17" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('quarterkd'); DisableDot()">
                                 </div>
                             </div>
+
+                            <div class="col-lg-2 p-0 text-right">
+                                <label for="100fils">100 Fils</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="100fils" value="0" tabindex="18" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('100fils'); DisableDot()">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -421,29 +475,33 @@ onkeydown="return false"
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="visa" value="0.000" tabindex="9" onfocus="MakeAsDefaultInput('visa')">
+                                    <input type="text" class="form-control" id="visa" value="0.000" tabindex="10" onfocus="MakeAsDefaultInput('visa')">
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6">
                         <div class="row">
+
                             <div class="col-lg-2 p-0 text-right">
-                                <label for="halfkd">1/2 Kd</label>
+                                <label for="50fils">50 Fils</label>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="halfkd" value="0" tabindex="15" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('halfkd'); DisableDot()">
+                                    <input type="number" class="form-control" id="50fils" value="0" tabindex="19" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('50fils'); DisableDot()">
                                 </div>
                             </div>
+
                             <div class="col-lg-2 p-0 text-right">
-                                <label for="quarterkd">1/4 Kd</label>
+                                <label for="20fils">20 Fils</label>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="quarterkd" value="0" tabindex="16" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('quarterkd'); DisableDot()">
+                                    <input type="number" class="form-control" id="20fils" value="0" tabindex="20" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('20fils'); DisableDot()">
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -461,23 +519,25 @@ onkeydown="return false"
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6">
                         <div class="row">
+
                             <div class="col-lg-2 p-0 text-right">
-                                <label for="100fils">100 Fils</label>
+                                <label for="10fils">10 Fils</label>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="100fils" value="0" tabindex="17" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('100fils'); DisableDot()">
+                                    <input type="number" class="form-control" id="10fils" value="0" tabindex="21" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('10fils'); DisableDot()">
                                 </div>
                             </div>
 
-                            <div class="col-lg-2 p-0 text-right">
-                                <label for="50fils">50 Fils</label>
+                            <div class="col-lg-2 pr-0 text-right">
+                                <label for="5fils">5 Fils</label>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="50fils" value="0" tabindex="18" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('50fils'); DisableDot()">
+                                    <input type="number" class="form-control" id="5fils" value="0" tabindex="22" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('5fils'); DisableDot()">
                                 </div>
                             </div>
                         </div>
@@ -492,59 +552,26 @@ onkeydown="return false"
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="expense" value="0.000" tabindex="10" onfocus="MakeAsDefaultInput('expense')">
+                                    <input type="text" class="form-control" id="expense" value="0.000" tabindex="11" onfocus="MakeAsDefaultInput('expense')">
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6">
                         <div class="row">
-                            <div class="col-lg-2 p-0 text-right">
-                                <label for="10fils">10 Fils</label>
+                            <div class="col-7">
+                                <label for="netcash">Net Cash/اجمالي النقدي</label>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <input type="number" class="form-control" id="10fils" value="0" tabindex="19" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('10fils'); DisableDot()">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-2 p-0 text-right">
-                                <label for="20fils">20 Fils</label>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <input type="number" class="form-control" id="20fils" value="0" tabindex="20" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('20fils'); DisableDot()">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="netcash" style="font-size: 12px;">Net Cash/اجمالي النقدي</label>
-                            </div>
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="form-group">
                                     <input type="number" class="form-control" id="netcash" value="0.000" disabled>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-lg-2 pr-0 text-right">
-                                <label for="5fils">5 Fils</label>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <input type="number" class="form-control" id="5fils" value="0" tabindex="21" onkeyup="CalculateNetCash()" onfocus="MakeAsDefaultInput('5fils'); DisableDot()">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
                 </div>
 
             </div>
@@ -817,7 +844,7 @@ onkeydown="return false"
 
             // When: Number is clicked. Get the current number selected
             var setNum = function () {
-                
+
                 if (resultNum) { // If a result was displayed, reset number
                     theNum = this.getAttribute("data-num");
                     resultNum = "";
@@ -1068,6 +1095,7 @@ onkeydown="return false"
         function DeleteAll() {
             $("#cheques").val("0.000");
             $("#talabat").val("0.000");
+            $("#deliveroo").val("0.000");
             $("#online").val("0.000");
             $("#knet").val("0.000");
             $("#visa").val("0.000");
@@ -1101,6 +1129,7 @@ onkeydown="return false"
 
                 var cheques = $("#cheques").val();
                 var talabat = $("#talabat").val();
+                var deliveroo = $("#deliveroo").val();
                 var online = $("#online").val();
                 var knet = $("#knet").val();
                 var visa = $("#visa").val();
@@ -1132,6 +1161,7 @@ onkeydown="return false"
                         period: period,
                         cheques: cheques,
                         talabat: talabat,
+                        deliveroo: deliveroo,
                         online: online,
                         knet: knet,
                         visa: visa,

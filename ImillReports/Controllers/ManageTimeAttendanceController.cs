@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using ImillReports.Contracts;
 using System.Collections.Generic;
-using System.Web.UI.WebControls;
 using System;
 using System.Globalization;
 
@@ -19,7 +18,6 @@ namespace ImillReports.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult AllocateShiftLocation()
         {
             ViewBag.Employees = _iTARepository.GetEmployees();
@@ -46,7 +44,6 @@ namespace ImillReports.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult Employees()
         {
             ViewBag.DataSource = _iTARepository.GetEmployees().OrderBy(x => x.EmployeeId);
@@ -84,7 +81,6 @@ namespace ImillReports.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult Locations()
         {
             ViewBag.DataSource = _iTARepository.GetLocations();
@@ -122,7 +118,6 @@ namespace ImillReports.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult Shifts()
         {
             ViewBag.DataSource = _iTARepository.GetShifts();
@@ -164,7 +159,7 @@ namespace ImillReports.Controllers
         public int AddAllocation(string fromDate, string toDate, List<int> employees, string shift, string location)
         {
             var provider = CultureInfo.InvariantCulture;
-            var format = "dd-M-yyyy";
+            var format = "d-M-yyyy";
             var from = (string.IsNullOrEmpty(fromDate) ? DateTime.ParseExact("01-06-2020", format, provider) : DateTime.ParseExact(fromDate, format, provider)).AddMonths(1);
             var to = string.IsNullOrEmpty(toDate) ? DateTime.ParseExact("31-12-9999", format, provider) : DateTime.ParseExact(toDate, format, provider);
             return _iTARepository.AddAllocation(from, to, employees, shift, location);

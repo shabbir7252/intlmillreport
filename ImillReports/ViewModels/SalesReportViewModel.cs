@@ -160,4 +160,53 @@ namespace ImillReports.ViewModels
         public decimal? CashQty { get; set; }
         public string BaseUnit { get; set; }
     }
+
+
+    public class SalesReportItemFromXcel
+    {
+        public string Location { get; set; }
+
+        // InvDateTime
+        public DateTime Date { get; set; }
+        public string Salesman { get; set; }
+
+        // InvoiceNumber
+        public long Invoice { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerNameAr { get; set; }
+        public string Voucher { get; set; }
+
+        // AmountRecieved
+        public decimal? Amount { get; set; }
+        public decimal? Discount { get; set; }
+        
+        // NetAmount
+        public decimal? TotalAmount  { get; set; }
+        public decimal? Cash { get; set; }
+        public decimal? Knet { get; set; }
+
+        // CreditCard
+        public decimal? Visa { get; set; }
+    }
+
+    public class SalesItemGroup
+    {
+        public long ProdId { get; set; }
+        public string ProdNameEn { get; set; }
+        public string ProdNameAr { get; set; }
+        public int GroupCd { get; set; }
+        public string GroupNameEn { get; set; }
+        public string GroupNameAr { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public decimal? Cash { get; set; }
+        public decimal? Credit { get; set; }
+        public int ParentGroupCd { get; set; }
+    }
+
+    public class SalesByItemGroupResponse
+    {
+        public int GroupCd { get; set; }
+        public decimal? Amount { get; set; }
+        public List<int> GroupCdToIgnore { get; set; }
+    }
 }

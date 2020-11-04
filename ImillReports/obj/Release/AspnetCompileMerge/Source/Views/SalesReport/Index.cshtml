@@ -102,7 +102,7 @@
                    col.Field("CreditCard").HeaderText("Visa").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                    // col.Field("CreditCardType").Width("50").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "Print", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
                    {
                        agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
@@ -154,6 +154,8 @@
     </div>
 </div>
 
+<a id="download" target="_blank" href="~/Content/SalesReport.xlsx" hidden></a>
+
 @section scripts {
     <script>
 
@@ -176,10 +178,16 @@
         function toolbarClick(args) {
             var gridObj = document.getElementById("Grid").ej2_instances[0];
             if (args.item.id === 'Grid_excelexport') {
-                var excelExportProperties = {
-                    fileName: "SalesReport.xlsx"
-                };
-                gridObj.excelExport(excelExportProperties);
+                if (args.item.id === 'Grid_excelexport') {
+                    var gridObj = document.getElementById("Grid").ej2_instances[0];
+                    var excelExportProperties = {
+                        fileName: "SalesReport.xlsx",
+                        theme: "none",
+                        includeHiddenColumn: false
+                    };
+                    gridObj.excelExport(excelExportProperties);
+                    // document.getElementById('download').click();
+                }
             }
         }
 

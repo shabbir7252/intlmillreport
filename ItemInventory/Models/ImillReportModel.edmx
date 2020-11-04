@@ -1,0 +1,446 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IMILLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ICS_Item">
+          <Key>
+            <PropertyRef Name="Prod_Cd" />
+          </Key>
+          <Property Name="Prod_Cd" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Group_Cd" Type="int" Nullable="false" />
+          <Property Name="Cat_Cd" Type="int" Nullable="false" />
+          <Property Name="Base_Unit_Cd" Type="smallint" Nullable="false" />
+          <Property Name="Item_Type_Cd" Type="tinyint" Nullable="false" />
+          <Property Name="Part_No" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="L_Prod_Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="A_Prod_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Prod_Desc" Type="nvarchar" MaxLength="400" />
+          <Property Name="Cost" Type="decimal" Precision="19" Scale="6" Nullable="false" />
+          <Property Name="Costing_Method" Type="tinyint" Nullable="false" />
+          <Property Name="Cash_Sale_Cd" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Credit_Sale_Cd" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Inventory_Cd" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Cost_Of_Sale_Cd" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Current_Qty" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_In_Hand" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Allocated" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Reserved" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Booked" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Available" Type="decimal" Precision="17" Scale="5" StoreGeneratedPattern="Computed" />
+          <Property Name="Stock_In_Transit" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_On_Order" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Return_In_Transit" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="MTD_Usage" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="YTD_Usage" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Avg_Monthly_Usage" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Tot_Qty_In" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Tot_Qty_Out" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Supplier_Ldgr_Cd" Type="int" />
+          <Property Name="Supplier_Part_No" Type="varchar" MaxLength="20" />
+          <Property Name="ABC_Category" Type="char" MaxLength="1" />
+          <Property Name="Picture" Type="varchar" MaxLength="100" />
+          <Property Name="Maximum_Level" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Minimum_Level" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Reorder_Level" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Maximum_Reorder_Qty" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Minimum_Reorder_Qty" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Last_Purchased_Qty" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Last_Sold_Qty" Type="decimal" Precision="14" Scale="5" />
+          <Property Name="Last_Supplier_Cd" Type="char" MaxLength="10" />
+          <Property Name="Last_Customer_Cd" Type="char" MaxLength="10" />
+          <Property Name="Last_Purchased_Date" Type="smalldatetime" />
+          <Property Name="Last_Sold_Date" Type="smalldatetime" />
+          <Property Name="Last_Purchased_Unit_Cd" Type="smallint" />
+          <Property Name="Last_Sold_Unit_Cd" Type="smallint" />
+          <Property Name="Purchase_Rate" Type="money" />
+          <Property Name="Purchase_Rate_1" Type="money" />
+          <Property Name="Purchase_Rate_2" Type="money" />
+          <Property Name="Purchase_Rate_3" Type="money" />
+          <Property Name="Purchase_Rate_4" Type="money" />
+          <Property Name="Purchase_Rate_5" Type="money" />
+          <Property Name="Sales_Rate" Type="money" />
+          <Property Name="Sale_Rate1" Type="money" />
+          <Property Name="Sale_Rate2" Type="money" />
+          <Property Name="Sale_Rate3" Type="money" />
+          <Property Name="Sale_Rate4" Type="money" />
+          <Property Name="Sale_Rate5" Type="money" />
+          <Property Name="Expiry_Date" Type="smalldatetime" />
+          <Property Name="Warranty_Period_In_Days" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="Serialized" Type="bit" Nullable="false" />
+          <Property Name="Discontinued" Type="bit" Nullable="false" />
+          <Property Name="Promotional_Item" Type="bit" Nullable="false" />
+          <Property Name="Print_Components_On_Voucher" Type="bit" />
+          <Property Name="Commision_In_Percent_On_Sales" Type="money" />
+          <Property Name="Commision_In_Percent_On_Purchase" Type="money" />
+          <Property Name="Comments" Type="varchar" MaxLength="100" />
+          <Property Name="Protected" Type="bit" Nullable="false" />
+          <Property Name="User_Cd" Type="smallint" Nullable="false" />
+          <Property Name="User_Date_Time" Type="smalldatetime" Nullable="false" />
+          <Property Name="Time_Stamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Stock_On_Order_Of_Sales" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Picture_Object" Type="image" />
+          <Property Name="Updated_By_User_Cd" Type="smallint" />
+          <Property Name="Updated_Date_Time" Type="smalldatetime" />
+          <Property Name="Offline_Data_Updated_Locat_Cd" Type="varchar" MaxLength="500" />
+          <Property Name="Bin_Location" Type="nvarchar" MaxLength="20" />
+          <Property Name="Weight" Type="decimal" Precision="14" Scale="3" Nullable="false" />
+          <Property Name="Flex1_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex2_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex3_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex4_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex5_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex6_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex7_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex8_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex9_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex10_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex11_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex12_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex13_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Flex14_VSSV_Code" Type="varchar" MaxLength="10" />
+          <Property Name="Report_Unit_Cd" Type="smallint" Nullable="false" />
+          <Property Name="package" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExpDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="MadeIn" Type="nvarchar" MaxLength="50" />
+          <Property Name="PackDate" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ICS_Unit">
+          <Key>
+            <PropertyRef Name="Unit_Cd" />
+          </Key>
+          <Property Name="Unit_Cd" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Unit_No" Type="bigint" Nullable="false" />
+          <Property Name="L_Unit_Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="A_Unit_Name" Type="nvarchar" MaxLength="20" />
+          <Property Name="Symbol" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="Decimals" Type="tinyint" Nullable="false" />
+          <Property Name="Protected" Type="bit" Nullable="false" />
+          <Property Name="User_Cd" Type="smallint" Nullable="false" />
+          <Property Name="User_Date_Time" Type="smalldatetime" Nullable="false" />
+          <Property Name="Time_Stamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="A_Symbol" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Product_Unit">
+          <End Role="ICS_Unit" Type="Self.ICS_Unit" Multiplicity="1" />
+          <End Role="ICS_Item" Type="Self.ICS_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICS_Unit">
+              <PropertyRef Name="Unit_Cd" />
+            </Principal>
+            <Dependent Role="ICS_Item">
+              <PropertyRef Name="Base_Unit_Cd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IMILLModelStoreContainer">
+          <EntitySet Name="ICS_Item" EntityType="Self.ICS_Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ICS_Unit" EntityType="Self.ICS_Unit" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Product_Unit" Association="Self.FK_Product_Unit">
+            <End Role="ICS_Unit" EntitySet="ICS_Unit" />
+            <End Role="ICS_Item" EntitySet="ICS_Item" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IMILLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ICS_Item">
+          <Key>
+            <PropertyRef Name="Prod_Cd" />
+          </Key>
+          <Property Name="Prod_Cd" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Group_Cd" Type="Int32" Nullable="false" />
+          <Property Name="Cat_Cd" Type="Int32" Nullable="false" />
+          <Property Name="Base_Unit_Cd" Type="Int16" Nullable="false" />
+          <Property Name="Item_Type_Cd" Type="Byte" Nullable="false" />
+          <Property Name="Part_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="L_Prod_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="A_Prod_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prod_Desc" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Decimal" Precision="19" Scale="6" Nullable="false" />
+          <Property Name="Costing_Method" Type="Byte" Nullable="false" />
+          <Property Name="Cash_Sale_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Credit_Sale_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Inventory_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Cost_Of_Sale_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Current_Qty" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_In_Hand" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Allocated" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Reserved" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Booked" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Available" Type="Decimal" Precision="17" Scale="5" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Stock_In_Transit" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_On_Order" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Stock_Return_In_Transit" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="MTD_Usage" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="YTD_Usage" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Avg_Monthly_Usage" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Tot_Qty_In" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Tot_Qty_Out" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Supplier_Ldgr_Cd" Type="Int32" />
+          <Property Name="Supplier_Part_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ABC_Category" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Picture" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Maximum_Level" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Minimum_Level" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Reorder_Level" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Maximum_Reorder_Qty" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Minimum_Reorder_Qty" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Last_Purchased_Qty" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Last_Sold_Qty" Type="Decimal" Precision="14" Scale="5" />
+          <Property Name="Last_Supplier_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Last_Customer_Cd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Last_Purchased_Date" Type="DateTime" Precision="0" />
+          <Property Name="Last_Sold_Date" Type="DateTime" Precision="0" />
+          <Property Name="Last_Purchased_Unit_Cd" Type="Int16" />
+          <Property Name="Last_Sold_Unit_Cd" Type="Int16" />
+          <Property Name="Purchase_Rate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Purchase_Rate_1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Purchase_Rate_2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Purchase_Rate_3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Purchase_Rate_4" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Purchase_Rate_5" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Sales_Rate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Sale_Rate1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Sale_Rate2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Sale_Rate3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Sale_Rate4" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Sale_Rate5" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Expiry_Date" Type="DateTime" Precision="0" />
+          <Property Name="Warranty_Period_In_Days" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="Serialized" Type="Boolean" Nullable="false" />
+          <Property Name="Discontinued" Type="Boolean" Nullable="false" />
+          <Property Name="Promotional_Item" Type="Boolean" Nullable="false" />
+          <Property Name="Print_Components_On_Voucher" Type="Boolean" />
+          <Property Name="Commision_In_Percent_On_Sales" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Commision_In_Percent_On_Purchase" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Protected" Type="Boolean" Nullable="false" />
+          <Property Name="User_Cd" Type="Int16" Nullable="false" />
+          <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Time_Stamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="row_id" Type="Guid" Nullable="false" />
+          <Property Name="Stock_On_Order_Of_Sales" Type="Decimal" Precision="14" Scale="5" Nullable="false" />
+          <Property Name="Picture_Object" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Updated_By_User_Cd" Type="Int16" />
+          <Property Name="Updated_Date_Time" Type="DateTime" Precision="0" />
+          <Property Name="Offline_Data_Updated_Locat_Cd" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Bin_Location" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="Decimal" Precision="14" Scale="3" Nullable="false" />
+          <Property Name="Flex1_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex2_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex3_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex4_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex5_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex6_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex7_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex8_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex9_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex10_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex11_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex12_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex13_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Flex14_VSSV_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Report_Unit_Cd" Type="Int16" Nullable="false" />
+          <Property Name="package" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExpDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MadeIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PackDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ICS_Unit" Relationship="Self.FK_Product_Unit" FromRole="ICS_Item" ToRole="ICS_Unit" />
+        </EntityType>
+        <EntityType Name="ICS_Unit">
+          <Key>
+            <PropertyRef Name="Unit_Cd" />
+          </Key>
+          <Property Name="Unit_Cd" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Unit_No" Type="Int64" Nullable="false" />
+          <Property Name="L_Unit_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="A_Unit_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Decimals" Type="Byte" Nullable="false" />
+          <Property Name="Protected" Type="Boolean" Nullable="false" />
+          <Property Name="User_Cd" Type="Int16" Nullable="false" />
+          <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Time_Stamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="row_id" Type="Guid" Nullable="false" />
+          <Property Name="A_Symbol" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ICS_Item" Relationship="Self.FK_Product_Unit" FromRole="ICS_Unit" ToRole="ICS_Item" />
+        </EntityType>
+        <Association Name="FK_Product_Unit">
+          <End Role="ICS_Unit" Type="Self.ICS_Unit" Multiplicity="1" />
+          <End Role="ICS_Item" Type="Self.ICS_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICS_Unit">
+              <PropertyRef Name="Unit_Cd" />
+            </Principal>
+            <Dependent Role="ICS_Item">
+              <PropertyRef Name="Base_Unit_Cd" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IMILLEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ICS_Item" EntityType="Self.ICS_Item" />
+          <EntitySet Name="ICS_Unit" EntityType="Self.ICS_Unit" />
+          <AssociationSet Name="FK_Product_Unit" Association="Self.FK_Product_Unit">
+            <End Role="ICS_Unit" EntitySet="ICS_Unit" />
+            <End Role="ICS_Item" EntitySet="ICS_Item" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IMILLModelStoreContainer" CdmEntityContainer="IMILLEntities">
+          <EntitySetMapping Name="ICS_Item">
+            <EntityTypeMapping TypeName="IMILLModel.ICS_Item">
+              <MappingFragment StoreEntitySet="ICS_Item">
+                <ScalarProperty Name="Prod_Cd" ColumnName="Prod_Cd" />
+                <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
+                <ScalarProperty Name="Cat_Cd" ColumnName="Cat_Cd" />
+                <ScalarProperty Name="Base_Unit_Cd" ColumnName="Base_Unit_Cd" />
+                <ScalarProperty Name="Item_Type_Cd" ColumnName="Item_Type_Cd" />
+                <ScalarProperty Name="Part_No" ColumnName="Part_No" />
+                <ScalarProperty Name="L_Prod_Name" ColumnName="L_Prod_Name" />
+                <ScalarProperty Name="A_Prod_Name" ColumnName="A_Prod_Name" />
+                <ScalarProperty Name="Prod_Desc" ColumnName="Prod_Desc" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Costing_Method" ColumnName="Costing_Method" />
+                <ScalarProperty Name="Cash_Sale_Cd" ColumnName="Cash_Sale_Cd" />
+                <ScalarProperty Name="Credit_Sale_Cd" ColumnName="Credit_Sale_Cd" />
+                <ScalarProperty Name="Inventory_Cd" ColumnName="Inventory_Cd" />
+                <ScalarProperty Name="Cost_Of_Sale_Cd" ColumnName="Cost_Of_Sale_Cd" />
+                <ScalarProperty Name="Current_Qty" ColumnName="Current_Qty" />
+                <ScalarProperty Name="Stock_In_Hand" ColumnName="Stock_In_Hand" />
+                <ScalarProperty Name="Stock_Allocated" ColumnName="Stock_Allocated" />
+                <ScalarProperty Name="Stock_Reserved" ColumnName="Stock_Reserved" />
+                <ScalarProperty Name="Stock_Booked" ColumnName="Stock_Booked" />
+                <ScalarProperty Name="Stock_Available" ColumnName="Stock_Available" />
+                <ScalarProperty Name="Stock_In_Transit" ColumnName="Stock_In_Transit" />
+                <ScalarProperty Name="Stock_On_Order" ColumnName="Stock_On_Order" />
+                <ScalarProperty Name="Stock_Return_In_Transit" ColumnName="Stock_Return_In_Transit" />
+                <ScalarProperty Name="MTD_Usage" ColumnName="MTD_Usage" />
+                <ScalarProperty Name="YTD_Usage" ColumnName="YTD_Usage" />
+                <ScalarProperty Name="Avg_Monthly_Usage" ColumnName="Avg_Monthly_Usage" />
+                <ScalarProperty Name="Tot_Qty_In" ColumnName="Tot_Qty_In" />
+                <ScalarProperty Name="Tot_Qty_Out" ColumnName="Tot_Qty_Out" />
+                <ScalarProperty Name="Supplier_Ldgr_Cd" ColumnName="Supplier_Ldgr_Cd" />
+                <ScalarProperty Name="Supplier_Part_No" ColumnName="Supplier_Part_No" />
+                <ScalarProperty Name="ABC_Category" ColumnName="ABC_Category" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Maximum_Level" ColumnName="Maximum_Level" />
+                <ScalarProperty Name="Minimum_Level" ColumnName="Minimum_Level" />
+                <ScalarProperty Name="Reorder_Level" ColumnName="Reorder_Level" />
+                <ScalarProperty Name="Maximum_Reorder_Qty" ColumnName="Maximum_Reorder_Qty" />
+                <ScalarProperty Name="Minimum_Reorder_Qty" ColumnName="Minimum_Reorder_Qty" />
+                <ScalarProperty Name="Last_Purchased_Qty" ColumnName="Last_Purchased_Qty" />
+                <ScalarProperty Name="Last_Sold_Qty" ColumnName="Last_Sold_Qty" />
+                <ScalarProperty Name="Last_Supplier_Cd" ColumnName="Last_Supplier_Cd" />
+                <ScalarProperty Name="Last_Customer_Cd" ColumnName="Last_Customer_Cd" />
+                <ScalarProperty Name="Last_Purchased_Date" ColumnName="Last_Purchased_Date" />
+                <ScalarProperty Name="Last_Sold_Date" ColumnName="Last_Sold_Date" />
+                <ScalarProperty Name="Last_Purchased_Unit_Cd" ColumnName="Last_Purchased_Unit_Cd" />
+                <ScalarProperty Name="Last_Sold_Unit_Cd" ColumnName="Last_Sold_Unit_Cd" />
+                <ScalarProperty Name="Purchase_Rate" ColumnName="Purchase_Rate" />
+                <ScalarProperty Name="Purchase_Rate_1" ColumnName="Purchase_Rate_1" />
+                <ScalarProperty Name="Purchase_Rate_2" ColumnName="Purchase_Rate_2" />
+                <ScalarProperty Name="Purchase_Rate_3" ColumnName="Purchase_Rate_3" />
+                <ScalarProperty Name="Purchase_Rate_4" ColumnName="Purchase_Rate_4" />
+                <ScalarProperty Name="Purchase_Rate_5" ColumnName="Purchase_Rate_5" />
+                <ScalarProperty Name="Sales_Rate" ColumnName="Sales_Rate" />
+                <ScalarProperty Name="Sale_Rate1" ColumnName="Sale_Rate1" />
+                <ScalarProperty Name="Sale_Rate2" ColumnName="Sale_Rate2" />
+                <ScalarProperty Name="Sale_Rate3" ColumnName="Sale_Rate3" />
+                <ScalarProperty Name="Sale_Rate4" ColumnName="Sale_Rate4" />
+                <ScalarProperty Name="Sale_Rate5" ColumnName="Sale_Rate5" />
+                <ScalarProperty Name="Expiry_Date" ColumnName="Expiry_Date" />
+                <ScalarProperty Name="Warranty_Period_In_Days" ColumnName="Warranty_Period_In_Days" />
+                <ScalarProperty Name="Serialized" ColumnName="Serialized" />
+                <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+                <ScalarProperty Name="Promotional_Item" ColumnName="Promotional_Item" />
+                <ScalarProperty Name="Print_Components_On_Voucher" ColumnName="Print_Components_On_Voucher" />
+                <ScalarProperty Name="Commision_In_Percent_On_Sales" ColumnName="Commision_In_Percent_On_Sales" />
+                <ScalarProperty Name="Commision_In_Percent_On_Purchase" ColumnName="Commision_In_Percent_On_Purchase" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Protected" ColumnName="Protected" />
+                <ScalarProperty Name="User_Cd" ColumnName="User_Cd" />
+                <ScalarProperty Name="User_Date_Time" ColumnName="User_Date_Time" />
+                <ScalarProperty Name="Time_Stamp" ColumnName="Time_Stamp" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="Stock_On_Order_Of_Sales" ColumnName="Stock_On_Order_Of_Sales" />
+                <ScalarProperty Name="Picture_Object" ColumnName="Picture_Object" />
+                <ScalarProperty Name="Updated_By_User_Cd" ColumnName="Updated_By_User_Cd" />
+                <ScalarProperty Name="Updated_Date_Time" ColumnName="Updated_Date_Time" />
+                <ScalarProperty Name="Offline_Data_Updated_Locat_Cd" ColumnName="Offline_Data_Updated_Locat_Cd" />
+                <ScalarProperty Name="Bin_Location" ColumnName="Bin_Location" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Flex1_VSSV_Code" ColumnName="Flex1_VSSV_Code" />
+                <ScalarProperty Name="Flex2_VSSV_Code" ColumnName="Flex2_VSSV_Code" />
+                <ScalarProperty Name="Flex3_VSSV_Code" ColumnName="Flex3_VSSV_Code" />
+                <ScalarProperty Name="Flex4_VSSV_Code" ColumnName="Flex4_VSSV_Code" />
+                <ScalarProperty Name="Flex5_VSSV_Code" ColumnName="Flex5_VSSV_Code" />
+                <ScalarProperty Name="Flex6_VSSV_Code" ColumnName="Flex6_VSSV_Code" />
+                <ScalarProperty Name="Flex7_VSSV_Code" ColumnName="Flex7_VSSV_Code" />
+                <ScalarProperty Name="Flex8_VSSV_Code" ColumnName="Flex8_VSSV_Code" />
+                <ScalarProperty Name="Flex9_VSSV_Code" ColumnName="Flex9_VSSV_Code" />
+                <ScalarProperty Name="Flex10_VSSV_Code" ColumnName="Flex10_VSSV_Code" />
+                <ScalarProperty Name="Flex11_VSSV_Code" ColumnName="Flex11_VSSV_Code" />
+                <ScalarProperty Name="Flex12_VSSV_Code" ColumnName="Flex12_VSSV_Code" />
+                <ScalarProperty Name="Flex13_VSSV_Code" ColumnName="Flex13_VSSV_Code" />
+                <ScalarProperty Name="Flex14_VSSV_Code" ColumnName="Flex14_VSSV_Code" />
+                <ScalarProperty Name="Report_Unit_Cd" ColumnName="Report_Unit_Cd" />
+                <ScalarProperty Name="package" ColumnName="package" />
+                <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+                <ScalarProperty Name="MadeIn" ColumnName="MadeIn" />
+                <ScalarProperty Name="PackDate" ColumnName="PackDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ICS_Unit">
+            <EntityTypeMapping TypeName="IMILLModel.ICS_Unit">
+              <MappingFragment StoreEntitySet="ICS_Unit">
+                <ScalarProperty Name="Unit_Cd" ColumnName="Unit_Cd" />
+                <ScalarProperty Name="Unit_No" ColumnName="Unit_No" />
+                <ScalarProperty Name="L_Unit_Name" ColumnName="L_Unit_Name" />
+                <ScalarProperty Name="A_Unit_Name" ColumnName="A_Unit_Name" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="Decimals" ColumnName="Decimals" />
+                <ScalarProperty Name="Protected" ColumnName="Protected" />
+                <ScalarProperty Name="User_Cd" ColumnName="User_Cd" />
+                <ScalarProperty Name="User_Date_Time" ColumnName="User_Date_Time" />
+                <ScalarProperty Name="Time_Stamp" ColumnName="Time_Stamp" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="A_Symbol" ColumnName="A_Symbol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

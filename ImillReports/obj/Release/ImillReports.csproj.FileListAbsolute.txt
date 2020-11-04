@@ -299,3 +299,7 @@ F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\System.Net.Http.Formatting.xml
 F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\System.Web.Http.xml
 F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\System.Web.Http.WebHost.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\Syncfusion.Compression.Base.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\Syncfusion.XlsIO.Base.dll
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\Syncfusion.Compression.Base.xml
+F:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillReports\bin\Syncfusion.XlsIO.Base.xml

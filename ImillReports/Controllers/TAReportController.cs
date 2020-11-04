@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using ImillReports.Contracts;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ImillReports.Controllers
 {
@@ -18,7 +19,7 @@ namespace ImillReports.Controllers
         {
         }
 
-        public ActionResult Index(DateTime? fromDate, DateTime? toDate)
+        public ActionResult Index(DateTime? fromDate, DateTime? toDate, int[] employees)
         {
 
             if (fromDate == null)
@@ -48,7 +49,27 @@ namespace ImillReports.Controllers
 
             if (toDate < fromDate) ViewBag.validation = "true";
 
-            var tAreport = _iTARepository.GetTAReport(fromDate, toDate);
+            var employeeList = _iTARepository.GetEmployees();
+            ViewBag.Employees = employeeList;
+
+            var employeesArray = new List<int>();
+            if (employees != null)
+            {
+                employeesArray.AddRange(from item in employees select item);
+                foreach (var currentLocation in
+                    from employee in employeeList
+                    from id in employeesArray
+                    where employee.EmployeeId == id
+                    select employee)
+                {
+                    currentLocation.IsSelected = true;
+                }
+            }
+
+            ViewBag.locationVal = employeesArray;
+
+
+            var tAreport = _iTARepository.GetTAReport(fromDate, toDate, employees);
             ViewBag.DataSource = tAreport;
             return View();
         }
