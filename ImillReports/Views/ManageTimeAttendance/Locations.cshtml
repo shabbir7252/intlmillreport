@@ -11,6 +11,9 @@
     // toolbarItems.Add("Delete");
     toolbarItems.Add(new { text = "Delete Location(s)", tooltipText = "Delete the records of location(s)", id = "deleteLocations", prefixIcon = "e-delete" });
 
+    List<object> commands = new List<object>();
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+
 }
 
 <div class="container-fluid">
@@ -63,7 +66,8 @@
                        col.Field("NameEn").Width("80").HeaderText("Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("NameAr").Width("80").HeaderText("NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("DeviceCode").Width("80").HeaderText("Device Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                       col.HeaderText("Actions").Width("110").Commands(commands).Add();
+                   }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
                        page =>
                        {
                            page.PageSizes(true); page.PageSize(25);

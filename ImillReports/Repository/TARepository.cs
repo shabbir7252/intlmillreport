@@ -523,5 +523,34 @@ namespace ImillReports.Repository
                     }
                 }
         }
+
+        public string UpdateEmployee(int oid, int empId, string nameEn, string nameAr)
+        {
+            if (empId > 0 && !string.IsNullOrEmpty(nameEn) && !string.IsNullOrEmpty(nameAr))
+            {
+                var employees = _context.tbl_Employees;
+
+                var employee = employees.FirstOrDefault(x => x.Oid == oid);
+                if (employee != null)
+                {
+                    try
+                    {
+                        if (!employees.Any(x => x.EmployeeID == empId))
+                            employee.EmployeeID = empId;
+
+                        employee.NameEn = nameEn;
+                        employee.NameAr = nameAr;
+
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                }
+            }
+
+            return "true";
+        }
     }
 }

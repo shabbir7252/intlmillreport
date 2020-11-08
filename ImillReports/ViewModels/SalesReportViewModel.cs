@@ -206,7 +206,12 @@ namespace ImillReports.ViewModels
     public class SalesByItemGroupResponse
     {
         public int GroupCd { get; set; }
+        public string GroupNameEn { get; set; }
+        public string GroupNameAr { get; set; }
         public decimal? Amount { get; set; }
         public List<int> GroupCdToIgnore { get; set; }
+        public int ParentGroupCd { get; internal set; }
     }
+
+
 }

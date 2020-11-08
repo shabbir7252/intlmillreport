@@ -1993,6 +1993,7 @@ namespace ImillReports.Repository
             var salesProdGroup = salesDetails.GroupBy(x => x.ProdId);
             var itemGroups = _context.ICS_Item_Group.ToList();
             var items = _context.ICS_Item.ToList();
+
             var salesDetailsByItemGroups = (from item in salesProdGroup.Where(x => x.Key.HasValue)
                                             let salesItem = items.FirstOrDefault(x => x.Prod_Cd == item.Key.Value)
                                             let itemGroup = itemGroups.FirstOrDefault(x => x.Group_Cd == salesItem.Group_Cd)
@@ -2006,34 +2007,89 @@ namespace ImillReports.Repository
                                                 GroupNameEn = itemGroup.L_Group_Name,
                                                 GroupNameAr = itemGroup.A_Group_Name,
                                                 TotalAmount = item.Sum(x => x.Amount)
-                                            }).ToList();
+                                            }).GroupBy(x => x.GroupCd).ToList();
 
-            var salesItemGroups = salesDetailsByItemGroups.GroupBy(x => x.GroupCd).ToList();
+
+            var salesItemGroups = salesDetailsByItemGroups.Select(x => new SalesItemGroup
+            {
+                ProdId = x.FirstOrDefault().ProdId,
+                ProdNameEn = x.FirstOrDefault().ProdNameEn,
+                ProdNameAr = x.FirstOrDefault().ProdNameAr,
+                GroupCd = x.Key,
+                ParentGroupCd = x.FirstOrDefault().ParentGroupCd,
+                GroupNameEn = x.FirstOrDefault().GroupNameEn,
+                GroupNameAr = x.FirstOrDefault().GroupNameAr,
+                TotalAmount = x.Sum(a => a.TotalAmount)
+            }).ToList();
+
+            foreach (var parent in itemGroups)
+            {
+                if (!salesItemGroups.Any(x => x.GroupCd == parent.Group_Cd))
+                {
+                    salesItemGroups.Add(new SalesItemGroup
+                    {
+                        GroupCd = parent.Group_Cd,
+                        ParentGroupCd = parent.M_Group_Cd,
+                        GroupNameEn = parent.L_Group_Name,
+                        GroupNameAr = parent.A_Group_Name,
+                        TotalAmount = 0
+                    });
+                }
+            }
 
             var ignoreList = new List<int>();
 
+            var salesByItemGroup = new List<SalesByItemGroupResponse>();
+
             foreach (var group in salesItemGroups)
             {
-                var rootId = group.Key;
+                var rootId = group.GroupCd;
+                var mainId = 0;
                 decimal totalAmount = 0;
 
-                while (rootId != 1)
+                if (group.ParentGroupCd != 1)
                 {
-                    if (!ignoreList.Any(x => x == rootId))
+                    while (rootId != 1)
                     {
-                        var result = GetParentDetails(rootId, salesItemGroups);
+                        if (!ignoreList.Any(x => x == rootId))
+                        {
+                            var result = GetParentDetails(rootId, salesItemGroups);
 
-                        ignoreList.Add(rootId);
-                        ignoreList.AddRange(result.GroupCdToIgnore);
-                        rootId = result.GroupCd;
-                        totalAmount += result.Amount.Value;
-                    }
-                    else
-                    {
-                        break;
+                            ignoreList.Add(rootId);
+                            ignoreList.AddRange(result.GroupCdToIgnore);
+                            rootId = result.ParentGroupCd;
+                            mainId = result.GroupCd;
+                            totalAmount += result.Amount.Value;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
+                else
+                {
+                    ignoreList.Add(rootId);
+                    totalAmount = group.TotalAmount.Value;
+                    mainId = rootId;
+                }
+
+                var mainItemGroup = itemGroups.FirstOrDefault(x => x.Group_Cd == mainId);
+
+                if (mainItemGroup != null)
+                {
+                    salesByItemGroup.Add(new SalesByItemGroupResponse
+                    {
+                        GroupCd = mainItemGroup.Group_Cd,
+                        ParentGroupCd = mainItemGroup.M_Group_Cd,
+                        GroupNameEn = mainItemGroup.L_Group_Name,
+                        GroupNameAr = mainItemGroup.A_Group_Name,
+                        Amount = totalAmount
+                    });
+                }
             }
+
+            var test = salesByItemGroup.Where(x => x.Amount != 0);
 
             //foreach(var groupItem in salesDetailsByItemGroups)
             //{
@@ -2051,35 +2107,34 @@ namespace ImillReports.Repository
 
         }
 
-        public SalesByItemGroupResponse GetParentDetails(int groupCd, List<IGrouping<int, SalesItemGroup>> salesItemGroups)
+        public SalesByItemGroupResponse GetParentDetails(int groupCd, List<SalesItemGroup> salesItemGroups)
         {
-            var selectedGroup = salesItemGroups.FirstOrDefault(x => x.Key == groupCd);
-            var resGroupCd = selectedGroup.FirstOrDefault().ParentGroupCd;
-            var listofInt = new List<int>();
+            var selectedGroup = salesItemGroups.FirstOrDefault(x => x.GroupCd == groupCd);
+            var resGroupCd = selectedGroup.ParentGroupCd;
 
-            if (resGroupCd != 1)
-            {
-                var groupItems = salesItemGroups.Where(x => x.Where(a => a.ParentGroupCd == resGroupCd).FirstOrDefault().ParentGroupCd == resGroupCd);
-                var groupCdList = groupItems.Select(x => x.Select(a => a.GroupCd));
-                var totalAmount = groupItems.Sum(x => x.Sum(a => a.TotalAmount));
+            var listofGroupCds = new List<int>();
 
-                
-                foreach (var list in groupCdList) listofInt.AddRange(list);
+            var groupItems = salesItemGroups.Where(x => x.ParentGroupCd == resGroupCd);
+            var groupCdList = groupItems.Select(x => x.GroupCd);
+            var totalAmount = groupItems.Sum(x => x.TotalAmount);
 
-                return new SalesByItemGroupResponse
-                {
-                    Amount = totalAmount,
-                    GroupCd = resGroupCd,
-                    GroupCdToIgnore = listofInt
-                };
-            }
+            if (resGroupCd != 1 && groupCdList.Any())
+                listofGroupCds.AddRange(groupCdList);
 
             return new SalesByItemGroupResponse
             {
-                Amount = 0,
-                GroupCd = resGroupCd,
-                GroupCdToIgnore = listofInt
+                Amount = totalAmount,
+                GroupCd = groupCd,
+                ParentGroupCd = resGroupCd,
+                GroupCdToIgnore = listofGroupCds
             };
+
+            //return new SalesByItemGroupResponse
+            //{
+            //    Amount = 0,
+            //    GroupCd = resGroupCd,
+            //    GroupCdToIgnore = listofGroupCds
+            //};
         }
     }
 }

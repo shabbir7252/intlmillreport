@@ -210,7 +210,7 @@ namespace ItemInventory.Controllers
                 var today = DateTime.Now;
                 var transactionDetails = new List<TransactionDetail>();
 
-                var _transNumber = db.Transactions.OrderByDescending(x => x.TransactionNumber).FirstOrDefault(x => !x.IsDeleted)?.TransactionNumber;
+                var _transNumber = db.Transactions.OrderByDescending(x => x.TransactionNumber).FirstOrDefault()?.TransactionNumber;
                 var transNumber = _transNumber.HasValue ? _transNumber.Value + 1 : 1;
                 var transaction = new Transaction
                 {
@@ -492,6 +492,8 @@ namespace ItemInventory.Controllers
                         Host = config.Host,
                         Port = config.Port,
                         EnableSsl = config.EnableSsl,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
                         Credentials = new NetworkCredential(config.FromAddress, config.Password)
                     };
 

@@ -18,6 +18,7 @@ namespace ImillReports.Contracts
         void UpdateEmpAllocations(string locations, string shifts, List<int> verifiedIds);
         List<EmployeeViewModel> GetEmployees();
         int AddEmployee(int empId, string nameEn, string nameAr);
+        string UpdateEmployee(int oid, int empId, string nameEn, string nameAr);
         void DeleteEmployees(List<int> verifiedIds);
         void AddLocations(string deviceCode, string nameEn, string nameAr);
         void DeleteLocations(List<int> verifiedIds);

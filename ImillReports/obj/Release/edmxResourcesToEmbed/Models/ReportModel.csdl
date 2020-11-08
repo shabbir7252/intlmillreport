@@ -204,6 +204,15 @@
       <Parameter Name="toHoDate" Mode="In" Type="DateTime" />
     </FunctionImport>
     <EntitySet Name="intlmill_cash_register" EntityType="IMILLModel.intlmill_cash_register" />
+    <EntitySet Name="ICS_Item_Group" EntityType="IMILLModel.ICS_Item_Group" />
+    <AssociationSet Name="FK_Product_Product_Group" Association="IMILLModel.FK_Product_Product_Group">
+      <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+      <End Role="ICS_Item" EntitySet="ICS_Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Group_Product_Group" Association="IMILLModel.FK_Product_Group_Product_Group">
+      <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+      <End Role="ICS_Item_Group1" EntitySet="ICS_Item_Group" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="spIUD_GetAll_Result">
     <Property Type="Int64" Name="Unit_Entry_Id" Nullable="false" />
@@ -424,6 +433,7 @@
     <NavigationProperty Name="ICS_Item_Unit_Details" Relationship="IMILLModel.FK_Alt_Unit_Details_Product" FromRole="ICS_Item" ToRole="ICS_Item_Unit_Details" />
     <NavigationProperty Name="ICS_Transaction_Details" Relationship="IMILLModel.FK_ICS_Transaction_Details_Product" FromRole="ICS_Item" ToRole="ICS_Transaction_Details" />
     <NavigationProperty Name="ICS_Unit" Relationship="IMILLModel.FK_Product_Unit" FromRole="ICS_Item" ToRole="ICS_Unit" />
+    <NavigationProperty Name="ICS_Item_Group" Relationship="IMILLModel.FK_Product_Product_Group" FromRole="ICS_Item" ToRole="ICS_Item_Group" />
   </EntityType>
   <EntityType Name="ICS_Item_Unit_Details">
     <Key>
@@ -1818,4 +1828,55 @@
     <Property Name="SerialNo" Type="Int64" />
     <Property Name="deliveroo" Type="Decimal" Precision="19" Scale="4" />
   </EntityType>
+  <EntityType Name="ICS_Item_Group">
+    <Key>
+      <PropertyRef Name="Group_Cd" />
+    </Key>
+    <Property Name="Group_Cd" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="M_Group_Cd" Type="Int32" Nullable="false" />
+    <Property Name="Group_No" Type="Int64" Nullable="false" />
+    <Property Name="L_Group_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="A_Group_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Group_Level" Type="Int16" Nullable="false" />
+    <Property Name="Show" Type="Boolean" Nullable="false" />
+    <Property Name="Protected" Type="Boolean" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="User_Cd" Type="Int16" Nullable="false" />
+    <Property Name="User_Date_Time" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time_Stamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="row_id" Type="Guid" Nullable="false" />
+    <Property Name="Parent_Groups" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <Property Name="Parent_Group_cd_1" Type="Int32" />
+    <Property Name="Parent_Group_cd_2" Type="Int32" />
+    <Property Name="Parent_Group_cd_3" Type="Int32" />
+    <Property Name="Parent_Group_cd_4" Type="Int32" />
+    <Property Name="Parent_Group_cd_5" Type="Int32" />
+    <NavigationProperty Name="ICS_Item" Relationship="IMILLModel.FK_Product_Product_Group" FromRole="ICS_Item_Group" ToRole="ICS_Item" />
+    <NavigationProperty Name="ICS_Item_Group1" Relationship="IMILLModel.FK_Product_Group_Product_Group" FromRole="ICS_Item_Group" ToRole="ICS_Item_Group1" />
+    <NavigationProperty Name="ICS_Item_Group2" Relationship="IMILLModel.FK_Product_Group_Product_Group" FromRole="ICS_Item_Group1" ToRole="ICS_Item_Group" />
+  </EntityType>
+  <Association Name="FK_Product_Product_Group">
+    <End Type="IMILLModel.ICS_Item_Group" Role="ICS_Item_Group" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Item" Role="ICS_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Item_Group">
+        <PropertyRef Name="Group_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item">
+        <PropertyRef Name="Group_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Group_Product_Group">
+    <End Type="IMILLModel.ICS_Item_Group" Role="ICS_Item_Group" Multiplicity="1" />
+    <End Type="IMILLModel.ICS_Item_Group" Role="ICS_Item_Group1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Item_Group">
+        <PropertyRef Name="Group_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item_Group1">
+        <PropertyRef Name="M_Group_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

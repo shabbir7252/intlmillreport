@@ -66,6 +66,21 @@ namespace ImillReports.Controllers
         }
 
         [HttpPost]
+        public ContentResult UpdateEmployee(int oid, int empId, string NameEn, string NameAr)
+        {
+            var response = _iTARepository.UpdateEmployee(oid, empId, NameEn, NameAr);
+
+            // var source = _iTARepository.GetEmployees();
+            var result = new ContentResult
+            {
+                Content = JsonConvert.SerializeObject(response),
+                ContentType = "application/json"
+            };
+
+            return result;
+        }
+
+        [HttpPost]
         public ContentResult DeleteEmployees(List<int> verifiedIds)
         {
             _iTARepository.DeleteEmployees(verifiedIds);

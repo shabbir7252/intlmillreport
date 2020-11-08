@@ -992,5 +992,30 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ICS_Item_Group">
+      <EntityTypeMapping TypeName="IMILLModel.ICS_Item_Group">
+        <MappingFragment StoreEntitySet="ICS_Item_Group">
+          <ScalarProperty Name="Parent_Group_cd_5" ColumnName="Parent_Group_cd_5" />
+          <ScalarProperty Name="Parent_Group_cd_4" ColumnName="Parent_Group_cd_4" />
+          <ScalarProperty Name="Parent_Group_cd_3" ColumnName="Parent_Group_cd_3" />
+          <ScalarProperty Name="Parent_Group_cd_2" ColumnName="Parent_Group_cd_2" />
+          <ScalarProperty Name="Parent_Group_cd_1" ColumnName="Parent_Group_cd_1" />
+          <ScalarProperty Name="Parent_Groups" ColumnName="Parent_Groups" />
+          <ScalarProperty Name="row_id" ColumnName="row_id" />
+          <ScalarProperty Name="Time_Stamp" ColumnName="Time_Stamp" />
+          <ScalarProperty Name="User_Date_Time" ColumnName="User_Date_Time" />
+          <ScalarProperty Name="User_Cd" ColumnName="User_Cd" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="Protected" ColumnName="Protected" />
+          <ScalarProperty Name="Show" ColumnName="Show" />
+          <ScalarProperty Name="Group_Level" ColumnName="Group_Level" />
+          <ScalarProperty Name="A_Group_Name" ColumnName="A_Group_Name" />
+          <ScalarProperty Name="L_Group_Name" ColumnName="L_Group_Name" />
+          <ScalarProperty Name="Group_No" ColumnName="Group_No" />
+          <ScalarProperty Name="M_Group_Cd" ColumnName="M_Group_Cd" />
+          <ScalarProperty Name="Group_Cd" ColumnName="Group_Cd" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
