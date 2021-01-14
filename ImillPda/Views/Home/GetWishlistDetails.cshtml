@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Wishlist Details";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="fixed-top" style="background-color: #fff; height: 110px; box-shadow: 0 0 22px -10px #000; width: 100%; top: 50px;z-index:1">
+            <div>
+                <div class="col-8 mx-auto" style="margin-top: 2rem;">
+                    @Html.EJS().TextBox("Barcode").Placeholder("Barcode").Change("GetItem").Render()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" style="margin-top: 9rem;">
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).Height("auto").Width("auto").ShowColumnChooser(false).Columns(col =>
+            {
+                col.Field("IsVerified").Visible(true).HeaderText("").Type("checkbox").Width("60").AllowFiltering(false).AllowSorting(false).Add();
+                col.Field("Oid").Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
+                col.Field("PartNumber").Visible(false).AllowEditing(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.Field("Prod_Cd").Visible(false).ShowInColumnChooser(false).Add();
+                col.Field("Locat_Cd").Visible(false).ShowInColumnChooser(false).Add();
+                col.Field("NameEn").Visible(false).AllowEditing(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.Field("NameAr").Template("#template").AllowEditing(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.Field("Qty").HeaderText("Remaining Qty").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                // col.Field("ActQty").HeaderText("Actual Qty").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+            }).AllowPaging(false).AllowSorting(true).AllowFiltering(true).FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                page => { page.PageSizes(true); page.PageSize(25); }
+                ).Toolbar(new List<string>()
+                {
+                    "Search", "ColumnChooser"
+                }).RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).DataBound("dataBound").Render()
+
+            <script id="template" type="text/x-template">
+                <label>${PartNumber}</label>
+                <br />
+                <label>${NameAr}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>Req Qty : ${Qty}</label>
+                <br />
+                <label>Actual Qty : ${ActQty}</label>
+            </script>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-3 mx-auto">
+            <button type="button" class="btn btn-primary btn-block btn-sm btn-block save-items" onclick="SaveItems()">Save</button>
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+        var itemList = [];
+        var grid;
+
+        function dataBound(args) {
+            // this.autoFitColumns(['NameEn', 'NameAr', 'Actions']);
+        }
+
+        function GetItem() {
+            var barcode = document.getElementById('Barcode').ej2_instances[0].value;
+
+            if (barcode !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBarcodeValue", "Home")',
+                    data: {
+                        barcode: barcode
+                    },
+                    success: function (response) {
+                        itemList.some(function (elem, i) {
+                            if (response.PartNumber === elem.PartNumber) {
+                                elem.IsVerified = true;
+                            }
+                        });
+
+                        var grid = document.getElementById('Grid').ej2_instances[0];
+                        grid.dataSource = itemList;
+                        grid.refresh();
+
+                        document.getElementById('Barcode').ej2_instances[0].value = "";
+                        document.getElementById('Barcode').focus();
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            grid = document.getElementById('Grid').ej2_instances[0];
+            itemList = grid.dataSource;
+        });
+
+        function OnSelected(args) {
+
+            itemList.some(function (elem, i) {
+                if (elem.Oid === args.data.Oid) {
+                    if (elem.IsVerified) {
+                        elem.IsVerified = false;
+                    } else {
+                        elem.IsVerified = true;
+                    }
+                }
+            });
+
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            grid.dataSource = itemList;
+            grid.refresh();
+        }
+
+        function SaveItems() {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    itemList: itemList
+                },
+                url: '@Url.Action("UpdateWishListRequest", "Home")',
+                success: function (response) {
+                    alert(response.Message);
+                    if (response.ReponseId === 1) {
+                        var link = "@Url.Action("Index", "Home")";
+                        window.location.href = link;
+                    }
+                },
+                error: function (ex) {
+                    alert("Error Occured While Updating!");
+                }
+            });
+        }
+
+    </script>
+}

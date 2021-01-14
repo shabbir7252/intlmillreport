@@ -1,0 +1,216 @@
+﻿
+@{
+    ViewBag.Title = "Manage Employee Leaves";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    toolbarItems.Add(new { text = "Delete Record(s)", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
+}
+
+<div class="container-fluid">
+    <div id="main">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="row p-3">
+                        <div class="col-3 emp">
+                            @Html.EJS().MultiSelect("employees").ShowDropDownIcon().AllowFiltering(true).Filtering("onEmpFiltering").Value(ViewBag.Employees).Placeholder("Select Employees").DataSource(
+                           (IEnumerable<object>)ViewBag.Employees
+                           ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                           new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "DisplayText", Value = "Oid" }).ActionBegin("onEmpBegin").DataBound("onEmpBound").Render()
+                        </div>
+
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("fromDate").Format("dd/MMM/yyyy").Value(ViewBag.startDate).Placeholder("From Date").Render()
+                        </div>
+
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Placeholder("To Date (Optional)").Render()
+                        </div>
+
+                        <div class="col-2">
+                            <button type="button" class="btn btn-raised bg-black waves-effect waves-light add" onclick="Add()">Add</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card mt-3">
+                    <div class="body">
+
+                        @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+                           {
+                               col.Field("IsVerified").Type("checkbox").Width("60").AllowFiltering(false).AllowSorting(false).Add();
+                               col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
+                               col.Field("EmployeeId").HeaderText("Emp Id").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
+                               col.Field("NameEn").Visible(false).Width("80").HeaderText("Emp NameEn").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Left).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("NameAr").Width("80").HeaderText("Emp NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("StartDate").Width("100").HeaderText("Start Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("EndDate").Width("100").HeaderText("End Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                           }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                               page =>
+                            {
+                                page.PageSizes(true); page.PageSize(25);
+                            }).Toolbar(toolbarItems).DataBound("dataBound").RowSelected("OnSelected").RowDeselected("OnDeselected").AllowSelection(true).SelectionSettings(select =>
+                            select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script>
+
+        var selectedEmployees = [];
+        var verificationIds = [];
+
+        function onEmpBegin(e) {
+            this.fields = {
+                text: 'DisplayText', value: 'Oid', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemEmpSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemEmpSearch(e) {
+            if (selectedEmployees.indexOf(e) == -1)
+                selectedEmployees.push(e);
+        }
+
+        function onEmpBound(e) {
+            this.value = selectedEmployees;
+        }
+
+        function onEmpFiltering(e) {
+            var CBObj = document.getElementById("employees").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('employees').select(['DisplayText', 'Oid']);
+                query = (e.text !== '') ? query.where('DisplayText', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row[0].cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function dataBound(args) {
+            // this.autoFitColumns(['EmpId', 'EmpName', 'EmpNameAr', 'Location', 'LocationAr', 'ShiftCode', 'ShiftName', 'StartTime', 'EndTime', 'FromDate', 'ToDate']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "EmployeeLeaves.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRec') {
+
+            if (verificationIds.length === 0) {
+                alert("Select Employee!");
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        verifiedIds: verificationIds
+                    },
+                    url: '@Url.Action("DeleteEmployeeLeaves", "ManageTimeAttendance")',
+                    success: function () {
+                        verificationIds = [];
+                        window.location.reload();
+                },
+                    error: function (ex) {
+
+                    }
+                });
+
+            }
+            }
+        }
+
+        function Add() {
+            var empObj = document.getElementById('employees').ej2_instances[0].value; // MultiSelect Instance of ocations
+            var fromDateObj = document.getElementById('fromDate').ej2_instances[0].value;
+            var toDateObj = document.getElementById('toDate').ej2_instances[0].value;
+
+            if (empObj.length < 1) {
+                alert("Please Select Employee.");
+            }
+            else if (fromDateObj === null || toDateObj === null) {
+                alert("Add Start Date And End Date.");
+            } else {
+
+                var sd = new Date(fromDateObj);
+                var from = sd.getDate().toString() + '-' + (sd.getMonth() + 1).toString() + '-' + sd.getFullYear().toString();
+
+                var ed = toDateObj !== null ? new Date(toDateObj) : null
+                if (toDateObj !== null) {
+                    ed.setMonth(ed.getMonth());
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        employees: empObj,
+                        fromDate: from,
+                        toDate: toDateObj !== null
+                            ? ed.getDate().toString() + '-' + (ed.getMonth() + 1).toString() + '-' + ed.getFullYear().toString()
+                            : toDateObj
+                    },
+                    url: '@Url.Action("AddEmployeeLeaves", "ManageTimeAttendance")',
+                    success: function (response) {
+                        alert(response);
+                        window.location.reload();
+                    },
+                    error: function (ex) {
+                        alert('Error Allocation : ', ex);
+                    }
+                });
+            }
+        }
+
+    </script>
+
+}

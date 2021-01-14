@@ -1,5 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="FCCUNVDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="FCCCentralizedDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_Device">
+    <Key>
+      <PropertyRef Name="DeviceCode" />
+    </Key>
+    <Property Name="DeviceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DeviceCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DeviceIP" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsDefault" Type="bit" />
+    <Property Name="Companycode" Type="varchar" MaxLength="50" />
+    <Property Name="Divisioncode" Type="varchar" MaxLength="50" />
+    <Property Name="Areacode" Type="varchar" MaxLength="50" />
+    <Property Name="Departmentcode" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tbl_EmpAttendance">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="varchar" MaxLength="50" />
+    <Property Name="Login" Type="datetime" />
+    <Property Name="Logout" Type="datetime" />
+    <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
+    <Property Name="CardID" Type="varchar" MaxLength="50" />
+    <Property Name="DeviceCode" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="varchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="tbl_EmpLocShiftMap">
     <Key>
       <PropertyRef Name="Oid" />
@@ -10,6 +36,23 @@
     <Property Name="ShiftOid" Type="int" Nullable="false" />
     <Property Name="fromDate" Type="datetime" />
     <Property Name="toDate" Type="datetime" />
+    <Property Name="IsMon" Type="bit" />
+    <Property Name="IsTues" Type="bit" />
+    <Property Name="IsWed" Type="bit" />
+    <Property Name="IsThur" Type="bit" />
+    <Property Name="IsFri" Type="bit" />
+    <Property Name="IsSat" Type="bit" />
+    <Property Name="IsSun" Type="bit" />
+  </EntityType>
+  <EntityType Name="tbl_EmployeeLeaves">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="tbl_Employees">
     <Key>
@@ -53,6 +96,7 @@
     <Property Name="NameAr" Type="nvarchar" MaxLength="50" />
     <Property Name="Locat_Cd" Type="smallint" />
     <Property Name="DeviceCode" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsActive" Type="bit" />
   </EntityType>
   <EntityType Name="tbl_Shift">
     <Key>
@@ -64,6 +108,30 @@
     <Property Name="NameAr" Type="nvarchar" MaxLength="50" />
     <Property Name="StartTime" Type="time" Precision="7" />
     <Property Name="EndTime" Type="time" Precision="7" />
+  </EntityType>
+  <EntityType Name="tbl_ShiftEmailMap">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShiftOid" Type="int" Nullable="false" />
+    <Property Name="IsEmailSent" Type="bit" Nullable="false" />
+    <Property Name="TransDate" Type="datetime" Nullable="false" />
+    <Property Name="IsForStart" Type="bit" Nullable="false" />
+    <Property Name="ShiftEmailSettingOid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_ShiftEmailSettings">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="IsRegForEmail" Type="bit" Nullable="false" />
+    <Property Name="RegisterForShifts" Type="varchar" MaxLength="1000" Nullable="false" />
+    <Property Name="EmailStartRange" Type="time" Precision="7" Nullable="false" />
+    <Property Name="EmailEndRange" Type="time" Precision="7" Nullable="false" />
+    <Property Name="LateInRange" Type="time" Precision="7" Nullable="false" />
+    <Property Name="EarlyOutRange" Type="time" Precision="7" Nullable="false" />
   </EntityType>
   <EntityType Name="tbl_Transactions">
     <Key>
@@ -86,6 +154,7 @@
     <Property Name="ShiftStart" Type="time" Precision="7" />
     <Property Name="ShiftEnd" Type="time" Precision="7" />
     <Property Name="IsOpened" Type="bit" Nullable="false" />
+    <Property Name="EmployeeAr" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <Association Name="FK_tbl_EmpLocShiftMap_tbl_Employees">
     <End Role="tbl_Employees" Type="Self.tbl_Employees" Multiplicity="1" />
@@ -123,12 +192,17 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="FCCUNVDBModelStoreContainer">
+  <EntityContainer Name="FCCCentralizedDBModelStoreContainer">
+    <EntitySet Name="tbl_Device" EntityType="Self.tbl_Device" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_EmpAttendance" EntityType="Self.tbl_EmpAttendance" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_EmpLocShiftMap" EntityType="Self.tbl_EmpLocShiftMap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_EmployeeLeaves" EntityType="Self.tbl_EmployeeLeaves" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_Employees" EntityType="Self.tbl_Employees" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_EmpTransaction" EntityType="Self.tbl_EmpTransaction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_Location" EntityType="Self.tbl_Location" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_Shift" EntityType="Self.tbl_Shift" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_ShiftEmailMap" EntityType="Self.tbl_ShiftEmailMap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_ShiftEmailSettings" EntityType="Self.tbl_ShiftEmailSettings" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_Transactions" EntityType="Self.tbl_Transactions" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Employees" Association="Self.FK_tbl_EmpLocShiftMap_tbl_Employees">
       <End Role="tbl_Employees" EntitySet="tbl_Employees" />

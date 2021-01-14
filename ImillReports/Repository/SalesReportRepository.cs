@@ -54,21 +54,21 @@ namespace ImillReports.Repository
 
         private IEnumerable<DateTimeRange> GetYearsBetweenDates(DateTime startDate, DateTime stopDate)
         {
-            var count = 0;
-            for (int i = startDate.Year; i <= stopDate.Year; i++)
-            {
-                yield return new DateTimeRange
-                (
-                    start: (i == stopDate.Year || count > 0) && stopDate.Year != startDate.Year
-                    ? new DateTime(i, 01, 01, startDate.Hour, startDate.Minute, startDate.Second)
-                    : new DateTime(i, startDate.Month, startDate.Day, startDate.Hour, startDate.Minute, startDate.Second),
-                    end:
-                     i == stopDate.Year
-                     ? new DateTime(i, stopDate.Month, stopDate.Day, stopDate.Hour, stopDate.Minute, stopDate.Second)
-                     : new DateTime(i, 12, 31, stopDate.Hour, stopDate.Minute, stopDate.Second)
-                );
-                count += 1;
-            }
+                var count = 0;
+                for (int i = startDate.Year; i <= stopDate.Year; i++)
+                {
+                    yield return new DateTimeRange
+                    (
+                        start: (i == stopDate.Year || count > 0) && stopDate.Year != startDate.Year
+                        ? new DateTime(i, 01, 01, startDate.Hour, startDate.Minute, startDate.Second)
+                        : new DateTime(i, startDate.Month, startDate.Day, startDate.Hour, startDate.Minute, startDate.Second),
+                        end:
+                         i == stopDate.Year
+                         ? new DateTime(i, stopDate.Month, stopDate.Day, stopDate.Hour, stopDate.Minute, stopDate.Second)
+                         : new DateTime(i, 12, 31, stopDate.Hour, stopDate.Minute, stopDate.Second)
+                    );
+                    count += 1;
+                }
         }
 
         // In Use
@@ -114,157 +114,718 @@ namespace ImillReports.Repository
 
             var salesReportItems = new List<SalesReportItem>();
 
-            var dateRange = GetYearsBetweenDates(fromDate.Value, toDate.Value).ToList();
+            //if (fromDate.Value.Date == new DateTime(2020, 12, 31) && toDate.Value.Date != new DateTime(2020, 12, 31))
+            //{
 
-            foreach (var date in dateRange)
+            //    for (var i = 1; i <= 2; i++)
+            //    {
+            //        var startdate = new DateTime(2020, 12, 31, 03, 00, 00);
+            //        var enddate = new DateTime(2020, 12, 31, 23, 59, 59);
+
+            //        if(i == 2)
+            //        {
+            //            startdate = new DateTime(2021, 1, 1, 00, 00, 00);
+            //            enddate = new DateTime(2021, 1, 1, 2, 59, 59);
+            //        }
+
+            //        var fromHoDate = startdate.Date;
+
+            //        var toHoDate = enddate;
+
+            //       // var dateRange = GetYearsBetweenDates(fromDate.Value, toDate.Value).ToList();
+
+            //        //if(enddate.Date == new DateTime(2020, 12, 31))
+            //        //{
+            //        //    toHoDate = new DateTime(2021, 01, 01, 23, 59, 00);
+            //        //}
+
+            //        //if (fromHoDate == new DateTime(2020, 12, 31))
+            //        //{
+            //        //    toHoDate = new DateTime(2021, 01, 01, 23, 59, 00);
+            //        //}
+
+            //        //if (toHoDate < fromHoDate)
+            //        //    toHoDate = fromHoDate.AddDays(1).AddMinutes(-1);
+
+            //        if (startdate.Year == 2019)
+            //        {
+
+            //            var transactions = _report.Transaction_2019.Where(x => (x.InvDateTime >= startdate &&
+            //                                                                          x.InvDateTime <= enddate &&
+            //                                                                          x.LocationId != 1) ||
+            //                                                                          (x.InvDateTime >= fromHoDate &&
+            //                                                                          x.InvDateTime <= toHoDate &&
+            //                                                                          x.LocationId == 1)).ToList();
+
+            //            if (!string.IsNullOrEmpty(locationArray))
+            //            {
+            //                var locationIds = (from id in locationArray.Split(',')
+            //                                   select short.Parse(id)).ToList();
+            //                transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+            //            }
+
+            //            if (!string.IsNullOrEmpty(voucherTypesArray))
+            //            {
+            //                var voucherIds = (from id in voucherTypesArray.Split(',')
+            //                                  select short.Parse(id)).ToList();
+            //                transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+            //            }
+
+            //            foreach (var transaction in transactions)
+            //            {
+            //                var salesReportItem = new SalesReportItem
+            //                {
+            //                    Amount = transaction.Amount.Value,
+            //                    AmountRecieved = transaction.AmountRecieved,
+            //                    BaseQuantity = transaction.BaseQuantity.Value,
+            //                    BaseUnit = transaction.BaseUnit,
+            //                    BaseUnitId = transaction.BaseUnitId.Value,
+            //                    Cash = transaction.Cash.Value,
+            //                    CreditCard = transaction.CreditCard.Value,
+            //                    CreditCardType = transaction.CreditCardType,
+            //                    CustomerId = transaction.CustomerId.Value,
+            //                    CustomerName = transaction.CustomerName,
+            //                    CustomerNameAr = transaction.CustomerNameAr,
+            //                    Date = transaction.Date.Value,
+            //                    Discount = transaction.Discount.Value,
+            //                    EntryId = transaction.EntryId.Value,
+            //                    GroupCD = transaction.GroupCD.Value,
+            //                    InvDateTime = transaction.InvDateTime.Value,
+            //                    InvoiceNumber = transaction.InvoiceNumber.Value,
+            //                    Knet = transaction.Knet.Value,
+            //                    Location = transaction.Location,
+            //                    LocationId = transaction.LocationId.Value,
+            //                    NetAmount = transaction.NetAmount.Value,
+            //                    ProdId = transaction.ProdId.Value,
+            //                    ProductNameAr = transaction.ProductNameAr,
+            //                    ProductNameEn = transaction.ProductNameEn,
+            //                    Salesman = transaction.Salesman,
+            //                    SalesReturn = transaction.SalesReturn.Value,
+            //                    SellQuantity = transaction.SellQuantity.Value,
+            //                    SellUnit = transaction.SellUnit,
+            //                    SellUnitId = transaction.SellUnitId.Value,
+            //                    UnitPrice = transaction.UnitPrice.Value,
+            //                    Voucher = transaction.Voucher,
+            //                    VoucherId = transaction.VoucherId.Value,
+            //                    Year = transaction.Year.Value
+            //                };
+
+            //                salesReportItems.Add(salesReportItem);
+            //            }
+
+            //        }
+
+            //        if (startdate.Year == 2020)
+            //        {
+
+            //            var transactions = _report.Transaction_2020.Where(x => (x.InvDateTime >= startdate &&
+            //                                                                          x.InvDateTime <= enddate &&
+            //                                                                          x.LocationId != 1) ||
+            //                                                                          (x.InvDateTime >= fromHoDate &&
+            //                                                                          x.InvDateTime <= toHoDate &&
+            //                                                                          x.LocationId == 1)).ToList();
+
+            //            if (!string.IsNullOrEmpty(locationArray))
+            //            {
+            //                var locationIds = (from id in locationArray.Split(',')
+            //                                   select short.Parse(id)).ToList();
+            //                transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+            //            }
+
+            //            if (!string.IsNullOrEmpty(voucherTypesArray))
+            //            {
+            //                var voucherIds = (from id in voucherTypesArray.Split(',')
+            //                                  select short.Parse(id)).ToList();
+            //                transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+            //            }
+
+            //            foreach (var transaction in transactions)
+            //            {
+            //                var salesReportItem = new SalesReportItem
+            //                {
+            //                    Amount = transaction.Amount.Value,
+            //                    AmountRecieved = transaction.AmountRecieved,
+            //                    BaseQuantity = transaction.BaseQuantity.Value,
+            //                    BaseUnit = transaction.BaseUnit,
+            //                    BaseUnitId = transaction.BaseUnitId.Value,
+            //                    Cash = transaction.Cash.Value,
+            //                    CreditCard = transaction.CreditCard.Value,
+            //                    CreditCardType = transaction.CreditCardType,
+            //                    CustomerId = transaction.CustomerId.Value,
+            //                    CustomerName = transaction.CustomerName,
+            //                    CustomerNameAr = transaction.CustomerNameAr,
+            //                    Date = transaction.Date.Value,
+            //                    Discount = transaction.Discount.Value,
+            //                    EntryId = transaction.EntryId.Value,
+            //                    GroupCD = transaction.GroupCD.Value,
+            //                    InvDateTime = transaction.InvDateTime.Value,
+            //                    InvoiceNumber = transaction.InvoiceNumber.Value,
+            //                    Knet = transaction.Knet.Value,
+            //                    Location = transaction.Location,
+            //                    LocationId = transaction.LocationId.Value,
+            //                    NetAmount = transaction.NetAmount.Value,
+            //                    ProdId = transaction.ProdId.Value,
+            //                    ProductNameAr = transaction.ProductNameAr,
+            //                    ProductNameEn = transaction.ProductNameEn,
+            //                    Salesman = transaction.Salesman,
+            //                    SalesReturn = transaction.SalesReturn.Value,
+            //                    SellQuantity = transaction.SellQuantity.Value,
+            //                    SellUnit = transaction.SellUnit,
+            //                    SellUnitId = transaction.SellUnitId.Value,
+            //                    UnitPrice = transaction.UnitPrice.Value,
+            //                    Voucher = transaction.Voucher,
+            //                    VoucherId = transaction.VoucherId.Value,
+            //                    Year = transaction.Year.Value
+            //                };
+
+            //                salesReportItems.Add(salesReportItem);
+            //            }
+
+            //        }
+
+            //        if (startdate.Year == 2021)
+            //        {
+
+            //            var transactions = _report.Transaction_2021.Where(x => (x.InvDateTime >= startdate &&
+            //                                                                          x.InvDateTime <= enddate &&
+            //                                                                          x.LocationId != 1) ||
+            //                                                                          (x.InvDateTime >= fromHoDate &&
+            //                                                                          x.InvDateTime <= toHoDate &&
+            //                                                                          x.LocationId == 1)).ToList();
+
+            //            if (!string.IsNullOrEmpty(locationArray))
+            //            {
+            //                var locationIds = (from id in locationArray.Split(',')
+            //                                   select short.Parse(id)).ToList();
+            //                transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+            //            }
+
+            //            if (!string.IsNullOrEmpty(voucherTypesArray))
+            //            {
+            //                var voucherIds = (from id in voucherTypesArray.Split(',')
+            //                                  select short.Parse(id)).ToList();
+            //                transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+            //            }
+
+            //            foreach (var transaction in transactions)
+            //            {
+            //                var salesReportItem = new SalesReportItem
+            //                {
+            //                    Amount = transaction.Amount.Value,
+            //                    AmountRecieved = transaction.AmountRecieved,
+            //                    BaseQuantity = transaction.BaseQuantity.Value,
+            //                    BaseUnit = transaction.BaseUnit,
+            //                    BaseUnitId = transaction.BaseUnitId.Value,
+            //                    Cash = transaction.Cash.Value,
+            //                    CreditCard = transaction.CreditCard.Value,
+            //                    CreditCardType = transaction.CreditCardType,
+            //                    CustomerId = transaction.CustomerId.Value,
+            //                    CustomerName = transaction.CustomerName,
+            //                    CustomerNameAr = transaction.CustomerNameAr,
+            //                    Date = transaction.Date.Value,
+            //                    Discount = transaction.Discount.Value,
+            //                    EntryId = transaction.EntryId.Value,
+            //                    GroupCD = transaction.GroupCD.Value,
+            //                    InvDateTime = transaction.InvDateTime.Value,
+            //                    InvoiceNumber = transaction.InvoiceNumber.Value,
+            //                    Knet = transaction.Knet.Value,
+            //                    Location = transaction.Location,
+            //                    LocationId = transaction.LocationId.Value,
+            //                    NetAmount = transaction.NetAmount.Value,
+            //                    ProdId = transaction.ProdId.Value,
+            //                    ProductNameAr = transaction.ProductNameAr,
+            //                    ProductNameEn = transaction.ProductNameEn,
+            //                    Salesman = transaction.Salesman,
+            //                    SalesReturn = transaction.SalesReturn.Value,
+            //                    SellQuantity = transaction.SellQuantity.Value,
+            //                    SellUnit = transaction.SellUnit,
+            //                    SellUnitId = transaction.SellUnitId.Value,
+            //                    UnitPrice = transaction.UnitPrice.Value,
+            //                    Voucher = transaction.Voucher,
+            //                    VoucherId = transaction.VoucherId.Value,
+            //                    Year = transaction.Year.Value
+            //                };
+
+            //                salesReportItems.Add(salesReportItem);
+            //            }
+
+            //        }
+            //    }
+            //}
+            // else 
+            if (fromDate.Value.Date <= new DateTime(2020, 12, 31) && toDate.Value.Date > new DateTime(2020, 12, 31))
             {
-                var fromHoDate = date.Start.TimeOfDay >= new TimeSpan(06, 00, 00)
-                    ? date.Start.Date.AddDays(1)
-                    : date.Start.Date;
-
-                var toHoDate = date.End.TimeOfDay >= new TimeSpan(06, 00, 00)
-                    ? new DateTime(date.End.Date.Year, date.End.Date.Month, date.End.Date.Day, 23, 59, 00).AddDays(1)
-                    : new DateTime(date.End.Date.Year, date.End.Date.Month, date.End.Date.Day, 23, 59, 00).AddDays(-1);
-
-                if (toHoDate < fromHoDate)
-                    toHoDate = fromHoDate.AddDays(1).AddMinutes(-1);
-
-                if (date.Start.Year == 2019)
+                for (var i = 1; i <= 2; i++)
                 {
+                    var startdate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, fromDate.Value.Hour, fromDate.Value.Minute, fromDate.Value.Second);
+                    var enddate = new DateTime(2020, 12, 31, 23, 59, 59);
 
-                    var transactions = _report.Transaction_2019.Where(x => (x.InvDateTime >= date.Start &&
-                                                                                  x.InvDateTime <= date.End &&
-                                                                                  x.LocationId != 1) ||
-                                                                                  (x.InvDateTime >= fromHoDate &&
-                                                                                  x.InvDateTime <= toHoDate &&
-                                                                                  x.LocationId == 1)).ToList();
-
-                    if (!string.IsNullOrEmpty(locationArray))
+                    if (i == 2)
                     {
-                        var locationIds = (from id in locationArray.Split(',')
-                                           select short.Parse(id)).ToList();
-                        transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        startdate = new DateTime(2021, 1, 1, 00, 00, 00);
+                        enddate = new DateTime(toDate.Value.Year, toDate.Value.Month, toDate.Value.Day, toDate.Value.Hour, toDate.Value.Minute, toDate.Value.Second);
                     }
 
-                    if (!string.IsNullOrEmpty(voucherTypesArray))
-                    {
-                        var voucherIds = (from id in voucherTypesArray.Split(',')
-                                          select short.Parse(id)).ToList();
-                        transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
-                    }
+                    var fromHoDate = startdate.Date;
 
-                    foreach (var transaction in transactions)
+                    var toHoDate = enddate;
+
+                    if (startdate.Year == 2019)
                     {
-                        var salesReportItem = new SalesReportItem
+
+                        var transactions = _report.Transaction_2019.Where(x => (x.InvDateTime >= startdate &&
+                                                                                      x.InvDateTime <= enddate &&
+                                                                                      x.LocationId != 1) ||
+                                                                                      (x.InvDateTime >= fromHoDate &&
+                                                                                      x.InvDateTime <= toHoDate &&
+                                                                                      x.LocationId == 1)).ToList();
+
+                        if (!string.IsNullOrEmpty(locationArray))
                         {
-                            Amount = transaction.Amount.Value,
-                            AmountRecieved = transaction.AmountRecieved,
-                            BaseQuantity = transaction.BaseQuantity.Value,
-                            BaseUnit = transaction.BaseUnit,
-                            BaseUnitId = transaction.BaseUnitId.Value,
-                            Cash = transaction.Cash.Value,
-                            CreditCard = transaction.CreditCard.Value,
-                            CreditCardType = transaction.CreditCardType,
-                            CustomerId = transaction.CustomerId.Value,
-                            CustomerName = transaction.CustomerName,
-                            CustomerNameAr = transaction.CustomerNameAr,
-                            Date = transaction.Date.Value,
-                            Discount = transaction.Discount.Value,
-                            EntryId = transaction.EntryId.Value,
-                            GroupCD = transaction.GroupCD.Value,
-                            InvDateTime = transaction.InvDateTime.Value,
-                            InvoiceNumber = transaction.InvoiceNumber.Value,
-                            Knet = transaction.Knet.Value,
-                            Location = transaction.Location,
-                            LocationId = transaction.LocationId.Value,
-                            NetAmount = transaction.NetAmount.Value,
-                            ProdId = transaction.ProdId.Value,
-                            ProductNameAr = transaction.ProductNameAr,
-                            ProductNameEn = transaction.ProductNameEn,
-                            Salesman = transaction.Salesman,
-                            SalesReturn = transaction.SalesReturn.Value,
-                            SellQuantity = transaction.SellQuantity.Value,
-                            SellUnit = transaction.SellUnit,
-                            SellUnitId = transaction.SellUnitId.Value,
-                            UnitPrice = transaction.UnitPrice.Value,
-                            Voucher = transaction.Voucher,
-                            VoucherId = transaction.VoucherId.Value,
-                            Year = transaction.Year.Value
-                        };
+                            var locationIds = (from id in locationArray.Split(',')
+                                               select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        }
 
-                        salesReportItems.Add(salesReportItem);
-                    }
-
-                }
-
-                if (date.Start.Year == 2020)
-                {
-
-                    var transactions = _report.Transaction_2020.Where(x => (x.InvDateTime >= date.Start &&
-                                                                                  x.InvDateTime <= date.End &&
-                                                                                  x.LocationId != 1) ||
-                                                                                  (x.InvDateTime >= fromHoDate &&
-                                                                                  x.InvDateTime <= toHoDate &&
-                                                                                  x.LocationId == 1)).ToList();
-
-                    if (!string.IsNullOrEmpty(locationArray))
-                    {
-                        var locationIds = (from id in locationArray.Split(',')
-                                           select short.Parse(id)).ToList();
-                        transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
-                    }
-
-                    if (!string.IsNullOrEmpty(voucherTypesArray))
-                    {
-                        var voucherIds = (from id in voucherTypesArray.Split(',')
-                                          select short.Parse(id)).ToList();
-                        transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
-                    }
-
-                    foreach (var transaction in transactions)
-                    {
-                        var salesReportItem = new SalesReportItem
+                        if (!string.IsNullOrEmpty(voucherTypesArray))
                         {
-                            Amount = transaction.Amount.Value,
-                            AmountRecieved = transaction.AmountRecieved,
-                            BaseQuantity = transaction.BaseQuantity.Value,
-                            BaseUnit = transaction.BaseUnit,
-                            BaseUnitId = transaction.BaseUnitId.Value,
-                            Cash = transaction.Cash.Value,
-                            CreditCard = transaction.CreditCard.Value,
-                            CreditCardType = transaction.CreditCardType,
-                            CustomerId = transaction.CustomerId.Value,
-                            CustomerName = transaction.CustomerName,
-                            CustomerNameAr = transaction.CustomerNameAr,
-                            Date = transaction.Date.Value,
-                            Discount = transaction.Discount.Value,
-                            EntryId = transaction.EntryId.Value,
-                            GroupCD = transaction.GroupCD.Value,
-                            InvDateTime = transaction.InvDateTime.Value,
-                            InvoiceNumber = transaction.InvoiceNumber.Value,
-                            Knet = transaction.Knet.Value,
-                            Location = transaction.Location,
-                            LocationId = transaction.LocationId.Value,
-                            NetAmount = transaction.NetAmount.Value,
-                            ProdId = transaction.ProdId.Value,
-                            ProductNameAr = transaction.ProductNameAr,
-                            ProductNameEn = transaction.ProductNameEn,
-                            Salesman = transaction.Salesman,
-                            SalesReturn = transaction.SalesReturn.Value,
-                            SellQuantity = transaction.SellQuantity.Value,
-                            SellUnit = transaction.SellUnit,
-                            SellUnitId = transaction.SellUnitId.Value,
-                            UnitPrice = transaction.UnitPrice.Value,
-                            Voucher = transaction.Voucher,
-                            VoucherId = transaction.VoucherId.Value,
-                            Year = transaction.Year.Value
-                        };
+                            var voucherIds = (from id in voucherTypesArray.Split(',')
+                                              select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+                        }
 
-                        salesReportItems.Add(salesReportItem);
+                        foreach (var transaction in transactions)
+                        {
+                            var salesReportItem = new SalesReportItem
+                            {
+                                Amount = transaction.Amount.Value,
+                                AmountRecieved = transaction.AmountRecieved,
+                                BaseQuantity = transaction.BaseQuantity.Value,
+                                BaseUnit = transaction.BaseUnit,
+                                BaseUnitId = transaction.BaseUnitId.Value,
+                                Cash = transaction.Cash.Value,
+                                CreditCard = transaction.CreditCard.Value,
+                                CreditCardType = transaction.CreditCardType,
+                                CustomerId = transaction.CustomerId.Value,
+                                CustomerName = transaction.CustomerName,
+                                CustomerNameAr = transaction.CustomerNameAr,
+                                Date = transaction.Date.Value,
+                                Discount = transaction.Discount.Value,
+                                EntryId = transaction.EntryId.Value,
+                                GroupCD = transaction.GroupCD.Value,
+                                InvDateTime = transaction.InvDateTime.Value,
+                                InvoiceNumber = transaction.InvoiceNumber.Value,
+                                Knet = transaction.Knet.Value,
+                                Location = transaction.Location,
+                                LocationId = transaction.LocationId.Value,
+                                NetAmount = transaction.NetAmount.Value,
+                                ProdId = transaction.ProdId.Value,
+                                ProductNameAr = transaction.ProductNameAr,
+                                ProductNameEn = transaction.ProductNameEn,
+                                Salesman = transaction.Salesman,
+                                SalesReturn = transaction.SalesReturn.Value,
+                                SellQuantity = transaction.SellQuantity.Value,
+                                SellUnit = transaction.SellUnit,
+                                SellUnitId = transaction.SellUnitId.Value,
+                                UnitPrice = transaction.UnitPrice.Value,
+                                Voucher = transaction.Voucher,
+                                VoucherId = transaction.VoucherId.Value,
+                                Year = transaction.Year.Value
+                            };
+
+                            salesReportItems.Add(salesReportItem);
+                        }
+
                     }
 
+                    if (startdate.Year == 2020)
+                    {
+
+                        var transactions = _report.Transaction_2020.Where(x => (x.InvDateTime >= startdate &&
+                                                                                      x.InvDateTime <= enddate &&
+                                                                                      x.LocationId != 1) ||
+                                                                                      (x.InvDateTime >= fromHoDate &&
+                                                                                      x.InvDateTime <= toHoDate &&
+                                                                                      x.LocationId == 1)).ToList();
+
+                        if (!string.IsNullOrEmpty(locationArray))
+                        {
+                            var locationIds = (from id in locationArray.Split(',')
+                                               select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(voucherTypesArray))
+                        {
+                            var voucherIds = (from id in voucherTypesArray.Split(',')
+                                              select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+                        }
+
+                        foreach (var transaction in transactions)
+                        {
+                            var salesReportItem = new SalesReportItem
+                            {
+                                Amount = transaction.Amount.Value,
+                                AmountRecieved = transaction.AmountRecieved,
+                                BaseQuantity = transaction.BaseQuantity.Value,
+                                BaseUnit = transaction.BaseUnit,
+                                BaseUnitId = transaction.BaseUnitId.Value,
+                                Cash = transaction.Cash.Value,
+                                CreditCard = transaction.CreditCard.Value,
+                                CreditCardType = transaction.CreditCardType,
+                                CustomerId = transaction.CustomerId.Value,
+                                CustomerName = transaction.CustomerName,
+                                CustomerNameAr = transaction.CustomerNameAr,
+                                Date = transaction.Date.Value,
+                                Discount = transaction.Discount.Value,
+                                EntryId = transaction.EntryId.Value,
+                                GroupCD = transaction.GroupCD.Value,
+                                InvDateTime = transaction.InvDateTime.Value,
+                                InvoiceNumber = transaction.InvoiceNumber.Value,
+                                Knet = transaction.Knet.Value,
+                                Location = transaction.Location,
+                                LocationId = transaction.LocationId.Value,
+                                NetAmount = transaction.NetAmount.Value,
+                                ProdId = transaction.ProdId.Value,
+                                ProductNameAr = transaction.ProductNameAr,
+                                ProductNameEn = transaction.ProductNameEn,
+                                Salesman = transaction.Salesman,
+                                SalesReturn = transaction.SalesReturn.Value,
+                                SellQuantity = transaction.SellQuantity.Value,
+                                SellUnit = transaction.SellUnit,
+                                SellUnitId = transaction.SellUnitId.Value,
+                                UnitPrice = transaction.UnitPrice.Value,
+                                Voucher = transaction.Voucher,
+                                VoucherId = transaction.VoucherId.Value,
+                                Year = transaction.Year.Value
+                            };
+
+                            salesReportItems.Add(salesReportItem);
+                        }
+
+                    }
+
+                    if (startdate.Year == 2021)
+                    {
+
+                        var transactions = _report.Transaction_2021.Where(x => (x.InvDateTime >= startdate &&
+                                                                                      x.InvDateTime <= enddate &&
+                                                                                      x.LocationId != 1) ||
+                                                                                      (x.InvDateTime >= fromHoDate &&
+                                                                                      x.InvDateTime <= toHoDate &&
+                                                                                      x.LocationId == 1)).ToList();
+
+                        if (!string.IsNullOrEmpty(locationArray))
+                        {
+                            var locationIds = (from id in locationArray.Split(',')
+                                               select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(voucherTypesArray))
+                        {
+                            var voucherIds = (from id in voucherTypesArray.Split(',')
+                                              select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+                        }
+
+                        foreach (var transaction in transactions)
+                        {
+                            var salesReportItem = new SalesReportItem
+                            {
+                                Amount = transaction.Amount.Value,
+                                AmountRecieved = transaction.AmountRecieved,
+                                BaseQuantity = transaction.BaseQuantity.Value,
+                                BaseUnit = transaction.BaseUnit,
+                                BaseUnitId = transaction.BaseUnitId.Value,
+                                Cash = transaction.Cash.Value,
+                                CreditCard = transaction.CreditCard.Value,
+                                CreditCardType = transaction.CreditCardType,
+                                CustomerId = transaction.CustomerId.Value,
+                                CustomerName = transaction.CustomerName,
+                                CustomerNameAr = transaction.CustomerNameAr,
+                                Date = transaction.Date.Value,
+                                Discount = transaction.Discount.Value,
+                                EntryId = transaction.EntryId.Value,
+                                GroupCD = transaction.GroupCD.Value,
+                                InvDateTime = transaction.InvDateTime.Value,
+                                InvoiceNumber = transaction.InvoiceNumber.Value,
+                                Knet = transaction.Knet.Value,
+                                Location = transaction.Location,
+                                LocationId = transaction.LocationId.Value,
+                                NetAmount = transaction.NetAmount.Value,
+                                ProdId = transaction.ProdId.Value,
+                                ProductNameAr = transaction.ProductNameAr,
+                                ProductNameEn = transaction.ProductNameEn,
+                                Salesman = transaction.Salesman,
+                                SalesReturn = transaction.SalesReturn.Value,
+                                SellQuantity = transaction.SellQuantity.Value,
+                                SellUnit = transaction.SellUnit,
+                                SellUnitId = transaction.SellUnitId.Value,
+                                UnitPrice = transaction.UnitPrice.Value,
+                                Voucher = transaction.Voucher,
+                                VoucherId = transaction.VoucherId.Value,
+                                Year = transaction.Year.Value
+                            };
+
+                            salesReportItems.Add(salesReportItem);
+                        }
+
+                    }
                 }
             }
+            else
+            {
+                var dateRange = GetYearsBetweenDates(fromDate.Value, toDate.Value).ToList();
+
+                foreach (var date in dateRange)
+                {
+                    var fromHoDate = date.Start.TimeOfDay >= new TimeSpan(06, 00, 00)
+                        ? date.Start.Date.AddDays(1)
+                        : date.Start.Date;
+
+                    DateTime toHoDate = new DateTime();
+                    if (date.Start.Date == date.End.Date && date.End.TimeOfDay >= new TimeSpan(06, 00, 00))
+                    {
+                        toHoDate = new DateTime(date.End.Date.Year, date.End.Date.Month, date.End.Date.Day, 23, 59, 00);
+                    }
+                    else if (date.Start.Date < date.End.Date && date.End.TimeOfDay >= new TimeSpan(06, 00, 00))
+                    {
+                        toHoDate = new DateTime(date.End.Date.Year, date.End.Date.Month, date.End.Date.Day, 23, 59, 00).AddDays(1);
+                    }
+                    else if (date.Start.Date < date.End.Date && date.End.TimeOfDay <= new TimeSpan(06, 00, 00))
+                    {
+                        fromHoDate = date.Start.Date;
+                        toHoDate = new DateTime(date.End.Date.Year, date.End.Date.Month, date.End.Date.Day, 23, 59, 00).AddDays(-1);
+                    }
+                    else
+                    {
+                        fromHoDate = date.Start.Date;
+                        toHoDate = new DateTime(date.End.Date.Year, date.End.Date.Month, date.End.Date.Day, 23, 59, 00);
+                    }
+
+                    //if(date.End.Date == new DateTime(2020, 12, 31))
+                    //{
+                    //    toHoDate = new DateTime(2021, 01, 01, 23, 59, 00);
+                    //}
+
+                    //if (fromHoDate == new DateTime(2020, 12, 31))
+                    //{
+                    //    toHoDate = new DateTime(2021, 01, 01, 23, 59, 00);
+                    //}
+
+                    if (toHoDate < fromHoDate)
+                        toHoDate = fromHoDate.AddDays(1).AddMinutes(-1);
+
+                    if (date.Start.Year == 2019)
+                    {
+
+                        var transactions = _report.Transaction_2019.Where(x => (x.InvDateTime >= date.Start &&
+                                                                                      x.InvDateTime <= date.End &&
+                                                                                      x.LocationId != 1) ||
+                                                                                      (x.InvDateTime >= fromHoDate &&
+                                                                                      x.InvDateTime <= toHoDate &&
+                                                                                      x.LocationId == 1)).ToList();
+
+                        if (!string.IsNullOrEmpty(locationArray))
+                        {
+                            var locationIds = (from id in locationArray.Split(',')
+                                               select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(voucherTypesArray))
+                        {
+                            var voucherIds = (from id in voucherTypesArray.Split(',')
+                                              select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+                        }
+
+                        foreach (var transaction in transactions)
+                        {
+                            var salesReportItem = new SalesReportItem
+                            {
+                                Amount = transaction.Amount.Value,
+                                AmountRecieved = transaction.AmountRecieved,
+                                BaseQuantity = transaction.BaseQuantity.Value,
+                                BaseUnit = transaction.BaseUnit,
+                                BaseUnitId = transaction.BaseUnitId.Value,
+                                Cash = transaction.Cash.Value,
+                                CreditCard = transaction.CreditCard.Value,
+                                CreditCardType = transaction.CreditCardType,
+                                CustomerId = transaction.CustomerId.Value,
+                                CustomerName = transaction.CustomerName,
+                                CustomerNameAr = transaction.CustomerNameAr,
+                                Date = transaction.Date.Value,
+                                Discount = transaction.Discount.Value,
+                                EntryId = transaction.EntryId.Value,
+                                GroupCD = transaction.GroupCD.Value,
+                                InvDateTime = transaction.InvDateTime.Value,
+                                InvoiceNumber = transaction.InvoiceNumber.Value,
+                                Knet = transaction.Knet.Value,
+                                Location = transaction.Location,
+                                LocationId = transaction.LocationId.Value,
+                                NetAmount = transaction.NetAmount.Value,
+                                ProdId = transaction.ProdId.Value,
+                                ProductNameAr = transaction.ProductNameAr,
+                                ProductNameEn = transaction.ProductNameEn,
+                                Salesman = transaction.Salesman,
+                                SalesReturn = transaction.SalesReturn.Value,
+                                SellQuantity = transaction.SellQuantity.Value,
+                                SellUnit = transaction.SellUnit,
+                                SellUnitId = transaction.SellUnitId.Value,
+                                UnitPrice = transaction.UnitPrice.Value,
+                                Voucher = transaction.Voucher,
+                                VoucherId = transaction.VoucherId.Value,
+                                Year = transaction.Year.Value
+                            };
+
+                            salesReportItems.Add(salesReportItem);
+                        }
+
+                    }
+
+                    if (date.Start.Year == 2020)
+                    {
+
+                        var transactions = _report.Transaction_2020.Where(x => (x.InvDateTime >= date.Start &&
+                                                                                      x.InvDateTime <= date.End &&
+                                                                                      x.LocationId != 1) ||
+                                                                                      (x.InvDateTime >= fromHoDate &&
+                                                                                      x.InvDateTime <= toHoDate &&
+                                                                                      x.LocationId == 1)).ToList();
+
+                        if (!string.IsNullOrEmpty(locationArray))
+                        {
+                            var locationIds = (from id in locationArray.Split(',')
+                                               select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(voucherTypesArray))
+                        {
+                            var voucherIds = (from id in voucherTypesArray.Split(',')
+                                              select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+                        }
+
+                        foreach (var transaction in transactions)
+                        {
+                            var salesReportItem = new SalesReportItem
+                            {
+                                Amount = transaction.Amount.Value,
+                                AmountRecieved = transaction.AmountRecieved,
+                                BaseQuantity = transaction.BaseQuantity.Value,
+                                BaseUnit = transaction.BaseUnit,
+                                BaseUnitId = transaction.BaseUnitId.Value,
+                                Cash = transaction.Cash.Value,
+                                CreditCard = transaction.CreditCard.Value,
+                                CreditCardType = transaction.CreditCardType,
+                                CustomerId = transaction.CustomerId.Value,
+                                CustomerName = transaction.CustomerName,
+                                CustomerNameAr = transaction.CustomerNameAr,
+                                Date = transaction.Date.Value,
+                                Discount = transaction.Discount.Value,
+                                EntryId = transaction.EntryId.Value,
+                                GroupCD = transaction.GroupCD.Value,
+                                InvDateTime = transaction.InvDateTime.Value,
+                                InvoiceNumber = transaction.InvoiceNumber.Value,
+                                Knet = transaction.Knet.Value,
+                                Location = transaction.Location,
+                                LocationId = transaction.LocationId.Value,
+                                NetAmount = transaction.NetAmount.Value,
+                                ProdId = transaction.ProdId.Value,
+                                ProductNameAr = transaction.ProductNameAr,
+                                ProductNameEn = transaction.ProductNameEn,
+                                Salesman = transaction.Salesman,
+                                SalesReturn = transaction.SalesReturn.Value,
+                                SellQuantity = transaction.SellQuantity.Value,
+                                SellUnit = transaction.SellUnit,
+                                SellUnitId = transaction.SellUnitId.Value,
+                                UnitPrice = transaction.UnitPrice.Value,
+                                Voucher = transaction.Voucher,
+                                VoucherId = transaction.VoucherId.Value,
+                                Year = transaction.Year.Value
+                            };
+
+                            salesReportItems.Add(salesReportItem);
+                        }
+
+                    }
+
+                    if (date.Start.Year == 2021)
+                    {
+
+                        var transactions = _report.Transaction_2021.Where(x => (x.InvDateTime >= date.Start &&
+                                                                                      x.InvDateTime <= date.End &&
+                                                                                      x.LocationId != 1) ||
+                                                                                      (x.InvDateTime >= fromHoDate &&
+                                                                                      x.InvDateTime <= toHoDate &&
+                                                                                      x.LocationId == 1)).ToList();
+
+                        if (!string.IsNullOrEmpty(locationArray))
+                        {
+                            var locationIds = (from id in locationArray.Split(',')
+                                               select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(voucherTypesArray))
+                        {
+                            var voucherIds = (from id in voucherTypesArray.Split(',')
+                                              select short.Parse(id)).ToList();
+                            transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+                        }
+
+                        foreach (var transaction in transactions)
+                        {
+                            var salesReportItem = new SalesReportItem
+                            {
+                                Amount = transaction.Amount.Value,
+                                AmountRecieved = transaction.AmountRecieved,
+                                BaseQuantity = transaction.BaseQuantity.Value,
+                                BaseUnit = transaction.BaseUnit,
+                                BaseUnitId = transaction.BaseUnitId.Value,
+                                Cash = transaction.Cash.Value,
+                                CreditCard = transaction.CreditCard.Value,
+                                CreditCardType = transaction.CreditCardType,
+                                CustomerId = transaction.CustomerId.Value,
+                                CustomerName = transaction.CustomerName,
+                                CustomerNameAr = transaction.CustomerNameAr,
+                                Date = transaction.Date.Value,
+                                Discount = transaction.Discount.Value,
+                                EntryId = transaction.EntryId.Value,
+                                GroupCD = transaction.GroupCD.Value,
+                                InvDateTime = transaction.InvDateTime.Value,
+                                InvoiceNumber = transaction.InvoiceNumber.Value,
+                                Knet = transaction.Knet.Value,
+                                Location = transaction.Location,
+                                LocationId = transaction.LocationId.Value,
+                                NetAmount = transaction.NetAmount.Value,
+                                ProdId = transaction.ProdId.Value,
+                                ProductNameAr = transaction.ProductNameAr,
+                                ProductNameEn = transaction.ProductNameEn,
+                                Salesman = transaction.Salesman,
+                                SalesReturn = transaction.SalesReturn.Value,
+                                SellQuantity = transaction.SellQuantity.Value,
+                                SellUnit = transaction.SellUnit,
+                                SellUnitId = transaction.SellUnitId.Value,
+                                UnitPrice = transaction.UnitPrice.Value,
+                                Voucher = transaction.Voucher,
+                                VoucherId = transaction.VoucherId.Value,
+                                Year = transaction.Year.Value
+                            };
+
+                            salesReportItems.Add(salesReportItem);
+                        }
+
+                    }
+                }
+            }
+
+            
+
             return new SalesReportViewModel
             {
                 SalesReportItems = salesReportItems
@@ -386,6 +947,48 @@ namespace ImillReports.Repository
                                 Year = detail.Year
                             });
                         }
+
+                        var transDetails2021 = _report.Trans_Detail_2021.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value)).ToList();
+                        foreach (var detail in transDetails2021)
+                        {
+                            transactionDetails.Add(new TransDetailsViewModel
+                            {
+                                Amount = detail.Amount,
+                                AmountRecieved = detail.AmountRecieved,
+                                BaseQuantity = detail.BaseQuantity,
+                                BaseUnit = detail.BaseUnit,
+                                BaseUnitId = detail.BaseUnitId,
+                                Cash = detail.Cash,
+                                CreditCard = detail.CreditCard,
+                                CreditCardType = detail.CreditCardType,
+                                CustomerId = detail.CustomerId,
+                                CustomerName = detail.CustomerName,
+                                CustomerNameAr = detail.CustomerNameAr,
+                                Date = detail.Date,
+                                Discount = detail.Discount,
+                                EntryId = detail.EntryId,
+                                GroupCD = detail.GroupCD,
+                                InvDateTime = detail.InvDateTime,
+                                InvoiceNumber = detail.InvoiceNumber,
+                                Knet = detail.Knet,
+                                Location = detail.Location,
+                                LocationId = detail.LocationId,
+                                NetAmount = detail.NetAmount,
+                                Oid = detail.Oid,
+                                ProdId = detail.ProdId,
+                                ProductNameAr = detail.ProductNameAr,
+                                ProductNameEn = detail.ProductNameEn,
+                                Salesman = detail.Salesman,
+                                SalesReturn = detail.SalesReturn,
+                                SellQuantity = detail.SellQuantity,
+                                SellUnit = detail.SellUnit,
+                                SellUnitId = detail.SellUnitId,
+                                UnitPrice = detail.UnitPrice,
+                                Voucher = detail.Voucher,
+                                VoucherId = detail.VoucherId,
+                                Year = detail.Year
+                            });
+                        }
                     }
                     else
                     {
@@ -433,6 +1036,48 @@ namespace ImillReports.Repository
 
                         var transDetails2020 = _report.Trans_Detail_2020.Where(x => entries.Contains(x.EntryId.Value)).ToList();
                         foreach (var detail in transDetails2020)
+                        {
+                            transactionDetails.Add(new TransDetailsViewModel
+                            {
+                                Amount = detail.Amount,
+                                AmountRecieved = detail.AmountRecieved,
+                                BaseQuantity = detail.BaseQuantity,
+                                BaseUnit = detail.BaseUnit,
+                                BaseUnitId = detail.BaseUnitId,
+                                Cash = detail.Cash,
+                                CreditCard = detail.CreditCard,
+                                CreditCardType = detail.CreditCardType,
+                                CustomerId = detail.CustomerId,
+                                CustomerName = detail.CustomerName,
+                                CustomerNameAr = detail.CustomerNameAr,
+                                Date = detail.Date,
+                                Discount = detail.Discount,
+                                EntryId = detail.EntryId,
+                                GroupCD = detail.GroupCD,
+                                InvDateTime = detail.InvDateTime,
+                                InvoiceNumber = detail.InvoiceNumber,
+                                Knet = detail.Knet,
+                                Location = detail.Location,
+                                LocationId = detail.LocationId,
+                                NetAmount = detail.NetAmount,
+                                Oid = detail.Oid,
+                                ProdId = detail.ProdId,
+                                ProductNameAr = detail.ProductNameAr,
+                                ProductNameEn = detail.ProductNameEn,
+                                Salesman = detail.Salesman,
+                                SalesReturn = detail.SalesReturn,
+                                SellQuantity = detail.SellQuantity,
+                                SellUnit = detail.SellUnit,
+                                SellUnitId = detail.SellUnitId,
+                                UnitPrice = detail.UnitPrice,
+                                Voucher = detail.Voucher,
+                                VoucherId = detail.VoucherId,
+                                Year = detail.Year
+                            });
+                        }
+
+                        var transDetails2021 = _report.Trans_Detail_2021.Where(x => entries.Contains(x.EntryId.Value)).ToList();
+                        foreach (var detail in transDetails2021)
                         {
                             transactionDetails.Add(new TransDetailsViewModel
                             {
@@ -673,6 +1318,10 @@ namespace ImillReports.Repository
 
             List<Transaction_2020> imillTrans2020 = null;
             var newTrans200 = new List<Transaction_2020>();
+
+            List<Transaction_2021> imillTrans2021 = null;
+            var newTrans2021 = new List<Transaction_2021>();
+
             foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
             {
                 var startDate = items.OrderBy(x => x.Date).FirstOrDefault().Date;
@@ -728,6 +1377,61 @@ namespace ImillReports.Repository
                     if (newTrans200.Any())
                     {
                         _report.Transaction_2020.AddRange(newTrans200);
+                        _report.SaveChanges();
+                    }
+                }
+
+                if (items.Key == 2021)
+                {
+                    foreach (var item in items)
+                    {
+                        imillTrans2021 = _report.Transaction_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                        if (!imillTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                        {
+                            var iTrans = new Transaction_2021
+                            {
+                                Amount = item.Amount,
+                                AmountRecieved = item.AmountRecieved,
+                                BaseQuantity = item.BaseQuantity,
+                                BaseUnit = item.BaseUnit,
+                                BaseUnitId = item.BaseUnitId,
+                                Cash = item.Cash,
+                                CreditCard = item.CreditCard,
+                                CreditCardType = item.CreditCardType,
+                                CustomerId = item.CustomerId,
+                                CustomerName = item.CustomerName,
+                                CustomerNameAr = item.CustomerNameAr,
+                                Date = item.Date,
+                                Discount = item.Discount,
+                                EntryId = item.EntryId,
+                                GroupCD = item.GroupCD,
+                                InvDateTime = item.InvDateTime,
+                                InvoiceNumber = item.InvoiceNumber,
+                                Knet = item.Knet,
+                                Location = item.Location,
+                                LocationId = item.LocationId,
+                                NetAmount = item.NetAmount,
+                                ProdId = item.ProdId,
+                                ProductNameAr = item.ProductNameAr,
+                                ProductNameEn = item.ProductNameEn,
+                                Salesman = item.Salesman,
+                                SalesReturn = item.SalesReturn,
+                                SellQuantity = item.SellQuantity,
+                                SellUnit = item.SellUnit,
+                                SellUnitId = item.SellUnitId,
+                                UnitPrice = item.UnitPrice,
+                                Voucher = item.Voucher,
+                                VoucherId = item.VoucherId,
+                                Year = item.Year
+
+                            };
+
+                            newTrans2021.Add(iTrans);
+                        }
+                    }
+                    if (newTrans2021.Any())
+                    {
+                        _report.Transaction_2021.AddRange(newTrans2021);
                         _report.SaveChanges();
                     }
                 }
@@ -825,6 +1529,9 @@ namespace ImillReports.Repository
                 List<Trans_Detail_2020> trans_detail_2020 = null;
                 var newTransDetail2020 = new List<Trans_Detail_2020>();
 
+                List<Trans_Detail_2021> trans_detail_2021 = null;
+                var newTransDetail2021 = new List<Trans_Detail_2021>();
+
                 foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
                 {
                     var startDate = items.OrderBy(x => x.InvDateTime).FirstOrDefault().Date;
@@ -882,6 +1589,62 @@ namespace ImillReports.Repository
                         if (newTransDetail2020.Any())
                         {
                             _report.Trans_Detail_2020.AddRange(newTransDetail2020);
+                            _report.SaveChanges();
+                        }
+                    }
+
+                    if (items.Key == 2021)
+                    {
+                        foreach (var item in items)
+                        {
+                            entryId = item.EntryId;
+                            trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.ProdId == item.ProdId && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            {
+                                var iTrans = new Trans_Detail_2021
+                                {
+                                    Amount = item.Amount,
+                                    AmountRecieved = item.AmountRecieved,
+                                    BaseQuantity = item.BaseQuantity,
+                                    BaseUnit = item.BaseUnit,
+                                    BaseUnitId = item.BaseUnitId,
+                                    Cash = item.Cash,
+                                    CreditCard = item.CreditCard,
+                                    CreditCardType = item.CreditCardType,
+                                    CustomerId = item.CustomerId,
+                                    CustomerName = item.CustomerName,
+                                    CustomerNameAr = item.CustomerNameAr,
+                                    Date = item.Date,
+                                    Discount = item.Discount,
+                                    EntryId = item.EntryId,
+                                    GroupCD = item.GroupCD,
+                                    InvDateTime = item.InvDateTime,
+                                    InvoiceNumber = item.InvoiceNumber,
+                                    Knet = item.Knet,
+                                    Location = item.Location,
+                                    LocationId = item.LocationId,
+                                    NetAmount = item.NetAmount,
+                                    ProdId = item.ProdId,
+                                    ProductNameAr = item.ProductNameAr,
+                                    ProductNameEn = item.ProductNameEn,
+                                    Salesman = item.Salesman,
+                                    SalesReturn = item.SalesReturn,
+                                    SellQuantity = item.SellQuantity,
+                                    SellUnit = item.SellUnit,
+                                    SellUnitId = item.SellUnitId,
+                                    UnitPrice = item.UnitPrice,
+                                    Voucher = item.Voucher,
+                                    VoucherId = item.VoucherId,
+                                    Year = item.Year
+
+                                };
+
+                                newTransDetail2021.Add(iTrans);
+                            }
+                        }
+                        if (newTransDetail2021.Any())
+                        {
+                            _report.Trans_Detail_2021.AddRange(newTransDetail2021);
                             _report.SaveChanges();
                         }
                     }
@@ -1077,6 +1840,11 @@ namespace ImillReports.Repository
 
                 List<Transaction_2020> imillTrans2020 = null;
                 var newTrans200 = new List<Transaction_2020>();
+
+                List<Transaction_2021> imillTrans2021 = null;
+                var newTrans2021 = new List<Transaction_2021>();
+
+
                 foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
                 {
                     var startDate = items.OrderBy(x => x.Date).FirstOrDefault().Date;
@@ -1135,6 +1903,64 @@ namespace ImillReports.Repository
                         if (newTrans200.Any())
                         {
                             _report.Transaction_2020.AddRange(newTrans200);
+                            _report.SaveChanges();
+                        }
+                    }
+
+                    if (items.Key == 2021)
+                    {
+                        imillTrans2021 = _report.Transaction_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                        foreach (var item in items)
+                        {
+                            if (!imillTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            {
+                                if (!newTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    var iTrans = new Transaction_2021
+                                    {
+                                        Amount = item.Amount,
+                                        AmountRecieved = item.AmountRecieved,
+                                        BaseQuantity = item.BaseQuantity,
+                                        BaseUnit = item.BaseUnit,
+                                        BaseUnitId = item.BaseUnitId,
+                                        Cash = item.Cash,
+                                        CreditCard = item.CreditCard,
+                                        CreditCardType = item.CreditCardType,
+                                        CustomerId = item.CustomerId,
+                                        CustomerName = item.CustomerName,
+                                        CustomerNameAr = item.CustomerNameAr,
+                                        Date = item.Date,
+                                        Discount = item.Discount,
+                                        EntryId = item.EntryId,
+                                        GroupCD = item.GroupCD,
+                                        InvDateTime = item.InvDateTime,
+                                        InvoiceNumber = item.InvoiceNumber,
+                                        Knet = item.Knet,
+                                        Location = item.Location,
+                                        LocationId = item.LocationId,
+                                        NetAmount = item.NetAmount,
+                                        ProdId = item.ProdId,
+                                        ProductNameAr = item.ProductNameAr,
+                                        ProductNameEn = item.ProductNameEn,
+                                        Salesman = item.Salesman,
+                                        SalesReturn = item.SalesReturn,
+                                        SellQuantity = item.SellQuantity,
+                                        SellUnit = item.SellUnit,
+                                        SellUnitId = item.SellUnitId,
+                                        UnitPrice = item.UnitPrice,
+                                        Voucher = item.Voucher,
+                                        VoucherId = item.VoucherId,
+                                        Year = item.Year
+
+                                    };
+
+                                    newTrans2021.Add(iTrans);
+                                }
+                            }
+                        }
+                        if (newTrans2021.Any())
+                        {
+                            _report.Transaction_2021.AddRange(newTrans2021);
                             _report.SaveChanges();
                         }
                     }
@@ -1220,6 +2046,9 @@ namespace ImillReports.Repository
                 List<Trans_Detail_2020> trans_detail_2020 = null;
                 var newTransDetail2020 = new List<Trans_Detail_2020>();
 
+                List<Trans_Detail_2021> trans_detail_2021 = null;
+                var newTransDetail2021 = new List<Trans_Detail_2021>();
+
                 foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
                 {
                     var startDate = items.OrderBy(x => x.InvDateTime).FirstOrDefault().Date;
@@ -1280,6 +2109,65 @@ namespace ImillReports.Repository
                         if (newTransDetail2020.Any())
                         {
                             _report.Trans_Detail_2020.AddRange(newTransDetail2020);
+                            _report.SaveChanges();
+                        }
+                    }
+
+                    if (items.Key == 2021)
+                    {
+                        trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                        foreach (var item in items)
+                        {
+                            if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.ProdId == item.ProdId && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            {
+                                if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.ProdId == item.ProdId && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    var iTrans = new Trans_Detail_2021
+                                    {
+                                        Amount = item.Amount,
+                                        AmountRecieved = item.AmountRecieved,
+                                        BaseQuantity = item.BaseQuantity,
+                                        BaseUnit = item.BaseUnit,
+                                        BaseUnitId = item.BaseUnitId,
+                                        Cash = item.Cash,
+                                        CreditCard = item.CreditCard,
+                                        CreditCardType = item.CreditCardType,
+                                        CustomerId = item.CustomerId,
+                                        CustomerName = item.CustomerName,
+                                        CustomerNameAr = item.CustomerNameAr,
+                                        Date = item.Date,
+                                        Discount = item.Discount,
+                                        EntryId = item.EntryId,
+                                        GroupCD = item.GroupCD,
+                                        InvDateTime = item.InvDateTime,
+                                        InvoiceNumber = item.InvoiceNumber,
+                                        Knet = item.Knet,
+                                        Location = item.Location,
+                                        LocationId = item.LocationId,
+                                        NetAmount = item.NetAmount,
+                                        ProdId = item.ProdId,
+                                        ProductNameAr = item.ProductNameAr,
+                                        ProductNameEn = item.ProductNameEn,
+                                        Salesman = item.Salesman,
+                                        SalesReturn = item.SalesReturn,
+                                        SellQuantity = item.SellQuantity,
+                                        SellUnit = item.SellUnit,
+                                        SellUnitId = item.SellUnitId,
+                                        UnitPrice = item.UnitPrice,
+                                        Voucher = item.Voucher,
+                                        VoucherId = item.VoucherId,
+                                        Year = item.Year
+
+                                    };
+
+                                    newTransDetail2021.Add(iTrans);
+                                }
+                            }
+                        }
+                        if (newTransDetail2021.Any())
+                        {
+                            _report.Trans_Detail_2021.AddRange(newTransDetail2021);
                             _report.SaveChanges();
                         }
                     }
@@ -1488,6 +2376,68 @@ namespace ImillReports.Repository
                 {
                     var startDate = items.OrderBy(x => x.Date).FirstOrDefault().Date;
                     var endDate = items.OrderByDescending(x => x.Date).FirstOrDefault().Date;
+
+                    if (items.Key == 2021)
+                    {
+                        List<Transaction_2021> imillTrans2021 = null;
+                        var newTrans2021 = new List<Transaction_2021>();
+
+                        imillTrans2021 = _report.Transaction_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                        foreach (var item in items)
+                        {
+                            if (!imillTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            {
+                                if (!newTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    var iTrans = new Transaction_2021
+                                    {
+                                        Amount = item.Amount,
+                                        AmountRecieved = item.AmountRecieved,
+                                        BaseQuantity = item.BaseQuantity,
+                                        BaseUnit = item.BaseUnit,
+                                        BaseUnitId = item.BaseUnitId,
+                                        Cash = item.Cash,
+                                        CreditCard = item.CreditCard,
+                                        CreditCardType = item.CreditCardType,
+                                        CustomerId = item.CustomerId,
+                                        CustomerName = item.CustomerName,
+                                        CustomerNameAr = item.CustomerNameAr,
+                                        Date = item.Date,
+                                        Discount = item.Discount,
+                                        EntryId = item.EntryId,
+                                        GroupCD = item.GroupCD,
+                                        InvDateTime = item.InvDateTime,
+                                        InvoiceNumber = item.InvoiceNumber,
+                                        Knet = item.Knet,
+                                        Location = item.Location,
+                                        LocationId = item.LocationId,
+                                        NetAmount = item.NetAmount,
+                                        ProdId = item.ProdId,
+                                        ProductNameAr = item.ProductNameAr,
+                                        ProductNameEn = item.ProductNameEn,
+                                        Salesman = item.Salesman,
+                                        SalesReturn = item.SalesReturn,
+                                        SellQuantity = item.SellQuantity,
+                                        SellUnit = item.SellUnit,
+                                        SellUnitId = item.SellUnitId,
+                                        UnitPrice = item.UnitPrice,
+                                        Voucher = item.Voucher,
+                                        VoucherId = item.VoucherId,
+                                        Year = item.Year
+
+                                    };
+
+                                    newTrans2021.Add(iTrans);
+                                }
+                            }
+                        }
+                        if (newTrans2021.Any())
+                        {
+                            _report.Transaction_2021.AddRange(newTrans2021);
+                            _report.SaveChanges();
+                        }
+                    }
+
                     if (items.Key == 2020)
                     {
                         List<Transaction_2020> imillTrans2020 = null;
@@ -1629,7 +2579,9 @@ namespace ImillReports.Repository
 
                 var transactions = year == 2020
                                         ? GetSalesTransaction(fromDate, toDate, "", "").SalesReportItems
-                                        : GetSalesTransaction2019(fromDate, toDate, "", "").SalesReportItems;
+                                        : year == 2021
+                                            ? GetSalesTransaction2021(fromDate, toDate, "", "").SalesReportItems
+                                            : GetSalesTransaction2019(fromDate, toDate, "", "").SalesReportItems;
 
                 var entryIdArray = new List<string>();
                 entryIdArray.AddRange(from item in transactions select item.EntryId.ToString());
@@ -1750,6 +2702,68 @@ namespace ImillReports.Repository
                         if (newTransDetail2020.Any())
                         {
                             _report.Trans_Detail_2020.AddRange(newTransDetail2020);
+                            _report.SaveChanges();
+                        }
+                    }
+
+                    if (items.Key == 2021)
+                    {
+                        List<Trans_Detail_2021> trans_detail_2021 = null;
+                        var newTransDetail2021 = new List<Trans_Detail_2021>();
+
+                        trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                        foreach (var item in items)
+                        {
+                            if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.ProdId == item.ProdId && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            {
+                                if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.ProdId == item.ProdId && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    var iTrans = new Trans_Detail_2021
+                                    {
+                                        Amount = item.Amount,
+                                        AmountRecieved = item.AmountRecieved,
+                                        BaseQuantity = item.BaseQuantity,
+                                        BaseUnit = item.BaseUnit,
+                                        BaseUnitId = item.BaseUnitId,
+                                        Cash = item.Cash,
+                                        CreditCard = item.CreditCard,
+                                        CreditCardType = item.CreditCardType,
+                                        CustomerId = item.CustomerId,
+                                        CustomerName = item.CustomerName,
+                                        CustomerNameAr = item.CustomerNameAr,
+                                        Date = item.Date,
+                                        Discount = item.Discount,
+                                        EntryId = item.EntryId,
+                                        GroupCD = item.GroupCD,
+                                        InvDateTime = item.InvDateTime,
+                                        InvoiceNumber = item.InvoiceNumber,
+                                        Knet = item.Knet,
+                                        Location = item.Location,
+                                        LocationId = item.LocationId,
+                                        NetAmount = item.NetAmount,
+                                        ProdId = item.ProdId,
+                                        ProductNameAr = item.ProductNameAr,
+                                        ProductNameEn = item.ProductNameEn,
+                                        Salesman = item.Salesman,
+                                        SalesReturn = item.SalesReturn,
+                                        SellQuantity = item.SellQuantity,
+                                        SellUnit = item.SellUnit,
+                                        SellUnitId = item.SellUnitId,
+                                        UnitPrice = item.UnitPrice,
+                                        Voucher = item.Voucher,
+                                        VoucherId = item.VoucherId,
+                                        Year = item.Year
+
+                                    };
+
+                                    newTransDetail2021.Add(iTrans);
+                                }
+                            }
+                        }
+                        if (newTransDetail2021.Any())
+                        {
+                            _report.Trans_Detail_2021.AddRange(newTransDetail2021);
                             _report.SaveChanges();
                         }
                     }
@@ -1913,6 +2927,94 @@ namespace ImillReports.Repository
             };
         }
 
+        public SalesReportViewModel GetSalesTransaction2021(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray)
+        {
+            if (fromDate == null) fromDate = DateTime.Now;
+            if (toDate == null) toDate = DateTime.Now;
+
+            var salesReportItems = new List<SalesReportItem>();
+
+            var fromHoDate = fromDate.Value.TimeOfDay >= new TimeSpan(06, 00, 00)
+                ? fromDate.Value.Date.AddDays(1)
+                : fromDate.Value.Date;
+
+            var toHoDate = toDate.Value.TimeOfDay >= new TimeSpan(06, 00, 00)
+                ? new DateTime(toDate.Value.Date.Year, toDate.Value.Date.Month, toDate.Value.Date.Day, 23, 59, 00).AddDays(1)
+                : new DateTime(toDate.Value.Date.Year, toDate.Value.Date.Month, toDate.Value.Date.Day, 23, 59, 00).AddDays(-1);
+
+            if (toHoDate < fromHoDate)
+                toHoDate = fromHoDate.AddDays(1).AddMinutes(-1);
+
+
+            var transactions = _report.Transaction_2021.Where(x => (x.InvDateTime >= fromDate &&
+                                                                          x.InvDateTime <= toDate &&
+                                                                          x.LocationId != 1) ||
+                                                                          (x.InvDateTime >= fromHoDate &&
+                                                                          x.InvDateTime <= toHoDate &&
+                                                                          x.LocationId == 1)).ToList();
+
+            if (!string.IsNullOrEmpty(locationArray))
+            {
+                var locationIds = (from id in locationArray.Split(',')
+                                   select short.Parse(id)).ToList();
+                transactions = transactions.Where(x => locationIds.Contains(x.LocationId.Value)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(voucherTypesArray))
+            {
+                var voucherIds = (from id in voucherTypesArray.Split(',')
+                                  select short.Parse(id)).ToList();
+                transactions = transactions.Where(x => voucherIds.Contains(x.VoucherId.Value)).ToList();
+            }
+
+            foreach (var transaction in transactions)
+            {
+                var salesReportItem = new SalesReportItem
+                {
+                    Amount = transaction.Amount.Value,
+                    AmountRecieved = transaction.AmountRecieved,
+                    BaseQuantity = transaction.BaseQuantity.Value,
+                    BaseUnit = transaction.BaseUnit,
+                    BaseUnitId = transaction.BaseUnitId.Value,
+                    Cash = transaction.Cash.Value,
+                    CreditCard = transaction.CreditCard.Value,
+                    CreditCardType = transaction.CreditCardType,
+                    CustomerId = transaction.CustomerId.Value,
+                    CustomerName = transaction.CustomerName,
+                    CustomerNameAr = transaction.CustomerNameAr,
+                    Date = transaction.Date.Value,
+                    Discount = transaction.Discount.Value,
+                    EntryId = transaction.EntryId.Value,
+                    GroupCD = transaction.GroupCD.Value,
+                    InvDateTime = transaction.InvDateTime.Value,
+                    InvoiceNumber = transaction.InvoiceNumber.Value,
+                    Knet = transaction.Knet.Value,
+                    Location = transaction.Location,
+                    LocationId = transaction.LocationId.Value,
+                    NetAmount = transaction.NetAmount.Value,
+                    ProdId = transaction.ProdId.Value,
+                    ProductNameAr = transaction.ProductNameAr,
+                    ProductNameEn = transaction.ProductNameEn,
+                    Salesman = transaction.Salesman,
+                    SalesReturn = transaction.SalesReturn.Value,
+                    SellQuantity = transaction.SellQuantity.Value,
+                    SellUnit = transaction.SellUnit,
+                    SellUnitId = transaction.SellUnitId.Value,
+                    UnitPrice = transaction.UnitPrice.Value,
+                    Voucher = transaction.Voucher,
+                    VoucherId = transaction.VoucherId.Value,
+                    Year = transaction.Year.Value
+                };
+
+                salesReportItems.Add(salesReportItem);
+            }
+
+            return new SalesReportViewModel
+            {
+                SalesReportItems = salesReportItems
+            };
+        }
+
         public List<DailyConsumptionVM> GetDailyConsumptionTrans(DateTime? fromDate, DateTime? toDate)
         {
             var salesDetails = GetSalesDashboardTransaction(fromDate, toDate, "", "", "", true).SRItemsTransDetails.Where(x => x.LocationId == 1);
@@ -1922,7 +3024,7 @@ namespace ImillReports.Repository
             var ledgerIds = new int[] {53917, 53331, 53334, 53649, 53333, 53357, 53593, 53818,
                              53739, 53877, 53899, 54273, 53756, 54625, 54561, 54536,
                              54631, 54342, 54827, 54901, 54967, 54015, 54096, 54103,
-                             54133, 53332};
+                             54133, 53332, 54732};
 
             foreach (var item in salesDetails.GroupBy(x => x.ProdId))
             {
@@ -1953,7 +3055,6 @@ namespace ImillReports.Repository
                                                    x.BaseUnitId != 42 &&
                                                    x.ProdId != 19595).Sum(x => x.SellQuantity);
 
-
                 var cashVoucher = item.Where(x => x.VoucherId == 2022);
                 var sellCashQtyKg = cashVoucher.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
                 var sellCashQtyGm = cashVoucher.Where(x => x.BaseUnitId == 42).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
@@ -1975,8 +3076,8 @@ namespace ImillReports.Repository
                     ItemNameAr = item.FirstOrDefault().ProductNameAr,
                     BaseUnit = totalSellKgQty != 0 ? "Kg" : item.FirstOrDefault().BaseUnit,
                     TotalQty = totalSellKgQty != 0 ? totalSellKgQty : totalSellQty,
-                    TotalBranchQty = totalBranchQty,
-                    CreditQty = Math.Abs(creditQty - totalBranchQty),
+                    TotalBranchQty = Math.Abs(totalBranchQty - creditQty),
+                    CreditQty = creditQty,
                     CashQty = cashQty
                 });
             }

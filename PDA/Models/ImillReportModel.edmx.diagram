@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="58a00790ed3940fd89a1641a0c38dab4" Name="Diagram1" ZoomLevel="34">
+        <EntityTypeShape EntityType="IMILLModel.ICS_Item" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Transaction" Width="1.5" PointX="0.75" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Transaction_Details" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_ICS_Transaction" ManuallyRouted="false" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_ICS_Transaction_Entry_Id_Linked_To_Entry_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_ICS_Transaction_Details_Line_No_Linked_Line_No" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -22,6 +22,7 @@
                 url: '@Url.Action("GetSalesSync", "SalesReport")',
                 data: { days: daysCount },
                 success: function (response) {
+                    console.log("");
                     console.log("Sales : ", response);
                     SyncAllSalesDetailReport(daysCount);
                 },
@@ -112,23 +113,16 @@
         }
 
 
-
-
-
-
-
-
-
         // ****************** Month Sales Data Sync (Manual) ***************** //
 
         SyncSalesMonthReport();
 
         function SyncSalesMonthReport() {
             console.log("Have Started!");
-            var month = 10;
+            var month = 12;
             var year = 2020;
-            var from = 6;
-            var to = 8;
+            var from = 31;
+            var to = 31;
 
             $.ajax({
                 type: 'GET',
@@ -223,6 +217,47 @@
         }
 
         // ****************** Time Attendance Sync End ***************** //
+
+        // ****************** Sending Mail For Time Attendance ***************** //
+
+        EmailTAReport();
+        const emailInterval = setInterval(function () {
+            EmailTAReport();
+        }, 30000);
+
+        function EmailTAReport() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("SendShiftStartEmail", "TAReport")',
+                success: function (response) {
+                    console.log("TA Email : ", response);
+                },
+                error: function (ex) {
+                    console.log("TA Email: ", ex);
+                }
+            });
+        }
+
+        EmailTAEndReport();
+        const emailEndInterval = setInterval(function () {
+            EmailTAEndReport()
+        }, 40000);
+
+        function EmailTAEndReport() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("SendShiftEndEmail", "TAReport")',
+                success: function (response) {
+                    console.log("TA End Email : ", response);
+                },
+                error: function (ex) {
+                    console.log("TA End Email: ", ex);
+                }
+            });
+        }
+
+        // ****************** Sending Mail For Time Attendance End ***************** //
+
 
     </script>
 }

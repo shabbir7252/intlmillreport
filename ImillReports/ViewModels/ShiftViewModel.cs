@@ -14,5 +14,6 @@ namespace ImillReports.ViewModels
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
         public string DisplayText { get; internal set; }
+        public int ShiftCode { get; internal set; }
     }
 }

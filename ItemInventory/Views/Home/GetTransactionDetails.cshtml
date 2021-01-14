@@ -60,30 +60,32 @@
 
 <table class="table table-striped mt-5" dir="rtl">
     @*<thead>
-        <tr>
-            <th scope="col" class="text-right">اسم العنصر</th>
-            <th scope="col" class="text-right">Item Name</th>
-            <th scope="col" class="text-right">إسم الوحدة</th>
-            <th scope="col" class="text-right">Unit Name</th>
-            <th scope="col" class="text-right">كمية</th>
-        </tr>
-    </thead>*@
+            <tr>
+                <th scope="col" class="text-right">اسم العنصر</th>
+                <th scope="col" class="text-right">Item Name</th>
+                <th scope="col" class="text-right">إسم الوحدة</th>
+                <th scope="col" class="text-right">Unit Name</th>
+                <th scope="col" class="text-right">كمية</th>
+            </tr>
+        </thead>*@
     <tbody>
         <tr class="bg-dark">
-            <td class="text-light text-center" scope="col">اسم العنصر</td>
-            <td class="text-light text-center" scope="col">Item Name</td>
-            <td class="text-light text-center" scope="col">إسم الوحدة</td>
-            <td class="text-light text-center" scope="col">Unit Name</td>
-            <td class="text-light text-center" scope="col">كمية</td>
+            <td class="text-light text-right" scope="col">اسم العنصر</td>
+            <td class="text-light text-right" scope="col">كمية</td>
+            <td class="text-light text-right" scope="col">إسم الوحدة</td>
+            <td class="text-light text-right" scope="col">Unit Name</td>
+            <td class="text-light text-right" scope="col">Quantity</td>
+            <td class="text-light text-right" scope="col">Item Name</td>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
                 <td class="text-right">@item.ItemNameAr</td>
-                <td class="text-right">@item.ItemNameEn</td>
+                <td class="text-right">@item.Quantity</td>
                 <td class="text-right">@item.UnitNameAr</td>
                 <td class="text-right">@item.UnitNameEn</td>
                 <td class="text-right">@item.Quantity</td>
+                <td class="text-right">@item.ItemNameEn</td>
             </tr>
         }
     </tbody>

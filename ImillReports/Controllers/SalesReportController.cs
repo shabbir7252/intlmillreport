@@ -455,24 +455,26 @@ namespace ImillReports.Controllers
                 Voucher = x.Voucher
             }).ToList();
 
-            using (ExcelEngine excelEngine = new ExcelEngine())
-            {
-                IApplication application = excelEngine.Excel;
-                application.DefaultVersion = ExcelVersion.Xlsx;
-                IWorkbook workbook = application.Workbooks.Create(1);
-                IWorksheet worksheet = workbook.Worksheets[0];
+            var test = "";
 
-                //Import data to worksheet
-                worksheet.ImportData(exportData, 1, 1, true);
+            //using (ExcelEngine excelEngine = new ExcelEngine())
+            //{
+            //    IApplication application = excelEngine.Excel;
+            //    application.DefaultVersion = ExcelVersion.Xlsx;
+            //    IWorkbook workbook = application.Workbooks.Create(1);
+            //    IWorksheet worksheet = workbook.Worksheets[0];
 
-                var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
-                var reportNamePath = $"{cs}SalesReport.xlsx";
+            //    //Import data to worksheet
+            //    worksheet.ImportData(exportData, 1, 1, true);
+
+            //    var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
+            //    var reportNamePath = $"{cs}SalesReport.xlsx";
                 
-                //Save the file in the given path
-                Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
-                workbook.SaveAs(excelStream);
-                excelStream.Dispose();
-            }
+            //    //Save the file in the given path
+            //    Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
+            //    workbook.SaveAs(excelStream);
+            //    excelStream.Dispose();
+            //}
 
             return result;
         }
@@ -533,7 +535,7 @@ namespace ImillReports.Controllers
 
         #region Sales Hourly Report
 
-        [Authorize(Roles = "Admin,Sales")]
+        [Authorize(Roles = "Admin,Sales, StaffAdmin")]
         public ActionResult SalesHourlyReport(DateTime? fromDate, string[] locationStringArray)
         {
             if (fromDate == null)

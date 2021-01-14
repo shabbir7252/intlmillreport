@@ -1,0 +1,248 @@
+﻿@using Syncfusion.EJ2.Grids;
+@{
+    ViewBag.Title = "Trans Details";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Search");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("ColumnChooser");
+    // toolbarItems.Add(new { text = "Delete", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
+
+    List<object> commands = new List<object>();
+    // commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+    commands.Add(new { type = "Delete", buttonOption = new { iconCss = "e-icons e-delete", cssClass = "delete" } });
+}
+
+@*<style>
+        #items_popup > .e-content > ul > li,
+        #unit_popup > .e-content > ul > li {
+            font-size: 16px;
+        }
+    </style>*@
+
+<div class="container">
+    <div class="row mt-4">
+
+        <div class="col-12 mb-4">
+            <small class="text-muted">Transaction Number</small>
+            <h6>@ViewBag.TransactionNumber</h6>
+
+            <small class="text-muted">Date</small>
+            <h6>@ViewBag.TransDate</h6>
+
+            <small class="text-muted">Location</small>
+            <h6>@ViewBag.Location</h6>
+
+        </div>
+
+        <div class="col-12 loading-placeholder" style="display:none">
+            <div class="d-flex align-items-center mb-3">
+                <strong><span class="loading-text"></span></strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <div class="col-12 inv-grid-container">
+
+            @Html.EJS().Grid("Grid").EnableRtl(false).ActionComplete("actionComplete").DataSource(
+(IEnumerable<object>)
+ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+{
+    col.Field("SerialNo").Visible(false).Add();
+    col.Field("IsVerified").Width("50").Type("checkbox").AllowFiltering(true).AllowSorting(true).Add();
+    col.Field("Oid").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+    col.Field("PartNumber").AllowEditing(false).HeaderText("Part Number").TextAlign(TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+    col.Field("ItemNameEn").AllowEditing(false).HeaderText("Item NameEn").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+    col.Field("ItemNameAr").AllowEditing(false).HeaderText("Item NameAr").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+    col.Field("Weight").HeaderText("Weight").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+    col.Field("SalesRate").HeaderText("Rate").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+    col.Field("Total").AllowEditing(false).Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+    col.HeaderText("Actions").Width("110").Commands(commands).Add();
+
+}).AllowPaging(true).EditSettings(edit =>
+{
+    edit.AllowAdding(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
+     }).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(FilterType.Menu)).PageSettings(
+                  page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select =>
+                       select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).EditSettings(edit =>
+       {
+           edit.AllowEditing(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
+       }).Render()
+        </div>
+        @*.Toolbar(new List<string>() { "Update", "Cancel" })*@
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="EditModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditModal">Edit</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        @Html.EJS().TextBox("weight").Type("number").Render()
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="UpdateGrid()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var responseId = -1;
+        var verificationIds = [];
+        var partNumber = 0;
+
+        function actionComplete(args) {
+            if (args.requestType === 'save') {
+
+                var serialNo = args.data.SerialNo;
+                partNumber = args.data.PartNumber;
+                var transNumber = '@ViewBag.TransactionNumber';
+
+                 $.ajax({
+                    type: 'POST',
+                    data: {
+                        weight: args.data.Weight,
+                        salesRate: args.data.SalesRate,
+                        partNumber: partNumber,
+                        transNumber: transNumber,
+                        serialNo: serialNo
+                    },
+                    url: '@Url.Action("UpdateTransDetail", "Home")',
+                    success: function (response) {
+                        CheckResponse();
+                        window.location.reload();
+                },
+                    error: function (ex) {
+                        alert("Error Occured While Updating!");
+                    }
+                 });
+
+            }
+        }
+
+        function commandClick(args) {
+
+            var type = args.commandColumn.type;
+
+            if (type === 'Edit') {
+                $('#EditModal').modal('show');
+                partNumber = args.rowData.PartNumber
+                document.getElementById('weight').ej2_instances[0].value = args.rowData.Weight;
+            }
+
+            if (type === 'Delete') {
+
+                var serialNo = args.rowData.SerialNo;
+                partNumber = args.rowData.PartNumber;
+                var transNumber = '@ViewBag.TransactionNumber';
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        transNumber: transNumber,
+                        partNumber: partNumber,
+                        serialNo: serialNo
+                    },
+                    url: '@Url.Action("DeleteTransDetails", "Home")',
+                    success: function (response) {
+                    // console.log('response', response);
+                        responseId = response.ReponseId
+                        if (responseId === 1) {
+                            window.location.reload();
+                        }
+                    },
+                    error: function (ex) {
+                        alert("Error Occured While Deleting!");
+                    }
+                });
+            }
+        }
+
+        function UpdateGrid() {
+            var weight = document.getElementById('weight').ej2_instances[0].value;
+            var transNumber = '@ViewBag.TransactionNumber';
+
+            if (transNumber !== '' && transNumber !== null) {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        weight: weight,
+                        partNumber: partNumber,
+                        transNumber: transNumber
+                    },
+                    url: '@Url.Action("UpdateTransDetail", "Home")',
+                    success: function (response) {
+                        // console.log('response', response);
+                        responseId = response.ReponseId;
+                        CheckResponse();
+                },
+                    error: function (ex) {
+                        alert("Error Occured While Updating!");
+                    }
+                });
+            }
+        }
+
+        function dataBound(args) {
+            // this.autoFitColumns(['IsVerified', 'ItemNameEn', 'UnitNameEn', 'Quantity', 'TransactionNumber']);
+        }
+
+        function toolbarClick(args) {
+
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+
+                var excelExportProperties = {
+                    fileName: "TransDetail.xlsx"
+                };
+
+                gridObj.excelExport(excelExportProperties);
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row.cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function CheckResponse() {
+            if (responseId === 1) {
+                window.location.reload();
+            }
+        }
+
+    </script>
+}

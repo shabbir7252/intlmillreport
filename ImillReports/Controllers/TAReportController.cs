@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using ImillReports.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using ImillReports.ViewModels;
 
 namespace ImillReports.Controllers
 {
@@ -19,15 +20,15 @@ namespace ImillReports.Controllers
         {
         }
 
-        public ActionResult Index(DateTime? fromDate, DateTime? toDate, int[] employees)
+        public ActionResult Index(DateTime? fromDate, DateTime? toDate, int[] employees, string type)
         {
-
             if (fromDate == null)
             {
                 var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
                 fromDate = fDate;
                 ViewBag.startDate = fDate;
-            } else
+            }
+            else
             {
                 fromDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 00, 00, 00);
             }
@@ -38,16 +39,24 @@ namespace ImillReports.Controllers
                 toDate = tDate;
                 ViewBag.endDate = tDate;
             }
+            else if (toDate > DateTime.Now)
+            {
+                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            }
             else
             {
                 toDate = new DateTime(toDate.Value.Year, toDate.Value.Month, toDate.Value.Day, 23, 59, 59);
             }
+
+            ViewBag.type = string.IsNullOrEmpty(type) ? "default" : type;
 
             ViewBag.startDate = fromDate;
             ViewBag.endDate = toDate;
             ViewBag.validation = "false";
 
             if (toDate < fromDate) ViewBag.validation = "true";
+
+            GetTASync(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, toDate.Value.Year, toDate.Value.Month, toDate.Value.Day);
 
             var employeeList = _iTARepository.GetEmployees();
             ViewBag.Employees = employeeList;
@@ -66,10 +75,10 @@ namespace ImillReports.Controllers
                 }
             }
 
-            ViewBag.locationVal = employeesArray;
+            var emps = employeesArray.Select(i => i.ToString()).ToArray();
+            ViewBag.employeesVal = emps;
 
-
-            var tAreport = _iTARepository.GetTAReport(fromDate, toDate, employees);
+            var tAreport = _iTARepository.GetTAReport(fromDate, toDate, employees, type);
             ViewBag.DataSource = tAreport;
             return View();
         }
@@ -84,6 +93,22 @@ namespace ImillReports.Controllers
         {
             _iTARepository.DeleteTransactions(verifiedIds);
             return true;
+        }
+
+        public string SendShiftStartEmail()
+        {
+            return _iTARepository.SendShiftStartDetailReport();
+        }
+
+        public string SendShiftEndEmail()
+        {
+            return _iTARepository.SendShiftEndDetailReport();
+        }
+
+        [AllowAnonymous]
+        public ActionResult GetTransactionDetails(List<TimeAttendanceViewModel> model)
+        {
+            return View(model);
         }
     }
 }

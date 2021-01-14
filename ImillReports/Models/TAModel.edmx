@@ -4,7 +4,33 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FCCUNVDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FCCCentralizedDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Device">
+          <Key>
+            <PropertyRef Name="DeviceCode" />
+          </Key>
+          <Property Name="DeviceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeviceCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeviceIP" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" />
+          <Property Name="Companycode" Type="varchar" MaxLength="50" />
+          <Property Name="Divisioncode" Type="varchar" MaxLength="50" />
+          <Property Name="Areacode" Type="varchar" MaxLength="50" />
+          <Property Name="Departmentcode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_EmpAttendance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="varchar" MaxLength="50" />
+          <Property Name="Login" Type="datetime" />
+          <Property Name="Logout" Type="datetime" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
+          <Property Name="CardID" Type="varchar" MaxLength="50" />
+          <Property Name="DeviceCode" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="tbl_EmpLocShiftMap">
           <Key>
             <PropertyRef Name="Oid" />
@@ -15,6 +41,23 @@
           <Property Name="ShiftOid" Type="int" Nullable="false" />
           <Property Name="fromDate" Type="datetime" />
           <Property Name="toDate" Type="datetime" />
+          <Property Name="IsMon" Type="bit" />
+          <Property Name="IsTues" Type="bit" />
+          <Property Name="IsWed" Type="bit" />
+          <Property Name="IsThur" Type="bit" />
+          <Property Name="IsFri" Type="bit" />
+          <Property Name="IsSat" Type="bit" />
+          <Property Name="IsSun" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeLeaves">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_Employees">
           <Key>
@@ -58,6 +101,7 @@
           <Property Name="NameAr" Type="nvarchar" MaxLength="50" />
           <Property Name="Locat_Cd" Type="smallint" />
           <Property Name="DeviceCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="tbl_Shift">
           <Key>
@@ -69,6 +113,30 @@
           <Property Name="NameAr" Type="nvarchar" MaxLength="50" />
           <Property Name="StartTime" Type="time" Precision="7" />
           <Property Name="EndTime" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="tbl_ShiftEmailMap">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShiftOid" Type="int" Nullable="false" />
+          <Property Name="IsEmailSent" Type="bit" Nullable="false" />
+          <Property Name="TransDate" Type="datetime" Nullable="false" />
+          <Property Name="IsForStart" Type="bit" Nullable="false" />
+          <Property Name="ShiftEmailSettingOid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_ShiftEmailSettings">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsRegForEmail" Type="bit" Nullable="false" />
+          <Property Name="RegisterForShifts" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="EmailStartRange" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EmailEndRange" Type="time" Precision="7" Nullable="false" />
+          <Property Name="LateInRange" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EarlyOutRange" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_Transactions">
           <Key>
@@ -91,6 +159,7 @@
           <Property Name="ShiftStart" Type="time" Precision="7" />
           <Property Name="ShiftEnd" Type="time" Precision="7" />
           <Property Name="IsOpened" Type="bit" Nullable="false" />
+          <Property Name="EmployeeAr" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Association Name="FK_tbl_EmpLocShiftMap_tbl_Employees">
           <End Role="tbl_Employees" Type="Self.tbl_Employees" Multiplicity="1" />
@@ -128,12 +197,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FCCUNVDBModelStoreContainer">
+        <EntityContainer Name="FCCCentralizedDBModelStoreContainer">
+          <EntitySet Name="tbl_Device" EntityType="Self.tbl_Device" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_EmpAttendance" EntityType="Self.tbl_EmpAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmpLocShiftMap" EntityType="Self.tbl_EmpLocShiftMap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_EmployeeLeaves" EntityType="Self.tbl_EmployeeLeaves" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Employees" EntityType="Self.tbl_Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmpTransaction" EntityType="Self.tbl_EmpTransaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Location" EntityType="Self.tbl_Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Shift" EntityType="Self.tbl_Shift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ShiftEmailMap" EntityType="Self.tbl_ShiftEmailMap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ShiftEmailSettings" EntityType="Self.tbl_ShiftEmailSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Transactions" EntityType="Self.tbl_Transactions" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Employees" Association="Self.FK_tbl_EmpLocShiftMap_tbl_Employees">
             <End Role="tbl_Employees" EntitySet="tbl_Employees" />
@@ -151,60 +225,19 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="FCCUNVDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="tbl_Location">
+      <Schema Namespace="FCCCentralizedDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_EmpAttendance">
           <Key>
-            <PropertyRef Name="Oid" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NameEn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Locat_Cd" Type="Int16" />
-          <Property Name="DeviceCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tbl_EmpLocShiftMap" Relationship="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Location" FromRole="tbl_Location" ToRole="tbl_EmpLocShiftMap" />
-        </EntityType>
-        <EntityType Name="tbl_Shift">
-          <Key>
-            <PropertyRef Name="Oid" />
-          </Key>
-          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="NameEn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StartTime" Type="Time" Precision="7" />
-          <Property Name="EndTime" Type="Time" Precision="7" />
-          <NavigationProperty Name="tbl_EmpLocShiftMap" Relationship="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Shift" FromRole="tbl_Shift" ToRole="tbl_EmpLocShiftMap" />
-        </EntityType>
-        <EntityContainer Name="FCCUNVDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="tbl_Location" EntityType="Self.tbl_Location" />
-          <EntitySet Name="tbl_Shift" EntityType="Self.tbl_Shift" />
-          <EntitySet Name="tbl_Employees" EntityType="FCCUNVDBModel.tbl_Employees" />
-          <EntitySet Name="tbl_EmpLocShiftMap" EntityType="FCCUNVDBModel.tbl_EmpLocShiftMap" />
-          <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Employees" Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Employees">
-            <End Role="tbl_Employees" EntitySet="tbl_Employees" />
-            <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Location" Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Location">
-            <End Role="tbl_Location" EntitySet="tbl_Location" />
-            <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Shift" Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Shift">
-            <End Role="tbl_Shift" EntitySet="tbl_Shift" />
-            <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
-          </AssociationSet>
-          <EntitySet Name="tbl_EmpTransaction" EntityType="FCCUNVDBModel.tbl_EmpTransaction" />
-          <EntitySet Name="tbl_Transactions" EntityType="FCCUNVDBModel.tbl_Transactions" />
-          </EntityContainer>
-        <EntityType Name="tbl_Employees">
-          <Key>
-            <PropertyRef Name="Oid" />
-          </Key>
-          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NameEn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="NameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Sman_Cd" Type="Int16" />
-          <Property Name="EmployeeID" Type="Int32" />
-          <NavigationProperty Name="tbl_EmpLocShiftMap" Relationship="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Employees" FromRole="tbl_Employees" ToRole="tbl_EmpLocShiftMap" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Login" Type="DateTime" Precision="3" />
+          <Property Name="Logout" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CardID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_EmpLocShiftMap">
           <Key>
@@ -216,13 +249,78 @@
           <Property Name="ShiftOid" Type="Int32" Nullable="false" />
           <Property Name="fromDate" Type="DateTime" Precision="3" />
           <Property Name="toDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="tbl_Employees" Relationship="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Employees" FromRole="tbl_EmpLocShiftMap" ToRole="tbl_Employees" />
-          <NavigationProperty Name="tbl_Location" Relationship="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Location" FromRole="tbl_EmpLocShiftMap" ToRole="tbl_Location" />
-          <NavigationProperty Name="tbl_Shift" Relationship="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Shift" FromRole="tbl_EmpLocShiftMap" ToRole="tbl_Shift" />
+          <Property Name="IsMon" Type="Boolean" />
+          <Property Name="IsTues" Type="Boolean" />
+          <Property Name="IsWed" Type="Boolean" />
+          <Property Name="IsThur" Type="Boolean" />
+          <Property Name="IsFri" Type="Boolean" />
+          <Property Name="IsSat" Type="Boolean" />
+          <Property Name="IsSun" Type="Boolean" />
+          <NavigationProperty Name="tbl_Employees" Relationship="Self.FK_tbl_EmpLocShiftMap_tbl_Employees" FromRole="tbl_EmpLocShiftMap" ToRole="tbl_Employees" />
+          <NavigationProperty Name="tbl_Location" Relationship="Self.FK_tbl_EmpLocShiftMap_tbl_Location" FromRole="tbl_EmpLocShiftMap" ToRole="tbl_Location" />
+          <NavigationProperty Name="tbl_Shift" Relationship="Self.FK_tbl_EmpLocShiftMap_tbl_Shift" FromRole="tbl_EmpLocShiftMap" ToRole="tbl_Shift" />
+        </EntityType>
+        <EntityType Name="tbl_Employees">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameEn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NameAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Sman_Cd" Type="Int16" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <NavigationProperty Name="tbl_EmpLocShiftMap" Relationship="Self.FK_tbl_EmpLocShiftMap_tbl_Employees" FromRole="tbl_Employees" ToRole="tbl_EmpLocShiftMap" />
+        </EntityType>
+        <EntityType Name="tbl_Location">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameEn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Locat_Cd" Type="Int16" />
+          <Property Name="DeviceCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbl_EmpLocShiftMap" Relationship="Self.FK_tbl_EmpLocShiftMap_tbl_Location" FromRole="tbl_Location" ToRole="tbl_EmpLocShiftMap" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbl_Shift">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NameEn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NameAr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="Time" Precision="7" />
+          <Property Name="EndTime" Type="Time" Precision="7" />
+          <NavigationProperty Name="tbl_EmpLocShiftMap" Relationship="Self.FK_tbl_EmpLocShiftMap_tbl_Shift" FromRole="tbl_Shift" ToRole="tbl_EmpLocShiftMap" />
+        </EntityType>
+        <EntityType Name="tbl_Transactions">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeviceCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Employee" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LocationName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LocationOid" Type="Int32" Nullable="false" />
+          <Property Name="TemperatureIn" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="TemperatureOut" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PunchIn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PunchOut" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LateIn" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EarlyOut" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="TotalHoursWorked" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ShiftStart" Type="Time" Precision="7" />
+          <Property Name="ShiftEnd" Type="Time" Precision="7" />
+          <Property Name="IsOpened" Type="Boolean" Nullable="false" />
+          <Property Name="EmployeeAr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_tbl_EmpLocShiftMap_tbl_Employees">
-          <End Type="FCCUNVDBModel.tbl_Employees" Role="tbl_Employees" Multiplicity="1" />
-          <End Type="FCCUNVDBModel.tbl_EmpLocShiftMap" Role="tbl_EmpLocShiftMap" Multiplicity="*" />
+          <End Role="tbl_Employees" Type="Self.tbl_Employees" Multiplicity="1" />
+          <End Role="tbl_EmpLocShiftMap" Type="Self.tbl_EmpLocShiftMap" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Employees">
               <PropertyRef Name="Oid" />
@@ -233,8 +331,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_EmpLocShiftMap_tbl_Location">
-          <End Type="FCCUNVDBModel.tbl_Location" Role="tbl_Location" Multiplicity="1" />
-          <End Type="FCCUNVDBModel.tbl_EmpLocShiftMap" Role="tbl_EmpLocShiftMap" Multiplicity="*" />
+          <End Role="tbl_Location" Type="Self.tbl_Location" Multiplicity="1" />
+          <End Role="tbl_EmpLocShiftMap" Type="Self.tbl_EmpLocShiftMap" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Location">
               <PropertyRef Name="Oid" />
@@ -245,8 +343,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_EmpLocShiftMap_tbl_Shift">
-          <End Type="FCCUNVDBModel.tbl_Shift" Role="tbl_Shift" Multiplicity="1" />
-          <End Type="FCCUNVDBModel.tbl_EmpLocShiftMap" Role="tbl_EmpLocShiftMap" Multiplicity="*" />
+          <End Role="tbl_Shift" Type="Self.tbl_Shift" Multiplicity="1" />
+          <End Role="tbl_EmpLocShiftMap" Type="Self.tbl_EmpLocShiftMap" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Shift">
               <PropertyRef Name="Oid" />
@@ -256,6 +354,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="FCCCentralizedDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_EmpAttendance" EntityType="Self.tbl_EmpAttendance" />
+          <EntitySet Name="tbl_EmpLocShiftMap" EntityType="Self.tbl_EmpLocShiftMap" />
+          <EntitySet Name="tbl_Employees" EntityType="Self.tbl_Employees" />
+          <EntitySet Name="tbl_Location" EntityType="Self.tbl_Location" />
+          <EntitySet Name="tbl_Shift" EntityType="Self.tbl_Shift" />
+          <EntitySet Name="tbl_Transactions" EntityType="Self.tbl_Transactions" />
+          <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Employees" Association="Self.FK_tbl_EmpLocShiftMap_tbl_Employees">
+            <End Role="tbl_Employees" EntitySet="tbl_Employees" />
+            <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Location" Association="Self.FK_tbl_EmpLocShiftMap_tbl_Location">
+            <End Role="tbl_Location" EntitySet="tbl_Location" />
+            <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_EmpLocShiftMap_tbl_Shift" Association="Self.FK_tbl_EmpLocShiftMap_tbl_Shift">
+            <End Role="tbl_Shift" EntitySet="tbl_Shift" />
+            <End Role="tbl_EmpLocShiftMap" EntitySet="tbl_EmpLocShiftMap" />
+          </AssociationSet>
+          <EntitySet Name="tbl_EmployeeLeaves" EntityType="FCCCentralizedDBModel.tbl_EmployeeLeaves" />
+          <EntitySet Name="tbl_ShiftEmailSettings" EntityType="FCCCentralizedDBModel.tbl_ShiftEmailSettings" />
+          <EntitySet Name="tbl_ShiftEmailMap" EntityType="FCCCentralizedDBModel.tbl_ShiftEmailMap" />
+          <EntitySet Name="tbl_Device" EntityType="FCCCentralizedDBModel.tbl_Device" />
+          <EntitySet Name="tbl_EmpTransaction" EntityType="FCCCentralizedDBModel.tbl_EmpTransaction" />
+        </EntityContainer>
+        <EntityType Name="tbl_EmployeeLeaves">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_ShiftEmailSettings">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsRegForEmail" Type="Boolean" Nullable="false" />
+          <Property Name="RegisterForShifts" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="EmailStartRange" Type="Time" Precision="7" Nullable="false" />
+          <Property Name="EmailEndRange" Type="Time" Precision="7" Nullable="false" />
+          <Property Name="LateInRange" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EarlyOutRange" Type="Time" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="tbl_ShiftEmailMap">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShiftOid" Type="Int32" Nullable="false" />
+          <Property Name="IsEmailSent" Type="Boolean" Nullable="false" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsForStart" Type="Boolean" Nullable="false" />
+          <Property Name="ShiftEmailSettingOid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Device">
+          <Key>
+            <PropertyRef Name="DeviceCode" />
+          </Key>
+          <Property Name="DeviceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeviceCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceIP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDefault" Type="Boolean" />
+          <Property Name="Companycode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Divisioncode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Areacode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Departmentcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="tbl_EmpTransaction">
           <Key>
             <PropertyRef Name="Timestamp" />
@@ -279,37 +449,60 @@
           <Property Name="Permission" Type="Int64" />
           <Property Name="IsManual" Type="Boolean" />
         </EntityType>
-        <EntityType Name="tbl_Transactions">
-          <Key>
-            <PropertyRef Name="Oid" />
-          </Key>
-          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
-          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DeviceCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Employee" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LocationName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LocationOid" Type="Int32" Nullable="false" />
-          <Property Name="TemperatureIn" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="TemperatureOut" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="PunchIn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PunchOut" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LateIn" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="EarlyOut" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="TotalHoursWorked" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="ShiftStart" Type="Time" Precision="7" />
-          <Property Name="ShiftEnd" Type="Time" Precision="7" />
-          <Property Name="IsOpened" Type="Boolean" Nullable="false" />
-        </EntityType>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="FCCUNVDBModelStoreContainer" CdmEntityContainer="FCCUNVDBEntities">
+        <EntityContainerMapping StorageEntityContainer="FCCCentralizedDBModelStoreContainer" CdmEntityContainer="FCCCentralizedDBEntities1">
+          <EntitySetMapping Name="tbl_EmpAttendance">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_EmpAttendance">
+              <MappingFragment StoreEntitySet="tbl_EmpAttendance">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Logout" ColumnName="Logout" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="CardID" ColumnName="CardID" />
+                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmpLocShiftMap">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_EmpLocShiftMap">
+              <MappingFragment StoreEntitySet="tbl_EmpLocShiftMap">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
+                <ScalarProperty Name="ShiftOid" ColumnName="ShiftOid" />
+                <ScalarProperty Name="fromDate" ColumnName="fromDate" />
+                <ScalarProperty Name="toDate" ColumnName="toDate" />
+                <ScalarProperty Name="IsMon" ColumnName="IsMon" />
+                <ScalarProperty Name="IsTues" ColumnName="IsTues" />
+                <ScalarProperty Name="IsWed" ColumnName="IsWed" />
+                <ScalarProperty Name="IsThur" ColumnName="IsThur" />
+                <ScalarProperty Name="IsFri" ColumnName="IsFri" />
+                <ScalarProperty Name="IsSat" ColumnName="IsSat" />
+                <ScalarProperty Name="IsSun" ColumnName="IsSun" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Employees">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_Employees">
+              <MappingFragment StoreEntitySet="tbl_Employees">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+                <ScalarProperty Name="Sman_Cd" ColumnName="Sman_Cd" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbl_Location">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Location">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_Location">
               <MappingFragment StoreEntitySet="tbl_Location">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
                 <ScalarProperty Name="NameEn" ColumnName="NameEn" />
                 <ScalarProperty Name="NameAr" ColumnName="NameAr" />
@@ -319,7 +512,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Shift">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Shift">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_Shift">
               <MappingFragment StoreEntitySet="tbl_Shift">
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -330,31 +523,83 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Employees">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Employees">
-              <MappingFragment StoreEntitySet="tbl_Employees">
-                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-                <ScalarProperty Name="Sman_Cd" ColumnName="Sman_Cd" />
-                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
-                <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <EntitySetMapping Name="tbl_Transactions">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_Transactions">
+              <MappingFragment StoreEntitySet="tbl_Transactions">
+                <ScalarProperty Name="EmployeeAr" ColumnName="EmployeeAr" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+                <ScalarProperty Name="Employee" ColumnName="Employee" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
+                <ScalarProperty Name="TemperatureIn" ColumnName="TemperatureIn" />
+                <ScalarProperty Name="TemperatureOut" ColumnName="TemperatureOut" />
+                <ScalarProperty Name="PunchIn" ColumnName="PunchIn" />
+                <ScalarProperty Name="PunchOut" ColumnName="PunchOut" />
+                <ScalarProperty Name="LateIn" ColumnName="LateIn" />
+                <ScalarProperty Name="EarlyOut" ColumnName="EarlyOut" />
+                <ScalarProperty Name="TotalHoursWorked" ColumnName="TotalHoursWorked" />
+                <ScalarProperty Name="ShiftStart" ColumnName="ShiftStart" />
+                <ScalarProperty Name="ShiftEnd" ColumnName="ShiftEnd" />
+                <ScalarProperty Name="IsOpened" ColumnName="IsOpened" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeLeaves">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_EmployeeLeaves">
+              <MappingFragment StoreEntitySet="tbl_EmployeeLeaves">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmpLocShiftMap">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpLocShiftMap">
-              <MappingFragment StoreEntitySet="tbl_EmpLocShiftMap">
-                <ScalarProperty Name="toDate" ColumnName="toDate" />
-                <ScalarProperty Name="fromDate" ColumnName="fromDate" />
-                <ScalarProperty Name="ShiftOid" ColumnName="ShiftOid" />
-                <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
-                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <EntitySetMapping Name="tbl_ShiftEmailSettings">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_ShiftEmailSettings">
+              <MappingFragment StoreEntitySet="tbl_ShiftEmailSettings">
+                <ScalarProperty Name="EarlyOutRange" ColumnName="EarlyOutRange" />
+                <ScalarProperty Name="LateInRange" ColumnName="LateInRange" />
+                <ScalarProperty Name="EmailEndRange" ColumnName="EmailEndRange" />
+                <ScalarProperty Name="EmailStartRange" ColumnName="EmailStartRange" />
+                <ScalarProperty Name="RegisterForShifts" ColumnName="RegisterForShifts" />
+                <ScalarProperty Name="IsRegForEmail" ColumnName="IsRegForEmail" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ShiftEmailMap">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_ShiftEmailMap">
+              <MappingFragment StoreEntitySet="tbl_ShiftEmailMap">
+                <ScalarProperty Name="ShiftEmailSettingOid" ColumnName="ShiftEmailSettingOid" />
+                <ScalarProperty Name="IsForStart" ColumnName="IsForStart" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="IsEmailSent" ColumnName="IsEmailSent" />
+                <ScalarProperty Name="ShiftOid" ColumnName="ShiftOid" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Device">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_Device">
+              <MappingFragment StoreEntitySet="tbl_Device">
+                <ScalarProperty Name="Departmentcode" ColumnName="Departmentcode" />
+                <ScalarProperty Name="Areacode" ColumnName="Areacode" />
+                <ScalarProperty Name="Divisioncode" ColumnName="Divisioncode" />
+                <ScalarProperty Name="Companycode" ColumnName="Companycode" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="DeviceIP" ColumnName="DeviceIP" />
+                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_EmpTransaction">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_EmpTransaction">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_EmpTransaction">
               <MappingFragment StoreEntitySet="tbl_EmpTransaction">
                 <ScalarProperty Name="IsManual" ColumnName="IsManual" />
                 <ScalarProperty Name="Permission" ColumnName="Permission" />
@@ -374,29 +619,6 @@
                 <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Transactions">
-            <EntityTypeMapping TypeName="FCCUNVDBModel.tbl_Transactions">
-              <MappingFragment StoreEntitySet="tbl_Transactions">
-                <ScalarProperty Name="IsOpened" ColumnName="IsOpened" />
-                <ScalarProperty Name="ShiftEnd" ColumnName="ShiftEnd" />
-                <ScalarProperty Name="ShiftStart" ColumnName="ShiftStart" />
-                <ScalarProperty Name="TotalHoursWorked" ColumnName="TotalHoursWorked" />
-                <ScalarProperty Name="EarlyOut" ColumnName="EarlyOut" />
-                <ScalarProperty Name="LateIn" ColumnName="LateIn" />
-                <ScalarProperty Name="PunchOut" ColumnName="PunchOut" />
-                <ScalarProperty Name="PunchIn" ColumnName="PunchIn" />
-                <ScalarProperty Name="TemperatureOut" ColumnName="TemperatureOut" />
-                <ScalarProperty Name="TemperatureIn" ColumnName="TemperatureIn" />
-                <ScalarProperty Name="LocationOid" ColumnName="LocationOid" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="Employee" ColumnName="Employee" />
-                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
-                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

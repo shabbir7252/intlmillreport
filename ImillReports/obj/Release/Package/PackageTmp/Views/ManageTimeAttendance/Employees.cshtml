@@ -27,8 +27,8 @@
     @Html.EJS().Toast("success-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Record(s) Deleted").Render()
     @Html.EJS().Toast("success-added-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Employee Added!").Render()
     @Html.EJS().Toast("success-update-added-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-success").Icon("e-success toast-icons").Title("Record Updated").Content("Employee Updated!").Render()
-    @Html.EJS().Toast("error-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be created! Please try again by refereshing page").Render()
-    @Html.EJS().Toast("error-update-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be updated! Please try again by refereshing page").Render()
+    @Html.EJS().Toast("error-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be created! Please try again by refreshing page").Render()
+    @Html.EJS().Toast("error-update-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-danger").Icon("e-error toast-icons").Title("Updating Failed").Content("Record could not be updated! Please try again by refreshing page").Render()
     @Html.EJS().Toast("info-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please select atleast 1 employee").Render()
     @Html.EJS().Toast("info-added-toast").Position(p => p.X("Center")).NewestOnTop(true).ShowCloseButton(true).ShowProgressBar(true).CssClass("e-toast-info").Icon("e-info toast-icons").Title("Information!").Content("Please review the employee information").Render()
 
@@ -69,11 +69,11 @@
 
                         @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
                    {
-                       col.Field("IsVerified").Type("checkbox").Width("30").AllowFiltering(true).AllowSorting(true).Add();
+                       col.Field("IsVerified").HeaderText("").Type("checkbox").Width("30").AllowFiltering(false).AllowSorting(false).Add();
                        col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
-                       col.Field("EmployeeId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("NameEn").Width("80").HeaderText("Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                       col.Field("NameAr").Width("80").HeaderText("NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("EmployeeId").HeaderText("Emp Id").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NameEn").Width("80").HeaderText("Name En").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Left).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NameAr").Width("80").HeaderText("Name Ar").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                        col.HeaderText("Actions").Width("110").Commands(commands).Add();
                    }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
                        page =>
@@ -155,7 +155,6 @@
                     },
                     url: '@Url.Action("UpdateEmployee", "ManageTimeAttendance")',
                     success: function (response) {
-                        console.log('Update response : ', response);
                         if (response == "true") {
                             setTimeout(() => {
                                 var toastObj = document.getElementById('success-update-added-toast').ej2_instances[0];

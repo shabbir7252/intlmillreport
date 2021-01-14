@@ -31,5 +31,6 @@ namespace ImillReports.Models
         public Nullable<System.TimeSpan> ShiftStart { get; set; }
         public Nullable<System.TimeSpan> ShiftEnd { get; set; }
         public bool IsOpened { get; set; }
+        public string EmployeeAr { get; set; }
     }
 }

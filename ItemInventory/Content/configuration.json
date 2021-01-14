@@ -3,7 +3,7 @@
   "ToAddress": "",
   "Password": "M@ter!alReq$t",
   "Subject": "Item Records",
-  "Body": "Please find the attached PDF for Item Records",
+  "Body": "",
   "Host": "smtp.gmail.com",
   "Port": 587,
   "EnableSsl": true

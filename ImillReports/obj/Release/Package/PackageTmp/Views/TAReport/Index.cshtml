@@ -27,6 +27,27 @@
     .e-headertext {
         font-size: 11px;
     }
+
+    .e-radio + label .e-label {
+        padding-left: 0 !important;
+        padding-right: 15px !important;
+    }
+
+    [type="radio"]:checked + label:after {
+        border: 0 !important;
+    }
+
+    .light-orange {
+        background-color: #EF8823;
+        color: #fff;
+        text-align: center;
+    }
+
+    .late-red {
+        background-color: #E61A23;
+        color: #fff;
+        text-align: center;
+    }
 </style>
 
 
@@ -68,11 +89,17 @@
 
                         <div class="col-3">
 
-                            @Html.EJS().MultiSelect("employees").ShowDropDownIcon().AllowFiltering(true).Filtering("onEmployeesfiltering").Placeholder("Select Employees").DataSource(
+                            @Html.EJS().MultiSelect("employees").ShowDropDownIcon().AllowFiltering(true).Value(ViewBag.employeesVal).Filtering("onEmployeesfiltering").Placeholder("Select Employees").DataSource(
                          (IEnumerable<object>)ViewBag.Employees
                          ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
                          new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "DisplayText", Value = "EmployeeId" }).ActionBegin("onEmployeesBegin").DataBound("onEmployeesBound").Render()
 
+                        </div>
+
+                        <div class="col-3 pt-2">
+                            @Html.EJS().RadioButton("default").Label("Default").Name("type").Value("default").Checked(ViewBag.type == "default").Render()
+                            @Html.EJS().RadioButton("showall").Label("Show All").Name("type").Value("showall").Checked(ViewBag.type == "showall").Render()
+                            @Html.EJS().RadioButton("notScanned").Label("Not Scanned").Name("type").Value("notScanned").Checked(ViewBag.type == "notScanned").Render()
                         </div>
 
                         <div class="col-2">
@@ -84,37 +111,85 @@
             <div class="card mt-3">
 
                 <div class="body">
-
-                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
-               {
-                   col.Field("Oid").Width("30").ShowInColumnChooser(false).Visible(false).Add();
-                   col.Field("IsVerified").Type("checkbox").Width("30").AllowFiltering(true).AllowSorting(true).Add();
-                   col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("EmployeeId").Width("80").HeaderText("Emp Id").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("EmployeeName").HeaderText("Employee").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("TemperatureIn").HeaderText("Temperature In").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("TemperatureOut").HeaderText("Temperature Out").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("ShiftStart").HeaderText("Shift Start").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("ShiftEnd").Width("100").HeaderText("Shift End").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("PunchIn").Width("100").HeaderText("Punch In").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("PunchOut").Width("100").HeaderText("Punch Out").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("LateIn").HeaderText("Late In").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("EarlyOut").HeaderText("Early Out").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("TotalWorkingHours").HeaderText("Total Hours Worked").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("DeviceCode").Width("80").HeaderText("Device Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                   col.Field("IsOpened").Width("80").DisplayAsCheckBox(true).HeaderText("Is opened for backdated entry").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
-
-               }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").Aggregates(agg =>
+                    <div class="control-section">
+                        @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
                    {
-                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
-                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
-                               Field = "TotalWorkingHours", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
-                           }
-                       }).Add();
-                   }).RowSelected("OnSelected").RowDeselected("OnDeselected").SelectionSettings(select =>
-                       select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
+                       col.Field("Oid").Width("30").ShowInColumnChooser(false).Visible(false).Add();
+                       col.Field("IsVerified").Type("checkbox").Width("30").AllowFiltering(false).AllowSorting(false).Add();
+                       col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("EmployeeId").Width("80").HeaderText("Emp Id").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("EmployeeNameAr").HeaderText("Employee Ar").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("EmployeeName").HeaderText("Employee En").Width("80").Visible(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Left).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Status").Template("#statusTemplate").Width("100").AllowFiltering(false).AllowSorting(false).Add();
+                       col.Field("IsOnLeave").ShowInColumnChooser(false).Visible(false).Add();
+                       col.Field("Location").HeaderText("Emp Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("DeviceCode").Width("80").HeaderText("Device Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("TemperatureIn").HeaderText("Temperature In").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("TemperatureOut").HeaderText("Temperature Out").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ShiftStart").HeaderText("Shift Start").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ShiftEnd").Width("100").HeaderText("Shift End").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("PunchIn").Width("100").HeaderText("Punch In").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("PunchOut").Width("100").HeaderText("Punch Out").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "hh:mm:ss a" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("LateIn").HeaderText("Late In").Template("#lateInTemplate").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("IsLateIn").ShowInColumnChooser(false).Visible(false).Add();
+                       col.Field("IsLateIn5Min").ShowInColumnChooser(false).Visible(false).Add();
+                       col.Field("EarlyOut").HeaderText("Early Out").Template("#earlyOutTemplate").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("IsEarlyOut").ShowInColumnChooser(false).Visible(false).Add();
+                       col.Field("IsEarlyOut5Min").ShowInColumnChooser(false).Visible(false).Add();
+                       col.Field("TotalWorkingHours").Visible(false).HeaderText("Total Hours Worked").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ConvTotalHoursWorked").HeaderText("Total Hours Worked").Width("80").Format("N2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("IsOpened").Width("80").DisplayAsCheckBox(true).HeaderText("Is opened for backdated entry").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Visible(false).CustomAttributes(new { @class = "customcss" }).Add();
+
+                   }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                       page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).DataBound("dataBound").Aggregates(agg =>
+                       {
+                           agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                   Field = "TotalWorkingHours", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                               }
+                           }).Add();
+                       }).RowSelected("OnSelected").RowDeselected("OnDeselected").SelectionSettings(select =>
+                           select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
+
+                    </div>
+
+                    <script id="lateInTemplate" type="text/x-template">
+
+                        <div class="template_checkbox">
+                            ${if(IsLateIn === 'true')}
+                                <div class="late-red">${LateIn}</div>
+                            ${else if(IsLateIn5Min === 'true')}
+                                <div class="light-orange">${LateIn}</div>
+                            ${else}
+                                <div>${LateIn}</div> ${/if}
+                        </div>
+
+                    </script>
+
+                    <script id="statusTemplate" type="text/x-template">
+
+                        <div class="template_checkbox">
+                            ${if(IsOnLeave === 'true')}
+                                <div class="late-red">On Leave</div>
+                            ${else}
+                                <div>Active</div> ${/if}
+                        </div>
+
+                    </script>
+
+                    <script id="earlyOutTemplate" type="text/x-template">
+
+                        <div class="templates_checkbox">
+                            ${if(IsEarlyOut === 'true')}
+                                <div class="late-red">${EarlyOut}</div>
+                            ${else if(IsEarlyOut5Min === 'true')}
+                                <div class="light-orange">${EarlyOut}</div>
+                            ${else}
+                                <div>${EarlyOut}</div> ${/if}
+                        </div>
+
+                    </script>
+
                 </div>
             </div>
         </div>
@@ -266,6 +341,39 @@
         }
 
         // ***********************  Employees Filtering and Searching  ***********************
+
+        function customiseCell(args) {
+
+            if (args.column.field === 'LateIn') {
+                console.log(args.data['LateIn']);
+            }
+
+            if (args.column.field === 'IsLateIn') {
+                if (args.data['IsLateIn'] === true) {
+                    var oid = args.data.Oid;
+                    args.cell.classList.add('late-red');
+                }
+            }
+
+            if (args.column.field === 'IsLateIn5Min') {
+                if (args.data['IsLateIn5Min'] === true) {
+                    args.cell.classList.add('light-orange');
+                }
+            }
+
+            if (args.column.field === 'IsEarlyOut') {
+                if (args.data['IsEarlyOut'] === true) {
+                    args.cell.classList.add('late-red');
+                }
+            }
+
+            if (args.column.field === 'IsEarlyOut5Min') {
+                if (args.data['IsEarlyOut5Min'] === true) {
+                    args.cell.classList.add('light-orange');
+                }
+            }
+
+        }
 
     </script>
 }

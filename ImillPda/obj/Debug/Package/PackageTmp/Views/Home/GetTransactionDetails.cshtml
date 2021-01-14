@@ -1,0 +1,515 @@
+﻿
+@{
+    ViewBag.Title = ViewBag.location;
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 13px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+
+
+    <div class="row">
+        <div class="fixed-top" style="background-color: #fff; height: 110px; box-shadow: 0 0 22px -10px #000; width: 100%; top: 50px;z-index:1">
+            <div>
+                <div class="col-8 mx-auto" style="margin-top: 2rem;">
+                    <!-- Button trigger modal -->
+                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Scan Barcode
+                    </button>-->
+                    @Html.EJS().TextBox("Barcode").Placeholder("Barcode").Change("GetItem").Render()
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row loading-row" style="margin-top: 9rem; display:none">
+        <div class="col-8 mx-auto mt-4 loading-placeholder">
+            <div class="d-flex align-items-center mb-3">
+                <strong><span class="loading-text">Saving</span></strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row grid-row" style="margin-top: 9rem;">
+        <div class="col-12">
+
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowTextWrap(true).ActionComplete("actionComplete").AllowResizing(true).Height("auto").Width("auto").ShowColumnChooser(false).Columns(col =>
+                   {
+                       col.Field("IsVerified").HeaderText("").Type("checkbox").Width("60").AllowFiltering(false).AllowSorting(false).Add();
+                       col.Field("Oid").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
+                       col.Field("PartNumber").Visible(false).AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Prod_Cd").Visible(false).AllowEditing(false).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("NameAr").Template("#template").Width("100").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("Qty").Visible(false).AllowEditing(false).Width("65").HeaderText("RQ").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("ActQty").AllowEditing(true).Width("65").AllowFiltering(false).HeaderText("AQ").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+                   }).AllowPaging(false).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(page =>
+                   { page.PageSizes(true); page.PageSize(20); }).EditSettings(edit =>
+                   {
+                       edit.AllowEditing(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
+                   }).Toolbar(new List<string>() {
+                       "Search", "ColumnChooser"
+                   }).DataBound("dataBound").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).CheckboxOnly(true)).Render()
+
+            <script id="template" type="text/x-template">
+                <label class="part-${PartNumber}">${PartNumber}</label>
+                <br />
+                <label>${NameAr}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>Req Qty : ${Qty}</label>
+            </script>
+        </div>
+    </div>
+
+    <div class="row mt-5 grid-row">
+        <div class="col-10 mx-auto" style="direction:rtl; text-align:right">
+            @*@Html.EJS().TextBox("comments").Multiline(true).Placeholder("Comments").Render()*@
+            <label>Comments</label>
+            <h6>@ViewBag.Comments</h6>
+        </div>
+    </div>
+
+    <div class="row mt-5 grid-row">
+        <div class="col-8 mx-auto">
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark btn-block btn-sm btn-block save-items" onclick="SaveItems()">Save</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-primary btn-block btn-sm btn-block save-items" onclick="SubmitItems()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Modal -->
+    @*<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="camera"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+    <!-- Modal For Triggering if item is not in list-->
+    <!-- Check function GetItem() -->
+    <div class="modal fade" id="getItemModal" tabindex="-1" aria-labelledby="getItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="getItemModal-text">Item is not in the request list. Do you want to add it in this request?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Dismiss()">No</button>
+                    <button type="button" class="btn btn-primary" onclick="AddToRequest()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+
+
+        //window.setTimeout(function () {
+        //    window.location.reload();
+        //}, 1800000);
+
+        var itemList = [];
+        var grid;
+        var flag = true;
+        var oid = 0;
+        var newPartNumber = '';
+        var weight = '';
+        var incQtyPartNums = [];
+
+        function dataBound(args) {
+            // this.autoFitColumns(['NameEn', 'NameAr', 'Actions']);
+        }
+
+        function AddToRequest() {
+            $('#getItemModal').modal('hide');
+            var entryId = '@ViewBag.EntryId';
+            if (entryId === '' || entryId === null) {
+                alert("No Id Found!");
+            } else {
+
+                if (newPartNumber === null || newPartNumber === '') {
+                    newPartNumber = prompt("System was unable to detect part number. Please enter \"Part Number\" to proceed").toString();
+                }
+
+                if (weight === null || weight === '') {
+                    newPartNumber = prompt("System was unable to detect quantity or weight. Please enter \"Quantity\Weight\" to proceed").toString();
+                }
+
+                if (newPartNumber != null && newPartNumber != '' && weight !== null && weight !== '') {
+
+                    $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddToInnovaRequest", "Home")',
+                    data: {
+                        partNumber: newPartNumber,
+                        weight: weight,
+                        entryId: entryId
+                    },
+                    success: function (response) {
+                        if (response.ResponseId === 1) {
+
+                            var item = {
+                                'ActQty': 0,
+                                'DeliveryDate': response.RequestedDate,
+                                'IsDelivered': false,
+                                'IsVerified': true,
+                                'LineNo': response.LineNo,
+                                'Locat_Cd': response.Locat_Cd,
+                                'NameAr': response.ItemNameAr,
+                                'NameEn': response.ItemNameEn,
+                                'Oid': response.LineNo,
+                                'PartNumber': response.PartNumber,
+                                'Prod_Cd': response.Prod_Cd,
+                                'Qty': response.Weight,
+                                'IsNewlyAdded': true,
+                                'OrgQty': response.Weight
+                            };
+
+                            itemList.push(item);
+
+                            var grid = document.getElementById('Grid').ej2_instances[0];
+                            grid.dataSource = itemList;
+
+                            grid.refresh();
+
+
+                            //$([document.documentElement, document.body]).animate({
+                            //    scrollTop: $('.part-' + response.PartNumber).offset().top - 300
+                            //}, 1000);
+
+                            //setTimeout(
+                            //    function () {
+                            //        $('.part-' + response.PartNumber).parent().parent().css({ "background-color": "#ff86af" });
+                            //    }, 800);
+
+                            GetItem();
+
+                        } else {
+                            alert(response.Message);
+                            console.log("Response : ", response);
+                        }
+
+                        FocusOnBarcode();
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                        }
+                    });
+
+                }
+            }
+
+            weight = '';
+        }
+
+        function Dismiss() {
+            document.getElementById('Barcode').ej2_instances[0].value = "";
+            setTimeout(
+                function () {
+                    FocusOnBarcode();
+                }, 500);
+        }
+
+        function GetItem() {
+            var barcode = document.getElementById('Barcode').ej2_instances[0].value;
+
+            if (barcode !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBarcodeValue", "Home")',
+                    data: {
+                        barcode: barcode
+                    },
+                    success: function (response) {
+                        if (response.ResponseId === 1) {
+                            var isItemInList = false;
+                            newPartNumber = '';
+                            itemList.some(function (elem, i) {
+                                if (response.PartNumber === elem.PartNumber) {
+                                    if ((elem.ActQty + response.Weight) > elem.Qty) {
+                                        var skip = false;
+                                        incQtyPartNums.some(function (pn, i2) {
+                                            if (elem.PartNumber === pn) {
+                                                elem.Qty = (elem.ActQty + response.Weight);
+                                                elem.ActQty = (elem.ActQty + response.Weight);
+                                                elem.IsReqQtyChanged = true;
+                                                skip = true;
+                                            }
+                                        });
+
+                                        if (!skip) {
+                                            var res = confirm("You have reached the maximum quantity for item " + elem.PartNumber + ". Do you want to add more quantity?");
+                                            if (res) {
+                                                elem.Qty = (elem.ActQty + response.Weight);
+                                                elem.ActQty = (elem.ActQty + response.Weight);
+                                                elem.IsReqQtyChanged = true;
+                                                incQtyPartNums.push(elem.PartNumber);
+                                            } else {
+                                                elem.ActQty = elem.Qty;
+                                            }
+                                        }
+
+
+
+                                    } else {
+                                        elem.ActQty = elem.ActQty + response.Weight;
+                                    }
+
+                                    elem.IsVerified = true;
+                                    isItemInList = true;
+                                }
+                            });
+
+                            if (!isItemInList) {
+                                newPartNumber = response.PartNumber;
+                                weight = response.Weight;
+                                $('.getItemModal-text').html('<span style="font-weight: 700;">' + response.ItemNameAr + ' (' + response.PartNumber  + ') </span> is not in the request list. Do you want to add it in this request?');
+                                $('#getItemModal').modal('show');
+                            } else {
+                                var grid = document.getElementById('Grid').ej2_instances[0];
+                                grid.dataSource = itemList;
+                                grid.refresh();
+
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $('.part-' + response.PartNumber).offset().top - 300
+                                }, 1000);
+
+                                setTimeout(
+                                    function () {
+                                        $('.part-' + response.PartNumber).parent().parent().css({ "background-color": "#ff86af" });
+                                    }, 800);
+
+
+                                document.getElementById('Barcode').ej2_instances[0].value = "";
+                            }
+                        } else {
+                            alert(response.Message);
+                            console.log("Response : ", response);
+                        }
+
+                        FocusOnBarcode();
+                        // document.getElementById('Barcode').focus();
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+            }
+
+            // console.log('Item Changed : ', itemList);
+        }
+
+        $(document).ready(function () {
+            grid = document.getElementById('Grid').ej2_instances[0];
+            itemList = grid.dataSource;
+            document.getElementById('Barcode').focus();
+
+            // console.log('Item List : ', itemList);
+        });
+
+        function actionComplete(args) {
+            if (args.requestType === 'save') {
+                debugger;
+                var qty = args.data.ActQty;
+                itemList.some(function (elem, i) {
+                    if (elem.Oid === args.data.Oid) {
+                        if (qty !== '' || qty !== null) {
+                            if (qty <= args.data.OrgQty) {
+                                elem.Qty = args.data.OrgQty;
+                                elem.ActQty = qty;
+                            }
+
+                            if (qty > args.data.Qty) {
+                                elem.Qty = qty
+                                elem.ActQty = qty;
+                            }
+
+                            if (args.data.IsNewlyAdded) {
+                                elem.Qty = qty;
+                                elem.ActQty = qty;
+                            }
+                        } else {
+                            debugger;
+                            elem.ActQty = 0;
+                        }
+                        elem.IsVerified = true;
+                    }
+                });
+
+                var grid = document.getElementById('Grid').ej2_instances[0];
+                grid.dataSource = itemList;
+                grid.refresh();
+                flag = false;
+            }
+        }
+
+        function OnSelected(args) {
+            if (flag) {
+                oid = args.data.Oid;
+                itemList.some(function (elem, i) {
+                    if (elem.Oid === oid) {
+                        if (elem.IsVerified) {
+                            elem.ActQty = 0;
+                            elem.Qty = elem.OrgQty;
+                            elem.IsVerified = false;
+                        } else {
+                            elem.ActQty = args.data.Qty;
+                            elem.IsVerified = true;
+                        }
+                    }
+                });
+                oid = 0;
+                grid.dataSource = itemList;
+                grid.refresh();
+            } else {
+                flag = true;
+            }
+        }
+
+        function SubmitItems() {
+            var submit = confirm("Are you sure you want to submit?");
+            if (submit == true) {
+                $('.grid-row').hide();
+                $('.loading-row').show();
+                var entryId = '@ViewBag.EntryId';
+                window.localStorage.setItem('itemList', JSON.stringify(itemList));
+                window.localStorage.setItem('entryId', entryId);
+                $.ajax({
+                type: 'POST',
+                    data: {
+                        itemList: itemList,
+                        EntryId: entryId
+                    },
+                    url: '@Url.Action("SaveTransaction", "Home")',
+                    success: function (response) {
+                        alert(response.Message);
+                        if (response.ReponseId === 1) {
+                            window.localStorage.removeItem('itemList');
+                            window.localStorage.removeItem('entryId');
+
+                            DeleteOpenTransaction(entryId);
+
+                            var link = "@Url.Action("Index", "Home")";
+                            window.location.href = link;
+                        }
+
+                        $('.loading-row').hide();
+                        $('.grid-row').show();
+                    },
+                    error: function (ex) {
+                        console.log(ex);
+                        alert("Error Occured While Saving! " + ex);
+                        $('.loading-row').hide();
+                        $('.grid-row').show();
+                    }
+                });
+            }
+        }
+
+        function RefreshGrid() {
+            grid.refresh();
+            refreshGrid = true;
+        }
+
+        function FocusOnBarcode(){
+            document.getElementById('Barcode').focus();
+        }
+
+        function SaveItems() {
+
+            $('.grid-row').hide();
+            $('.loading-row').show();
+            var entryId = '@ViewBag.EntryId';
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    itemList: itemList,
+                    EntryId: entryId
+                },
+                url: '@Url.Action("DraftTransactions", "Home")',
+                success: function (response) {
+
+                    if (response.ReponseId === 1) {
+                        alert(response.Message);
+                    }
+
+                    $('.loading-row').hide();
+                    $('.grid-row').show();
+                },
+                error: function (ex) {
+                    console.log(ex);
+                    alert("Error Occured While Saving! " + ex);
+                    $('.loading-row').hide();
+                    $('.grid-row').show();
+                }
+            });
+
+        }
+
+        function DeleteOpenTransaction(entryId) {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    entryId: entryId
+                },
+                url: '@Url.Action("DeleteOpenTransaction", "Home")',
+                success: function (response) {
+                },
+                error: function (ex) {
+                    console.log(ex);
+                }
+            });
+        }
+
+    </script>
+
+}

@@ -21,26 +21,29 @@ namespace ImillReports.Controllers
         public ActionResult AllocateShiftLocation()
         {
             ViewBag.Employees = _iTARepository.GetEmployees();
-            ViewBag.Shifts = _iTARepository.GetShifts().OrderBy(x => x.Code);
+            ViewBag.Shifts = _iTARepository.GetShifts();
             ViewBag.Locations = _iTARepository.GetLocations().OrderBy(x => x.NameEn);
             ViewBag.DataSource = _iTARepository.GetEmpAllocations().OrderBy(x => x.EmpId);
             return View();
         }
 
         [HttpPost]
-        public ContentResult AllocateShiftLocation(string locations, string shifts, List<int> verifiedIds)
+        public string AllocateShiftLocation(string locations, string shifts, List<int> verifiedIds, string fromDate, string toDate, 
+            bool sun, bool mon, bool tues, bool wed, bool thur, bool fri, bool sat)
         {
+            var provider = CultureInfo.InvariantCulture;
+            var format = "d-M-yyyy";
+            var from = (string.IsNullOrEmpty(fromDate) ? DateTime.ParseExact("01-06-2020", format, provider) : DateTime.ParseExact(fromDate, format, provider));
+            var to = string.IsNullOrEmpty(toDate) ? DateTime.ParseExact("31-12-9999", format, provider) : DateTime.ParseExact(toDate, format, provider);
 
-            _iTARepository.UpdateEmpAllocations(locations, shifts, verifiedIds);
+            //var source = _iTARepository.GetEmpAllocations();
+            //var result = new ContentResult
+            //{
+            //    Content = JsonConvert.SerializeObject(source),
+            //    ContentType = "application/json"
+            //};
 
-            var source = _iTARepository.GetEmpAllocations();
-            var result = new ContentResult
-            {
-                Content = JsonConvert.SerializeObject(source),
-                ContentType = "application/json"
-            };
-
-            return result;
+            return _iTARepository.UpdateEmpAllocations(locations, shifts, verifiedIds, from, to, sun, mon, tues, wed, thur, fri, sat); ;
         }
 
         [HttpGet]
@@ -118,6 +121,20 @@ namespace ImillReports.Controllers
         }
 
         [HttpPost]
+        public ContentResult UpdateLocation(int oid, string deviceCode, string NameEn, string NameAr)
+        {
+            var response = _iTARepository.UpdateLocation(oid, deviceCode, NameEn, NameAr);
+
+            var result = new ContentResult
+            {
+                Content = JsonConvert.SerializeObject(response),
+                ContentType = "application/json"
+            };
+
+            return result;
+        }
+
+        [HttpPost]
         public ContentResult DeleteLocations(List<int> verifiedIds)
         {
             _iTARepository.DeleteLocations(verifiedIds);
@@ -171,19 +188,48 @@ namespace ImillReports.Controllers
         }
 
         [HttpPost]
-        public int AddAllocation(string fromDate, string toDate, List<int> employees, string shift, string location)
+        public string AddAllocation(string fromDate, string toDate, List<int> employees, string shift, string location,
+            bool sun, bool mon, bool tues, bool wed, bool thur, bool fri, bool sat)
         {
             var provider = CultureInfo.InvariantCulture;
             var format = "d-M-yyyy";
-            var from = (string.IsNullOrEmpty(fromDate) ? DateTime.ParseExact("01-06-2020", format, provider) : DateTime.ParseExact(fromDate, format, provider)).AddMonths(1);
+            var from = (string.IsNullOrEmpty(fromDate) ? DateTime.ParseExact("01-06-2020", format, provider) : DateTime.ParseExact(fromDate, format, provider));
             var to = string.IsNullOrEmpty(toDate) ? DateTime.ParseExact("31-12-9999", format, provider) : DateTime.ParseExact(toDate, format, provider);
-            return _iTARepository.AddAllocation(from, to, employees, shift, location);
+            return _iTARepository.AddAllocation(from, to, employees, shift, location, sun, mon, tues, wed, thur, fri, sat);
         }
 
         [HttpPost]
         public void DeleteAllocations(List<int> verifiedIds)
         {
             _iTARepository.DeleteAllocations(verifiedIds);
+        }
+
+        [HttpGet]
+        public ActionResult ManageEmployeeLeave()
+        {
+            ViewBag.Employees = _iTARepository.GetEmployees();
+            ViewBag.DataSource = _iTARepository.GetEmployeeLeaves();
+            return View();
+        }
+
+        [HttpPost]
+        public string AddEmployeeLeaves(string fromDate, string toDate, List<int> employees)
+        {
+            var provider = CultureInfo.InvariantCulture;
+            var format = "d-M-yyyy";
+            int index = fromDate.IndexOf('-');
+            var innerDate = fromDate.Substring(index + 1);
+
+            var from = (string.IsNullOrEmpty(fromDate) ? DateTime.ParseExact("01-06-2020", format, provider) : DateTime.ParseExact(fromDate, format, provider));
+            var to = string.IsNullOrEmpty(toDate) ? DateTime.ParseExact("31-12-9999", format, provider) : DateTime.ParseExact(toDate, format, provider);
+
+            return _iTARepository.AddEmployeeLeaves(from, to, employees);
+        }
+
+        [HttpPost]
+        public void DeleteEmployeeLeaves(List<int> verifiedIds)
+        {
+            _iTARepository.DeleteEmployeeLeaves(verifiedIds);
         }
     }
 }

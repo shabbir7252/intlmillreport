@@ -5,6 +5,7 @@ using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ImillReports.Controllers
 {
@@ -464,6 +465,8 @@ namespace ImillReports.Controllers
             ViewBag.jsonResult = data.Chart1;
             ViewBag.jsonResult2 = data.Chart2;
 
+            // GeneratePdf();
+
             return View();
 
         }
@@ -830,6 +833,52 @@ namespace ImillReports.Controllers
 
             return PartialView("_BranchSalesDetails");
 
+        }
+
+        [AllowAnonymous]
+        public ActionResult BranchSalesForPrint(DateTime? fromDate, DateTime? toDate)
+        {
+            if (fromDate == null)
+                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+
+            if (toDate == null)
+                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+
+            ViewBag.fromDate = fromDate.ToString();
+            ViewBag.toDate = toDate.ToString();
+            ViewBag.fromD = fromDate.Value.ToString("dd/MMM/yyyy hh:mm tt");
+            ViewBag.toD = toDate.Value.ToString("dd/MMM/yyyy hh:mm tt");
+
+            if (toDate < fromDate) ViewBag.validation = "true";
+            var data = BranchSalesData(fromDate.ToString(), toDate.ToString());
+
+            ViewBag.jsonResult = data.Chart1;
+            ViewBag.jsonResult2 = data.Chart2;
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        public void GeneratePdf()
+        {
+            var fromDate = new DateTime(2021, 01, 01, 12, 00, 00);
+            var toDate = new DateTime(2021, 01, 01, 23, 59, 59);
+
+            var actionResult = new Rotativa.ActionAsPdf("BranchSalesForPrint", new { fromDate = fromDate, toDate = toDate})
+            {
+                PageSize = Rotativa.Options.Size.A4,
+                PageOrientation = Rotativa.Options.Orientation.Landscape,
+                IsLowQuality = false
+            };
+            var byteArray = actionResult.BuildPdf(ControllerContext);
+            var pathName = "~/Content/Print/";
+            var path = Path.Combine(Server.MapPath(pathName));
+            var fileName = "Dashboard.pdf";
+            var fullPath = Path.Combine(path, fileName);
+
+            var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+            fileStream.Write(byteArray, 0, byteArray.Length);
+            fileStream.Close();
         }
 
     }

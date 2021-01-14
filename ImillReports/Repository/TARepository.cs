@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Net;
+using System.Web;
 using System.Linq;
+using System.Net.Mail;
+using ClosedXML.Excel;
+using System.Data.Entity;
 using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
@@ -9,9 +14,9 @@ namespace ImillReports.Repository
 {
     public class TARepository : ITARepository
     {
-        private readonly FCCUNVDBEntities _context;
+        private readonly FCCCentralizedDBEntities1 _context;
 
-        public TARepository(FCCUNVDBEntities context)
+        public TARepository(FCCCentralizedDBEntities1 context)
         {
             _context = context;
         }
@@ -29,13 +34,21 @@ namespace ImillReports.Repository
                                                                          x.TransactionDateTime <= toDate)
                                                              .GroupBy(a => a.EmployeeID).ToList();
 
-            var tAModels = new List<TimeAttendanceViewModel>();
+            var employeeLeaves = _context.tbl_EmployeeLeaves.ToList();
+
+
+            // var resultFlag = await _context.StableAllotment.AnyAsync(x =>
+            // x.StableRoom == stableRoom && x.StartDate <= model.StartDate && x.EndDate >= model.StartDate ||
+            // x.StartDate <= model.EndDate && x.EndDate >= model.EndDate);
+
+            var taModels = new List<TimeAttendanceViewModel>();
 
             var locations = _context.tbl_Location;
 
             foreach (var item in empTransactions)
             {
-                for (var i = fromDate.Date; i <= toDate.Date; i.AddDays(1))
+                // var flag = false;
+                for (var i = fromDate.Date; i <= toDate.Date;)
                 {
                     var iFirstTime = new DateTime(i.Year, i.Month, i.Day, 00, 00, 00);
                     var iLastTime = new DateTime(i.Year, i.Month, i.Day, 23, 59, 59);
@@ -44,73 +57,338 @@ namespace ImillReports.Repository
                     if (selectedDateTime.Count > 0)
                     {
                         var firstRecord = selectedDateTime.OrderBy(x => x.TransactionDateTime).FirstOrDefault();
+
                         if (firstRecord.EmployeeID != "")
                         {
-                            var lastRecord = selectedDateTime.Where(a => a.DeviceCode == firstRecord.DeviceCode).OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
-                            var punchIn = firstRecord.TransactionDateTime;
-                            var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
-                                                                                    ? lastRecord.TransactionDateTime
-                                                                                    : firstRecord.TransactionDateTime;
-                            // var val = 0;
-                            var empId = int.TryParse(firstRecord.EmployeeID, out int val) == true ? int.Parse(firstRecord.EmployeeID) : 0;
-                            var employeeName = "";
-                            tbl_Shift shift = null;
-                            TimeSpan? shiftStart = null;
-                            TimeSpan? shiftEnd = null;
-                            var locationOid = 0;
-                            var locationNameAr = "";
-
-                            if (_context.tbl_Employees.Any(x => x.EmployeeID == empId))
+                            foreach (var rec in selectedDateTime)
                             {
-                                var employee = _context.tbl_Employees.FirstOrDefault(x => x.EmployeeID == empId);
-                                var empOid = employee.Oid;
-                                employeeName = employee.NameAr;
+                                var empId = int.TryParse(firstRecord.EmployeeID, out int val) == true ? int.Parse(firstRecord.EmployeeID) : 0;
+                                var employeeName = "";
+                                var employeeNameAr = "";
+                                tbl_Shift shift = null;
+                                TimeSpan? shiftStart = null;
+                                TimeSpan? shiftEnd = null;
+                                var locationOid = 0;
+                                var locationNameAr = "";
 
-                                tbl_EmpLocShiftMap empLocShiftMap = null;
-                                var mapCount = _context.tbl_EmpLocShiftMap.Count(x => x.EmpId == empOid);
-                                if (mapCount == 1)
-                                    empLocShiftMap = _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid);
-                                else
+                                if (_context.tbl_Employees.Any(x => x.EmployeeID == empId))
                                 {
-                                    var mappingList = _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid).OrderByDescending(x => x.fromDate).ToList();
-                                    empLocShiftMap = mappingList.FirstOrDefault(x => x.fromDate >= i && x.fromDate <= i && x.toDate > i);
+                                    var employee = _context.tbl_Employees.FirstOrDefault(x => x.EmployeeID == empId);
+                                    var empOid = employee.Oid;
+                                    employeeName = employee.NameEn;
+                                    employeeNameAr = employee.NameAr;
+
+                                    tbl_EmpLocShiftMap empLocShiftMap = null;
+                                    var mapCount = _context.tbl_EmpLocShiftMap.Count(x => x.EmpId == empOid);
+
+                                    if (mapCount == 1)
+                                    {
+                                        var lastRecord = selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
+
+                                        var punchIn = firstRecord.TransactionDateTime;
+                                        var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
+                                                                                       ? lastRecord.TransactionDateTime
+                                                                                       : firstRecord.TransactionDateTime;
+
+                                        var currentDay = new DateTime(i.Year, i.Month, i.Day).DayOfWeek;
+                                        var sat = false;
+                                        var sun = false;
+                                        var mon = false;
+                                        var tues = false;
+                                        var wed = false;
+                                        var thur = false;
+                                        var fri = false;
+
+                                        if (currentDay == DayOfWeek.Saturday)
+                                            sat = true;
+                                        if (currentDay == DayOfWeek.Sunday)
+                                            sun = true;
+                                        if (currentDay == DayOfWeek.Monday)
+                                            mon = true;
+                                        if (currentDay == DayOfWeek.Tuesday)
+                                            tues = true;
+                                        if (currentDay == DayOfWeek.Wednesday)
+                                            wed = true;
+                                        if (currentDay == DayOfWeek.Thursday)
+                                            thur = true;
+                                        if (currentDay == DayOfWeek.Friday)
+                                            fri = true;
+
+                                        // empLocShiftMap = _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid);
+
+                                        empLocShiftMap = sat == true
+                                            ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsSat.Value == true)
+                                            : sun == true
+                                            ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsSun.Value == true)
+                                            : mon == true
+                                            ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsMon.Value == true)
+                                            : tues == true
+                                            ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsTues.Value == true)
+                                            : wed == true
+                                            ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsWed.Value == true)
+                                            : thur == true
+                                            ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsThur.Value == true)
+                                            : _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsFri.Value == true);
+
+                                        if (empLocShiftMap != null)
+                                        {
+                                            shift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == empLocShiftMap.ShiftOid);
+                                            shiftStart = shift.StartTime;
+                                            shiftEnd = shift.EndTime;
+                                            var location = locations.FirstOrDefault(x => x.Oid == empLocShiftMap.LocationOid);
+                                            locationOid = location.Oid;
+                                            locationNameAr = location.NameAr;
+                                        }
+
+                                        if (empId != 0)
+                                        {
+                                            var taModel = new TimeAttendanceViewModel()
+                                            {
+                                                TransDate = firstRecord.TransactionDateTime.Value.Date,
+                                                DeviceCode = firstRecord.DeviceCode,
+                                                EmployeeId = empId,
+                                                EmployeeName = employeeName,
+                                                EmployeeNameAr = employeeNameAr,
+                                                Location = locationNameAr,
+                                                LocationId = locationOid,
+                                                TemperatureIn = firstRecord.Temperature,
+                                                TemperatureOut = lastRecord.Temperature,
+                                                PunchIn = punchIn,
+                                                PunchOut = punchOut,
+                                                ShiftStart = shiftStart,
+                                                ShiftEnd = shiftEnd,
+                                                LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
+                                                EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
+                                                TotalHoursWorked = punchOut.Value.TimeOfDay - punchIn.Value.TimeOfDay,
+                                                IsOpened = shift == null
+                                            };
+
+                                            taModels.Add(taModel);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var currentDay = new DateTime(i.Year, i.Month, i.Day).DayOfWeek;
+                                        var sat = false;
+                                        var sun = false;
+                                        var mon = false;
+                                        var tues = false;
+                                        var wed = false;
+                                        var thur = false;
+                                        var fri = false;
+
+                                        if (currentDay == DayOfWeek.Saturday)
+                                            sat = true;
+                                        if (currentDay == DayOfWeek.Sunday)
+                                            sun = true;
+                                        if (currentDay == DayOfWeek.Monday)
+                                            mon = true;
+                                        if (currentDay == DayOfWeek.Tuesday)
+                                            tues = true;
+                                        if (currentDay == DayOfWeek.Wednesday)
+                                            wed = true;
+                                        if (currentDay == DayOfWeek.Thursday)
+                                            thur = true;
+                                        if (currentDay == DayOfWeek.Friday)
+                                            fri = true;
+
+                                        var mappingList = sat == true
+                                            ? _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsSat.Value).OrderByDescending(x => x.fromDate).ToList()
+                                            : sun == true
+                                            ? _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsSun.Value).OrderByDescending(x => x.fromDate).ToList()
+                                            : mon == true
+                                            ? _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsMon.Value).OrderByDescending(x => x.fromDate).ToList()
+                                            : tues == true
+                                            ? _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsTues.Value).OrderByDescending(x => x.fromDate).ToList()
+                                            : wed == true
+                                            ? _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsWed.Value).OrderByDescending(x => x.fromDate).ToList()
+                                            : thur == true
+                                            ? _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsThur.Value).OrderByDescending(x => x.fromDate).ToList()
+                                            : _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empOid && x.IsFri.Value == true).OrderByDescending(x => x.fromDate).ToList();
+
+                                        var dbShifts = _context.tbl_Shift;
+
+                                        foreach (var mapShift in mappingList)
+                                        {
+                                            var dbShift = dbShifts.FirstOrDefault(x => x.Oid == mapShift.ShiftOid);
+
+                                            iFirstTime = new DateTime(i.Year, i.Month, i.Day, dbShift.StartTime.Value.Hours, dbShift.StartTime.Value.Minutes, dbShift.StartTime.Value.Seconds).AddHours(-2);
+                                            iLastTime = new DateTime(i.Year, i.Month, i.Day, dbShift.EndTime.Value.Hours, dbShift.EndTime.Value.Minutes, dbShift.EndTime.Value.Seconds).AddHours(2);
+                                            if (dbShift.EndTime.Value > new TimeSpan(22, 00, 00))
+                                            {
+                                                iLastTime = new DateTime(i.Year, i.Month, i.Day, 1, 0, 0).AddDays(1);
+                                            }
+
+                                            var transaction = item.Where(x => x.TransactionDateTime >= iFirstTime && x.TransactionDateTime <= iLastTime).ToList();
+                                            if (transaction.Count > 0)
+                                            {
+                                                var mFirstRecord = transaction.OrderBy(x => x.TransactionDateTime).FirstOrDefault();
+                                                var mLastRecord = transaction.Where(a => a.DeviceCode == firstRecord.DeviceCode).OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
+                                                var punchIn = mFirstRecord.TransactionDateTime;
+                                                var punchOut = mFirstRecord.TransactionDateTime != mLastRecord.TransactionDateTime
+                                                                                                        ? mLastRecord.TransactionDateTime
+                                                                                                        : mFirstRecord.TransactionDateTime;
+
+                                                var location = mappingList.FirstOrDefault(x => x.ShiftOid == mapShift.ShiftOid).tbl_Location;
+
+                                                shiftStart = dbShift.StartTime;
+                                                shiftEnd = dbShift.EndTime;
+                                                locationOid = location.Oid;
+                                                locationNameAr = location.NameAr;
+
+                                                var taModel = new TimeAttendanceViewModel()
+                                                {
+                                                    TransDate = mFirstRecord.TransactionDateTime.Value.Date,
+                                                    DeviceCode = mFirstRecord.DeviceCode,
+                                                    EmployeeId = empId,
+                                                    EmployeeName = employeeName,
+                                                    EmployeeNameAr = employeeNameAr,
+                                                    Location = locationNameAr,
+                                                    LocationId = locationOid,
+                                                    TemperatureIn = mFirstRecord.Temperature,
+                                                    TemperatureOut = mLastRecord.Temperature,
+                                                    PunchIn = punchIn,
+                                                    PunchOut = punchOut,
+                                                    ShiftStart = shiftStart,
+                                                    ShiftEnd = shiftEnd,
+                                                    LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
+                                                    EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
+                                                    TotalHoursWorked = punchOut.Value.TimeOfDay - punchIn.Value.TimeOfDay,
+                                                    IsOpened = shift == null
+                                                };
+
+                                                taModels.Add(taModel);
+                                            }
+                                        }
+
+                                        //var tbl_Shifts = new List<tbl_Shift>();
+                                        //var selectedShift = new tbl_Shift();
+
+
+                                        //foreach (var mapShift in mappingList) {
+                                        //    tbl_Shifts.Add(dbShifts.FirstOrDefault(x => x.Oid == mapShift.ShiftOid));
+                                        //}
+
+                                        //var firstRecOfPunch = selectedDateTime.Where(a => a.DeviceCode == firstRecord.DeviceCode).OrderBy(x => x.TransactionDateTime).FirstOrDefault();
+
+                                        //foreach(var tshift in tbl_Shifts)
+                                        //{
+                                        //    var startTime = tshift.StartTime.Value.Add(-new TimeSpan(1, 0, 0));
+                                        //    var endTime = tshift.EndTime.Value.Add(new TimeSpan(1, 0, 0));
+                                        //    var recTime = firstRecOfPunch.TransactionDateTime.Value.TimeOfDay;
+
+                                        //    if (startTime <= recTime && endTime >= recTime)
+                                        //    {
+                                        //        selectedShift = tshift;
+                                        //        break;
+                                        //    }
+                                        //}
+
+                                        //if(selectedShift != null)
+                                        //{
+                                        //    var location = mappingList.FirstOrDefault(x => x.ShiftOid == selectedShift.Oid).tbl_Location;
+
+                                        //    shiftStart = selectedShift.StartTime;
+                                        //    shiftEnd = selectedShift.EndTime;
+                                        //    locationOid = location.Oid;
+                                        //    locationNameAr = location.NameAr;
+
+                                        //    var punchIn = firstRecord.TransactionDateTime;
+                                        //    var punchOut = firstRecord.TransactionDateTime != firstRecOfPunch.TransactionDateTime
+                                        //                                                            ? firstRecOfPunch.TransactionDateTime
+                                        //                                                            : firstRecord.TransactionDateTime;
+
+                                        //    var taModel = new TimeAttendanceViewModel()
+                                        //    {
+                                        //        TransDate = firstRecord.TransactionDateTime.Value.Date,
+                                        //        DeviceCode = firstRecord.DeviceCode,
+                                        //        EmployeeId = empId,
+                                        //        EmployeeName = employeeName,
+                                        //        Location = locationNameAr,
+                                        //        LocationId = locationOid,
+                                        //        TemperatureIn = firstRecord.Temperature,
+                                        //        TemperatureOut = firstRecOfPunch.Temperature,
+                                        //        PunchIn = punchIn,
+                                        //        PunchOut = punchOut,
+                                        //        ShiftStart = shiftStart,
+                                        //        ShiftEnd = shiftEnd,
+                                        //        LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
+                                        //        EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
+                                        //        TotalHoursWorked = punchOut.Value.TimeOfDay - punchIn.Value.TimeOfDay,
+                                        //        IsOpened = shift == null
+                                        //    };
+
+                                        //    taModels.Add(taModel);
+                                        //}
+
+                                        //foreach (var mapShift in mappingList)
+                                        //{
+                                        //    var innerShift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == mapShift.ShiftOid);
+
+                                        //    var lastRecord = selectedDateTime.Where(a => a.DeviceCode == firstRecord.DeviceCode).OrderBy(x => x.TransactionDateTime).FirstOrDefault();
+
+                                        //    var timeOfDay = lastRecord.TransactionDateTime.Value;
+
+                                        //    var startTime = innerShift.StartTime.Value.Add(-new TimeSpan(1, 0, 0));
+                                        //    var endTime = innerShift.EndTime.Value.Add(new TimeSpan(1, 0, 0));
+
+                                        //    var startDateTime = new DateTime(timeOfDay.Year, timeOfDay.Month, timeOfDay.Day, startTime.Hours, startTime.Minutes, startTime.Seconds);
+                                        //    var endDateTime = new DateTime(timeOfDay.Year, timeOfDay.Month, timeOfDay.Day, 23,59,59).AddHours(2);
+
+                                        //    if (timeOfDay.TimeOfDay >= new TimeSpan(0, 01, 00) && timeOfDay.TimeOfDay <= new TimeSpan(2, 00, 00))
+                                        //        startDateTime = startDateTime.AddDays(1);
+
+                                        //    if (timeOfDay >= startDateTime && timeOfDay <= endDateTime)
+                                        //    {
+                                        //        var punchIn = firstRecord.TransactionDateTime;
+                                        //        var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
+                                        //                                                                ? lastRecord.TransactionDateTime
+                                        //                                                                : firstRecord.TransactionDateTime;
+
+                                        //        if (empLocShiftMap != null)
+                                        //        {
+                                        //            // shift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == empLocShiftMap.ShiftOid);
+                                        //            shiftStart = shift.StartTime;
+                                        //            shiftEnd = shift.EndTime;
+                                        //            var location = locations.FirstOrDefault(x => x.Oid == empLocShiftMap.LocationOid);
+                                        //            locationOid = location.Oid;
+                                        //            locationNameAr = location.NameAr;
+                                        //        }
+
+                                        //        if (empId != 0)
+                                        //        {
+                                        //            var taModel = new TimeAttendanceViewModel()
+                                        //            {
+                                        //                TransDate = firstRecord.TransactionDateTime.Value.Date,
+                                        //                DeviceCode = firstRecord.DeviceCode,
+                                        //                EmployeeId = empId,
+                                        //                EmployeeName = employeeName,
+                                        //                Location = locationNameAr,
+                                        //                LocationId = locationOid,
+                                        //                TemperatureIn = firstRecord.Temperature,
+                                        //                TemperatureOut = lastRecord.Temperature,
+                                        //                PunchIn = punchIn,
+                                        //                PunchOut = punchOut,
+                                        //                ShiftStart = shiftStart,
+                                        //                ShiftEnd = shiftEnd,
+                                        //                LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
+                                        //                EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
+                                        //                TotalHoursWorked = punchOut.Value.TimeOfDay - punchIn.Value.TimeOfDay,
+                                        //                IsOpened = shift == null
+                                        //            };
+
+                                        //            taModels.Add(taModel);
+                                        //        }
+
+                                        //        firstRecord = selectedDateTime.Where(x => x.TransactionDateTime.Value.TimeOfDay >= punchOut.Value.TimeOfDay)
+                                        //                                      .OrderBy(x => x.TransactionDateTime).FirstOrDefault();
+                                        //    }
+
+                                        //    // a.TransactionDateTime.Value.TimeOfDay >= startTime && a.TransactionDateTime.Value.TimeOfDay <= endTime
+
+                                        //}
+                                    }
                                 }
-
-
-                                if (empLocShiftMap != null)
-                                {
-                                    shift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == empLocShiftMap.ShiftOid);
-                                    shiftStart = shift.StartTime;
-                                    shiftEnd = shift.EndTime;
-                                    var location = locations.FirstOrDefault(x => x.Oid == empLocShiftMap.LocationOid);
-                                    locationOid = location.Oid;
-                                    locationNameAr = location.NameAr;
-                                }
-                            }
-
-                            if (empId != 0)
-                            {
-                                var taModel = new TimeAttendanceViewModel()
-                                {
-                                    TransDate = firstRecord.TransactionDateTime.Value.Date,
-                                    DeviceCode = firstRecord.DeviceCode,
-                                    EmployeeId = empId,
-                                    EmployeeName = employeeName,
-                                    Location = locationNameAr,
-                                    LocationId = locationOid,
-                                    TemperatureIn = firstRecord.Temperature,
-                                    TemperatureOut = lastRecord.Temperature,
-                                    PunchIn = punchIn,
-                                    PunchOut = punchOut,
-                                    ShiftStart = shiftStart,
-                                    ShiftEnd = shiftEnd,
-                                    LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
-                                    EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
-                                    TotalHoursWorked = punchOut.Value.TimeOfDay - punchIn.Value.TimeOfDay,
-                                    IsOpened = shift == null
-                                };
-
-                                tAModels.Add(taModel);
                             }
                         }
                     }
@@ -124,17 +402,18 @@ namespace ImillReports.Repository
 
             var dbTransactions = new List<tbl_Transactions>();
             var transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDateObj && x.TransDate <= toDateObj);
-            foreach (var item in tAModels)
+            foreach (var item in taModels.OrderBy(x => x.PunchIn.Value))
             {
-                if (!transactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId))
+                if (!transactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut))
                 {
-                    if (!dbTransactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId))
+                    if (!dbTransactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut))
                     {
                         dbTransactions.Add(new tbl_Transactions
                         {
                             DeviceCode = item.DeviceCode,
                             EarlyOut = item.EarlyOut,
                             Employee = item.EmployeeName,
+                            EmployeeAr = item.EmployeeNameAr,
                             EmployeeId = item.EmployeeId,
                             LateIn = item.LateIn,
                             LocationName = item.Location,
@@ -151,12 +430,13 @@ namespace ImillReports.Repository
                         });
                     }
                 }
-                else if (transactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened))
+                else if (transactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut))
                 {
-                    var trans = transactions.FirstOrDefault(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened);
+                    var trans = transactions.FirstOrDefault(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut);
                     trans.DeviceCode = item.DeviceCode;
                     trans.EarlyOut = item.EarlyOut;
                     trans.Employee = item.EmployeeName;
+                    trans.EmployeeAr = item.EmployeeNameAr;
                     trans.EmployeeId = item.EmployeeId;
                     trans.LateIn = item.LateIn;
                     trans.LocationName = item.Location;
@@ -171,9 +451,9 @@ namespace ImillReports.Repository
                     trans.ShiftEnd = item.ShiftEnd;
                     trans.IsOpened = item.IsOpened;
 
-                    if (dbTransactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened))
+                    if (dbTransactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut))
                     {
-                        dbTransactions.FirstOrDefault(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened).IsOpened = item.IsOpened;
+                        dbTransactions.FirstOrDefault(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.IsOpened && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut).IsOpened = item.IsOpened;
                     }
                 }
             }
@@ -184,106 +464,553 @@ namespace ImillReports.Repository
             return "True";
         }
 
-        public List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate, int[] employees)
+        public List<TimeAttendanceViewModel> GetTAReport(DateTime? fromDate, DateTime? toDate, int[] employees, string type)
         {
             if (fromDate == null) fromDate = DateTime.Now;
             if (toDate == null) toDate = DateTime.Now;
 
             var tAModels = new List<TimeAttendanceViewModel>();
-            IQueryable<tbl_Transactions> transactions = null;
+            var transactions = new List<tbl_Transactions>();
 
             if (employees == null || employees.Length <= 0)
-                transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate);
+                transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate).ToList();
             else
-                transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate && employees.Contains(x.EmployeeId));
+                transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate && employees.Contains(x.EmployeeId)).ToList();
 
             foreach (var item in transactions)
             {
-                if (!tAModels.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId))
+                if (!tAModels.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.EmployeeId == item.EmployeeId && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut))
                 {
-                    if (item.PunchOut > item.PunchIn.AddMinutes(5))
+                    var onLeave = false;
+                    var empLeaves = _context.tbl_EmployeeLeaves.Where(x => x.StartDate <= item.TransDate && x.EndDate >= item.TransDate || x.StartDate <= item.TransDate && x.EndDate >= item.TransDate).ToList();
+                    if (empLeaves.Any(x => x.EmployeeId == item.EmployeeId))
+                        onLeave = true;
+
+                    if (string.IsNullOrEmpty(type) || type == "default")
+                    {
+                        if (item.PunchOut > item.PunchIn.AddMinutes(5))
+                        {
+                            var ttlHrsWorked = double.Parse(item.TotalHoursWorked.ToString());
+
+                            var isLateIn5Min = (item.PunchIn.TimeOfDay - item.ShiftStart >= new TimeSpan(0, 5, 0)) &&
+                                           (item.PunchIn.TimeOfDay - item.ShiftStart <= new TimeSpan(0, 15, 0)) &&
+                                           item.TotalHoursWorked < 8;
+
+                            var isEarlyOut5Min = (item.ShiftEnd - item.PunchOut.TimeOfDay >= new TimeSpan(0, 5, 0)) &&
+                                                 (item.ShiftEnd - item.PunchOut.TimeOfDay <= new TimeSpan(0, 15, 0)) &&
+                                                 item.TotalHoursWorked < 8;
+
+                            var isLateIn = item.PunchIn.TimeOfDay - item.ShiftStart >= new TimeSpan(0, 15, 1) && item.TotalHoursWorked < 8;
+                            var isEarlyOut = item.ShiftEnd - item.PunchOut.TimeOfDay >= new TimeSpan(0, 15, 1) && item.TotalHoursWorked < 8;
+                            if (onLeave)
+                            {
+                                tAModels.Add(new TimeAttendanceViewModel
+                                {
+                                    Oid = item.Oid,
+                                    DeviceCode = "",
+                                    IsOnLeave = "true",
+                                    EarlyOut = new TimeSpan(0),
+                                    IsEarlyOut = "false",
+                                    IsEarlyOut5Min = "false",
+                                    EmployeeName = item.Employee,
+                                    EmployeeNameAr = item.EmployeeAr,
+                                    EmployeeId = item.EmployeeId,
+                                    LateIn = new TimeSpan(0),
+                                    IsLateIn = "false",
+                                    IsLateIn5Min = "false",
+                                    Location = "",
+                                    LocationId = 0,
+                                    PunchIn = new DateTime(0),
+                                    PunchOut = new DateTime(0),
+                                    TemperatureIn = 0,
+                                    TemperatureOut = 0,
+                                    TotalWorkingHours = 0,
+                                    ConvTotalHoursWorked = "0",
+                                    TransDate = item.TransDate,
+                                    ShiftStart = new TimeSpan(0),
+                                    ShiftEnd = new TimeSpan(0),
+                                    IsOpened = false
+                                });
+                            }
+                            else
+                            {
+                                tAModels.Add(new TimeAttendanceViewModel
+                                {
+                                    Oid = item.Oid,
+                                    DeviceCode = item.DeviceCode,
+                                    IsOnLeave = onLeave ? "true" : "false",
+                                    EarlyOut = item.EarlyOut,
+                                    IsEarlyOut = isEarlyOut ? "true" : "false",
+                                    IsEarlyOut5Min = isEarlyOut5Min ? "true" : "false",
+                                    EmployeeName = item.Employee,
+                                    EmployeeNameAr = item.EmployeeAr,
+                                    EmployeeId = item.EmployeeId,
+                                    LateIn = item.LateIn,
+                                    IsLateIn = isLateIn ? "true" : "false",
+                                    IsLateIn5Min = isLateIn5Min ? "true" : "false",
+                                    Location = item.LocationName,
+                                    LocationId = item.LocationOid,
+                                    PunchIn = item.PunchIn,
+                                    PunchOut = item.PunchOut,
+                                    TemperatureIn = decimal.Parse(item.TemperatureIn),
+                                    TemperatureOut = decimal.Parse(item.TemperatureOut),
+                                    TotalWorkingHours = item.TotalHoursWorked,
+                                    ConvTotalHoursWorked = TimeSpan.FromHours(ttlHrsWorked).ToString("hh\\:mm\\:ss"),
+                                    TransDate = item.TransDate,
+                                    ShiftStart = item.ShiftStart,
+                                    ShiftEnd = item.ShiftEnd,
+                                    IsOpened = item.IsOpened
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var ttlHrsWorked = double.Parse(item.TotalHoursWorked.ToString());
+
+                        var isLateIn5Min = (item.PunchIn.TimeOfDay - item.ShiftStart >= new TimeSpan(0, 5, 0)) &&
+                                           (item.PunchIn.TimeOfDay - item.ShiftStart <= new TimeSpan(0, 15, 0)) &&
+                                           item.TotalHoursWorked < 8;
+
+                        var isEarlyOut5Min = (item.ShiftEnd - item.PunchOut.TimeOfDay >= new TimeSpan(0, 5, 0)) &&
+                                             (item.ShiftEnd - item.PunchOut.TimeOfDay <= new TimeSpan(0, 15, 0)) &&
+                                             item.TotalHoursWorked < 8;
+
+                        var isLateIn = item.PunchIn.TimeOfDay - item.ShiftStart >= new TimeSpan(0, 15, 1) && item.TotalHoursWorked < 8;
+                        var isEarlyOut = item.ShiftEnd - item.PunchOut.TimeOfDay >= new TimeSpan(0, 15, 1) && item.TotalHoursWorked < 8;
+
+
+                        if (onLeave)
+                        {
+                            tAModels.Add(new TimeAttendanceViewModel
+                            {
+                                Oid = item.Oid,
+                                DeviceCode = "",
+                                IsOnLeave = "true",
+                                EarlyOut = new TimeSpan(0),
+                                IsEarlyOut = "false",
+                                IsEarlyOut5Min = "false",
+                                EmployeeName = item.Employee,
+                                EmployeeNameAr = item.EmployeeAr,
+                                EmployeeId = item.EmployeeId,
+                                LateIn = new TimeSpan(0),
+                                IsLateIn = "false",
+                                IsLateIn5Min = "false",
+                                Location = "",
+                                LocationId = 0,
+                                PunchIn = new DateTime(0),
+                                PunchOut = new DateTime(0),
+                                TemperatureIn = 0,
+                                TemperatureOut = 0,
+                                TotalWorkingHours = 0,
+                                ConvTotalHoursWorked = "0",
+                                TransDate = item.TransDate,
+                                ShiftStart = new TimeSpan(0),
+                                ShiftEnd = new TimeSpan(0),
+                                IsOpened = false
+                            });
+                        }
+                        else
+                        {
+                            tAModels.Add(new TimeAttendanceViewModel
+                            {
+                                Oid = item.Oid,
+                                DeviceCode = item.DeviceCode,
+                                IsOnLeave = onLeave ? "true" : "false",
+                                EarlyOut = item.EarlyOut,
+                                IsEarlyOut = isEarlyOut ? "true" : "false",
+                                IsEarlyOut5Min = isEarlyOut5Min ? "true" : "false",
+                                EmployeeName = item.Employee,
+                                EmployeeNameAr = item.EmployeeAr,
+                                EmployeeId = item.EmployeeId,
+                                LateIn = item.LateIn,
+                                IsLateIn = isLateIn ? "true" : "false",
+                                IsLateIn5Min = isLateIn5Min ? "true" : "false",
+                                Location = item.LocationName,
+                                LocationId = item.LocationOid,
+                                PunchIn = item.PunchIn,
+                                PunchOut = item.PunchOut,
+                                TemperatureIn = decimal.Parse(item.TemperatureIn),
+                                TemperatureOut = decimal.Parse(item.TemperatureOut),
+                                TotalWorkingHours = item.TotalHoursWorked,
+                                ConvTotalHoursWorked = TimeSpan.FromHours(ttlHrsWorked).ToString("hh\\:mm\\:ss"),
+                                TransDate = item.TransDate,
+                                ShiftStart = item.ShiftStart,
+                                ShiftEnd = item.ShiftEnd,
+                                IsOpened = item.IsOpened
+                            });
+                        }
+                    }
+                }
+            }
+
+            if (type == "showall")
+            {
+                var employeeList = employees != null
+                    ? _context.tbl_Employees.Where(x => employees.Contains(x.EmployeeID.Value)).ToList()
+                    : _context.tbl_Employees.ToList();
+
+                foreach (var employee in employeeList)
+                {
+                    var empIdsModel = tAModels.Select(a => a.EmployeeId).ToList();
+                    var empLeaves = _context.tbl_EmployeeLeaves.Where(x => x.EmployeeId == employee.EmployeeID &&
+                                                                           (x.StartDate <= fromDate && x.EndDate >= fromDate ||
+                                                                           x.StartDate <= toDate && x.EndDate >= toDate) &&
+                                                                           !empIdsModel.Contains(x.EmployeeId)).ToList();
+
+                    if (empLeaves.Any())
                     {
                         tAModels.Add(new TimeAttendanceViewModel
                         {
-                            Oid = item.Oid,
-                            DeviceCode = item.DeviceCode,
-                            EarlyOut = item.EarlyOut,
-                            EmployeeName = item.Employee,
-                            EmployeeId = item.EmployeeId,
-                            LateIn = item.LateIn,
-                            Location = item.LocationName,
-                            LocationId = item.LocationOid,
-                            PunchIn = item.PunchIn,
-                            PunchOut = item.PunchOut,
-                            TemperatureIn = decimal.Parse(item.TemperatureIn),
-                            TemperatureOut = decimal.Parse(item.TemperatureOut),
-                            TotalWorkingHours = item.TotalHoursWorked,
-                            TransDate = item.TransDate,
-                            ShiftStart = item.ShiftStart,
-                            ShiftEnd = item.ShiftEnd,
-                            IsOpened = item.IsOpened
+                            Oid = 0,
+                            DeviceCode = "",
+                            IsOnLeave = "true",
+                            EarlyOut = new TimeSpan(0),
+                            IsEarlyOut = "false",
+                            IsEarlyOut5Min = "false",
+                            EmployeeName = employee.NameEn,
+                            EmployeeNameAr = employee.NameAr,
+                            EmployeeId = employee.EmployeeID.Value,
+                            LateIn = new TimeSpan(0),
+                            IsLateIn = "false",
+                            IsLateIn5Min = "false",
+                            Location = "",
+                            LocationId = 0,
+                            PunchIn = new DateTime(0),
+                            PunchOut = new DateTime(0),
+                            TemperatureIn = 0,
+                            TemperatureOut = 0,
+                            TotalWorkingHours = 0,
+                            ConvTotalHoursWorked = "0",
+                            TransDate = fromDate,
+                            ShiftStart = new TimeSpan(0),
+                            ShiftEnd = new TimeSpan(0),
+                            IsOpened = false
                         });
                     }
+
+                    //if (!tAModels.Any(x => x.EmployeeId == employee.EmployeeID.Value))
+                    //{
+                    //    var map = _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.tbl_Employees.EmployeeID == employee.EmployeeID.Value);
+                    //    var shiftStart = new TimeSpan(1, 1, 1);
+                    //    var shiftEnd = new TimeSpan(1, 1, 1);
+
+                    //    if (map != null)
+                    //    {
+                    //        var shift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == map.ShiftOid);
+                    //        shiftStart = shift.StartTime.Value;
+                    //        shiftEnd = shift.EndTime.Value;
+                    //    }
+
+                    //    tAModels.Add(new TimeAttendanceViewModel
+                    //    {
+                    //        EmployeeName = employee.NameEn,
+                    //        EmployeeNameAr = employee.NameAr,
+                    //        EmployeeId = employee.EmployeeID.Value,
+                    //        Location = map != null ? map.tbl_Location.NameEn : "",
+                    //        LocationId = map != null ? map.tbl_Location.Oid : 0,
+                    //        ShiftStart = shiftStart,
+                    //        ShiftEnd = shiftEnd
+                    //    });
+                    //}
+
                 }
+            }
+
+            if (type == "notScanned")
+            {
+                var taAbsentModels = new List<TimeAttendanceViewModel>();
+                var devices = _context.tbl_Device.Select(x => x.DeviceCode).ToList();
+                var locationOids = _context.tbl_Location.Where(x => x.IsActive.Value).Select(a => a.Oid).ToList();
+                var employeeList = employees != null 
+                    ? _context.tbl_Employees.Include(x => x.tbl_EmpLocShiftMap).Where(a => employees.Contains(a.EmployeeID.Value)).ToList() 
+                    : _context.tbl_Employees.Include(x => x.tbl_EmpLocShiftMap).ToList();
+                var empIdsModel = tAModels.Where(x => devices.Contains(x.DeviceCode)).Select(a => a.EmployeeId).ToList();
+                var _empLeaves = _context.tbl_EmployeeLeaves.ToList();
+
+                for (var i = fromDate; i <= toDate;)
+                {
+                    foreach (var employee in employeeList)
+                    {
+                        if (employee.tbl_EmpLocShiftMap.Any(x => locationOids.Contains(x.LocationOid)))
+                        {
+                            var empLeaves = _empLeaves.Where(x => x.EmployeeId == employee.EmployeeID &&
+                                                                  (x.StartDate <= fromDate && x.EndDate >= fromDate ||
+                                                                   x.StartDate <= toDate && x.EndDate >= toDate) &&
+                                                                  !empIdsModel.Contains(x.EmployeeId)).ToList();
+
+                            if (!tAModels.Any(x => x.EmployeeId == employee.EmployeeID.Value && x.TransDate == i) && !empLeaves.Any(x => x.EmployeeId == employee.EmployeeID.Value))
+                            {
+                                var map = _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.tbl_Employees.EmployeeID == employee.EmployeeID.Value);
+                                var shiftStart = new TimeSpan(1, 1, 1);
+                                var shiftEnd = new TimeSpan(1, 1, 1);
+
+                                if (map != null)
+                                {
+                                    var shift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == map.ShiftOid);
+                                    shiftStart = shift.StartTime.Value;
+                                    shiftEnd = shift.EndTime.Value;
+                                }
+
+
+                                taAbsentModels.Add(new TimeAttendanceViewModel
+                                {
+                                    TransDate = i.Value,
+                                    EmployeeName = employee.NameEn,
+                                    EmployeeNameAr = employee.NameAr,
+                                    EmployeeId = employee.EmployeeID.Value,
+                                    Location = map != null ? map.tbl_Location.NameEn : "",
+                                    LocationId = map != null ? map.tbl_Location.Oid : 0,
+                                    ShiftStart = shiftStart,
+                                    ShiftEnd = shiftEnd
+                                });
+                            }
+                        }
+                    }
+
+                    i = i.Value.AddDays(1);
+                }
+
+                return taAbsentModels;
             }
 
             return tAModels;
         }
 
-        public int AddAllocation(DateTime fromDate, DateTime? toDate, List<int> employees, string shift, string location)
+        public string AddAllocation(DateTime fromDate, DateTime? toDate, List<int> employees, string shift, string location,
+            bool sun, bool mon, bool tues, bool wed, bool thur, bool fri, bool sat)
         {
-            var flag = false;
-            var flagCount = 0;
-            var nonFlagCount = 0;
+            //var flag = false;
+            //var flagCount = 0;
+            //var nonFlagCount = 0;
 
             if (employees.Count() > 0)
                 foreach (var oid in employees)
                 {
                     var empObj = _context.tbl_Employees.FirstOrDefault(x => x.Oid == oid);
                     var shiftOid = int.Parse(shift);
+                    var innerShift = _context.tbl_Shift;
+                    var recShift = innerShift.FirstOrDefault(x => x.Oid == shiftOid);
+
                     var locationOid = int.Parse(location);
 
-                    flag = _context.tbl_EmpLocShiftMap.Any(x => x.EmpId == empObj.Oid &&
-                                                                x.ShiftOid == shiftOid &&
-                                                                x.LocationOid == locationOid &&
-                                                                x.fromDate >= fromDate &&
-                                                                x.toDate <= toDate);
+                    var empLocShiftMap = _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empObj.Oid).ToList();
 
-                    if (!flag)
+                    if (empLocShiftMap.Any())
                     {
-                        var shiftObj = _context.tbl_Shift.FirstOrDefault(x => x.Oid == shiftOid);
-                        var locationObj = _context.tbl_Location.FirstOrDefault(x => x.Oid == locationOid);
-
-                        if (empObj != null && shiftObj != null && locationObj != null)
+                        if (empLocShiftMap.Any(x => x.LocationOid == locationOid))
                         {
-                            var mapping = new tbl_EmpLocShiftMap
-                            {
-                                EmpId = empObj.Oid,
-                                LocationOid = locationObj.Oid,
-                                ShiftOid = shiftObj.Oid,
-                                fromDate = fromDate,
-                                toDate = toDate
-                            };
+                            //if (empLocShiftMap.Any(x => x.ShiftOid == shiftOid && x.fromDate <= fromDate && x.toDate >= toDate
+                            //&& x.IsSun == sun && x.IsSat == sat && x.IsMon == mon && x.IsTues == tues && x.IsWed == wed
+                            //&& x.IsThur == thur && x.IsFri == fri))
+                            //{
+                            //    return "Employee Record Already Present With Same Location Shift and Dates";
+                            //}
 
-                            _context.tbl_EmpLocShiftMap.Add(mapping);
-                            _context.SaveChanges();
+                            if (empLocShiftMap.Any(x => x.ShiftOid == shiftOid &&
+                           (x.fromDate <= fromDate && x.toDate >= fromDate ||
+                           x.fromDate <= toDate && x.toDate >= toDate)))
+                            {
+                                if (empLocShiftMap.Any(x => x.IsSun == sun || x.IsSat == sat || x.IsMon == mon || x.IsTues == tues || x.IsWed == wed || x.IsThur == thur || x.IsFri == fri))
+                                {
+                                    return "Employee Record Already Present With Same Location Shift and Dates";
+                                }
+                            }
+
+
+
+                            foreach (var item in empLocShiftMap)
+                            {
+
+                                if (item.IsFri.Value && fri)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsSat.Value && sat)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsSun.Value && sun)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsMon.Value && mon)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsTues.Value && tues)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsWed.Value && wed)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsThur.Value && thur)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+                            }
+
+                            //foreach (var item in empLocShiftMap)
+                            //{
+                            //    if (item.IsFri != fri) break;
+                            //    if (item.IsSat != sat) break;
+                            //    if (item.IsSun != sun) break;
+                            //    if (item.IsMon != mon) break;
+                            //    if (item.IsTues != tues) break;
+                            //    if (item.IsWed != wed) break;
+                            //    if (item.IsThur != thur) break;
+
+                            //    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                            //    var updateShift = innerShift.FirstOrDefault(x => x.Oid == shiftOid);
+
+                            //    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                            //        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                            //    {
+                            //        return "Timings Are In Confilict";
+                            //    }
+                            //}
+                        }
+                        else
+                        {
+                            //if (empLocShiftMap.Any(x => x.ShiftOid == shiftOid && x.fromDate <= fromDate && x.toDate >= toDate
+                            //&& x.IsSun == sun && x.IsSat == sat && x.IsMon == mon && x.IsTues == tues && x.IsWed == wed
+                            //&& x.IsThur == thur && x.IsFri == fri))
+                            //{
+                            //    return "Please Change the Shift or Days and Try Again!";
+                            //}
+
+                            if (empLocShiftMap.Any(x => x.ShiftOid == recShift.Oid &&
+                            (x.fromDate <= fromDate && x.toDate >= fromDate ||
+                            x.fromDate <= toDate && x.toDate >= toDate)))
+                            {
+                                // check this
+                                if (empLocShiftMap.Any(x => x.IsSun == sun || x.IsSat == sat || x.IsMon == mon || x.IsTues == tues || x.IsWed == wed || x.IsThur == thur || x.IsFri == fri))
+                                {
+                                    return "Please Change the Shift or Days and Try Again!";
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in empLocShiftMap)
+                                {
+                                    if (locationOid == item.LocationOid)
+                                    {
+                                        var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                        var updateShift = innerShift.FirstOrDefault(x => x.Oid == shiftOid);
+
+                                        if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                            actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                        {
+                                            return "Timings Are In Confilict";
+                                        }
+                                    }
+                                }
+                            }
                         }
 
-                        nonFlagCount += 1;
+                        // flag = empLocShiftMap.Any(x => );
                     }
-                    else
+
+
+                    //if (!flag)
+                    //{
+                    var shiftObj = _context.tbl_Shift.FirstOrDefault(x => x.Oid == shiftOid);
+                    var locationObj = _context.tbl_Location.FirstOrDefault(x => x.Oid == locationOid);
+
+                    if (empObj != null && shiftObj != null && locationObj != null)
                     {
-                        flagCount += 1;
+                        var mapping = new tbl_EmpLocShiftMap
+                        {
+                            EmpId = empObj.Oid,
+                            LocationOid = locationObj.Oid,
+                            ShiftOid = shiftObj.Oid,
+                            fromDate = fromDate,
+                            toDate = toDate,
+                            IsFri = fri,
+                            IsMon = mon,
+                            IsSat = sat,
+                            IsSun = sun,
+                            IsThur = thur,
+                            IsTues = tues,
+                            IsWed = wed
+                        };
+
+                        _context.tbl_EmpLocShiftMap.Add(mapping);
+                        _context.SaveChanges();
                     }
+
+                    // nonFlagCount += 1;
+                    //}
+                    //else
+                    //{
+                    //    flagCount += 1;
+                    //}
                 }
 
-            if (flagCount <= 0 && nonFlagCount > 0)
-                return 1;
+            //if (flagCount <= 0 && nonFlagCount > 0)
+            //    return 1;
 
-            if (flagCount > 0 && nonFlagCount > 0)
-                return 2;
+            //if (flagCount > 0 && nonFlagCount > 0)
+            //    return 2;
 
-            return 3;
+            return "Record Updated Successfully!";
         }
 
         public int AddEmployee(int empId, string nameEn, string nameAr)
@@ -428,8 +1155,16 @@ namespace ImillReports.Repository
                     StartTime = item.tbl_Shift.StartTime.Value,
                     EndTime = item.tbl_Shift.EndTime.Value,
                     FromDate = item.fromDate,
-                    ToDate = item.toDate
+                    ToDate = item.toDate,
+                    Sat = item.IsSat,
+                    Sun = item.IsSun,
+                    Mon = item.IsMon,
+                    Tues = item.IsTues,
+                    Wed = item.IsWed,
+                    Thur = item.IsThur,
+                    Fri = item.IsFri
                 });
+
             return model;
         }
 
@@ -478,6 +1213,7 @@ namespace ImillReports.Repository
                 {
                     Oid = shift.Oid,
                     Code = shift.Code,
+                    ShiftCode = int.Parse(shift.Code),
                     NameEn = shift.NameEn,
                     NameAr = shift.NameAr,
                     StartTime = shift.StartTime,
@@ -485,28 +1221,307 @@ namespace ImillReports.Repository
                     DisplayText = $"({shift.Code}) - {shift.NameEn}"
                 });
 
-            return model;
+            return model.OrderBy(x => x.ShiftCode).ToList();
 
         }
 
-        public void UpdateEmpAllocations(string location, string shift, List<int> verifiedIds)
+        public string UpdateEmpAllocations(string location, string shift, List<int> verifiedIds, DateTime fromDate, DateTime? toDate,
+            bool sun, bool mon, bool tues, bool wed, bool thur, bool fri, bool sat)
         {
+            var innerShift = _context.tbl_Shift;
+            var _shift = int.Parse(shift);
+            var recShift = innerShift.FirstOrDefault(x => x.Oid == _shift);
+
+            var innerLocation = _context.tbl_Location;
+            var _location = int.Parse(location);
+            var recLocation = innerLocation.FirstOrDefault(x => x.Oid == _location);
+
             if (verifiedIds.Count() > 0)
                 foreach (var id in verifiedIds)
                 {
                     var record = _context.tbl_EmpLocShiftMap.Include("tbl_Employees").FirstOrDefault(x => x.Oid == id);
 
+                    var empLocShiftMap = _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == record.EmpId && x.Oid != record.Oid).ToList();
+
+                    if (empLocShiftMap.Any())
+                    {
+                        if (empLocShiftMap.Any(x => x.LocationOid == recLocation.Oid))
+                        {
+                            if (empLocShiftMap.Any(x => x.ShiftOid == recShift.Oid &&
+                            (x.fromDate <= fromDate && x.toDate >= fromDate ||
+                            x.fromDate <= toDate && x.toDate >= toDate)))
+                            {
+                                if (empLocShiftMap.Any(x => x.IsSun == sun || x.IsSat == sat || x.IsMon == mon || x.IsTues == tues || x.IsWed == wed || x.IsThur == thur || x.IsFri == fri))
+                                {
+                                    return "Employee Record Already Present With Same Location Shift and Dates";
+                                }
+                            }
+
+                            foreach (var item in empLocShiftMap)
+                            {
+
+                                if (item.IsFri.Value && fri)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsSat.Value && sat)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsSun.Value && sun)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsMon.Value && mon)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsTues.Value && tues)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsWed.Value && wed)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                if (item.IsThur.Value && thur)
+                                {
+                                    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                    var updateShift = recShift;
+
+                                    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                    {
+                                        return "Timings Are In Confilict";
+                                    }
+                                }
+
+                                // if (!flag && !item.IsFri.Value && !fri) { flag = false; } else;
+                                // if (!flag && item.IsSat != sat) { flag = true; };
+                                // if (!flag && item.IsSun != sun) { flag = true; };
+                                // if (!flag && item.IsMon != mon) { flag = true; };
+                                // if (!flag && item.IsTues != tues) { flag = true; };
+                                // if (!flag && item.IsWed != wed) { flag = true; };
+                                // if (!flag && item.IsThur != thur) { flag = true; };
+
+                                //if (flag)
+                                //{
+                                //    var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                //    var updateShift = recShift;
+
+                                //    if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                //        actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                //    {
+                                //        return "Timings Are In Confilict";
+                                //    }
+                                //}
+                            }
+                        }
+                        else
+                        {
+                            if (empLocShiftMap.Any(x => x.ShiftOid == recShift.Oid &&
+                            (x.fromDate <= fromDate && x.toDate >= fromDate ||
+                            x.fromDate <= toDate && x.toDate >= toDate)))
+                            {
+                                // check this
+                                if (empLocShiftMap.Any(x => x.IsSun == sun || x.IsSat == sat || x.IsMon == mon || x.IsTues == tues || x.IsWed == wed || x.IsThur == thur || x.IsFri == fri))
+                                {
+                                    return "Please Change the Shift or Days and Try Again!";
+                                }
+                            }
+
+                            //if (empLocShiftMap.Any(x => x.ShiftOid == recShift.Oid && x.fromDate <= fromDate && x.toDate >= toDate
+                            //&& x.IsSun == sun && x.IsSat == sat && x.IsMon == mon && x.IsTues == tues && x.IsWed == wed
+                            //&& x.IsThur == thur && x.IsFri == fri))
+                            //{
+                            //    return "Please Change the Shift or Days and Try Again!";
+                            //}
+                            else
+                            {
+
+                                foreach (var item in empLocShiftMap)
+                                {
+                                    if (recLocation.Oid == item.LocationOid)
+                                    {
+                                        if (item.IsFri.Value && fri)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        if (item.IsSat.Value && sat)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        if (item.IsSun.Value && sun)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        if (item.IsMon.Value && mon)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        if (item.IsTues.Value && tues)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        if (item.IsWed.Value && wed)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        if (item.IsThur.Value && thur)
+                                        {
+                                            var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                            var updateShift = recShift;
+
+                                            if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                                actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                            {
+                                                return "Timings Are In Confilict";
+                                            }
+                                        }
+
+                                        //if (item.IsFri != fri) break;
+                                        //if (item.IsSat != sat) break;
+                                        //if (item.IsSun != sun) break;
+                                        //if (item.IsMon != mon) break;
+                                        //if (item.IsTues != tues) break;
+                                        //if (item.IsWed != wed) break;
+                                        //if (item.IsThur != thur) break;
+
+                                        //var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
+                                        //var updateShift = recShift;
+
+                                        //if (actualShift.StartTime <= updateShift.StartTime && actualShift.EndTime >= updateShift.StartTime ||
+                                        //    actualShift.StartTime <= updateShift.EndTime && actualShift.EndTime >= updateShift.EndTime)
+                                        //{
+                                        //    return "Timings Are In Confilict";
+                                        //}
+                                    }
+                                }
+                            }
+                        }
+
+                        // flag = empLocShiftMap.Any(x => );
+                    }
+
                     if (record != null)
                     {
                         if (!string.IsNullOrEmpty(location))
-                            record.LocationOid = int.Parse(location);
+                            record.LocationOid = recLocation.Oid;
 
                         if (!string.IsNullOrEmpty(shift))
-                            record.ShiftOid = int.Parse(shift);
+                            record.ShiftOid = recShift.Oid;
+
+                        record.fromDate = fromDate;
+                        record.toDate = toDate;
+                        record.IsFri = fri;
+                        record.IsMon = mon;
+                        record.IsSat = sat;
+                        record.IsSun = sun;
+                        record.IsThur = thur;
+                        record.IsTues = tues;
+                        record.IsWed = wed;
 
                         _context.SaveChanges();
                     }
                 }
+
+            return "true";
         }
 
         public void DeleteTransactions(List<int> verifiedIds)
@@ -551,6 +1566,670 @@ namespace ImillReports.Repository
             }
 
             return "true";
+        }
+
+        public string UpdateLocation(int oid, string deviceCode, string nameEn, string nameAr)
+        {
+            if (oid > 0 && !string.IsNullOrEmpty(nameEn) && !string.IsNullOrEmpty(nameAr))
+            {
+                var locations = _context.tbl_Location;
+
+                var location = locations.FirstOrDefault(x => x.Oid == oid);
+                if (location != null)
+                {
+                    try
+                    {
+                        if (!locations.Any(x => x.DeviceCode == deviceCode) || string.IsNullOrEmpty(deviceCode))
+                            location.DeviceCode = deviceCode;
+
+                        location.NameEn = nameEn;
+                        location.NameAr = nameAr;
+
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                }
+            }
+
+            return "true";
+        }
+
+        public string SendShiftEmail()
+        {
+            var notPunched = "";
+            var showallemp = "";
+            var currentTime = DateTime.Now.TimeOfDay;
+            TimeSpan shiftTimeFirstPhase = new TimeSpan(0, 0, 0);
+            TimeSpan shiftTimeSecondPhase = new TimeSpan(0, 0, 0);
+            var shiftnum = HttpContext.Current.Request["ShiftCount"];
+            var shiftCount = shiftnum != null ? int.Parse(shiftnum.ToString()) : 0;
+
+            try
+            {
+                var shifts = _context.tbl_Shift.ToList();
+
+                foreach (var shift in shifts)
+                {
+                    shiftTimeFirstPhase = shift.StartTime.Value.Add(new TimeSpan(1, 0, 0));
+                    shiftTimeSecondPhase = shift.StartTime.Value.Add(new TimeSpan(1, 30, 0));
+
+                    // if (shift.StartTime == new TimeSpan(15,00,00))
+                    if (currentTime >= shiftTimeFirstPhase && currentTime <= shiftTimeSecondPhase)
+                    {
+                        var taAbsentModels = new List<TimeAttendanceViewModel>();
+                        var shiftMap = _context.tbl_EmpLocShiftMap
+                            .Include(a => a.tbl_Employees)
+                            .Include(a => a.tbl_Shift)
+                            .Include(a => a.tbl_Location)
+                            .Where(x => x.ShiftOid == shift.Oid
+                            //&& (x.LocationOid == 84 || x.LocationOid == 67 ||
+                            //x.LocationOid == 83 || x.LocationOid == 54)
+                            ).ToList();
+
+                        foreach (var item in shiftMap)
+                        {
+                            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+                            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+
+                            var empLeavesEmpIds = _context.tbl_EmployeeLeaves.Where(x => x.StartDate <= startDate && x.EndDate >= startDate ||
+                                                                                   x.StartDate <= endDate && x.EndDate >= endDate)
+                                                                       .Select(a => a.EmployeeId).ToList();
+
+                            var taModelsEmpId = GetTAReport(startDate, endDate, null, "showall").Select(x => x.EmployeeId).ToList();
+                            showallemp = string.Join(",", taModelsEmpId);
+
+                            taAbsentModels = GetTAReport(startDate, endDate, null, "notScanned").ToList();
+                            notPunched = string.Join(",", taAbsentModels.Select(x => x.EmployeeId));
+
+                            taAbsentModels = taAbsentModels.Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
+                                                                       x.ShiftEnd == item.tbl_Shift.EndTime).ToList();
+
+                            foreach (var id in taModelsEmpId)
+                            {
+                                if (taAbsentModels.Any(x => x.EmployeeId == id))
+                                {
+                                    var rec = taAbsentModels.FirstOrDefault(x => x.EmployeeId == id);
+                                    taAbsentModels.Remove(rec);
+                                }
+                            }
+
+                            foreach (var id in empLeavesEmpIds)
+                            {
+                                if (taAbsentModels.Any(x => x.EmployeeId == id))
+                                {
+                                    var rec = taAbsentModels.FirstOrDefault(x => x.EmployeeId == id);
+                                    taAbsentModels.Remove(rec);
+                                }
+                            }
+                        }
+
+                        var pathName = "~/Content/";
+                        var path = HttpContext.Current.Server.MapPath(pathName);
+
+                        if (taAbsentModels.Any())
+                        {
+                            using (var workbook = new XLWorkbook())
+                            {
+                                var worksheet = workbook.Worksheets.Add("Sheet1");
+                                // worksheet.Cell("A1").Value = "Employee Id";
+                                worksheet.Cell(1, 1).Value = "Employee Id";
+                                worksheet.Cell(1, 2).Value = "Employee Name";
+                                worksheet.Cell(1, 3).Value = "Location";
+                                worksheet.Cell(1, 4).Value = "Shift Start";
+                                worksheet.Cell(1, 5).Value = "Shift End";
+
+                                var count = 2;
+
+                                foreach (var emp in taAbsentModels)
+                                {
+                                    worksheet.Cell(count, 1).Value = emp.EmployeeId;
+                                    worksheet.Cell(count, 2).Value = emp.EmployeeName;
+                                    worksheet.Cell(count, 3).Value = emp.Location;
+                                    worksheet.Cell(count, 4).Value = emp.ShiftStart.Value.ToString();
+                                    worksheet.Cell(count, 5).Value = emp.ShiftEnd.Value.ToString();
+                                    count += 1;
+                                }
+
+                                workbook.SaveAs(path + "shift.xlsx");
+                            }
+
+                            //Application app = new Application();
+                            //Workbook wb = app.Workbooks.Add(XlSheetType.xlWorksheet);
+                            //Worksheet ws = (Worksheet)app.ActiveSheet;
+                            //app.Visible = false;
+                            //ws.Cells[1, 1] = "Employee Id";
+                            //ws.Cells[1, 2] = "Employee Name";
+                            //ws.Cells[1, 3] = "Location";
+                            //ws.Cells[1, 4] = "Shift Start";
+                            //ws.Cells[1, 5] = "Shift End";
+
+                            //var count = 1;
+
+                            //foreach (var emp in taAbsentModels)
+                            //{
+                            //    ws.Cells[count, 1] = emp.EmployeeId;
+                            //    ws.Cells[count, 2] = emp.EmployeeName;
+                            //    ws.Cells[count, 3] = emp.Location;
+                            //    ws.Cells[count, 4] = emp.ShiftStart.Value.ToString();
+                            //    ws.Cells[count, 5] = emp.ShiftEnd.Value.ToString();
+                            //    count += 1;
+                            //}
+
+                            //wb.SaveAs(path, XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange,
+                            //    XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+
+                            //wb.Close();
+
+                            //app.Quit();
+
+                            var shiftId = HttpContext.Current.Request["ShiftOid"];
+                            var shiftOid = shiftId != null ? int.Parse(shiftId.ToString()) : 0;
+
+                            if (shift.Oid != shiftOid)
+                            {
+                                var shiftCountInfo = new HttpCookie("ShiftCount")
+                                {
+                                    Value = (shiftCount + 1).ToString()
+                                };
+                                shiftCountInfo.Expires.Add(new TimeSpan(1, 0, 0));
+                                HttpContext.Current.Response.Cookies.Add(shiftCountInfo);
+                            }
+
+
+                            if (shift.Oid != shiftOid && shiftCount >= 20)
+                            {
+                                MailMessage mailMessage = new MailMessage
+                                {
+                                    Subject = $"{shift.NameEn} - Employee List (Not Punched)",
+                                    Body = "Employee List",
+                                    From = new MailAddress("imillmaterialreq@gmail.com"),
+                                };
+
+                                var newAttachment = new Attachment(path + "shift.xlsx");
+                                mailMessage.Attachments.Add(newAttachment);
+                                mailMessage.To.Add(new MailAddress("shabbir.i@intlmill.com"));
+                                // mailMessage.To.Add(new MailAddress("maysara@intlmill.com"));
+
+                                SmtpClient smtp = new SmtpClient
+                                {
+                                    Host = "smtp.gmail.com",
+                                    Port = 587,
+                                    EnableSsl = true,
+                                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                                    UseDefaultCredentials = false,
+                                    Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
+                                };
+
+                                smtp.Send(mailMessage);
+
+                                newAttachment.Dispose();
+
+                                HttpCookie shiftInfo = new HttpCookie("ShiftOid")
+                                {
+                                    Value = shift.Oid.ToString()
+                                };
+
+                                shiftInfo.Expires.Add(new TimeSpan(1, 0, 0));
+                                HttpContext.Current.Response.Cookies.Add(shiftInfo);
+
+                                var shiftCountInfo = new HttpCookie("ShiftCount")
+                                {
+                                    Value = "0"
+                                };
+
+                                shiftCountInfo.Expires.Add(new TimeSpan(1, 0, 0));
+                                HttpContext.Current.Response.Cookies.Add(shiftCountInfo);
+
+                                return $"Complete : {currentTime} | {shiftTimeFirstPhase} | {shiftTimeSecondPhase} | ShowAll :{showallemp} | NotPunched : {notPunched}";
+                            }
+
+                            return $"Mail Not Sent! : {currentTime} | {shiftTimeFirstPhase} | {shiftTimeSecondPhase} | ShowAll :{showallemp} | NotPunched : {notPunched}";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error on {currentTime} = {ex.Message}";
+            }
+
+            return $"True : {currentTime} | Shift Count : {shiftCount}";
+        }
+
+        public string AddEmployeeLeaves(DateTime from, DateTime to, List<int> employees)
+        {
+            var empLeaves = _context.tbl_EmployeeLeaves.ToList();
+            var empLeavesList = new List<tbl_EmployeeLeaves>();
+
+            if (employees.Count() > 0)
+            {
+                foreach (var oid in employees)
+                {
+                    var empObj = _context.tbl_Employees.FirstOrDefault(x => x.Oid == oid);
+
+                    if (empLeaves.Any(x => x.EmployeeId == empObj.EmployeeID && x.StartDate <= from && x.EndDate >= to))
+                        return "Record Already Present! Kindly Check The Date/Time";
+
+                    empLeavesList.Add(new tbl_EmployeeLeaves
+                    {
+                        CreatedOn = DateTime.Now,
+                        EmployeeId = empObj.EmployeeID.Value,
+                        EndDate = to,
+                        StartDate = from
+                    });
+                }
+
+                _context.tbl_EmployeeLeaves.AddRange(empLeavesList);
+                _context.SaveChanges();
+
+                return "Record Added Successfully!";
+            }
+
+            return "Record was not added!";
+
+        }
+
+        public List<EmployeeViewModel> GetEmployeeLeaves()
+        {
+            var empLeaves = _context.tbl_EmployeeLeaves.ToList();
+            var employees = _context.tbl_Employees.ToList();
+
+            var employeesViewModel = new List<EmployeeViewModel>();
+
+            foreach (var emp in empLeaves)
+            {
+                var empObj = employees.FirstOrDefault(x => x.EmployeeID == emp.EmployeeId);
+                employeesViewModel.Add(new EmployeeViewModel
+                {
+                    EmployeeId = emp.EmployeeId,
+                    NameEn = empObj.NameEn,
+                    NameAr = empObj.NameAr,
+                    StartDate = emp.StartDate,
+                    EndDate = emp.EndDate,
+                    Oid = emp.Oid
+                });
+            }
+
+            return employeesViewModel;
+        }
+
+        public void DeleteEmployeeLeaves(List<int> verifiedIds)
+        {
+            if (verifiedIds.Count() > 0)
+                foreach (var id in verifiedIds)
+                {
+                    var record = _context.tbl_EmployeeLeaves.FirstOrDefault(x => x.Oid == id);
+
+                    if (record != null)
+                    {
+                        _context.tbl_EmployeeLeaves.Remove(record);
+                        _context.SaveChanges();
+                    }
+                }
+        }
+
+        /// <summary>
+        /// Get list of all the employees who has punched in after 15 Min 
+        /// or more and email the list in excel send email.
+        /// </summary>
+        /// 09-Jan-2021 - Shabbir Ismail
+        /// In Development
+        public string SendShiftStartDetailReport()
+        {
+            var today = DateTime.Now;
+            // var message = "";
+
+            // var today = new DateTime(2021, 01, 02, 05, 17, 00);
+            try
+            {
+                SyncTAReport(today.Year, today.Month, today.Day, today.Year, today.Month, today.Day);
+
+                var currentTime = today.TimeOfDay;
+                TimeSpan shiftTimeFirstPhase = new TimeSpan(0, 0, 0);
+                TimeSpan shiftTimeSecondPhase = new TimeSpan(0, 0, 0);
+
+                var settings = _context.tbl_ShiftEmailSettings.Where(x => x.IsRegForEmail).ToList();
+                var shiftEmailMap = _context.tbl_ShiftEmailMap.Where(x => x.TransDate >= today.Date && x.TransDate <= today.Date).ToList();
+
+                foreach (var setting in settings)
+                {
+                    var shifts = _context.tbl_Shift.ToList();
+
+                    foreach (var shift in shifts)
+                    {
+                        if (!shiftEmailMap.Any(x => x.ShiftOid == shift.Oid && x.IsEmailSent && x.IsForStart && x.ShiftEmailSettingOid == setting.Oid))
+                        {
+                            shiftTimeFirstPhase = shift.StartTime.Value.Add(setting.EmailStartRange);
+                            shiftTimeSecondPhase = shift.StartTime.Value.Add(setting.EmailEndRange);
+
+                            if (currentTime >= shiftTimeFirstPhase && currentTime <= shiftTimeSecondPhase)
+                            {
+                                var taViewModels = new List<TimeAttendanceViewModel>();
+
+                                var shiftMap = _context.tbl_EmpLocShiftMap
+                                        .Include(a => a.tbl_Employees)
+                                        .Include(a => a.tbl_Shift)
+                                        .Include(a => a.tbl_Location)
+                                        .Where(x => x.ShiftOid == shift.Oid)
+                                        .ToList();
+
+                                if (shiftMap.Any())
+                                {
+                                    // message += $"{shift.NameEn}-FP: {shiftTimeFirstPhase}-SP: {shiftTimeSecondPhase}, || ";
+                                    List<TimeAttendanceViewModel> taShowAllEmpRec = null;
+                                    foreach (var item in shiftMap)
+                                    {
+
+                                        var startDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
+                                        var endDate = new DateTime(today.Year, today.Month, today.Day, 23, 59, 59);
+
+                                        var empLeavesEmpIds = _context.tbl_EmployeeLeaves.Where(x => x.StartDate <= startDate &&
+                                                                                                     x.EndDate >= startDate ||
+                                                                                                     x.StartDate <= endDate &&
+                                                                                                     x.EndDate >= endDate)
+                                                                                         .Select(a => a.EmployeeId)
+                                                                                         .ToList();
+
+                                        taShowAllEmpRec = GetTAReport(startDate, endDate, null, "showall").Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
+                                                                                                                          x.ShiftEnd == item.tbl_Shift.EndTime &&
+                                                                                                                          x.LateIn >= setting.LateInRange).ToList();
+
+                                        var taAbsentModels = GetTAReport(startDate, endDate, null, "notScanned").Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
+                                                                                                                            x.ShiftEnd == item.tbl_Shift.EndTime).ToList();
+
+                                        foreach (var id in empLeavesEmpIds)
+                                        {
+                                            if (taAbsentModels.Any(x => x.EmployeeId == id))
+                                            {
+                                                var rec = taAbsentModels.FirstOrDefault(x => x.EmployeeId == id);
+                                                taAbsentModels.Remove(rec);
+                                            }
+
+                                            if (taShowAllEmpRec.Any(x => x.EmployeeId == id))
+                                            {
+                                                var rec = taShowAllEmpRec.FirstOrDefault(x => x.EmployeeId == id);
+                                                taShowAllEmpRec.Remove(rec);
+                                            }
+                                        }
+
+
+                                        foreach (var rec in taAbsentModels)
+                                            if (!taShowAllEmpRec.Any(x => x.EmployeeId == rec.EmployeeId))
+                                                taShowAllEmpRec.Add(rec);
+                                    }
+
+                                    if (taShowAllEmpRec.Any())
+                                    {
+                                        var pathName = "~/Content/";
+                                        var path = HttpContext.Current.Server.MapPath(pathName);
+                                        using (var workbook = new XLWorkbook())
+                                        {
+                                            var worksheet = workbook.Worksheets.Add("Sheet1");
+                                            worksheet.Cell(1, 1).Value = "Employee Id";
+                                            worksheet.Cell(1, 2).Value = "Employee Name";
+                                            worksheet.Cell(1, 3).Value = "Location";
+                                            worksheet.Cell(1, 4).Value = "Shift Start";
+                                            worksheet.Cell(1, 5).Value = "Shift End";
+                                            worksheet.Cell(1, 6).Value = "Punch In";
+                                            worksheet.Cell(1, 7).Value = "Late In";
+
+                                            var count = 2;
+
+                                            foreach (var rec in taShowAllEmpRec)
+                                            {
+                                                worksheet.Cell(count, 1).Value = rec.EmployeeId;
+                                                worksheet.Cell(count, 2).Value = rec.EmployeeName;
+                                                worksheet.Cell(count, 3).Value = rec.Location;
+                                                worksheet.Cell(count, 4).Value = rec.ShiftStart.Value.ToString();
+                                                worksheet.Cell(count, 5).Value = rec.ShiftEnd.Value.ToString();
+                                                worksheet.Cell(count, 6).Value = rec.PunchIn.HasValue ? rec.PunchIn.Value.ToString("hh:mm:ss") : "Not Punched";
+                                                worksheet.Cell(count, 7).Value = rec.LateIn.ToString();
+                                                count += 1;
+                                            }
+
+                                            workbook.SaveAs(path + "shift.xlsx");
+                                        }
+
+                                        MailMessage mailMessage = new MailMessage
+                                        {
+                                            Subject = $"{shift.NameEn}",
+                                            Body = $"Employee List : Not punched in or late in more than {setting.LateInRange}",
+                                            From = new MailAddress("imillmaterialreq@gmail.com"),
+                                        };
+
+                                        var newAttachment = new Attachment(path + "shift.xlsx");
+                                        mailMessage.Attachments.Add(newAttachment);
+
+
+                                        mailMessage.To.Add(new MailAddress(setting.Email));
+
+                                        SmtpClient smtp = new SmtpClient
+                                        {
+                                            Host = "smtp.gmail.com",
+                                            Port = 587,
+                                            EnableSsl = true,
+                                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                                            UseDefaultCredentials = false,
+                                            Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
+                                        };
+
+                                        smtp.Send(mailMessage);
+
+                                        newAttachment.Dispose();
+
+                                        var newShiftMap = new tbl_ShiftEmailMap
+                                        {
+                                            IsEmailSent = true,
+                                            IsForStart = true,
+                                            ShiftOid = shift.Oid,
+                                            TransDate = today.Date,
+                                            ShiftEmailSettingOid = setting.Oid
+                                        };
+                                        _context.tbl_ShiftEmailMap.Add(newShiftMap);
+                                        _context.SaveChanges();
+
+                                        return $"Email Sent (Shift Start) {shift.NameEn}";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error Occurred! {ex.InnerException.Message}";
+                throw;
+            }
+
+            return $"True : {today.Date} {today.TimeOfDay}";
+        }
+
+        /// <summary>
+        /// Get list of all the employees who is early out 15 Min 
+        /// or before & have not completed 8 hours. Create the 
+        /// list in excel send email.
+        /// </summary>
+        /// 10-Jan-2021 - Shabbir Ismail
+        /// In Development
+        public string SendShiftEndDetailReport()
+        {
+            var today = DateTime.Now;
+            // var today = new DateTime(2021, 01, 02, 13, 17, 00);
+
+            try
+            {
+                SyncTAReport(today.Year, today.Month, today.Day, today.Year, today.Month, today.Day);
+
+                var currentTime = today.TimeOfDay;
+                TimeSpan shiftTimeFirstPhase = new TimeSpan(0, 0, 0);
+                TimeSpan shiftTimeSecondPhase = new TimeSpan(0, 0, 0);
+
+                var settings = _context.tbl_ShiftEmailSettings.Where(x => x.IsRegForEmail).ToList();
+                var shiftEmailMap = _context.tbl_ShiftEmailMap.Where(x => x.TransDate >= today.Date && x.TransDate <= today.Date).ToList();
+
+                foreach (var setting in settings)
+                {
+                    var shifts = _context.tbl_Shift.ToList();
+
+                    foreach (var shift in shifts)
+                    {
+                        if (!shiftEmailMap.Any(x => x.ShiftOid == shift.Oid && x.IsEmailSent && !x.IsForStart && x.ShiftEmailSettingOid == setting.Oid))
+                        {
+                            shiftTimeFirstPhase = shift.EndTime.Value.Add(setting.EmailStartRange);
+                            shiftTimeSecondPhase = shift.EndTime.Value.Add(setting.EmailEndRange);
+
+                            if (currentTime >= shiftTimeFirstPhase && currentTime <= shiftTimeSecondPhase)
+                            {
+                                var taViewModels = new List<TimeAttendanceViewModel>();
+
+                                var shiftMap = _context.tbl_EmpLocShiftMap
+                                        .Include(a => a.tbl_Employees)
+                                        .Include(a => a.tbl_Shift)
+                                        .Include(a => a.tbl_Location)
+                                        .Where(x => x.ShiftOid == shift.Oid)
+                                        .ToList();
+
+                                if (shiftMap.Any())
+                                {
+                                    List<TimeAttendanceViewModel> taShowAllEmpRec = null;
+                                    foreach (var item in shiftMap)
+                                    {
+                                        var startDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
+                                        var endDate = new DateTime(today.Year, today.Month, today.Day, 23, 59, 59);
+
+                                        var empLeavesEmpIds = _context.tbl_EmployeeLeaves.Where(x => x.StartDate <= startDate &&
+                                                                                                     x.EndDate >= startDate ||
+                                                                                                     x.StartDate <= endDate &&
+                                                                                                     x.EndDate >= endDate)
+                                                                                         .Select(a => a.EmployeeId)
+                                                                                         .ToList();
+
+                                        taShowAllEmpRec = GetTAReport(startDate, endDate, null, "default").Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
+                                                                                                                          x.ShiftEnd == item.tbl_Shift.EndTime &&
+                                                                                                                          (x.EarlyOut >= setting.EarlyOutRange ||
+                                                                                                                          x.TotalWorkingHours < 8)).ToList();
+
+                                        //var taAbsentModels = GetTAReport(startDate, endDate, null, "notScanned").Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
+                                        //                                                                                    x.ShiftEnd == item.tbl_Shift.EndTime).ToList();
+
+                                        foreach (var id in empLeavesEmpIds)
+                                        {
+                                            //if (taAbsentModels.Any(x => x.EmployeeId == id))
+                                            //{
+                                            //    var rec = taAbsentModels.FirstOrDefault(x => x.EmployeeId == id);
+                                            //    taAbsentModels.Remove(rec);
+                                            //}
+
+                                            if (taShowAllEmpRec.Any(x => x.EmployeeId == id))
+                                            {
+                                                var rec = taShowAllEmpRec.FirstOrDefault(x => x.EmployeeId == id);
+                                                taShowAllEmpRec.Remove(rec);
+                                            }
+                                        }
+
+
+                                        //foreach (var rec in taAbsentModels)
+                                        //    if (!taShowAllEmpRec.Any(x => x.EmployeeId == rec.EmployeeId))
+                                        //        taShowAllEmpRec.Add(rec);
+
+                                    }
+
+                                    if (taShowAllEmpRec.Any())
+                                    {
+                                        var pathName = "~/Content/";
+                                        var path = HttpContext.Current.Server.MapPath(pathName);
+
+                                        using (var workbook = new XLWorkbook())
+                                        {
+                                            var worksheet = workbook.Worksheets.Add("Sheet1");
+                                            worksheet.Cell(1, 1).Value = "Employee Id";
+                                            worksheet.Cell(1, 2).Value = "Employee Name";
+                                            worksheet.Cell(1, 3).Value = "Location";
+                                            worksheet.Cell(1, 4).Value = "Shift Start";
+                                            worksheet.Cell(1, 5).Value = "Shift End";
+                                            worksheet.Cell(1, 6).Value = "Punch In";
+                                            worksheet.Cell(1, 7).Value = "Punch Out";
+                                            worksheet.Cell(1, 8).Value = "Late In";
+                                            worksheet.Cell(1, 9).Value = "Early Out";
+                                            worksheet.Cell(1, 10).Value = "Total Hour Worked";
+
+                                            var count = 2;
+
+                                            foreach (var rec in taShowAllEmpRec)
+                                            {
+                                                worksheet.Cell(count, 1).Value = rec.EmployeeId;
+                                                worksheet.Cell(count, 2).Value = rec.EmployeeName;
+                                                worksheet.Cell(count, 3).Value = rec.Location;
+                                                worksheet.Cell(count, 4).Value = rec.ShiftStart.Value.ToString();
+                                                worksheet.Cell(count, 5).Value = rec.ShiftEnd.Value.ToString();
+                                                worksheet.Cell(count, 6).Value = rec.PunchIn.HasValue ? rec.PunchIn.Value.ToString("hh:mm:ss") : "-";
+                                                worksheet.Cell(count, 7).Value = rec.PunchOut.HasValue ? rec.PunchOut.Value.ToString("hh:mm:ss") : "-";
+                                                worksheet.Cell(count, 8).Value = rec.LateIn.ToString();
+                                                worksheet.Cell(count, 9).Value = rec.EarlyOut.ToString();
+                                                worksheet.Cell(count, 10).Value = rec.ConvTotalHoursWorked;
+                                                count += 1;
+                                            }
+
+                                            workbook.SaveAs(path + "shiftEnd.xlsx");
+                                        }
+
+                                        MailMessage mailMessage = new MailMessage
+                                        {
+                                            Subject = $"{shift.NameEn}",
+                                            Body = "Employee List : Not punched in or Early Out more than 15 minutes and not completed 8 hours",
+                                            From = new MailAddress("imillmaterialreq@gmail.com"),
+                                        };
+
+                                        var newAttachment = new Attachment(path + "shiftEnd.xlsx");
+                                        mailMessage.Attachments.Add(newAttachment);
+
+
+                                        mailMessage.To.Add(new MailAddress(setting.Email));
+
+                                        SmtpClient smtp = new SmtpClient
+                                        {
+                                            Host = "smtp.gmail.com",
+                                            Port = 587,
+                                            EnableSsl = true,
+                                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                                            UseDefaultCredentials = false,
+                                            Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
+                                        };
+
+                                        smtp.Send(mailMessage);
+
+                                        newAttachment.Dispose();
+
+                                        var newShiftMap = new tbl_ShiftEmailMap
+                                        {
+                                            IsEmailSent = true,
+                                            IsForStart = false,
+                                            ShiftOid = shift.Oid,
+                                            TransDate = today.Date,
+                                            ShiftEmailSettingOid = setting.Oid
+                                        };
+                                        _context.tbl_ShiftEmailMap.Add(newShiftMap);
+                                        _context.SaveChanges();
+
+                                        return $"Email Sent (Shift End) {shift.NameEn}";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error Occurred! {ex.InnerException.Message}";
+                throw;
+            }
+
+            return $"True (Shift End): {today.Date}>{today.TimeOfDay}";
         }
     }
 }

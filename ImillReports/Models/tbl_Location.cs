@@ -25,6 +25,7 @@ namespace ImillReports.Models
         public string NameAr { get; set; }
         public Nullable<short> Locat_Cd { get; set; }
         public string DeviceCode { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_EmpLocShiftMap> tbl_EmpLocShiftMap { get; set; }

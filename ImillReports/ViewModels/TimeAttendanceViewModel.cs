@@ -27,6 +27,13 @@ namespace ImillReports.ViewModels
         public decimal? TemperatureIn { get; internal set; }
         public decimal? TemperatureOut { get; internal set; }
         public int Oid { get; internal set; }
+        public string EmployeeNameAr { get; internal set; }
+        public string ConvTotalHoursWorked { get; internal set; }
+        public string IsLateIn { get; internal set; }
+        public string IsLateIn5Min { get; internal set; }
+        public string IsEarlyOut { get; internal set; }
+        public string IsEarlyOut5Min { get; internal set; }
+        public string IsOnLeave { get; internal set; }
     }
 
     public class AllocationMapViewModel
@@ -46,6 +53,13 @@ namespace ImillReports.ViewModels
         public TimeSpan EndTime { get; set; }
         public DateTime? FromDate { get; internal set; }
         public DateTime? ToDate { get; internal set; }
+        public bool? Sat { get; internal set; }
+        public bool? Sun { get; internal set; }
+        public bool? Mon { get; internal set; }
+        public bool? Tues { get; internal set; }
+        public bool? Wed { get; internal set; }
+        public bool? Thur { get; internal set; }
+        public bool? Fri { get; internal set; }
     }
 
     public class EmployeeViewModel
@@ -56,5 +70,7 @@ namespace ImillReports.ViewModels
         public int EmployeeId { get; set; }
         public string DisplayText { get; set; }
         public bool IsSelected { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

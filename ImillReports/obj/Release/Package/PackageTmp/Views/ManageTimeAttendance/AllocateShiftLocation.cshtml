@@ -11,6 +11,11 @@
     toolbarItems.Add(new { text = "Delete Record(s)", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
 }
 
+<style>
+    .days {
+        margin-right: 1.5rem;
+    }
+</style>
 
 <div class="container-fluid">
     @if (ViewBag.validation == "true")
@@ -58,11 +63,11 @@
                            new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "DisplayText", Value = "Oid" }).ActionBegin("onEmpBegin").DataBound("onEmpBound").Render()
                         </div>
 
-                        <div class="col-2 emp">
+                        <div class="col-2">
                             @Html.EJS().DatePicker("fromDate").Format("dd/MMM/yyyy").Value(ViewBag.startDate).Placeholder("From Date").Render()
                         </div>
 
-                        <div class="col-2 emp">
+                        <div class="col-2">
                             @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Placeholder("To Date (Optional)").Render()
                         </div>
 
@@ -78,6 +83,18 @@
                           new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text = "DisplayText", Value = "Oid" }).ActionBegin("onShiftBegin").DataBound("onShiftBound").Render()
                         </div>
 
+                    </div>
+
+                    <div class="row pt-3 pr-3 pl-5">
+                        <div class="col-12" style="padding-left: 3px !important;">
+                            @Html.EJS().CheckBox("sunday").Label("Sun").CssClass("days").Checked(true).Render()
+                            @Html.EJS().CheckBox("monday").Label("Mon").CssClass("days").Checked(true).Render()
+                            @Html.EJS().CheckBox("tuesday").Label("Tues").CssClass("days").Checked(true).Render()
+                            @Html.EJS().CheckBox("wednesday").Label("Wed").CssClass("days").Checked(true).Render()
+                            @Html.EJS().CheckBox("thursday").Label("Thurs").CssClass("days").Checked(true).Render()
+                            @Html.EJS().CheckBox("friday").Label("Fri").CssClass("days").Checked(true).Render()
+                            @Html.EJS().CheckBox("saturday").Label("Sat").CssClass("days").Checked(true).Render()
+                        </div>
                     </div>
 
                     <div class="row pt-1 pb-3">
@@ -110,11 +127,11 @@
                                col.Field("IsVerified").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
                                col.Field("Oid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).ShowInColumnChooser(false).Add();
                                col.Field("EmpId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).Add();
-                               col.Field("EmpName").Width("80").HeaderText("Emp Name").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                               col.Field("EmpNameAr").Width("80").HeaderText("Emp NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("EmpName").Visible(false).Width("80").HeaderText("Emp NameEn").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Left).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("EmpNameAr").Width("80").HeaderText("Emp NameAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("LocationOid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).ShowInColumnChooser(false).Add();
-                               col.Field("Location").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                               col.Field("LocationAr").Width("80").HeaderText("LocationAr").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Location").Visible(false).HeaderText("Location En").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Left).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("LocationAr").Width("80").HeaderText("Location Ar").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("ShiftOid").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).ShowInColumnChooser(false).Add();
                                col.Field("ShiftCode").Width("80").HeaderText("Shift Code").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("ShiftName").Width("80").HeaderText("Shift").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
@@ -122,6 +139,13 @@
                                col.Field("EndTime").Width("100").HeaderText("End Time").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("FromDate").Width("100").HeaderText("From Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
                                col.Field("ToDate").Width("100").HeaderText("To Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Sat").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Sun").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Mon").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Tues").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Wed").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Thur").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                               col.Field("Fri").Width("100").DisplayAsCheckBox(true).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
 
                            }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
                                page =>
@@ -330,6 +354,32 @@
                 var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
                 var locationObj = document.getElementById('locations').ej2_instances[0].value; // MultiSelect Instance of ocations
                 var shiftObj = document.getElementById('shifts').ej2_instances[0].value; // MultiSelect Instance of Shifts
+                var fromDateObj = document.getElementById('fromDate').ej2_instances[0].value;
+                var toDateObj = document.getElementById('toDate').ej2_instances[0].value;
+
+                console.log(fromDateObj);
+                var sunday = document.getElementById('sunday').ej2_instances[0].checked;
+                var monday = document.getElementById('monday').ej2_instances[0].checked;
+                var tuesday = document.getElementById('tuesday').ej2_instances[0].checked;
+                var wednesday = document.getElementById('wednesday').ej2_instances[0].checked;
+                var thursday = document.getElementById('thursday').ej2_instances[0].checked;
+                var friday = document.getElementById('friday').ej2_instances[0].checked;
+                var saturday = document.getElementById('saturday').ej2_instances[0].checked;
+
+                if (sunday === false && monday === false && tuesday === false &&
+                    wednesday === false && thursday === false && friday === false &&
+                    saturday === false) {
+                    alert("Select at least 1 day");
+                }
+
+
+                var sd = new Date(fromDateObj);
+                var from = sd.getDate().toString() + '-' + (sd.getMonth() + 1).toString() + '-' + sd.getFullYear().toString();
+
+                var ed = toDateObj !== null ? new Date(toDateObj) : null
+                if (toDateObj !== null) {
+                    ed.setMonth(ed.getMonth());
+                }
 
                 if (locationObj === null && shiftObj === null) {
                     setTimeout(() => {
@@ -353,25 +403,41 @@
                          data: {
                              locations: locationObj === null ? "" : locationObj.toString(),
                              shifts: shiftObj === null ? "" : shiftObj.toString(),
-                             verifiedIds: verificationIds
+                             verifiedIds: verificationIds,
+                             fromDate: from,
+                             toDate: toDateObj !== null
+                                 ? ed.getDate().toString() + '-' + (ed.getMonth() + 1).toString() + '-' + ed.getFullYear().toString()
+                                 : toDateObj,
+                             sun: sunday,
+                             mon: monday,
+                             tues: tuesday,
+                             wed: wednesday,
+                             thur: thursday,
+                             fri: friday,
+                             sat: saturday
                          },
                         url: '@Url.Action("AllocateShiftLocation", "ManageTimeAttendance")',
                          success: function (response) {
                              if (response) {
-                                 setTimeout(() => {
-                                     var toastObj = document.getElementById('success-toast').ej2_instances[0];
-                                     toastObj.target = document.body;
-                                     toastObj.show();
-                                 }, 1000);
-                                 verificationIds = [];
+                                 //setTimeout(() => {
+                                 //    var toastObj = document.getElementById('success-toast').ej2_instances[0];
+                                 //    toastObj.target = document.body;
+                                 //    toastObj.show();
+                                 //}, 1000);
 
-                                 console.log('Total Time Taken: ', i);
+                                 if (response === 'true') {
+                                     verificationIds = [];
+                                     alert("Successfully Updated!");
+                                     window.location.reload();
+                                 } else {
+                                     alert(response);
+                                 }
+
                                  $('.preloader').hide();
                                  $('.loading-text').hide();
                                  $('.e-grid').show();
-
-                                 grid.dataSource = response;
-                                 grid.refresh();
+                                 //grid.dataSource = response;
+                                 //grid.refresh();
 
                              } else {
                                  setTimeout(() => {
@@ -518,6 +584,20 @@
             var fromDateObj = document.getElementById('fromDate').ej2_instances[0].value;
             var toDateObj = document.getElementById('toDate').ej2_instances[0].value;
 
+            var sunday = document.getElementById('sunday').ej2_instances[0].checked;
+            var monday = document.getElementById('monday').ej2_instances[0].checked;
+            var tuesday = document.getElementById('tuesday').ej2_instances[0].checked;
+            var wednesday = document.getElementById('wednesday').ej2_instances[0].checked;
+            var thursday = document.getElementById('thursday').ej2_instances[0].checked;
+            var friday = document.getElementById('friday').ej2_instances[0].checked;
+            var saturday = document.getElementById('saturday').ej2_instances[0].checked;
+
+            if (sunday === false && monday === false && tuesday === false &&
+                wednesday === false && thursday === false && friday === false &&
+                saturday === false) {
+                alert("Select at least 1 day");
+            }
+
             if (empObj.length < 1) {
                 setTimeout(() => {
                     var toastObj = document.getElementById('info-emp-toast').ej2_instances[0];
@@ -545,12 +625,11 @@
 
                 // var transDate = $('#fromDate').val();
                 // console.log('transDate : ', transDate);
-                
+
                 var sd = new Date(fromDateObj);
-                var from = sd.getDate().toString() + '-' + sd.getMonth().toString() + '-' + sd.getFullYear().toString();
+                var from = sd.getDate().toString() + '-' + (sd.getMonth() + 1).toString() + '-' + sd.getFullYear().toString();
 
                 var ed = toDateObj !== null ? new Date(toDateObj) : null
-                debugger;
                 if (toDateObj !== null) {
                     ed.setMonth(ed.getMonth());
                 }
@@ -564,33 +643,52 @@
                             fromDate: from,
                             toDate: toDateObj !== null
                                 ? ed.getDate().toString() + '-' + (ed.getMonth() + 1).toString() + '-' + ed.getFullYear().toString()
-                                : toDateObj
+                                : toDateObj,
+                            sun: sunday,
+                            mon: monday,
+                            tues: tuesday,
+                            wed: wednesday,
+                            thur: thursday,
+                            fri: friday,
+                            sat: saturday
                         },
                     url: '@Url.Action("AddAllocation", "ManageTimeAttendance")',
                     success: function (response) {
-                            if (+response === 1) {
-                                window.location.reload();
-                            } else if (+response === 2) {
-                                setTimeout(() => {
-                                    var toastObj = document.getElementById('error-add-toast').ej2_instances[0];
-                                    toastObj.target = document.body;
-                                    toastObj.show();
-                                }, 1000);
+                        //setTimeout(() => {
+                        //    var toastObj = document.getElementById('info-add-toast').ej2_instances[0];
+                        //    toastObj.target = document.body;
+                        //    toastObj.show();
+                        //}, 1000);
 
-                                $('.preloader').hide();
-                                $('.loading-text').hide();
-                                $('.e-grid').show();
-                            } else {
-                                setTimeout(() => {
-                                    var toastObj = document.getElementById('info-add-toast').ej2_instances[0];
-                                    toastObj.target = document.body;
-                                    toastObj.show();
-                                }, 1000);
+                        alert(response);
+                        window.location.reload();
 
-                                $('.preloader').hide();
-                                $('.loading-text').hide();
-                                $('.e-grid').show();
-                            }
+                        $('.preloader').hide();
+                        $('.loading-text').hide();
+                        $('.e-grid').show();
+                            //if (+response === 1) {
+                            //    window.location.reload();
+                            //} else if (+response === 2) {
+                            //    setTimeout(() => {
+                            //        var toastObj = document.getElementById('error-add-toast').ej2_instances[0];
+                            //        toastObj.target = document.body;
+                            //        toastObj.show();
+                            //    }, 1000);
+
+                            //    $('.preloader').hide();
+                            //    $('.loading-text').hide();
+                            //    $('.e-grid').show();
+                            //} else {
+                            //    setTimeout(() => {
+                            //        var toastObj = document.getElementById('info-add-toast').ej2_instances[0];
+                            //        toastObj.target = document.body;
+                            //        toastObj.show();
+                            //    }, 1000);
+
+                            //    $('.preloader').hide();
+                            //    $('.loading-text').hide();
+                            //    $('.e-grid').show();
+                            //}
                     },
                     error: function (ex) {
                         console.log('Error Allocation : ', ex);
@@ -603,7 +701,8 @@
                         $('.preloader').hide();
                     }
                 });
-                }
+
+            }
 
         }
 

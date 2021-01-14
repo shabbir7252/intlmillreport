@@ -1,0 +1,446 @@
+﻿
+@using Syncfusion.EJ2.Grids;
+@{
+    ViewBag.Title = "Items";
+
+    List<object> commands = new List<object>();
+    // commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "e-flat" } });
+    commands.Add(new { type = "Delete", buttonOption = new { iconCss = "e-icons e-delete", cssClass = "delete" } });
+
+    //List<object> toolbarItems = new List<object>();
+    //toolbarItems.Add(new { text = "Delete Item(s)", tooltipText = "Delete the records", id = "deleteItem", prefixIcon = "e-delete" });
+}
+
+
+<div class="container">
+
+    <div class="row mt-5">
+        <div class="col-3">
+            @Html.EJS().DatePicker("date").Format("dd-MM-yyyy").Value(ViewBag.date).Render()
+        </div>
+        <div class="col-3">
+            @Html.EJS().DropDownList("location").Enabled(true).AllowFiltering(true).Filtering("OnLocationFiltering").Placeholder("Location").DataSource(
+                        (IEnumerable<object>)ViewBag.Locations).Fields(
+                        new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings
+                        {
+                            Text = "Name",
+                            Value = "LocationId"
+                        }).ActionBegin("OnLocationBegin").DataBound("OnLocationBound").Render()
+        </div>
+        <div class="col-6">
+            @Html.EJS().TextBox("Barcode").Placeholder("Barcode").Change("GetItem").Render()
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-4 mx-auto">
+            @Html.EJS().DropDownList("product").Enabled(true).AllowFiltering(true).Change("OnProductChange").Filtering("OnProductFiltering").Placeholder("Item").DataSource(
+                       (IEnumerable<object>)ViewBag.Items).Fields(
+                       new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings
+                       {
+                           Text = "NameAr",
+                           Value = "PartNo"
+                       }).ActionBegin("OnProductBegin").DataBound("OnProductBound").Render()
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+
+            @Html.EJS().Grid("Grid").ActionComplete("actionComplete").EnableRtl(false).Height("auto").Width("auto").Columns(col =>
+       {
+           // col.Field("SerialNo").Width("100").HeaderText("Serial").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("ItemNameEn").Width("100").HeaderText("Item NameEn").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("ItemNameAr").Width("100").HeaderText("Item NameAr").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("PartNumber").Width("80").HeaderText("Part Number").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("Weight").Width("80").HeaderText("Quantity").EditType("NumericTextBox").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("SalesRate").Width("80").HeaderText("Rate").EditType("NumericTextBox").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.Field("Total").Width("80").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+           col.HeaderText("Actions").Width("120").Commands(commands).Add();
+       }).DataBound("dataBound").CommandClick("commandClick").EditSettings(edit =>
+       {
+           edit.AllowEditing(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
+       }).Toolbar(new List<string>() { "Update", "Cancel" }).Render()
+
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-3 mx-auto">
+            <button type="button" class="btn btn-primary btn-block btn-sm btn-block save-items" onclick="SaveItems()">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="EditModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditModal">Edit</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        @Html.EJS().TextBox("weight").Type("number").Render()
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="UpdateGrid()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var itemList = [];
+        var btnSave = $('.save-items');
+        CheckItemList();
+        var partNumber = 0;
+        var count = 0;
+
+        $(function () {
+            document.getElementById('Barcode').focus();
+        });
+
+        function dataBound(args) {
+            // this.autoFitColumns(['NameEn', 'NameAr', 'Actions']);
+        }
+
+        function commandClick(args) {
+            var type = args.commandColumn.type;
+
+            if (type === 'Edit') {
+                $('#EditModal').modal('show');
+                partNumber = args.rowData.PartNumber
+                document.getElementById('weight').ej2_instances[0].value = args.rowData.Weight;
+            }
+
+            if (type === 'Delete') {
+                var grid = document.getElementById('Grid').ej2_instances[0];
+                var gridDs = grid.dataSource;
+
+                gridDs.some(function (elem, i) {
+                    if (elem.SerialNo === args.rowData.SerialNo) {
+                        gridDs.splice(i, 1);
+                    }
+                });
+
+                if (gridDs.length === 0) {
+                    ClearGrid();
+                } else {
+                    grid.dataSource = gridDs;
+                    grid.refresh();
+                }
+            }
+        }
+
+        function GetItem() {
+            var barcode = document.getElementById('Barcode').ej2_instances[0].value;
+
+            if (barcode !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBarcodeValue", "Home")',
+                    data: {
+                    barcode: barcode
+                    },
+                    success: function (response) {
+                        var skip = false;
+
+                        //itemList.some(function (elem, i) {
+                        //    if (elem.PartNumber === response.PartNumber) {
+
+                        //        console.log('Weight : ', elem.Weight);
+                        //        console.log('Weight Res: ', response.Weight);
+
+                        //        var totalWeight = Math.round((elem.Weight + response.Weight) * 100) / 100;
+                        //        var total = (totalWeight * response.SalesRate).toFixed(3);
+
+                        //        elem.Weight = totalWeight;
+                        //        elem.Total = total;
+                        //        skip = true;
+                        //    }
+                        //});
+
+                        if (!skip) {
+                            count = count + 1;
+                            var serialNo = count;
+                            var item = {
+                            'SerialNo': serialNo,
+                            'ItemNameEn': response.ItemNameEn,
+                            'ItemNameAr': response.ItemNameAr,
+                            'PartNumber': response.PartNumber,
+                            'Weight': response.Weight,
+                            'SalesRate': response.SalesRate,
+                            'Total': (response.Weight * response.SalesRate).toFixed(3)
+                            };
+
+                            itemList.push(item);
+                        }
+
+                        var grid = document.getElementById('Grid').ej2_instances[0];
+                        grid.dataSource = itemList.sort(function (a, b) {
+                            return b.SerialNo - a.SerialNo;
+                        });
+                        grid.refresh();
+
+                        document.getElementById('Barcode').ej2_instances[0].value = "";
+
+                        CheckItemList();
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+            }
+        }
+
+        function UpdateGrid() {
+
+            var weight = document.getElementById('weight').ej2_instances[0].value;
+
+            itemList.some(function (elem, i) {
+                if (elem.PartNumber === partNumber) {
+                    elem.Weight = weight;
+                }
+            });
+
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            grid.dataSource = itemList;
+            grid.refresh();
+        }
+
+        function actionComplete(args) {
+            if (args.requestType === 'save') {
+                serialNo = args.data.SerialNo;
+
+                itemList.some(function (elem, i) {
+                    if (elem.SerialNo === serialNo) {
+                        elem.Weight = args.data.Weight;
+                        elem.SalesRate = args.data.SalesRate;
+                        elem.Total = (args.data.Weight * args.data.SalesRate).toFixed(3);
+                    }
+                });
+
+                var grid = document.getElementById('Grid').ej2_instances[0];
+                grid.dataSource = itemList;
+                grid.refresh();
+            }
+        }
+
+
+        // ***********************  Location Filtering and Searching  ***********************
+
+        function OnLocationFiltering(e) {
+            var CBObj = document.getElementById("location").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('location').select(['Name', 'LocationId']);
+                query = (e.text !== '') ? query.where('Name', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selectedLocation = [];
+        function OnLocationBegin(e) {
+            this.fields = {
+                text: 'Name', value: 'LocationId', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                locationSearch(e.curData.Oid); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function locationSearch(e) {
+            if (selectedLocation.indexOf(e) == -1)
+                selectedLocation.push(e);
+        }
+
+        function OnLocationBound(e) {
+            this.value = selectedLocation;
+        }
+
+        // ***********************  End Location Filtering and Searching  ***********************
+
+        function SaveItems() {
+
+            console.log(itemList);
+            var date = $('#date').val();
+            var location = document.getElementById('location').ej2_instances[0].value;
+
+            if (location === null) {
+                alert('Please Select Location!');
+            } else {
+                if (itemList.length > 0) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SaveItems", "Home")',
+                    data: {
+                        date: date.toString(),
+                        location: location.toString(),
+                        itemList: itemList
+                    },
+                    success: function (response) {
+                        console.log('response', response);
+                        if (response.ReponseId === 1) {
+                            ClearGrid();
+
+                            document.getElementById('date').ej2_instances[0].value = null;
+                            document.getElementById('location').ej2_instances[0].value = null;
+
+                            alert("Transaction Successful!");
+                        }
+
+                        document.getElementById('Barcode').focus();
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+
+            } else {
+                alert('Please add value to grid!');
+                }
+            }
+
+
+        }
+
+        function ClearGrid() {
+            itemList = [];
+            CheckItemList();
+
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            grid.dataSource = itemList;
+            grid.refresh();
+        }
+
+        function DisableSaveBtn() {
+            btnSave.prop('disabled', true);
+        }
+
+        function EnableSaveBtn() {
+            btnSave.prop('disabled', false);
+        }
+
+        function CheckItemList() {
+            if (itemList.length > 0) {
+                EnableSaveBtn();
+            } else {
+                DisableSaveBtn()
+            }
+        }
+
+
+
+
+        // ***********************  Product Filtering and Searching  ***********************
+
+        function OnProductFiltering(e) {
+            var CBObj = document.getElementById("product").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                var query = new ej.data.Query().from('product').select(['NameAr', 'PartNo']);
+                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        var selectedProduct = [];
+        function OnProductBegin(e) {
+            this.fields = {
+                text: 'NameAr', value: 'PartNo', itemCreated: function (e) {
+                    var count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                ProductSearch(e.curData.PartNumber); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function ProductSearch(e) {
+            if (selectedProduct.indexOf(e) == -1)
+                selectedProduct.push(e);
+        }
+
+        function OnProductBound(e) {
+            this.value = selectedProduct;
+        }
+
+        function OnProductChange(args) {
+            console.log('On Prod Change : ', args);
+
+            $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBarcodeValue", "Home")',
+                    data: {
+                        barcode: args.itemData.PartNo
+                    },
+                    success: function (response) {
+                        var skip = false;
+
+                        //itemList.some(function (elem, i) {
+                        //    if (elem.PartNumber === response.PartNumber) {
+
+                        //        console.log('Weight : ', elem.Weight);
+                        //        console.log('Weight Res: ', response.Weight);
+
+                        //        var totalWeight = Math.round((elem.Weight + response.Weight) * 100) / 100;
+                        //        var total = (totalWeight * response.SalesRate).toFixed(3);
+
+                        //        elem.Weight = totalWeight;
+                        //        elem.Total = total;
+                        //        skip = true;
+                        //    }
+                        //});
+
+                        if (!skip) {
+                            count = count + 1;
+                            var serialNo = count;
+                            var item = {
+                            'SerialNo': serialNo,
+                            'ItemNameEn': response.ItemNameEn,
+                            'ItemNameAr': response.ItemNameAr,
+                            'PartNumber': response.PartNumber,
+                            'Weight': response.Weight,
+                            'SalesRate': response.SalesRate,
+                            'Total': (response.Weight * response.SalesRate).toFixed(3)
+                            };
+
+                            itemList.push(item);
+                        }
+
+                        var grid = document.getElementById('Grid').ej2_instances[0];
+                        grid.dataSource = itemList.sort(function (a, b) {
+                            return b.SerialNo - a.SerialNo;
+                        });
+                        grid.refresh();
+
+                        document.getElementById('Barcode').ej2_instances[0].value = "";
+
+                        CheckItemList();
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+        }
+
+    </script>
+}

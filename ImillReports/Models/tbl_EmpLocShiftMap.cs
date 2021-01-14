@@ -20,6 +20,13 @@ namespace ImillReports.Models
         public int ShiftOid { get; set; }
         public Nullable<System.DateTime> fromDate { get; set; }
         public Nullable<System.DateTime> toDate { get; set; }
+        public Nullable<bool> IsMon { get; set; }
+        public Nullable<bool> IsTues { get; set; }
+        public Nullable<bool> IsWed { get; set; }
+        public Nullable<bool> IsThur { get; set; }
+        public Nullable<bool> IsFri { get; set; }
+        public Nullable<bool> IsSat { get; set; }
+        public Nullable<bool> IsSun { get; set; }
     
         public virtual tbl_Employees tbl_Employees { get; set; }
         public virtual tbl_Location tbl_Location { get; set; }

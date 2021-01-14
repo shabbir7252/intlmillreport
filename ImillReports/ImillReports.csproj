@@ -49,15 +49,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.95.4\lib\net40\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="ExporterObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Exporter.1.0.2\lib\ExporterObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="iTextSharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.Compression.Base, Version=18.1451.0.56, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Compression.Base.18.1.0.56\lib\net451\Syncfusion.Compression.Base.dll</HintPath>
@@ -82,6 +105,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -161,6 +185,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Westwind.RazorHosting, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Westwind.RazorHosting.1.01\lib\net40\Westwind.RazorHosting.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">
@@ -330,7 +358,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TAModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_Device.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmpAttendance.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_EmpLocShiftMap.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmployeeLeaves.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Employees.cs">
@@ -345,6 +382,12 @@
     <Compile Include="Models\tbl_Shift.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_ShiftEmailMap.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_ShiftEmailSettings.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Transactions.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
     </Compile>
@@ -354,10 +397,16 @@
     <Compile Include="Models\Transaction_2020.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Transaction_2021.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Trans_Detail_2019.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Trans_Detail_2020.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2021.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -393,20 +442,6 @@
     <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.dataTables.min.css" />
     <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.foundation.css" />
     <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.foundation.min.css" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.jqueryui.css" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.jqueryui.min.css" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.semanticui.css" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\css\buttons.semanticui.min.css" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.bootstrap.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.bootstrap.min.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.bootstrap4.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.bootstrap4.min.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.colVis.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.colVis.min.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.flash.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.flash.min.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.foundation.js" />
-    <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.foundation.min.js" />
     <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.html5.js" />
     <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.html5.min.js" />
     <Content Include="Content\DataTables\Buttons-1.6.1\js\buttons.jqueryui.js" />
@@ -701,6 +736,7 @@
     <Content Include="Views\ManageTimeAttendance\Locations.cshtml" />
     <Content Include="Views\ManageTimeAttendance\Shifts.cshtml" />
     <Content Include="Views\SalesReport\DailyConsumption.cshtml" />
+    <Content Include="Views\Dashboard\BranchSalesForPrint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Location\" />

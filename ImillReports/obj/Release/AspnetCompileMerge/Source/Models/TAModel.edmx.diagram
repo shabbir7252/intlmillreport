@@ -4,17 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4ca50d43e22f4fb5b754a2bf8011a3c7" Name="Diagram1" ZoomLevel="54">
-        <EntityTypeShape EntityType="FCCUNVDBModel.tbl_Location" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FCCUNVDBModel.tbl_Shift" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FCCUNVDBModel.tbl_Employees" Width="1.5" PointX="0.75" PointY="2.5" />
-        <EntityTypeShape EntityType="FCCUNVDBModel.tbl_EmpLocShiftMap" Width="1.5" PointX="3" PointY="5.375" />
-        <AssociationConnector Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Employees" />
-        <AssociationConnector Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Location" />
-        <AssociationConnector Association="FCCUNVDBModel.FK_tbl_EmpLocShiftMap_tbl_Shift" />
-        <EntityTypeShape EntityType="FCCUNVDBModel.tbl_EmpTransaction" Width="1.5" PointX="5.375" PointY="5.75" />
-        <EntityTypeShape EntityType="FCCUNVDBModel.tbl_Transactions" Width="1.5" PointX="5.375" PointY="1" />
-        </Diagram>
+      <Diagram DiagramId="acc741ff80b64eda8603cbc9c13dd55b" Name="Diagram1">
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_EmpAttendance" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_EmpLocShiftMap" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_Employees" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_Location" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_Shift" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_Transactions" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="FCCCentralizedDBModel.FK_tbl_EmpLocShiftMap_tbl_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="FCCCentralizedDBModel.FK_tbl_EmpLocShiftMap_tbl_Location" ManuallyRouted="false" />
+        <AssociationConnector Association="FCCCentralizedDBModel.FK_tbl_EmpLocShiftMap_tbl_Shift" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_EmployeeLeaves" Width="1.5" PointX="7.375" PointY="4.75" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_ShiftEmailSettings" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_ShiftEmailMap" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_Device" Width="1.5" PointX="9.375" PointY="4.75" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_EmpTransaction" Width="1.5" PointX="5.25" PointY="3.625" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

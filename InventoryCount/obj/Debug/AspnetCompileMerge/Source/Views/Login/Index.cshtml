@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    .numeric-pad-form {
+        /*        border: 1px solid lightgray;*/
+        box-shadow: 0px 0px 30px -15px lightgrey;
+        border-radius: 20px;
+    }
+
+    .numeric-pad {
+        /*width: 100%;*/
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+        .numeric-pad .num-display {
+            font-size: 1.5rem;
+            /*padding: 0.3rem;*/
+            /*text-align: left;*/
+            /*font-weight: bold;*/
+            /*width: 100%;*/
+            /*            background: #E6E6E6;*/
+            /*border: 0;*/
+        }
+
+        .numeric-pad .numbers {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            /*            max-width: 300px;*/
+        }
+
+            .numeric-pad .numbers span, .numeric-pad .num-reset, .numeric-pad .btn-submit-input, form {
+                background: #F2F2F2;
+                color: #313135;
+                color: #000;
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                border: 1px solid lightgrey;
+                margin: 15px;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                font-size: 1.8rem;
+                padding: 0.7rem;
+            }
+
+            .numeric-pad .numbers button {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                border: 1px solid lightgrey;
+                margin: 15px;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 0.1rem;
+            }
+</style>
+
+
+@*@if (ViewBag.Message != null)
+    {
+        <div class="row">
+            <div class="col-4 text-center mx-auto">
+                <div class="alert alert-warning text-center" role="alert">
+                    @ViewBag.Message
+                </div>
+            </div>
+        </div>
+    }*@
+
+<div class="row">
+    <div class="col-lg-6 col-xl-4 text-center mx-auto">
+
+        <div class="numeric-pad-form py-4">
+            <div class="numeric-pad">
+                <label>
+                    <input type="password" id="pin" name="pin" class="form-control num-display py-4 w-100 text-center" autocomplete="off" placeholder="Enter Pin" />
+                </label>
+
+                <label class="numbers">
+
+                    <span value="1">1</span>
+                    <span value="2">2</span>
+                    <span value="3">3</span>
+
+                    <span value="4">4</span>
+                    <span value="5">5</span>
+                    <span value="6">6</span>
+
+                    <span value="7">7</span>
+                    <span value="8">8</span>
+                    <span value="9">9</span>
+
+                    <span class="num-reset">C</span>
+                    <span value="0">0</span>
+
+                    @*@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                        {*@
+                    <input type="hidden" id="pin" name="pin" class="num-display" />
+                    <span onclick="SubmitForm()" style="padding: 0">
+                        <svg width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-arrow-right-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-8.354 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z" />
+                        </svg>
+                    </span>
+                    @*}*@
+
+                </label>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function searchNumber() {
+
+            const numWrap = $('.numeric-pad'),
+                btn = numWrap.find('.numbers').find('span'),
+                input = numWrap.find('.num-display'),
+                reset = numWrap.find('.num-reset');
+
+            btn.on('click', function (e) {
+                e.preventDefault();
+                var thisValue = this.innerHTML;
+                input.val(input.val() + thisValue);
+
+            });
+
+            reset.on('click', function (e) {
+                e.preventDefault();
+                input.val("");
+            });
+
+        }
+
+        searchNumber();
+
+        function SubmitForm() {
+            var pin = $('.num-display').val();
+            $.ajax({
+                type: 'POST',
+                data: {
+                    pin: pin
+                },
+                url: '@Url.Action("Index", "Home")',
+                    success: function (response) {
+                        if (response === 'success') {
+                            var link = "@Url.Action("Index", "CashRegister")"
+                            window.location.href = link;
+                        } else {
+                            alert(response);
+                            $('.numeric-pad').find('.num-display').val("");
+                        }
+                },
+                error: function (ex) {
+                    console.log('Error : ', ex);
+                }
+            });
+        }
+
+
+      // var elem = document.getElementById("body");
+
+    // elem.onclick = function() {
+      //  req = elem.requestFullScreen || elem.webkitRequestFullScreen || elem.mozRequestFullScreen;
+       // req.call(elem);
+    // }
+
+
+    </script>
+}

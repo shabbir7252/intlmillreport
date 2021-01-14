@@ -1188,7 +1188,7 @@ namespace ImillReports.Repository
             var branchOnlineSalesReturnCc = branchOnlineSalesReturn.Sum(x => x.CreditCard) != null ? (decimal)branchOnlineSalesReturn.Sum(x => x.CreditCard) : 0;
             var branchOnlineSalesCc = branchOnlineSales.Sum(x => x.CreditCard) - Math.Abs(branchOnlineSalesReturnCc);
 
-            var brOnlineSrNet = branchOnlineSalesReturn.Sum(x => x.NetAmount) ?? 0; 
+            var brOnlineSrNet = branchOnlineSalesReturn.Sum(x => x.NetAmount) ?? 0;
 
             #endregion
 
@@ -1339,16 +1339,19 @@ namespace ImillReports.Repository
                     productDetails.Add(productDetail);
                 }
 
-                var product = new Product
+                if (prod != null)
                 {
-                    Name = prod.Name,
-                    NameAr = prod.NameAr,
-                    Amount = itemTotalAmount,
-                    Percentage = totalAmountHo.Value != 0 ? 100 / totalAmountHo.Value * itemTotalAmount.Value : 0,
-                    ProductDetails = productDetails
-                };
+                    var product = new Product
+                    {
+                        Name = prod.Name,
+                        NameAr = prod.NameAr,
+                        Amount = itemTotalAmount,
+                        Percentage = totalAmountHo.Value != 0 ? 100 / totalAmountHo.Value * itemTotalAmount.Value : 0,
+                        ProductDetails = productDetails
+                    };
 
-                top5HoProductsByAmount.Add(product);
+                    top5HoProductsByAmount.Add(product);
+                }
 
             }
             #endregion
@@ -1630,16 +1633,19 @@ namespace ImillReports.Repository
                 var itemTotalQty = item.Sum(a => a.SellQuantity);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                if (prod != null)
                 {
-                    Name = prod.Name,
-                    NameAr = prod.NameAr,
-                    SellQuantity = itemTotalQty.Value,
-                    Percentage = totalSellHoQty.Value != 0 ? 100 / totalSellHoQty.Value * itemTotalQty.Value : 0,
-                    ProductDetails = productDetails
-                };
+                    var product = new Product
+                    {
+                        Name = prod.Name,
+                        NameAr = prod.NameAr,
+                        SellQuantity = itemTotalQty.Value,
+                        Percentage = totalSellHoQty.Value != 0 ? 100 / totalSellHoQty.Value * itemTotalQty.Value : 0,
+                        ProductDetails = productDetails
+                    };
 
-                top5ProductsHoByQty.Add(product);
+                    top5ProductsHoByQty.Add(product);
+                }
             }
 
             #endregion

@@ -4,7 +4,7 @@
     var pieChartDataSource = ViewBag.dataSourcePie;
 }
 
-@if (User.IsInRole("Admin") || User.IsInRole("HO"))
+@if (User.IsInRole("Admin") || User.IsInRole("HO") || User.IsInRole("StaffAdmin"))
 {
     <div class="row">
         <div class="col-12">
@@ -15,7 +15,7 @@
     </div>
 }
 <div class="row clearfix">
-    @if (User.IsInRole("Admin") || User.IsInRole("HO"))
+    @if (User.IsInRole("Admin") || User.IsInRole("HO") || User.IsInRole("StaffAdmin"))
     {
         <div class="col-6">
             <div class="card info-box-2 l-amber">
@@ -388,7 +388,7 @@
                 </div>
             </div>
         </div>*@
-    @if (User.IsInRole("Admin") || User.IsInRole("HO"))
+    @if (User.IsInRole("Admin") || User.IsInRole("HO") || User.IsInRole("StaffAdmin"))
     {
         <div class="col-12">
             <div class="card info-box-2 l-blue">
@@ -629,7 +629,7 @@
         </div>
     }
 </div>
-@if (User.IsInRole("Admin") || User.IsInRole("HO"))
+@if (User.IsInRole("Admin") || User.IsInRole("HO")  || User.IsInRole("StaffAdmin"))
 {
     <div class="row clearfix">
         <div class="col-lg-12">

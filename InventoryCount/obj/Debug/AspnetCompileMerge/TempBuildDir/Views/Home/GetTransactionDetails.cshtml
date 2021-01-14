@@ -1,0 +1,59 @@
+﻿@model IEnumerable<InventoryCount.ViewModels.TransactionDetailVM>
+
+    <style>
+        .navbar {
+            display: none !important;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="d-inline-block">
+                    <span class="text-muted d-inline-block">Trans Date</span> : @ViewBag.TransDate
+                </h5>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-12">
+                <h5 class="d-inline-block">
+                    <span class="text-muted d-inline-block">Transaction Number</span> : @ViewBag.TransactionNumber
+                </h5>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-12">
+                <h5 class="d-inline-block">
+                    <span class="text-muted d-inline-block">Location</span> : @ViewBag.Location
+                </h5>
+            </div>
+        </div>
+
+    </div>
+
+
+    <table class="table table-striped mt-5">
+        <tbody>
+            <tr class="bg-dark">
+                <td class="text-light" scope="col">PartNumber</td>
+                <td class="text-light" scope="col">ItemNameEn</td>
+                <td class="text-light" scope="col">ItemNameAr</td>
+                <td class="text-light" scope="col">Weight</td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-right">@item.PartNumber</td>
+                    <td class="text-right">@item.ItemNameEn</td>
+                    <td class="text-right">@item.ItemNameAr</td>
+                    <td class="text-right">@item.Weight</td>
+                </tr>
+            }
+        </tbody>
+    </table>

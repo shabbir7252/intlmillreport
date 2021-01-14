@@ -1,0 +1,168 @@
+﻿@using Syncfusion.EJ2.Grids;
+@{
+    ViewBag.Title = "Transactions";
+
+    List<object> toolbarItems = new List<object>();
+    // toolbarItems.Add(new { text = "Delete", tooltipText = "Delete the record(s)", id = "deleteRec", prefixIcon = "e-delete" });
+
+    List<object> commands = new List<object>();
+    commands.Add(new { type = "Print", buttonOption = new { iconCss = "e-icons e-print", cssClass = "print" } });
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+}
+
+<div class="container mb-5">
+    <div class="row mt-5">
+
+        <div class="col-12 loading-placeholder" style="display:none">
+            <div class="d-flex align-items-center mb-3">
+                <strong><span class="loading-text"></span></strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <div class="col-12 inv-grid-container">
+
+            @Html.EJS().Grid("Grid").EnableRtl(false).DataSource(
+              (IEnumerable<object>)
+              ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+          {
+              col.Field("IsVerified").Width("50").Type("checkbox").AllowFiltering(true).AllowSorting(true).Add();
+              col.Field("TransactionNumber").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+              col.Field("TransDate").Width("100").HeaderText("Date").TextAlign(TextAlign.Center).Format(new { type = "dateTime", format = "dd-MM-yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+              col.Field("TransNum").HeaderText("Transaction Number").Width("150").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+              col.Field("ItemCount").HeaderText("Item Count").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+              col.Field("Location").Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+              col.HeaderText("Actions").Width("120").Commands(commands).Add();
+
+          }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(FilterType.Menu)).PageSettings(
+              page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(toolbarItems).Aggregates(agg =>
+                   {
+                  agg.Columns(new List<GridAggregateColumn>() {
+                       new GridAggregateColumn() {
+                          Field = "ItemCount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                      } }).Add();
+                   }).DataBound("dataBound").RowDeselected("OnDeselected").RowSelected("OnSelected").AllowSelection(true).SelectionSettings(select =>
+                   select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var responseId = -1;
+        var verificationIds = [];
+
+        function commandClick(args) {
+
+            var type = args.commandColumn.type;
+
+            if (type === 'Edit') {
+                var link = "@Url.Action("TransactionDetails", "Home", new { oid = -1 })";
+                link = link.replace('-1', args.rowData.TransactionNumber);
+                window.location.href = link;
+            }
+
+            if (type === 'Print') {
+                $('.loading-text').html("Printing...");
+                $('.loading-placeholder').show();
+                $('.inv-grid-container').hide();
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        oid: args.rowData.TransactionNumber
+                    },
+                    url: '@Url.Action("PrintTransaction", "Home")',
+                    success: function (response) {
+                        console.log('response', response);
+                        $('.loading-text').html("Printing...");
+
+                        setTimeout(function () {
+                            $('.loading-placeholder').hide();
+                            $('.inv-grid-container').show();
+                        }, 1000);
+                    },
+                    error: function (ex) {
+                        alert("Error Occured While Email/Print!");
+                        $('.loading-placeholder').hide();
+                        $('.inv-grid-container').show();
+                    }
+                });
+            }
+        }
+
+        function dataBound(args) {
+            // this.autoFitColumns(['IsVerified', 'TransDate', 'TransactionNumber', 'ItemCount']);
+        }
+
+        function toolbarClick(args) {
+
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                var excelExportProperties = {
+                    fileName: "MaterialRequest.xlsx"
+                };
+                gridObj.excelExport(excelExportProperties);
+            }
+
+            if (args.item.id == 'deleteRec') {
+                if (verificationIds.length === 0) {
+                    alert('Select atleast 1 record');
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        data: {
+                            verifiedIds: verificationIds
+                        },
+                        url: '@Url.Action("Delete", "Home")',
+                        success: function (response) {
+                        console.log('response', response);
+                        responseId = response.ReponseId
+                        $('.modal-message').html(response.Message);
+                            $('#response-message').modal('show');
+                        },
+                        error: function (ex) {
+                            alert("Error Occured While Deleting!");
+                        }
+                    });
+                }
+            }
+        }
+
+        function OnSelected(args) {
+            if (typeof args.data.Oid === 'undefined') {
+                verificationIds = [];
+                args.data.forEach(function (item, i) {
+                    verificationIds.push(item.Oid);
+                });
+            } else {
+                var selectedId = args.data.Oid;
+                verificationIds.push(selectedId);
+            }
+        }
+
+        function OnDeselected(args) {
+            if (args.row.length === 0) {
+            } else {
+                if (args.row.length > 1) {
+                    verificationIds = [];
+                } else {
+                    var deselectedId = +(args.row.cells[1].innerHTML);
+                    verificationIds.some(function (item, i) {
+                        if (item === deselectedId) {
+                            verificationIds.splice(i, 1);
+                        }
+                    });
+                }
+            }
+        }
+
+        function CheckResponse() {
+            if (responseId === 1) {
+                window.location.reload();
+            }
+        }
+
+    </script>
+}
+
