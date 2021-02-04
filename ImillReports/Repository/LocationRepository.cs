@@ -27,35 +27,32 @@ namespace ImillReports.Repository
 
         public LocationViewModel GetLocations()
         {
-            var locations = _context.SM_Location;
+            var locations = _context.SM_Location.Where(x => x.Locat_Cd != 67 && x.Locat_Cd != 63 && x.Locat_Cd != 73).ToList();
 
             var locationItems = new List<LocationItem>();
 
             var cooperativeIds = _baseRepository.GetLocationIds(LocationType.Coops);
             var mallIds = _baseRepository.GetLocationIds(LocationType.Mall);
 
-            foreach (var location in locations.Where(x => x.Locat_Cd != 67 && x.Locat_Cd != 63 && x.Locat_Cd != 73))
-            {
-                var locationItem = new LocationItem
-                {
-                    LocationId = location.Locat_Cd,
-                    Name = location.L_Locat_Name,
-                    NameAr = location.A_Locat_Name,
-                    ShortName = location.L_Short_Name,
-                    Type = cooperativeIds.Contains(location.Locat_Cd) 
-                                ? LocationType.Coops 
-                                : mallIds.Contains(location.Locat_Cd)
-                                    ? LocationType.Mall
-                                    : LocationType.HO,
-                    TypeName = cooperativeIds.Contains(location.Locat_Cd)
-                                    ? Enum.GetName(typeof(LocationType), LocationType.Coops)
-                                    : mallIds.Contains(location.Locat_Cd) 
-                                        ? Enum.GetName(typeof(LocationType), LocationType.Mall)
-                                        : Enum.GetName(typeof(LocationType), LocationType.HO)
-                };
-
-                locationItems.Add(locationItem);
-            }
+            locationItems.AddRange(from location in locations
+                                   let locationItem = new LocationItem
+                                   {
+                                       LocationId = location.Locat_Cd,
+                                       Name = location.L_Locat_Name,
+                                       NameAr = location.A_Locat_Name,
+                                       ShortName = location.L_Short_Name,
+                                       Type = cooperativeIds.Contains(location.Locat_Cd)
+                                                ? LocationType.Coops
+                                                : mallIds.Contains(location.Locat_Cd)
+                                                    ? LocationType.Mall
+                                                    : LocationType.HO,
+                                       TypeName = cooperativeIds.Contains(location.Locat_Cd)
+                                                    ? Enum.GetName(typeof(LocationType), LocationType.Coops)
+                                                    : mallIds.Contains(location.Locat_Cd)
+                                                        ? Enum.GetName(typeof(LocationType), LocationType.Mall)
+                                                        : Enum.GetName(typeof(LocationType), LocationType.HO)
+                                   }
+                                   select locationItem);
 
             return new LocationViewModel
             {

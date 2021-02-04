@@ -17,7 +17,7 @@ namespace InventoryCount.Controllers
     {
 
         public IMILLEntities db = new IMILLEntities();
-        public ImillInvCountEntities _context = new ImillInvCountEntities();
+        // public ImillInvCountEntities _context = new ImillInvCountEntities();
 
         public ActionResult Index()
         {
@@ -28,9 +28,7 @@ namespace InventoryCount.Controllers
             //con.Open();
             //var cmd = new SQLiteCommand(con);
 
-            ViewBag.Items = GetItems(); 
-            
-            //db.ICS_Item.ToList().Select(x => new Item
+            //var items = db.ICS_Item.ToList().Select(x => new Item
             //{
             //    PartNumber = x.Part_No,
             //    ProdCd = x.Prod_Cd,
@@ -39,11 +37,8 @@ namespace InventoryCount.Controllers
             //    SalesRate = x.Sales_Rate
             //});
 
-            ////var dbItems = _context.Items.ToList();
             //foreach (var item in items)
             //{
-            //    //if (!dbItems.Any(x => x.PartNumber == item.PartNumber))
-            //    //    _context.Items.Add(item);
 
             //    cmd.CommandText = "INSERT INTO Item(PartNumber, ProdCd, NameEn, NameAr, Sales_Rate) VALUES(" +
             //               "'" + item.PartNumber + "'," +
@@ -56,10 +51,7 @@ namespace InventoryCount.Controllers
             //    cmd.ExecuteNonQuery();
             //}
 
-
-
-
-
+            ViewBag.Items = GetItems();
             ViewBag.Locations = GetLocations();
             ViewBag.date = DateTime.Now.Date;
             return View();

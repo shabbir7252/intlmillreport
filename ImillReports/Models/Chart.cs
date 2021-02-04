@@ -23,5 +23,8 @@ namespace ImillReports.Models
         public string x;
         public decimal? y;
         public string text;
+        public string branchPercent;
+        internal DateTime hour;
+        internal DateTime date;
     }
 }

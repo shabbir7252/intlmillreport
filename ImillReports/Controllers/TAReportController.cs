@@ -110,5 +110,16 @@ namespace ImillReports.Controllers
         {
             return View(model);
         }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public string SyncHoDevice(int year, int month, int from, int toYear, int toMonth, int to, string ipAddress) {
+
+            var fromDate = new DateTime(year, month, from, 0, 0, 0, DateTimeKind.Local);
+            var toDate = new DateTime(toYear, toMonth, to, 23, 59, 59, DateTimeKind.Local);
+
+            return _iTARepository.SyncHoDevice(fromDate, toDate, ipAddress);
+        } 
     }
 }

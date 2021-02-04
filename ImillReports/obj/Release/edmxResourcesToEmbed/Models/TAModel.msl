@@ -147,6 +147,7 @@
     <EntitySetMapping Name="tbl_EmpTransaction">
       <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_EmpTransaction">
         <MappingFragment StoreEntitySet="tbl_EmpTransaction">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
           <ScalarProperty Name="IsManual" ColumnName="IsManual" />
           <ScalarProperty Name="Permission" ColumnName="Permission" />
           <ScalarProperty Name="Maskflag" ColumnName="Maskflag" />

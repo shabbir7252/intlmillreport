@@ -28,37 +28,44 @@
 
 <div class="container-fluid">
     <div class="row">
-        
-        <div class="col-12 mt-5">
-            <label><input type='checkbox' onclick='handleClick(this);'>Checkbox</label>
+    <div class="col-12 mt-5">
+            <label><input type='checkbox' onclick='handleClick(this);'> Show All</label>
         </div>
 
-        <div class="col-12 mt-3">
-            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowTextWrap(true).AllowResizing(true).AllowExcelExport().Height("auto").Width("auto").ShowColumnChooser(true).Columns(col =>
-            {
-                col.Field("EntryId").Visible(false).ShowInColumnChooser(true).IsPrimaryKey(true).Add();
-                col.Field("IsHidden").Visible(false).ShowInColumnChooser(true).Add();
-                col.Field("ItemCount").Visible(false).ShowInColumnChooser(true).Add();
-                col.Field("UserDateTime").Visible(false).Format(new { type = "dateTime", format = "dd/MMM/yy" }).ShowInColumnChooser(true).Add();
-                col.Field("TransDate").Width("70").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yy" }).CustomAttributes(new { @class = "customcss" }).Add();
-                col.Field("Locat_Cd").Visible(false).ShowInColumnChooser(false).Add();
-                col.Field("LocationNameEn").Visible(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                col.Field("LocationNameAr").HeaderText("Location").Width("120").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-                col.HeaderText("Actions").HeaderText("A").Width("50").Commands(commands).Add();
-            }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
-                page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ColumnChooser" }).Render()
+    <div class="col-12 mt-3">
+        @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowTextWrap(true).AllowResizing(true).AllowExcelExport().Height("auto").Width("auto").ShowColumnChooser(true).Columns(col =>
+        {
+            col.Field("EntryId").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+            col.Field("IsHidden").Visible(false).ShowInColumnChooser(true).Add();
+            col.Field("ItemCount").Visible(false).ShowInColumnChooser(true).Add();
+            col.Field("RequestNumber").Visible(false).ShowInColumnChooser(false).Add();
+            col.Field("UserDateTime").Visible(false).Format(new { type = "dateTime", format = "dd/MMM/yy hh:mm:ss" }).ShowInColumnChooser(true).Add();
+            col.Field("TransDate").Width("70").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yy" }).CustomAttributes(new { @class = "customcss" }).Add();
+            col.Field("Locat_Cd").Visible(false).ShowInColumnChooser(false).Add();
+            col.Field("LocationNameEn").Visible(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+            col.Field("LocationNameAr").Template("#template").HeaderText("Location").Width("120").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+            col.HeaderText("Actions").HeaderText("A").Width("50").Commands(commands).Add();
+        }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+            page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ColumnChooser" }).Render()
+
+        <script id="template" type="text/x-template">
+            <label>${RequestNumber}</label>
+            <hr style="margin: 1px 0 5px;" />
+            <label>${LocationNameAr}</label>
+
+        </script>
 
 
 
-            
-        </div>
+
+    </div>
     </div>
 </div>
 
 
 @section scripts{
     <script>
-
+        var itemList = [];
         @*function RecordClick(args) {
             console.log("Args : ", args.rowData.EntryId);
             var link = "@Url.Action("GetTransactionDetails", "Home", new { entryId = -1 })";
@@ -66,12 +73,37 @@
             window.location.href = link;
         }*@
 
+        $(document).ready(function () {
+           var grid = document.getElementById('Grid').ej2_instances[0];
+            itemList = grid.dataSource;
+            // console.log('Item List Before Applying : ', grid.dataSource);
+            grid.dataSource = itemList.filter(x => x.IsHidden == false);
+            grid.refresh();
+            // console.log('Item List After Applying : ', grid.dataSource);
+        });
+
         function commandClick(args) {
             var type = args.commandColumn.type;
             if (type === 'Edit') {
                 var link = "@Url.Action("GetTransactionDetails", "Home", new { entryId = -1 })";
                 link = link.replace('-1', args.rowData.EntryId);
                 window.location.href = link;
+            }
+        }
+
+        function handleClick(cb) {
+            // cb.checked
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            if(cb.checked){
+                grid.dataSource = itemList;
+                grid.refresh();
+                // console.log('Item Check On : ', grid.dataSource);
+            }
+
+            if(!cb.checked){
+                grid.dataSource = itemList.filter(x => x.IsHidden == false);
+                grid.refresh();
+                // console.log('Item Check Off : ', grid.dataSource);
             }
         }
 

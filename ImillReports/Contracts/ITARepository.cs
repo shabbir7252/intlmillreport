@@ -36,5 +36,6 @@ namespace ImillReports.Contracts
         void DeleteEmployeeLeaves(List<int> verifiedIds);
         string SendShiftStartDetailReport();
         string SendShiftEndDetailReport();
+        string SyncHoDevice(DateTime? fromDate, DateTime? toDate, string ipAddress);
     }
 }

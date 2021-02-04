@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2019" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Trans_Detail_2021" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2021" Width="1.5" PointX="2.75" PointY="9.75" />
+        <EntityTypeShape EntityType="ImillReportsModel.Setting" Width="1.5" PointX="5.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

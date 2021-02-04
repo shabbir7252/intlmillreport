@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ImillReportsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SerialDate" Type="datetime" Nullable="false" />
+          <Property Name="SerialNumber" Type="bigint" Nullable="false" />
+          <Property Name="BackDays" Type="int" />
+          <Property Name="RptEmailDate" Type="datetime" />
+          <Property Name="WeekRptEmailSent" Type="bit" />
+        </EntityType>
         <EntityType Name="Trans_Detail_2019">
           <Key>
             <PropertyRef Name="Oid" />
@@ -240,6 +251,7 @@
           <Property Name="Year" Type="int" />
         </EntityType>
         <EntityContainer Name="ImillReportsModelStoreContainer">
+          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trans_Detail_2019" EntityType="Self.Trans_Detail_2019" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trans_Detail_2020" EntityType="Self.Trans_Detail_2020" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trans_Detail_2021" EntityType="Self.Trans_Detail_2021" Schema="dbo" store:Type="Tables" />
@@ -258,6 +270,7 @@
           <EntitySet Name="Transaction_2019" EntityType="ImillReportsModel.Transaction_2019" />
           <EntitySet Name="Trans_Detail_2021" EntityType="ImillReportsModel.Trans_Detail_2021" />
           <EntitySet Name="Transaction_2021" EntityType="ImillReportsModel.Transaction_2021" />
+          <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
         </EntityContainer>
         <EntityType Name="Transaction_2020">
           <Key>
@@ -492,6 +505,17 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SerialNumber" Type="Int64" Nullable="false" />
+          <Property Name="BackDays" Type="Int32" />
+          <Property Name="RptEmailDate" Type="DateTime" Precision="3" />
+          <Property Name="WeekRptEmailSent" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -735,6 +759,18 @@
                 <ScalarProperty Name="InvDateTime" ColumnName="InvDateTime" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="ImillReportsModel.Setting">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="WeekRptEmailSent" ColumnName="WeekRptEmailSent" />
+                <ScalarProperty Name="RptEmailDate" ColumnName="RptEmailDate" />
+                <ScalarProperty Name="BackDays" ColumnName="BackDays" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>

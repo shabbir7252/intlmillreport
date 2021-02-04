@@ -7,6 +7,7 @@
     <EntitySet Name="Transaction_2019" EntityType="ImillReportsModel.Transaction_2019" />
     <EntitySet Name="Trans_Detail_2021" EntityType="ImillReportsModel.Trans_Detail_2021" />
     <EntitySet Name="Transaction_2021" EntityType="ImillReportsModel.Transaction_2021" />
+    <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
   </EntityContainer>
   <EntityType Name="Transaction_2020">
     <Key>
@@ -241,5 +242,16 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Setting">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SerialNumber" Type="Int64" Nullable="false" />
+    <Property Name="BackDays" Type="Int32" />
+    <Property Name="RptEmailDate" Type="DateTime" Precision="3" />
+    <Property Name="WeekRptEmailSent" Type="Boolean" />
   </EntityType>
 </Schema>

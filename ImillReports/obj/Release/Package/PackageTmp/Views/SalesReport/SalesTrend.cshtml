@@ -1,0 +1,43 @@
+﻿
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.DropDowns
+
+@{
+    ViewBag.Title = "Sales Trend";
+}
+
+<div class="container-fluid">
+
+
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @Html.EJS().DropDownList("trends").Placeholder("Select a Trend").PopupHeight("220px").DataSource(
+                    (IEnumerable<object>)ViewBag.Trends).Change("valueChange").Fields(new DropDownListFieldSettings { Text = "NameEn", Value = "Id" }).Render()
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            @Html.EJS().Chart("container-vertical").Series(series =>
+ {
+     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource).Name("UK").Add();
+     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource1).Name("Germany").Add();
+     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource2).Name("France").Add();
+     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource3).Name("Italy").Add();
+ }).PrimaryXAxis(px => px.ValueType(Syncfusion.EJ2.Charts.ValueType.Category)
+ .MajorGridLines(mg => mg.Width(0)).MinorGridLines(mg => mg.Width(0))
+ .MajorTickLines(mt => mt.Width(0)).
+ MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0))
+ .LabelIntersectAction(Syncfusion.EJ2.Charts.LabelIntersectAction.Rotate90)
+       ).PrimaryYAxis(py => py.MajorTickLines(mt => mt.Width(0)).
+       MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0)).Title("Sales")
+       ).Title("Mobile Game Market by Country").ChartArea(area => area.Border(br => br.Color("transparent"))).Tooltip(tt => tt.Enable(true)).Render()
+        </div>
+    </div>
+</div>
+

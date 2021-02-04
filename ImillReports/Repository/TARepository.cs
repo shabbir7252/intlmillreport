@@ -9,6 +9,8 @@ using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Data;
 
 namespace ImillReports.Repository
 {
@@ -83,12 +85,8 @@ namespace ImillReports.Repository
 
                                     if (mapCount == 1)
                                     {
-                                        var lastRecord = selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
 
                                         var punchIn = firstRecord.TransactionDateTime;
-                                        var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
-                                                                                       ? lastRecord.TransactionDateTime
-                                                                                       : firstRecord.TransactionDateTime;
 
                                         var currentDay = new DateTime(i.Year, i.Month, i.Day).DayOfWeek;
                                         var sat = false;
@@ -139,6 +137,13 @@ namespace ImillReports.Repository
                                             locationOid = location.Oid;
                                             locationNameAr = location.NameAr;
                                         }
+
+                                        // var lastRecord = selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
+                                        var lastRecord = selectedDateTime.OrderBy(x => x.TransactionDateTime).FirstOrDefault(x => x.TransactionDateTime.Value.TimeOfDay >= shiftEnd);
+                                        lastRecord = lastRecord ?? selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
+                                        var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
+                                                                                       ? lastRecord.TransactionDateTime
+                                                                                       : firstRecord.TransactionDateTime;
 
                                         if (empId != 0)
                                         {
@@ -722,8 +727,8 @@ namespace ImillReports.Repository
                 var taAbsentModels = new List<TimeAttendanceViewModel>();
                 var devices = _context.tbl_Device.Select(x => x.DeviceCode).ToList();
                 var locationOids = _context.tbl_Location.Where(x => x.IsActive.Value).Select(a => a.Oid).ToList();
-                var employeeList = employees != null 
-                    ? _context.tbl_Employees.Include(x => x.tbl_EmpLocShiftMap).Where(a => employees.Contains(a.EmployeeID.Value)).ToList() 
+                var employeeList = employees != null
+                    ? _context.tbl_Employees.Include(x => x.tbl_EmpLocShiftMap).Where(a => employees.Contains(a.EmployeeID.Value)).ToList()
                     : _context.tbl_Employees.Include(x => x.tbl_EmpLocShiftMap).ToList();
                 var empIdsModel = tAModels.Where(x => devices.Contains(x.DeviceCode)).Select(a => a.EmployeeId).ToList();
                 var _empLeaves = _context.tbl_EmployeeLeaves.ToList();
@@ -1741,6 +1746,10 @@ namespace ImillReports.Repository
 
                             if (shift.Oid != shiftOid && shiftCount >= 20)
                             {
+                                //var empLocations = "";
+                                //foreach (var loc in taAbsentModels.GroupBy(x => x.LocationId))
+                                //    empLocations += loc.FirstOrDefault().Location.ToString();
+
                                 MailMessage mailMessage = new MailMessage
                                 {
                                     Subject = $"{shift.NameEn} - Employee List (Not Punched)",
@@ -1961,6 +1970,11 @@ namespace ImillReports.Repository
                                                 taShowAllEmpRec.Add(rec);
                                     }
 
+                                    var emailFirstPart = "<html lang='en'><head> <meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Employee Shift PunchIn/PunchOut Rec</title> <style>table{font-family: arial, sans-serif; border-collapse: collapse; width: 100%; font-size: 12px;}td, th{border: 1px solid #dddddd; text-align: left; padding: 8px;}tr:nth-child(even){background-color: #dddddd;}</style></head><body> <table style='min-width: 820px; width:100%;'> <thead> <tr> <th>Employee Id</th> <th>Employee Name</th> <th>Location</th> <th>Shift Start</th> <th>Shift End</th> <th>Punch In</th> <th>Late In</th> </tr></thead> <tbody>";
+                                    var emailMidPart = "";
+                                    var emailSecondPart = "</tbody> </table></body></html>";
+
+
                                     if (taShowAllEmpRec.Any())
                                     {
                                         var pathName = "~/Content/";
@@ -1980,23 +1994,45 @@ namespace ImillReports.Repository
 
                                             foreach (var rec in taShowAllEmpRec)
                                             {
+                                                var punchIn = rec.PunchIn.HasValue ? rec.PunchIn.Value.ToString("hh:mm:ss") : "Not Punched";
                                                 worksheet.Cell(count, 1).Value = rec.EmployeeId;
                                                 worksheet.Cell(count, 2).Value = rec.EmployeeName;
                                                 worksheet.Cell(count, 3).Value = rec.Location;
                                                 worksheet.Cell(count, 4).Value = rec.ShiftStart.Value.ToString();
                                                 worksheet.Cell(count, 5).Value = rec.ShiftEnd.Value.ToString();
-                                                worksheet.Cell(count, 6).Value = rec.PunchIn.HasValue ? rec.PunchIn.Value.ToString("hh:mm:ss") : "Not Punched";
+                                                worksheet.Cell(count, 6).Value = punchIn;
                                                 worksheet.Cell(count, 7).Value = rec.LateIn.ToString();
                                                 count += 1;
+
+                                                emailMidPart +=
+                                                    $"<tr><td>{rec.EmployeeId}</td><td>{rec.EmployeeName}</td><td>{rec.Location}</td>" +
+                                                    $"<td>{rec.ShiftStart.Value}</td><td>{rec.ShiftEnd.Value}</td><td>{punchIn}</td>" +
+                                                    $"<td>{rec.LateIn}</td></tr>";
                                             }
 
                                             workbook.SaveAs(path + "shift.xlsx");
                                         }
 
+                                        var empLocations = "";
+                                        var empLocCount = 0;
+                                        foreach (var loc in taShowAllEmpRec.GroupBy(x => x.LocationId))
+                                        {
+                                            if (empLocCount == 0)
+                                                empLocations += loc.FirstOrDefault().Location.ToString();
+                                            else
+                                                empLocations += $", {loc.FirstOrDefault().Location}";
+
+                                            empLocCount += 1;
+                                        }
+
+                                        var htmlString = emailFirstPart + emailMidPart + emailSecondPart;
+
                                         MailMessage mailMessage = new MailMessage
                                         {
-                                            Subject = $"{shift.NameEn}",
-                                            Body = $"Employee List : Not punched in or late in more than {setting.LateInRange}",
+                                            Subject = $"Shift Start : {shift.NameEn} - ({empLocations})",
+                                            // Body = $"Employee List : Not punched in or late in more than {setting.LateInRange}",
+                                            Body = htmlString,
+                                            IsBodyHtml = true,
                                             From = new MailAddress("imillmaterialreq@gmail.com"),
                                         };
 
@@ -2108,10 +2144,11 @@ namespace ImillReports.Repository
                                                                                          .Select(a => a.EmployeeId)
                                                                                          .ToList();
 
+                                        var totalWorkingHour = item.tbl_Shift.StartTime.Value.Subtract(item.tbl_Shift.EndTime.Value).Hours;
                                         taShowAllEmpRec = GetTAReport(startDate, endDate, null, "default").Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
                                                                                                                           x.ShiftEnd == item.tbl_Shift.EndTime &&
                                                                                                                           (x.EarlyOut >= setting.EarlyOutRange ||
-                                                                                                                          x.TotalWorkingHours < 8)).ToList();
+                                                                                                                          x.TotalWorkingHours < totalWorkingHour)).ToList();
 
                                         //var taAbsentModels = GetTAReport(startDate, endDate, null, "notScanned").Where(x => x.ShiftStart == item.tbl_Shift.StartTime &&
                                         //                                                                                    x.ShiftEnd == item.tbl_Shift.EndTime).ToList();
@@ -2138,11 +2175,15 @@ namespace ImillReports.Repository
 
                                     }
 
+                                    var emailFirstPart = "<html lang='en'><head> <meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Employee Shift PunchIn/PunchOut Rec</title> <style>table{font-family: arial, sans-serif; border-collapse: collapse; width: 100%; font-size: 12px;}td, th{border: 1px solid #dddddd; text-align: left; padding: 8px;}tr:nth-child(even){background-color: #dddddd;}</style></head><body> <table style='min-width: 820px; width:100%;'> <thead> <tr> <th>Employee Id</th> <th>Employee Name</th> <th>Location</th> <th>Shift Start</th> <th>Shift End</th> <th>Punch In</th> <th>Punch Out</th> <th>Late In</th> <th>Early Out</th> <th>Total Hour Worked</th> </tr></thead> <tbody>";
+                                    var emailMidPart = "";
+                                    var emailSecondPart = "</tbody> </table></body></html>";
+
                                     if (taShowAllEmpRec.Any())
                                     {
                                         var pathName = "~/Content/";
                                         var path = HttpContext.Current.Server.MapPath(pathName);
-
+                                        
                                         using (var workbook = new XLWorkbook())
                                         {
                                             var worksheet = workbook.Worksheets.Add("Sheet1");
@@ -2161,26 +2202,51 @@ namespace ImillReports.Repository
 
                                             foreach (var rec in taShowAllEmpRec)
                                             {
+                                                var punchIn = rec.PunchIn.HasValue ? rec.PunchIn.Value.ToString("hh:mm:ss") : "-";
+                                                var punchOut = rec.PunchOut.HasValue ? rec.PunchOut.Value.ToString("hh:mm:ss") : "-";
+
                                                 worksheet.Cell(count, 1).Value = rec.EmployeeId;
                                                 worksheet.Cell(count, 2).Value = rec.EmployeeName;
                                                 worksheet.Cell(count, 3).Value = rec.Location;
                                                 worksheet.Cell(count, 4).Value = rec.ShiftStart.Value.ToString();
                                                 worksheet.Cell(count, 5).Value = rec.ShiftEnd.Value.ToString();
-                                                worksheet.Cell(count, 6).Value = rec.PunchIn.HasValue ? rec.PunchIn.Value.ToString("hh:mm:ss") : "-";
-                                                worksheet.Cell(count, 7).Value = rec.PunchOut.HasValue ? rec.PunchOut.Value.ToString("hh:mm:ss") : "-";
+                                                worksheet.Cell(count, 6).Value = punchIn;
+                                                worksheet.Cell(count, 7).Value = punchOut;
                                                 worksheet.Cell(count, 8).Value = rec.LateIn.ToString();
                                                 worksheet.Cell(count, 9).Value = rec.EarlyOut.ToString();
                                                 worksheet.Cell(count, 10).Value = rec.ConvTotalHoursWorked;
                                                 count += 1;
+
+                                                emailMidPart +=
+                                                    $"<tr><td>{rec.EmployeeId}</td><td>{rec.EmployeeName}</td><td>{rec.Location}</td>" +
+                                                    $"<td>{rec.ShiftStart.Value}</td><td>{rec.ShiftEnd.Value}</td><td>{punchIn}</td>" +
+                                                    $"<td>{punchOut}</td><td>{rec.LateIn}</td><td>{rec.EarlyOut}</td>" +
+                                                    $"<td>{rec.ConvTotalHoursWorked}</td></tr>";
                                             }
 
                                             workbook.SaveAs(path + "shiftEnd.xlsx");
                                         }
 
+                                        var empLocations = "";
+                                        var empLocCount = 0;
+                                        foreach (var loc in taShowAllEmpRec.GroupBy(x => x.LocationId))
+                                        {
+                                            if (empLocCount == 0)
+                                                empLocations += loc.FirstOrDefault().Location.ToString();
+                                            else
+                                                empLocations += $", {loc.FirstOrDefault().Location}";
+
+                                            empLocCount += 1;
+                                        }
+
+                                        var htmlString = emailFirstPart + emailMidPart + emailSecondPart;
+
                                         MailMessage mailMessage = new MailMessage
                                         {
-                                            Subject = $"{shift.NameEn}",
-                                            Body = "Employee List : Not punched in or Early Out more than 15 minutes and not completed 8 hours",
+                                            Subject = $"Shift End : {shift.NameEn} - ({empLocations}) - ({DateTime.Now.ToShortDateString()})",
+                                            // Body = "Employee List : Not punched in or early out more than 15 minutes or not completed 8 hours",
+                                            Body = htmlString,
+                                            IsBodyHtml = true,
                                             From = new MailAddress("imillmaterialreq@gmail.com"),
                                         };
 
@@ -2230,6 +2296,227 @@ namespace ImillReports.Repository
             }
 
             return $"True (Shift End): {today.Date}>{today.TimeOfDay}";
+        }
+
+        public string SyncHoDevice(DateTime? fromDate, DateTime? toDate, string ipAddress)
+        {
+            try
+            {
+                var today = DateTime.Now;
+                if (fromDate == null)
+                    fromDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0, DateTimeKind.Local);
+                if (toDate == null)
+                    toDate = new DateTime(today.Year, today.Month, today.Day, 23, 59, 59, DateTimeKind.Local);
+
+                var device = _context.tbl_Device.FirstOrDefault(x => x.DeviceIP == ipAddress);
+
+                var offset = 0;
+                var totalRecords = 0;
+                var remainingRecords = 0;
+                var limitNumber = 20;
+
+                var empTransList = new List<tbl_EmpTransaction>();
+
+                var firstResponse = GetMachineData(fromDate.Value, toDate.Value, ipAddress, offset);
+                if (firstResponse != null)
+                {
+                    if (firstResponse.Response != null)
+                    {
+                        if (firstResponse.Response.Data != null)
+                        {
+                            totalRecords = firstResponse.Response.Data.Total;
+
+                            if (firstResponse.Response.Data.ACSPassRecordList.Any())
+                            {
+                                var passRecordList = firstResponse.Response.Data.ACSPassRecordList.ToList();
+
+                                foreach (var passRecord in passRecordList)
+                                {
+                                    var personInfo = passRecord.LibMatInfoList.FirstOrDefault().MatchPersonInfo;
+                                    var faceInfo = passRecord.FaceInfoList.FirstOrDefault();
+                                    var transDateTime = UnixTimeStampToDateTime(faceInfo.Timestamp);
+
+                                    var empTrans = new tbl_EmpTransaction
+                                    {
+                                        CardID = personInfo.CardID,
+                                        DeviceCode = device.DeviceCode,
+                                        EmployeeID = personInfo.PersonCode,
+                                        EmployeeName = personInfo.PersonName,
+                                        IsManual = false,
+                                        Maskflag = faceInfo.MaskFlag,
+                                        Permission = 0, // Dont have any Information
+                                        pushed = false, // Dont have any Information
+                                        Temperature = decimal.Parse(faceInfo.Temperature.ToString()),
+                                        Timestamp = faceInfo.Timestamp,
+                                        TransactionDate = transDateTime.Day,
+                                        TransactionDateTime = transDateTime,
+                                        TransactionHour = transDateTime.Hour,
+                                        TransactionMinute = transDateTime.Minute,
+                                        TransactionMonth = transDateTime.Month,
+                                        TransactionSecond = transDateTime.Second,
+                                        TransactionType = "I",
+                                        TransactionYear = transDateTime.Year
+                                    };
+
+                                    empTransList.Add(empTrans);
+                                }
+                            }
+
+                            remainingRecords = totalRecords - limitNumber;
+                            offset += limitNumber;
+                        }
+                    }
+                }
+
+                var offsetToggler = true;
+
+                while (remainingRecords > 0)
+                {
+                    var response = GetMachineData(fromDate.Value, toDate.Value, ipAddress, offset);
+                    if (response != null)
+                    {
+                        if (response.Response != null)
+                        {
+                            if (response.Response.Data != null)
+                            {
+                                limitNumber += 20;
+
+                                if (response.Response.Data.ACSPassRecordList.Any())
+                                {
+                                    var passRecordList = response.Response.Data.ACSPassRecordList.ToList();
+
+                                    foreach (var passRecord in passRecordList)
+                                    {
+                                        var personInfo = passRecord.LibMatInfoList.FirstOrDefault().MatchPersonInfo;
+                                        var faceInfo = passRecord.FaceInfoList.FirstOrDefault();
+                                        var transDateTime = UnixTimeStampToDateTime(faceInfo.Timestamp);
+
+                                        var empTrans = new tbl_EmpTransaction
+                                        {
+                                            CardID = personInfo.CardID,
+                                            DeviceCode = device.DeviceCode,
+                                            EmployeeID = personInfo.PersonCode,
+                                            EmployeeName = personInfo.PersonName,
+                                            IsManual = false,
+                                            Maskflag = faceInfo.MaskFlag,
+                                            Permission = 0, // Dont have any Information
+                                            pushed = false, // Dont have any Information
+                                            Temperature = decimal.Parse(faceInfo.Temperature.ToString()),
+                                            Timestamp = faceInfo.Timestamp,
+                                            TransactionDate = transDateTime.Day,
+                                            TransactionDateTime = transDateTime,
+                                            TransactionHour = transDateTime.Hour,
+                                            TransactionMinute = transDateTime.Minute,
+                                            TransactionMonth = transDateTime.Month,
+                                            TransactionSecond = transDateTime.Second,
+                                            TransactionType = "I",
+                                            TransactionYear = transDateTime.Year
+                                        };
+
+                                        empTransList.Add(empTrans);
+                                    }
+                                }
+
+                                remainingRecords = totalRecords - limitNumber;
+                                if (offsetToggler)
+                                {
+                                    offset += 19;
+                                    offsetToggler = false;
+                                }
+                                else
+                                {
+                                    offset += 20;
+                                    offsetToggler = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (empTransList.Any())
+                {
+                    var finalTransList = new List<tbl_EmpTransaction>();
+
+                    var dbEmpTrans = _context.tbl_EmpTransaction.Where(x => x.TransactionDateTime >= fromDate.Value && x.TransactionDateTime <= toDate.Value);
+
+                    foreach (var trans in empTransList)
+                        if (!dbEmpTrans.Any(x => x.EmployeeID == trans.EmployeeID && x.DeviceCode == trans.DeviceCode &&
+                         x.Timestamp == trans.Timestamp && x.TransactionDateTime == trans.TransactionDateTime))
+                            finalTransList.Add(trans);
+
+
+                    if (finalTransList.Any())
+                    {
+                        _context.tbl_EmpTransaction.AddRange(finalTransList);
+                        _context.SaveChanges();
+                        return $"{finalTransList.Count()} Transactions Updated | {DateTime.Now}";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error : { ex.InnerException.Message }";
+            }
+
+            return "No Trasaction Updated!";
+        }
+
+        private Root GetMachineData(DateTime fromDate, DateTime toDate, string ipAddress, int offset)
+        {
+            using (WebClient client = new WebClient())
+            {
+                var queryInfoListItems = new List<QueryInfoListItem>();
+                queryInfoListItems.Add(
+                    new QueryInfoListItem
+                    {
+                        QryType = 4,
+                        QryCondition = 3,
+                        QryData = ConvertToUnixTimestamp(fromDate).ToString()
+                    });
+
+                queryInfoListItems.Add(
+                    new QueryInfoListItem
+                    {
+                        QryType = 4,
+                        QryCondition = 4,
+                        QryData = ConvertToUnixTimestamp(toDate).ToString()
+                    });
+
+                var queryInfoList = new QueryInfoListModel
+                {
+                    Num = "2",
+                    QueryInfoList = queryInfoListItems,
+                    Limit = "20",
+                    Offset = offset.ToString()
+                };
+
+                var dataString = JsonConvert.SerializeObject(queryInfoList);
+                client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                var response = client.UploadString(new Uri($"http://{ipAddress}/LAPI/V1.0/PACS/Controller/PassRecord"), "POST", dataString);
+                var myRoot = JsonConvert.DeserializeObject<Root>(response);
+
+                if (myRoot != null)
+                    return myRoot;
+
+                return null;
+            }
+        }
+
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
+
+        public static double ConvertToUnixTimestamp(DateTime date)
+        {
+            var datetime = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second, DateTimeKind.Local);
+
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var unixdatetime = (datetime.ToUniversalTime() - epoch).TotalSeconds;
+            return unixdatetime;
         }
     }
 }

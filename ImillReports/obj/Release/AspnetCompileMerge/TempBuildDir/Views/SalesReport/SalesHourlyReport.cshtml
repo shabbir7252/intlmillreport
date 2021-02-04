@@ -8,6 +8,24 @@
     string BarChartCountTitle = ViewBag.BarChartCountTitle.ToString();
 
     var isAdmin = User.IsInRole("Admin");
+    string[] color = new string[] { 
+        "#4286f4", "#f4b642", "#f441a9",
+        "#945713", "#7bb4eb", "#ea7a57", 
+        "#00bdae", "#404041", "#e56590", 
+        "#f8b883", "#70ad47", "#dd8abd", 
+        "#F8BF00", "#E11C34", "#E6B3B3", 
+        "#999999", "#7f84e8", "#FF99E6", 
+        "#CCFF1A", "#555555", "#59A28F", 
+        "#33FFCC", "#66994D", "#B366CC", 
+        "#4D8000", "#B33300", "#CC80CC",
+        "#66664D", "#991AFF", "#E666FF", 
+        "#4DB3FF", "#1AB399", "#E666B3", 
+        "#33991A", "#CC9999", "#B3B31A", 
+        "#00E680", "#4D8066", "#809980", 
+        "#E6FF80", "#1AFF33", "#999933", 
+        "#FF3380", "#CCCC00", "#66E64D", 
+        "#4D80CC", "#9900B3", "#E64D66", 
+        "#4DB380", "#FF4D4D", "#99E6E6" };
 }
 
 <style>
@@ -160,7 +178,7 @@
                             </div>
 
                             <section class="transAmount">
-                                @Html.EJS().Chart("Amount").Series(series =>
+                                @Html.EJS().Chart("Amount").Palettes(color).Series(series =>
                            {
                                series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource1).Name(ViewBag.locationName1).Add();
                                series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource2).Name(ViewBag.locationName2).Add();

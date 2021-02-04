@@ -1,4 +1,5 @@
 ﻿using ImillReports.Models;
+using System;
 using System.Collections.Generic;
 
 namespace ImillReports.ViewModels
@@ -68,6 +69,9 @@ namespace ImillReports.ViewModels
         public int TotalHOCount { get; internal set; }
         public decimal? TotalDeliveroo { get; internal set; }
         public int DeliverooTransCount { get; internal set; }
+        public List<ProductDetail> Top10HoCustomerCredit { get; internal set; }
+        public List<ProductDetail> Top10HoCustomerCash { get; internal set; }
+        public int SalesRecordCount { get; internal set; }
     }
 
     public class Product
@@ -93,6 +97,7 @@ namespace ImillReports.ViewModels
         public long ProductId { get; internal set; }
         public decimal PercentageAllItem { get; internal set; }
         public string CustomerAr { get; internal set; }
+        public string CustomerEn { get; internal set; }
     }
 
     public class SalesMonthItem
@@ -127,5 +132,11 @@ namespace ImillReports.ViewModels
         public int TotalHoCount { get; internal set; }
         public string TotalDeliverooSales { get; internal set; }
         public int TotalDeliverooTransCount { get; internal set; }
+    }
+
+    public class SendEmailAsReport
+    {
+        public DateTime LastEmailDate { get; set; }
+        public bool WeekRptEmailSent { get; set; }
     }
 }

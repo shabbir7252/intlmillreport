@@ -241,5 +241,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Settings">
+      <EntityTypeMapping TypeName="ImillReportsModel.Setting">
+        <MappingFragment StoreEntitySet="Settings">
+          <ScalarProperty Name="WeekRptEmailSent" ColumnName="WeekRptEmailSent" />
+          <ScalarProperty Name="RptEmailDate" ColumnName="RptEmailDate" />
+          <ScalarProperty Name="BackDays" ColumnName="BackDays" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -50,7 +50,6 @@ namespace ImillReports.Controllers
         [HttpGet]
         public ActionResult Index(DateTime? fromDate, DateTime? toDate, string[] locationStringArray, string[] voucherTypeStringArray)
         {
-
             if (fromDate == null)
             {
                 var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
@@ -469,7 +468,7 @@ namespace ImillReports.Controllers
 
             //    var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
             //    var reportNamePath = $"{cs}SalesReport.xlsx";
-                
+
             //    //Save the file in the given path
             //    Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
             //    workbook.SaveAs(excelStream);
@@ -775,36 +774,126 @@ namespace ImillReports.Controllers
                     var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
                     var totalHourPercent = totalHourAmount == 0 ? 0 : 100 / totalHourAmount * amount;
 
-                    listData.Add(new ColumnChartData { x = hour.ToString("hh:mm tt"), y = amount, text = $"{hour:hh:mm tt} : {amount.Value:0.000} ({totalHourPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Hour Total : {totalHourAmount.Value:0.000}" });
+                    listData.Add(new ColumnChartData
+                    {
+                        hour = hour,
+                        x = hour.ToString("hh:mm tt"),
+                        y = amount,
+                        text = $"{hour:hh:mm tt} : {amount.Value:0.000} ({totalHourPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Hour Total : {totalHourAmount.Value:0.000}"
+                    });
+                }
+
+                var fromHour = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 0, 0);
+                var toHour = fromHour.AddHours(23);
+                for (var i = fromHour; i <= toHour;)
+                {
+                    if (!listData.Any(x => x.hour == i))
+                    {
+                        listData.Add(new ColumnChartData
+                        {
+                            hour = i,
+                            x = i.ToString("hh:mm tt"),
+                            y = 0,
+                            text = $"{i:hh:mm tt} : {0:0.000} ({0:0.0}%) <br> Branch Total : {0:0.000} ({0:0.0}%) <br> Hour Total : {0:0.000}"
+                        });
+                    }
+
+                    i = i.AddHours(1);
                 }
 
                 count += 1;
             }
 
-            ViewBag.dataSource1 = chartAmountData1;
-            ViewBag.dataSource2 = chartAmountData2;
-            ViewBag.dataSource3 = chartAmountData3;
-            ViewBag.dataSource4 = chartAmountData4;
-            ViewBag.dataSource5 = chartAmountData5;
-            ViewBag.dataSource6 = chartAmountData6;
-            ViewBag.dataSource7 = chartAmountData7;
-            ViewBag.dataSource8 = chartAmountData8;
-            ViewBag.dataSource9 = chartAmountData9;
-            ViewBag.dataSource10 = chartAmountData10;
-            ViewBag.dataSource11 = chartAmountData11;
-            ViewBag.dataSource12 = chartAmountData12;
-            ViewBag.dataSource13 = chartAmountData13;
-            ViewBag.dataSource14 = chartAmountData14;
-            ViewBag.dataSource15 = chartAmountData15;
-            ViewBag.dataSource16 = chartAmountData16;
-            ViewBag.dataSource17 = chartAmountData17;
-            ViewBag.dataSource18 = chartAmountData18;
-            ViewBag.dataSource19 = chartAmountData19;
-            ViewBag.dataSource20 = chartAmountData20;
-            ViewBag.dataSource21 = chartAmountData21;
-            ViewBag.dataSource22 = chartAmountData22;
-            ViewBag.dataSource23 = chartAmountData23;
-            ViewBag.dataSource24 = chartAmountData24;
+            var fromHour2 = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 0, 0);
+            var toHour2 = fromHour2.AddHours(23);
+
+            for (var i = fromHour2; i <= toHour2;)
+            {
+                var skip = false;
+
+                if (chartAmountData1.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData2.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData3.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData4.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData5.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData6.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData7.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData8.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData9.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData10.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData11.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData12.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData12.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData14.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData15.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData16.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData17.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData18.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData19.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData20.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData21.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData22.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData23.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartAmountData24.Any(a => a.hour == i && a.y != 0)) skip = true;
+
+                if (!skip)
+                {
+                    chartAmountData1.Remove(chartAmountData1.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData2.Remove(chartAmountData2.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData3.Remove(chartAmountData3.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData4.Remove(chartAmountData4.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData5.Remove(chartAmountData5.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData6.Remove(chartAmountData6.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData7.Remove(chartAmountData7.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData8.Remove(chartAmountData8.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData9.Remove(chartAmountData9.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData10.Remove(chartAmountData10.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData11.Remove(chartAmountData11.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData12.Remove(chartAmountData12.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData13.Remove(chartAmountData13.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData14.Remove(chartAmountData14.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData15.Remove(chartAmountData15.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData16.Remove(chartAmountData16.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData17.Remove(chartAmountData17.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData18.Remove(chartAmountData18.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData19.Remove(chartAmountData19.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData20.Remove(chartAmountData20.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData21.Remove(chartAmountData21.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData22.Remove(chartAmountData22.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData23.Remove(chartAmountData23.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartAmountData24.Remove(chartAmountData24.FirstOrDefault(a => a.hour == i && a.y == 0));
+                }
+
+                i = i.AddHours(1);
+            }
+
+
+
+            ViewBag.dataSource1 = chartAmountData1.OrderBy(x => x.hour);
+            ViewBag.dataSource2 = chartAmountData2.OrderBy(x => x.hour);
+            ViewBag.dataSource3 = chartAmountData3.OrderBy(x => x.hour);
+            ViewBag.dataSource4 = chartAmountData4.OrderBy(x => x.hour);
+            ViewBag.dataSource5 = chartAmountData5.OrderBy(x => x.hour);
+            ViewBag.dataSource6 = chartAmountData6.OrderBy(x => x.hour);
+            ViewBag.dataSource7 = chartAmountData7.OrderBy(x => x.hour);
+            ViewBag.dataSource8 = chartAmountData8.OrderBy(x => x.hour);
+            ViewBag.dataSource9 = chartAmountData9.OrderBy(x => x.hour);
+            ViewBag.dataSource10 = chartAmountData10.OrderBy(x => x.hour);
+            ViewBag.dataSource11 = chartAmountData11.OrderBy(x => x.hour);
+            ViewBag.dataSource12 = chartAmountData12.OrderBy(x => x.hour);
+            ViewBag.dataSource13 = chartAmountData13.OrderBy(x => x.hour);
+            ViewBag.dataSource14 = chartAmountData14.OrderBy(x => x.hour);
+            ViewBag.dataSource15 = chartAmountData15.OrderBy(x => x.hour);
+            ViewBag.dataSource16 = chartAmountData16.OrderBy(x => x.hour);
+            ViewBag.dataSource17 = chartAmountData17.OrderBy(x => x.hour);
+            ViewBag.dataSource18 = chartAmountData18.OrderBy(x => x.hour);
+            ViewBag.dataSource19 = chartAmountData19.OrderBy(x => x.hour);
+            ViewBag.dataSource20 = chartAmountData20.OrderBy(x => x.hour);
+            ViewBag.dataSource21 = chartAmountData21.OrderBy(x => x.hour);
+            ViewBag.dataSource22 = chartAmountData22.OrderBy(x => x.hour);
+            ViewBag.dataSource23 = chartAmountData23.OrderBy(x => x.hour);
+            ViewBag.dataSource24 = chartAmountData24.OrderBy(x => x.hour);
+
             #endregion
 
             #region Chart Trans Count
@@ -994,36 +1083,117 @@ namespace ImillReports.Controllers
                     decimal totalbranchPercent = totalTransCount == 0 ? 0 : 100 / totalTransCount * totalHourTransCount;
                     decimal totalHourPercent = totalHourTransCount == 0 ? 0 : 100 / totalHourTransCount * itemTransCount;
 
-                    listData.Add(new ColumnChartData { x = item.Hour.ToString("hh:mm tt"), y = item.TransCount, text = $"{hour:hh:mm tt} : {itemTransCount} ({totalHourPercent:0.0}%) <br> Branch Total : {totalTransCount} ({totalbranchPercent:0.0}%) <br> Hour Total : {totalHourTransCount}" });
+                    listData.Add(new ColumnChartData { date = item.TransDate, hour = hour, x = item.Hour.ToString("hh:mm tt"), y = item.TransCount, text = $"{hour:hh:mm tt} : {itemTransCount} ({totalHourPercent:0.0}%) <br> Branch Total : {totalTransCount} ({totalbranchPercent:0.0}%) <br> Hour Total : {totalHourTransCount}" });
+                }
+
+                var fromHour = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 0, 0);
+                var toHour = fromHour.AddHours(23);
+                for (var i = fromHour; i <= toHour;)
+                {
+                    if (!listData.Any(x => x.hour == i))
+                    {
+                        listData.Add(new ColumnChartData
+                        {
+                            hour = i,
+                            x = i.ToString("hh:mm tt"),
+                            y = 0,
+                            text = $"{i:hh:mm tt} : {0:0.000} ({0:0.0}%) <br> Branch Total : {0:0.000} ({0:0.0}%) <br> Hour Total : {0:0.000}"
+                        });
+                    }
+
+                    i = i.AddHours(1);
                 }
 
                 transCount += 1;
             }
 
-            ViewBag.dataCountSource1 = chartCountData1;
-            ViewBag.dataCountSource2 = chartCountData2;
-            ViewBag.dataCountSource3 = chartCountData3;
-            ViewBag.dataCountSource4 = chartCountData4;
-            ViewBag.dataCountSource5 = chartCountData5;
-            ViewBag.dataCountSource6 = chartCountData6;
-            ViewBag.dataCountSource7 = chartCountData7;
-            ViewBag.dataCountSource8 = chartCountData8;
-            ViewBag.dataCountSource9 = chartCountData9;
-            ViewBag.dataCountSource10 = chartCountData10;
-            ViewBag.dataCountSource11 = chartCountData11;
-            ViewBag.dataCountSource12 = chartCountData12;
-            ViewBag.dataCountSource13 = chartCountData13;
-            ViewBag.dataCountSource14 = chartCountData14;
-            ViewBag.dataCountSource15 = chartCountData15;
-            ViewBag.dataCountSource16 = chartCountData16;
-            ViewBag.dataCountSource17 = chartCountData17;
-            ViewBag.dataCountSource18 = chartCountData18;
-            ViewBag.dataCountSource19 = chartCountData19;
-            ViewBag.dataCountSource20 = chartCountData20;
-            ViewBag.dataCountSource21 = chartCountData21;
-            ViewBag.dataCountSource22 = chartCountData22;
-            ViewBag.dataCountSource23 = chartCountData23;
-            ViewBag.dataCountSource24 = chartCountData24;
+            var fromHour3 = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 0, 0);
+            var toHour3 = fromHour3.AddHours(23);
+
+            for (var i = fromHour3; i <= toHour3;)
+            {
+                var skip = false;
+
+                if (chartCountData1.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData2.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData3.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData4.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData5.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData6.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData7.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData8.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData9.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData10.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData11.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData12.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData12.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData14.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData15.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData16.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData17.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData18.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData19.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData20.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData21.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData22.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData23.Any(a => a.hour == i && a.y != 0)) skip = true;
+                if (chartCountData24.Any(a => a.hour == i && a.y != 0)) skip = true;
+
+                if (!skip)
+                {
+                    chartCountData1.Remove(chartCountData1.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData2.Remove(chartCountData2.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData3.Remove(chartCountData3.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData4.Remove(chartCountData4.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData5.Remove(chartCountData5.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData6.Remove(chartCountData6.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData7.Remove(chartCountData7.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData8.Remove(chartCountData8.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData9.Remove(chartCountData9.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData10.Remove(chartCountData10.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData11.Remove(chartCountData11.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData12.Remove(chartCountData12.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData13.Remove(chartCountData13.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData14.Remove(chartCountData14.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData15.Remove(chartCountData15.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData16.Remove(chartCountData16.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData17.Remove(chartCountData17.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData18.Remove(chartCountData18.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData19.Remove(chartCountData19.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData20.Remove(chartCountData20.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData21.Remove(chartCountData21.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData22.Remove(chartCountData22.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData23.Remove(chartCountData23.FirstOrDefault(a => a.hour == i && a.y == 0));
+                    chartCountData24.Remove(chartCountData24.FirstOrDefault(a => a.hour == i && a.y == 0));
+                }
+
+                i = i.AddHours(1);
+            }
+
+            ViewBag.dataCountSource1 = chartCountData1.OrderBy(x => x.hour);
+            ViewBag.dataCountSource2 = chartCountData2.OrderBy(x => x.hour);
+            ViewBag.dataCountSource3 = chartCountData3.OrderBy(x => x.hour);
+            ViewBag.dataCountSource4 = chartCountData4.OrderBy(x => x.hour);
+            ViewBag.dataCountSource5 = chartCountData5.OrderBy(x => x.hour);
+            ViewBag.dataCountSource6 = chartCountData6.OrderBy(x => x.hour);
+            ViewBag.dataCountSource7 = chartCountData7.OrderBy(x => x.hour);
+            ViewBag.dataCountSource8 = chartCountData8.OrderBy(x => x.hour);
+            ViewBag.dataCountSource9 = chartCountData9.OrderBy(x => x.hour);
+            ViewBag.dataCountSource10 = chartCountData10.OrderBy(x => x.hour);
+            ViewBag.dataCountSource11 = chartCountData11.OrderBy(x => x.hour);
+            ViewBag.dataCountSource12 = chartCountData12.OrderBy(x => x.hour);
+            ViewBag.dataCountSource13 = chartCountData13.OrderBy(x => x.hour);
+            ViewBag.dataCountSource14 = chartCountData14.OrderBy(x => x.hour);
+            ViewBag.dataCountSource15 = chartCountData15.OrderBy(x => x.hour);
+            ViewBag.dataCountSource16 = chartCountData16.OrderBy(x => x.hour);
+            ViewBag.dataCountSource17 = chartCountData17.OrderBy(x => x.hour);
+            ViewBag.dataCountSource18 = chartCountData18.OrderBy(x => x.hour);
+            ViewBag.dataCountSource19 = chartCountData19.OrderBy(x => x.hour);
+            ViewBag.dataCountSource20 = chartCountData20.OrderBy(x => x.hour);
+            ViewBag.dataCountSource21 = chartCountData21.OrderBy(x => x.hour);
+            ViewBag.dataCountSource22 = chartCountData22.OrderBy(x => x.hour);
+            ViewBag.dataCountSource23 = chartCountData23.OrderBy(x => x.hour);
+            ViewBag.dataCountSource24 = chartCountData24.OrderBy(x => x.hour);
 
             #endregion
 
@@ -1170,6 +1340,101 @@ namespace ImillReports.Controllers
             }
         }
 
+        #endregion
+
+
+        #region Sales Trend
+        // int trendType, int months, int reportType, int groupWise
+        public ActionResult SalesTrend()
+        {
+            ViewBag.Trends = new List<Trends>
+            {
+                new Trends
+                {
+                    Id= 1,
+                    NameEn = "Yearly",
+                    NameAr = "Yearly"
+                },
+                new Trends
+                {
+                    Id= 2,
+                    NameEn = "Month & Year",
+                    NameAr = "Month & Year"
+                },
+                new Trends
+                {
+                    Id= 3,
+                    NameEn = "Monthly",
+                    NameAr = "Monthly"
+                },
+                new Trends
+                {
+                    Id= 4,
+                    NameEn = "Weekly",
+                    NameAr = "Weekly"
+                }
+            };
+
+            ViewBag.ReportType = new List<SalesReportType>
+            {
+                new SalesReportType
+                {
+                    Id= 1,
+                    Name = "Location",
+                    NameAr = "Location"
+                },
+                new SalesReportType
+                {
+                    Id= 2,
+                    Name = "Item",
+                    NameAr = "Item"
+                },
+                new SalesReportType
+                {
+                    Id= 3,
+                    Name = "Group",
+                    NameAr = "Group"
+                }
+            };
+
+            ViewBag.Locations = _locationRepository.GetLocations().LocationItems;
+
+            ViewBag.products = _productRepository.GetAllProducts().Items.OrderBy(x => x.Name);
+
+            List<ColumnChartData> chartData = new List<ColumnChartData>
+            {
+                    new ColumnChartData { x= "2014", y= 111 },
+                    new ColumnChartData { x= "2015", y= 127 },
+                    new ColumnChartData { x= "2016", y= 143 },
+                    new ColumnChartData { x= "2017", y= 159 }
+            };
+            ViewBag.dataSource = chartData;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>
+            {
+                    new ColumnChartData { x= "2014", y= 76 },
+                    new ColumnChartData { x= "2015", y= 99 },
+                    new ColumnChartData { x= "2016", y= 121 },
+                    new ColumnChartData { x= "2017", y= 142 }
+            };
+            ViewBag.dataSource1 = chartData1;
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>
+            {
+                    new ColumnChartData { x= "2014", y= 66 },
+                    new ColumnChartData { x= "2015", y= 79 },
+                    new ColumnChartData { x= "2016", y= 91 },
+                    new ColumnChartData { x= "2017", y= 102 }
+            };
+            ViewBag.dataSource2 = chartData2;
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>
+            {
+                    new ColumnChartData { x= "2014", y= 34 },
+                    new ColumnChartData { x= "2015", y= 38 },
+                    new ColumnChartData { x= "2016", y= 44 },
+                    new ColumnChartData { x= "2017", y= 51 }
+            };
+            ViewBag.dataSource3 = chartData3;
+            return View();
+        }
         #endregion
 
     }

@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ImillReportsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Settings">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SerialDate" Type="datetime" Nullable="false" />
+    <Property Name="SerialNumber" Type="bigint" Nullable="false" />
+    <Property Name="BackDays" Type="int" />
+    <Property Name="RptEmailDate" Type="datetime" />
+    <Property Name="WeekRptEmailSent" Type="bit" />
+  </EntityType>
   <EntityType Name="Trans_Detail_2019">
     <Key>
       <PropertyRef Name="Oid" />
@@ -235,6 +246,7 @@
     <Property Name="Year" Type="int" />
   </EntityType>
   <EntityContainer Name="ImillReportsModelStoreContainer">
+    <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trans_Detail_2019" EntityType="Self.Trans_Detail_2019" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trans_Detail_2020" EntityType="Self.Trans_Detail_2020" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trans_Detail_2021" EntityType="Self.Trans_Detail_2021" Schema="dbo" store:Type="Tables" />

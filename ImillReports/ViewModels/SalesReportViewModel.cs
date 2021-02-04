@@ -87,6 +87,7 @@ namespace ImillReports.ViewModels
         public decimal? Amount { get; set; }
         public int TransCount { get; internal set; }
         public int LocationId { get; internal set; }
+        public DateTime TransDate { get; set; }
     }
 
     public class SalesReportType
@@ -213,5 +214,10 @@ namespace ImillReports.ViewModels
         public int ParentGroupCd { get; internal set; }
     }
 
-
+    public class Trends
+    {
+        public int Id { get; set; }
+        public string NameEn { get; set; }
+        public string NameAr { get; set; }
+    }
 }

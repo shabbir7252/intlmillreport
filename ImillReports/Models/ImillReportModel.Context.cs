@@ -31,5 +31,6 @@ namespace ImillReports.Models
         public virtual DbSet<Transaction_2019> Transaction_2019 { get; set; }
         public virtual DbSet<Trans_Detail_2021> Trans_Detail_2021 { get; set; }
         public virtual DbSet<Transaction_2021> Transaction_2021 { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
     }
 }

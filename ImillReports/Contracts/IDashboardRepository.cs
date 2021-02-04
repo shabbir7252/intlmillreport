@@ -9,5 +9,7 @@ namespace ImillReports.Contracts
         //string GetSalesOfMonthTest(DateTime? fromDate, DateTime? toDate);
         SalesOfMonthViewModel GetSalesRecordOfMonth(DateTime fromDate, DateTime toDate);
         SalesOfMonthViewModel GetSalesRecordDetailOfMonth(DateTime? fromDate, DateTime? toDate);
+        SendEmailAsReport GetLastEmailSettings();
+        void SetWeeklyRptEmailDate();
     }
 }

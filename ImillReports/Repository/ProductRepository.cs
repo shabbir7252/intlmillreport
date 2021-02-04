@@ -19,25 +19,20 @@ namespace ImillReports.Repository
 
         public ProductViewModel GetAllProducts()
         {
-            var items = _context.ICS_Item.Where(a=> a.Discontinued == false);
+            var items = _context.ICS_Item.Where(a => !a.Discontinued);
 
-            var prodItems = new List<Item>();
-
-            foreach(var item in items)
-            {
-                var prodItem = new Item
-                {
-                    ProductId = item.Prod_Cd,
-                    Name = item.L_Prod_Name,
-                    NameAr = item.A_Prod_Name
-                };
-
-                prodItems.Add(prodItem);
-            }
+            var prodItems = from item in items
+                             let prodItem = new Item
+                             {
+                                 ProductId = item.Prod_Cd,
+                                 Name = item.L_Prod_Name,
+                                 NameAr = item.A_Prod_Name
+                             }
+                             select prodItem;
 
             return new ProductViewModel
             {
-                Items = prodItems
+                Items = prodItems.ToList()
             };
         }
     }

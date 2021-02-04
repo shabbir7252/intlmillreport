@@ -4,8 +4,12 @@ using Newtonsoft.Json;
 using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
-using System.Collections.Generic;
 using System.IO;
+using System.Net.Mail;
+using System.Net;
+using System.Net.Mime;
+using System.Web;
+using System.Collections.Generic;
 
 namespace ImillReports.Controllers
 {
@@ -193,7 +197,7 @@ namespace ImillReports.Controllers
 
                 listData.Add(new ColumnChartData { x = item.Label, y = item.Data, text = item.Data.ToString() });
 
-                chartData.Add(new ColumnChartData { x = item.Label, y = item.Data, text = $"{item.Label} : {branchPercent}%" });
+                chartData.Add(new ColumnChartData { x = item.Label, y = item.Data, text = $"{item.Label} : {branchPercent}%", branchPercent = $"{branchPercent}" });
 
                 count += 1;
             };
@@ -224,6 +228,15 @@ namespace ImillReports.Controllers
 
 
             ViewBag.dataSourcePie = chartData;
+            chartData.Sort((x, y) => x.y.Value.CompareTo(y.y.Value));
+            chartData.Reverse();
+            ViewBag.Top10Branch = chartData;
+
+            //HttpCookie chartInfo = new HttpCookie("chartInfo");
+            //chartInfo.Value = JsonConvert.SerializeObject(chartData);
+            //chartInfo.Expires.Add(new TimeSpan(0, 1, 0));
+            //Response.Cookies.Add(chartInfo);
+
 
             var labelsArray = new string[salesOfMonth.SalesMonthItems.Count];
             var dataArray = new decimal?[salesOfMonth.SalesMonthItems.Count];
@@ -270,7 +283,7 @@ namespace ImillReports.Controllers
             });
             _chart.datasets = _dataSet;
 
-            
+
 
             var dashboardJson = new DashboardViewModel
             {
@@ -670,7 +683,9 @@ namespace ImillReports.Controllers
 
             var salesOfMonth = _dashboardRepository.GetSalesRecordOfMonth(fromDate, toDate);
             var data2 = BarChartData(salesOfMonth);
-            
+
+            ViewBag.SalesRecordCount = salesOfMonth.SalesRecordCount;
+
             #region HO
 
             var totalHOSalesCash = salesOfMonth.TotalHOSalesCash ?? 0;
@@ -831,23 +846,47 @@ namespace ImillReports.Controllers
             ViewBag.DSTop5ProdByQty = salesOfMonth.Top5ProductsByQty;
             ViewBag.DSTop5ProdHoByQty = salesOfMonth.Top5ProductsHoByQty;
 
+            ViewBag.Top10HoCustomerCredit = salesOfMonth.Top10HoCustomerCredit;
+            ViewBag.Top10HoCustomerCash = salesOfMonth.Top10HoCustomerCash;
+
             return PartialView("_BranchSalesDetails");
 
         }
 
         [AllowAnonymous]
-        public ActionResult BranchSalesForPrint(DateTime? fromDate, DateTime? toDate)
+        public ActionResult BranchSalesForPrint(int reportType)
         {
-            if (fromDate == null)
-                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+            var settings = _dashboardRepository.GetLastEmailSettings();
+            var todayDate = settings.LastEmailDate;
 
-            if (toDate == null)
-                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+            var fromDate = DateTime.Now;
+            var toDate = DateTime.Now;
+
+            if (reportType == 3)
+            {
+                fromDate = new DateTime(todayDate.Year, 01, 01, 00, 00, 00);
+                toDate = new DateTime(todayDate.Year, 12, 31, 23, 59, 59);
+            }
+            else if (reportType == 2)
+            {
+                var lastDay = DateTime.DaysInMonth(todayDate.Year, todayDate.Month);
+                fromDate = new DateTime(todayDate.Year, todayDate.Month, 01, 00, 00, 00);
+                toDate = new DateTime(todayDate.Year, todayDate.Month, lastDay, 23, 59, 59);
+            }
+            else
+            {
+                fromDate = new DateTime(2021, 1, 1, 3, 0, 0);
+                toDate = new DateTime(2021, 12, 31, 2, 59, 0);
+            }
+
+            //fromDate = new DateTime(2021, 01, 01, 12, 00, 00);
+            //toDate = new DateTime(2021, 01, 01, 23, 59, 00);
 
             ViewBag.fromDate = fromDate.ToString();
             ViewBag.toDate = toDate.ToString();
-            ViewBag.fromD = fromDate.Value.ToString("dd/MMM/yyyy hh:mm tt");
-            ViewBag.toD = toDate.Value.ToString("dd/MMM/yyyy hh:mm tt");
+            ViewBag.fromD = fromDate.ToString("dd/MMM/yyyy hh:mm tt");
+            ViewBag.toD = toDate.ToString("dd/MMM/yyyy hh:mm tt");
+            ViewBag.ReportType = reportType;
 
             if (toDate < fromDate) ViewBag.validation = "true";
             var data = BranchSalesData(fromDate.ToString(), toDate.ToString());
@@ -864,7 +903,7 @@ namespace ImillReports.Controllers
             var fromDate = new DateTime(2021, 01, 01, 12, 00, 00);
             var toDate = new DateTime(2021, 01, 01, 23, 59, 59);
 
-            var actionResult = new Rotativa.ActionAsPdf("BranchSalesForPrint", new { fromDate = fromDate, toDate = toDate})
+            var actionResult = new Rotativa.ActionAsPdf("BranchSalesForPrint", new { fromDate = fromDate, toDate = toDate })
             {
                 PageSize = Rotativa.Options.Size.A4,
                 PageOrientation = Rotativa.Options.Orientation.Landscape,
@@ -879,6 +918,112 @@ namespace ImillReports.Controllers
             var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
             fileStream.Write(byteArray, 0, byteArray.Length);
             fileStream.Close();
+
+            //var body = BranchSales(fromDate, toDate);
+
+            //MailMessage mailMessage = new MailMessage
+            //{
+            //    Subject = $"testing",
+            //    Body = body.ToString(),
+            //    IsBodyHtml = true,
+            //    From = new MailAddress("imillmaterialreq@gmail.com"),
+            //};
+
+
+            //mailMessage.To.Add(new MailAddress("shabbir7252@gmail.com"));
+
+            //SmtpClient smtp = new SmtpClient
+            //{
+            //    Host = "smtp.gmail.com",
+            //    Port = 587,
+            //    EnableSsl = true,
+            //    DeliveryMethod = SmtpDeliveryMethod.Network,
+            //    UseDefaultCredentials = false,
+            //    Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
+            //};
+
+            //smtp.Send(mailMessage);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult SaveWeeklyDashboard()
+        {
+            try
+            {
+                var path = Path.Combine(Server.MapPath("~/Content/Print"), "dashboard-weekly.jpeg");
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        var stream = fileContent.InputStream;
+                        using (var fileStream = System.IO.File.Create(path))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
+                    }
+                }
+
+                _dashboardRepository.SetWeeklyRptEmailDate();
+
+                string mailbody = "<html><body><img src=\"cid:Email\" style=\"width:100%\"></body></html>";
+                AlternateView AlternateView_Html = AlternateView.CreateAlternateViewFromString(mailbody, null, MediaTypeNames.Text.Html);
+                LinkedResource Picture1 = new LinkedResource(path, MediaTypeNames.Image.Jpeg);
+                Picture1.ContentId = "Email";
+                AlternateView_Html.LinkedResources.Add(Picture1);
+
+                var newAttachment = new Attachment(path);
+                // newAttachment.ContentDisposition.Inline = true;
+
+                MailMessage mailMessage = new MailMessage
+                {
+                    Subject = $"Dashboard as Yearly Report",
+                    Body = mailbody,
+                    From = new MailAddress("imillmaterialreq@gmail.com"),
+                    IsBodyHtml = true
+                };
+
+                mailMessage.AlternateViews.Add(AlternateView_Html);
+
+                mailMessage.Attachments.Add(newAttachment);
+
+
+                mailMessage.To.Add(new MailAddress("shabbir.i@intlmill.com"));
+
+                SmtpClient smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
+                };
+
+                smtp.Send(mailMessage);
+
+                newAttachment.Dispose();
+                AlternateView_Html.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Upload failed");
+            }
+
+            return Json("File uploaded successfully");
+        }
+
+        [HttpGet]
+        public bool SendEmailAsReport()
+        {
+            var settings = _dashboardRepository.GetLastEmailSettings();
+            var lastDate = settings.LastEmailDate;
+            // return true;
+            return lastDate.Date == DateTime.Now.Date &&
+                   DateTime.Now > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00) &&
+                   !settings.WeekRptEmailSent;
         }
 
     }

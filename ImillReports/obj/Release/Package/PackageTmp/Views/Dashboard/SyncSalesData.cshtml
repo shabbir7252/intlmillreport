@@ -10,13 +10,92 @@
 @section scripts {
     <script>
 
-        //SyncAllSalesReport();
+        // SyncUNVData();
+
+        function SyncUNVData() {
+            console.log("Unv Started!");
+
+            var year = 2021;
+            var month = 01;
+            var from = 26;
+            var toYear = 2021;
+            var toMonth = 01;
+            var to = 26;
+            var ipAddress = "192.168.1.50";
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("SyncHoDevice", "TAReport")',
+                data: {
+                    year: year,
+                    month: month,
+                    from: from,
+                    toYear: toYear,
+                    toMonth: toMonth,
+                    to: to,
+                    ipAddress: ipAddress
+                },
+                success: function (response) {
+                    console.log("UNV : ", response);
+                },
+                error: function (ex) {
+                    console.log("UNV Eror : ", ex);
+                }
+
+            });
+        }
+
+
+
+
+        SendEmailAsReport();
+        const interval = setInterval(function () {
+            SendEmailAsReport()
+        }, 80000);
+
+        function SendEmailAsReport() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("SendEmailAsReport", "Dashboard")',
+                success: function (response) {
+                    if (response === "True") {
+                        @*var link = "@Url.Action("BranchSalesForPrint", "Dashboard", new { id = 3 })";
+                        window.open(link, '_blank');
+
+                        var link2 = "@Url.Action("BranchSalesForPrint", "Dashboard", new { id = 2})";
+                        window.open(link2, '_blank');*@
+
+                        var link3 = "@Url.Action("BranchSalesForPrint", "Dashboard", new { reportType = 1})";
+                        window.open(link3, '_blank');
+                    }
+                },
+                error: function (ex) {
+                    console.log("Sales : ", ex);
+                }
+            });
+        }
+
+        // SyncAllSalesReport();
         //const interval = setInterval(function () {
         //    SyncAllSalesReport()
         //}, 600000);
 
+        @*GeneratePdf();
+        function GeneratePdf() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GeneratePdf", "Dashboard")',
+                success: function (response) {
+                },
+                error: function (ex) {
+                    console.log("Sales : ", ex);
+                }
+
+            });
+        }*@
+
         function SyncAllSalesReport() {
-            var daysCount = 13;
+            var daysCount = 10;
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetSalesSync", "SalesReport")',
@@ -119,9 +198,9 @@
 
         function SyncSalesMonthReport() {
             console.log("Have Started!");
-            var month = 12;
+            var month = 10;
             var year = 2020;
-            var from = 31;
+            var from = 26;
             var to = 31;
 
             $.ajax({
@@ -220,10 +299,10 @@
 
         // ****************** Sending Mail For Time Attendance ***************** //
 
-        EmailTAReport();
-        const emailInterval = setInterval(function () {
-            EmailTAReport();
-        }, 30000);
+        // EmailTAReport();
+        //const emailInterval = setInterval(function () {
+        //    EmailTAReport();
+        //}, 30000);
 
         function EmailTAReport() {
             $.ajax({
@@ -238,10 +317,10 @@
             });
         }
 
-        EmailTAEndReport();
-        const emailEndInterval = setInterval(function () {
-            EmailTAEndReport()
-        }, 40000);
+        //EmailTAEndReport();
+        //const emailEndInterval = setInterval(function () {
+        //    EmailTAEndReport()
+        //}, 40000);
 
         function EmailTAEndReport() {
             $.ajax({

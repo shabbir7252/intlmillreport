@@ -2,7 +2,11 @@
 @{
     var barChartDataSource = ViewBag.BarChart;
     var pieChartDataSource = ViewBag.dataSourcePie;
+    var salesRecordCount = ViewBag.SalesRecordCount;
+    var top10Branch = ViewBag.Top10Branch;
 }
+
+<label id="salesRecordCount" style="visibility:hidden">@salesRecordCount</label>
 
 @if (User.IsInRole("Admin") || User.IsInRole("HO") || User.IsInRole("StaffAdmin"))
 {
@@ -104,97 +108,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        @*<div class="row pt-2">
-                                <div class="col-6">
-                                    <div class="row">
-                                        <div class="col-6"><h5 class="text-right" style="font-weight:300">Talabat</h5></div>
-                                        <div class="col-6"><h5 class="text-left" id="totalTalabatSales"></h5></div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">
-                                        <div class="col-4"><h6>@ViewBag.BRTalabatPercent%</h6></div>
-                                        <div class="col-6">
-                                            <div class="progress m-b-5">
-                                                <div class="progress-bar progress-bar-danger progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BRTalabatPercent" aria-valuemin="@ViewBag.BRTalabatPercent"
-                                                     aria-valuemax="100" style="width:@ViewBag.BRTalabatPercent%">
-                                                    <span class="sr-only">@ViewBag.BRTalabatPercent% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
-
-                        @*<div class="row pt-2">
-                                <div class="col-6">
-                                    <div class="row text-right">
-                                        <div class="col-6"><button class="btn btn-dark w-80 btn-online-sales" style="font-weight:300">Online</button></div>
-                                        <div class="col-6"><h5 class="text-left" id=""></h5></div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row">
-                                        <div class="col-4"><h6>@ViewBag.BROnlinePercent%</h6></div>
-                                        <div class="col-6">
-                                            <div class="progress m-b-5">
-                                                <div class="progress-bar progress-bar-danger progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlinePercent" aria-valuemin="@ViewBag.BROnlinePercent"
-                                                     aria-valuemax="100" style="width:@ViewBag.BROnlinePercent%">
-                                                    <span class="sr-only">@ViewBag.BROnlinePercent% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
-
-                        @*<div class="row bg-brown mt-1 mb-3 py-3 rounded-lg sec-online-sales animated slideInUp">
-                                <div class="col-3">
-                                    Cash : <span id=""></span>
-                                    <br />
-                                    <section class="progress m-b-5 mt-2">
-                                        <div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineCashPercent" aria-valuemin="@ViewBag.BROnlineCashPercent"
-                                             aria-valuemax="100" style="width:@ViewBag.BROnlineCashPercent%">
-                                            <span class="sr-only">@ViewBag.BROnlineCashPercent% Complete</span>
-                                        </div>
-                                    </section>
-                                    @ViewBag.BROnlineCashPercent%
-                                </div>
-                                <div class="col-3">
-                                    Knet  : <span id=""></span>
-                                    <br />
-                                    <section class="progress m-b-5 mt-2">
-                                        <div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineKnetPercent" aria-valuemin="@ViewBag.BROnlineKnetPercent"
-                                             aria-valuemax="100" style="width:@ViewBag.BROnlineKnetPercent%">
-                                            <span class="sr-only">@ViewBag.BROnlineKnetPercent% Complete</span>
-                                        </div>
-                                    </section>
-                                    @ViewBag.BROnlineKnetPercent%
-                                </div>
-                                <div class="col-3">
-                                    Credit Card : <span id=""></span>
-                                    <br />
-                                    <section class="progress m-b-5 mt-2">
-                                        <div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineCcPercent" aria-valuemin="@ViewBag.BROnlineCcPercent"
-                                             aria-valuemax="100" style="width:@ViewBag.BROnlineCcPercent%">
-                                            <span class="sr-only">@ViewBag.BROnlineCcPercent% Complete</span>
-                                        </div>
-                                    </section>
-                                    @ViewBag.BROnlineCcPercent%
-                                </div>
-                                <div class="col-3">
-                                    Return : <span id=""></span>
-                                    <br />
-                                    <section class="progress m-b-5 mt-2">
-                                        <div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineReturnPercent" aria-valuemin="@ViewBag.BROnlineReturnPercent"
-                                             aria-valuemax="100" style="width:@ViewBag.BROnlineReturnPercent%">
-                                            <span class="sr-only">@ViewBag.BROnlineReturnPercent% Complete</span>
-                                        </div>
-                                    </section>
-                                    @ViewBag.BROnlineReturnPercent%
-                                </div>
-                            </div>*@
 
                         <div class="row pt-2">
                             <div class="col-6">
@@ -316,78 +229,6 @@
         </div>
     </div>
 
-    @*<div class="col-12">
-            <div class="card info-box-2 l-blue">
-                <div class="body" style="min-height: 200px;">
-                    <div class="content col-12">
-                        <div class="row">
-
-                            <div class="col-3">
-                                <div class="text" style="font-size: 22px;">Online</div>
-                                <h2 class="text-muted" id="totalOnlineSales"></h2>
-                                <div class="progress m-b-5">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlinePercent" aria-valuemin="@ViewBag.BROnlinePercent"
-                                         aria-valuemax="100" style="width:@ViewBag.BROnlinePercent%">
-                                        <span class="sr-only">@ViewBag.BROnlinePercent% Complete</span>
-                                    </div>
-                                </div>
-                                <h5>@ViewBag.BROnlinePercent%</h5>
-                            </div>
-
-                            <div class="col-2 offset-1 pt-4">
-                                <h5 class="text-center" style="font-weight:300">Cash </h5>
-                                <h5 class="text-center" id="totalBranchOnlineCash"></h5>
-                                <div class="progress m-b-5">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineCashPercent" aria-valuemin="@ViewBag.BROnlineCashPercent"
-                                         aria-valuemax="100" style="width:@ViewBag.BROnlineCashPercent%">
-                                        <span class="sr-only">@ViewBag.BROnlineCashPercent% Complete</span>
-                                    </div>
-                                </div>
-                                <h6>@ViewBag.BROnlineCashPercent%</h6>
-                            </div>
-
-                            <div class="col-2 pt-4">
-                                <h5 class="text-center" style="font-weight:300">KNET</h5>
-                                <h5 class="text-center" id="totalBranchOnlineKnet"></h5>
-                                <div class="progress m-b-5">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineKnetPercent" aria-valuemin="@ViewBag.BROnlineKnetPercent"
-                                         aria-valuemax="100" style="width:@ViewBag.BROnlineKnetPercent%">
-                                        <span class="sr-only">@ViewBag.BROnlineKnetPercent% Complete</span>
-                                    </div>
-                                </div>
-                                <h6>@ViewBag.BROnlineKnetPercent%</h6>
-                            </div>
-
-                            <div class="col-2 pt-4">
-                                <h5 class="text-center" style="font-weight:300">Credit Card</h5>
-                                <h5 class="text-center" id="totalBranchOnlineCc"></h5>
-                                <div class="progress m-b-5">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineCcPercent" aria-valuemin="@ViewBag.BROnlineCcPercent"
-                                         aria-valuemax="100" style="width:@ViewBag.BROnlineCcPercent%">
-                                        <span class="sr-only">@ViewBag.BROnlineCcPercent% Complete</span>
-                                    </div>
-                                </div>
-                                <h6>@ViewBag.BROnlineCcPercent%</h6>
-                            </div>
-
-                            <div class="col-2 pt-4">
-                                <h5 class="text-center" style="font-weight:300">Sales Return</h5>
-                                <h5 class="text-center" id="totalBranchOnlineReturn"></h5>
-                                <div class="progress m-b-5">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="@ViewBag.BROnlineReturnPercent" aria-valuemin="@ViewBag.BROnlineReturnPercent"
-                                         aria-valuemax="100" style="width:@ViewBag.BROnlineReturnPercent%">
-                                        <span class="sr-only">@ViewBag.BROnlineReturnPercent% Complete</span>
-                                    </div>
-                                </div>
-                                <h6>@ViewBag.BROnlineReturnPercent%</h6>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>*@
     @if (User.IsInRole("Admin") || User.IsInRole("HO") || User.IsInRole("StaffAdmin"))
     {
         <div class="col-12">
@@ -400,7 +241,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="text" style="font-size: 22px;">Online Sales</div>
-                                        <h2 class="text-muted">@ViewBag.OnlineSales</h2>
+                                        <h2 class="text-muted">@ViewBag.OnlineSales.ToString("0.000")</h2>
                                     </div>
                                     <div class="col-6 pt-4">
                                         <h5>@ViewBag.OnlineSalesPercent%</h5>
@@ -475,7 +316,7 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6"><h5 class="text-right" style="font-weight:300">Cash </h5></div>
-                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderCash</h5></div>
+                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderCash.ToString("0.000")</h5></div>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -497,7 +338,7 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6"><h5 class="text-right" style="font-weight:300">Knet</h5></div>
-                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderKnet</h5></div>
+                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderKnet.ToString("0.000")</h5></div>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -519,7 +360,7 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6"><h5 class="text-right" style="font-weight:300">Credit Card</h5></div>
-                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderCc</h5></div>
+                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderCc.ToString("0.000")</h5></div>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -543,7 +384,7 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6"><h5 class="text-right" style="font-weight:300">Sales Return</h5></div>
-                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderReturn</h5></div>
+                                    <div class="col-6"><h5 class="text-left">@ViewBag.TotalWebOrderReturn.ToString("0.000")</h5></div>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -629,7 +470,7 @@
         </div>
     }
 </div>
-@if (User.IsInRole("Admin") || User.IsInRole("HO")  || User.IsInRole("StaffAdmin"))
+@if (User.IsInRole("Admin") || User.IsInRole("HO") || User.IsInRole("StaffAdmin"))
 {
     <div class="row clearfix">
         <div class="col-lg-12">
@@ -642,31 +483,69 @@
                         </div>
 
                         <div class="col-6">
-                            @(Html.EJS().AccumulationChart("partialChart").Series(series =>
-                        {
-                            series.DataLabel(dl => dl.Visible(true).Name("text").Position(Syncfusion.EJ2.Charts.AccumulationLabelPosition.Outside).Font(ft => ft.FontWeight("600"))).Palettes(ViewBag.Palettes)
-                            .XName("x").YName("y").Name("")
-                            .Type(Syncfusion.EJ2.Charts.AccumulationType.Pie)
-                            .Radius("80%")
-                            .StartAngle(0)
-                            .EndAngle(360)
-                            .DataSource(pieChartDataSource).Add();
-                        }).EnableSmartLabels(true)
-    .EnableAnimation(true)
-    .Title("")
-    .LegendSettings(ls => ls.Visible(true))
-    .Tooltip(tp => tp.Enable(true).Format("${point.x} : <b>${point.y}</b>")).Render())
+                            <div id="svg-container">
+                                @Html.EJS().AccumulationChart("partialChart").Series(series =>
+                            {
+                                series.DataLabel(dl => dl.Visible(true).Name("text").Position(Syncfusion.EJ2.Charts.AccumulationLabelPosition.Outside).Font(ft => ft.FontWeight("600"))).Palettes(ViewBag.Palettes)
+                                .XName("x").YName("y").Name("")
+                                .Type(Syncfusion.EJ2.Charts.AccumulationType.Pie)
+                                .Radius("80%")
+                                .StartAngle(0)
+                                .EndAngle(360)
+                                .DataSource(pieChartDataSource).Add();
+                            }).EnableSmartLabels(true).EnableAnimation(true).Title("").LegendSettings(ls => ls.Visible(true)).Tooltip(
+                               tp => tp.Enable(true).Format("${point.x} : <b>${point.y}</b>")).Render()
+                            </div>
+                            <canvas id="canvas" width="800" height="600"></canvas>
+                            <div id="png-container"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 10 Branches</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Branch</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var count = 1;
+                            }
+                            @foreach (var rec in top10Branch)
+                            {
+                                if (count <= 10)
+                                {
+                                    <tr>
+                                        <td>@rec.x</td>
+                                        <td>@rec.y.ToString("0.000")</td>
+                                        <td>@rec.branchPercent</td>
+                                    </tr>
+                                }
+
+                                count += 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
-    @Html.EJS().ScriptManager()
+@Html.EJS().ScriptManager()
 
-    <script>
+<script>
     // Store the value from partial view and retrieve on branch sales
     localStorage.setItem("ColumnChartData", "@barChartDataSource");
-    </script>
+</script>

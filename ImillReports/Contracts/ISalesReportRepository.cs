@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using ImillReports.Models;
 using ImillReports.ViewModels;
+using System.Collections.Generic;
 
 namespace ImillReports.Contracts
 {

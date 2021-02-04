@@ -40,7 +40,7 @@
                        new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings
                        {
                            Text = "NameAr",
-                           Value = "PartNumber"
+                           Value = "PartNo"
                        }).ActionBegin("OnProductBegin").DataBound("OnProductBound").Render()
         </div>
     </div>
@@ -353,7 +353,7 @@
             if (e.text == '')
                 e.updateData(CBObj.dataSource);
             else {
-                var query = new ej.data.Query().from('product').select(['NameAr', 'PartNumber']);
+                var query = new ej.data.Query().from('product').select(['NameAr', 'PartNo']);
                 query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
                 e.updateData(CBObj.dataSource, query);
             }
@@ -362,7 +362,7 @@
         var selectedProduct = [];
         function OnProductBegin(e) {
             this.fields = {
-                text: 'NameAr', value: 'PartNumber', itemCreated: function (e) {
+                text: 'NameAr', value: 'PartNo', itemCreated: function (e) {
                     var count = 0;
                     if (count === 0) {
                         for (let i = 0; i < e.dataSource.length; i++) {
@@ -384,13 +384,13 @@
         }
 
         function OnProductChange(args) {
-            console.log('On Prod Change : ', args.itemData.PartNumber);
+            console.log('On Prod Change : ', args);
 
             $.ajax({
                     type: 'POST',
                     url: '@Url.Action("GetBarcodeValue", "Home")',
                     data: {
-                        barcode: args.itemData.PartNumber
+                        barcode: args.itemData.PartNo
                     },
                     success: function (response) {
                         var skip = false;

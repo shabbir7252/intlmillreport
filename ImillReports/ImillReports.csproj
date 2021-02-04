@@ -328,6 +328,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Setting.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SM_Location.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
@@ -667,6 +670,7 @@
     <Content Include="Scripts\ej2\ej2.min.js" />
     <Content Include="Scripts\ej2\ej2.min.js.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\html2canvas.min.js" />
     <Content Include="Scripts\index2.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -737,8 +741,10 @@
     <Content Include="Views\ManageTimeAttendance\Shifts.cshtml" />
     <Content Include="Views\SalesReport\DailyConsumption.cshtml" />
     <Content Include="Views\Dashboard\BranchSalesForPrint.cshtml" />
+    <Content Include="Views\SalesReport\SalesTrend.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Print\" />
     <Folder Include="Views\Location\" />
     <Folder Include="Views\Salesman\" />
   </ItemGroup>

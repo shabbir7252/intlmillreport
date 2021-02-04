@@ -66,7 +66,7 @@
   </EntityType>
   <EntityType Name="tbl_EmpTransaction">
     <Key>
-      <PropertyRef Name="Timestamp" />
+      <PropertyRef Name="Oid" />
     </Key>
     <Property Name="EmployeeID" Type="varchar" MaxLength="50" />
     <Property Name="EmployeeName" Type="varchar" MaxLength="50" />
@@ -86,6 +86,7 @@
     <Property Name="Maskflag" Type="bigint" />
     <Property Name="Permission" Type="bigint" />
     <Property Name="IsManual" Type="bit" />
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
   <EntityType Name="tbl_Location">
     <Key>

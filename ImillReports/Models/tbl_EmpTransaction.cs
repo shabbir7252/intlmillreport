@@ -32,5 +32,6 @@ namespace ImillReports.Models
         public Nullable<long> Maskflag { get; set; }
         public Nullable<long> Permission { get; set; }
         public Nullable<bool> IsManual { get; set; }
+        public int Oid { get; set; }
     }
 }

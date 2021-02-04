@@ -8,6 +8,9 @@
 
     var DSTop5ProdByQty = (List<Product>)ViewBag.DSTop5ProdByQty;
     var DSTop5ProdHoByQty = (List<Product>)ViewBag.DSTop5ProdHoByQty;
+
+    var Top10HoCustomerCredit = (List<ProductDetail>)ViewBag.Top10HoCustomerCredit;
+    var Top10HoCustomerCash = (List<ProductDetail>)ViewBag.Top10HoCustomerCash;
 }
 
 <div class="row mb-5">
@@ -397,6 +400,70 @@
         </div>
     </div>
 
+</div>
+
+<div class="row mb-5">
+    @if (User.IsInRole("Admin") || User.IsInRole("HO"))
+    {
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 10 Customer (Cash)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Customer NameEn</th>
+                                <th>Customer NameAr</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rec in Top10HoCustomerCash.OrderByDescending(x => x.Amount))
+                            {
+                                <tr>
+                                    <td>@rec.CustomerEn</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@rec.CustomerAr</td>
+                                    <td>@rec.Amount.Value.ToString("0.000")</td>
+                                    <td>@rec.Percentage.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top 10 Customer (Credit)</h5>
+                    <table class="table table-bordered" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th>Customer NameEn</th>
+                                <th>Customer NameAr</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rec in Top10HoCustomerCredit.OrderByDescending(x => x.Amount))
+                            {
+                                <tr>
+                                    <td>@rec.CustomerEn</td>
+                                    <td style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@rec.CustomerAr</td>
+                                    <td>@rec.Amount.Value.ToString("0.000")</td>
+                                    <td>@rec.Percentage.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <script>

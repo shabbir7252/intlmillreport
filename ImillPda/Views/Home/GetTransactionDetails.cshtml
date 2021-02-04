@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewBag.Title = ViewBag.location;
+    ViewBag.RequestNumber = ViewBag.ReqNo;
 }
 
 <style>
@@ -27,7 +28,7 @@
 
 
     <div class="row">
-        <div class="fixed-top" style="background-color: #fff; height: 110px; box-shadow: 0 0 22px -10px #000; width: 100%; top: 50px;z-index:1">
+        <div class="fixed-top" style="background-color: #fff; height: 110px; box-shadow: 0 0 22px -10px #000; width: 100%; top: 85px;z-index:1">
             <div>
                 <div class="col-8 mx-auto" style="margin-top: 2rem;">
                     <!-- Button trigger modal -->
@@ -42,7 +43,7 @@
 
 
 
-    <div class="row loading-row" style="margin-top: 9rem; display:none">
+    <div class="row loading-row" style="margin-top: 11rem; display:none">
         <div class="col-8 mx-auto mt-4 loading-placeholder">
             <div class="d-flex align-items-center mb-3">
                 <strong><span class="loading-text">Saving</span></strong>
@@ -51,7 +52,7 @@
         </div>
     </div>
 
-    <div class="row grid-row" style="margin-top: 9rem;">
+    <div class="row grid-row" style="margin-top: 11rem;">
         <div class="col-12">
 
             @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowTextWrap(true).ActionComplete("actionComplete").AllowResizing(true).Height("auto").Width("auto").ShowColumnChooser(false).Columns(col =>
@@ -217,9 +218,7 @@
 
                             var grid = document.getElementById('Grid').ej2_instances[0];
                             grid.dataSource = itemList;
-
                             grid.refresh();
-
 
                             //$([document.documentElement, document.body]).animate({
                             //    scrollTop: $('.part-' + response.PartNumber).offset().top - 300

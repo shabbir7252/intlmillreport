@@ -202,7 +202,7 @@
   </EntityType>
   <EntityType Name="tbl_EmpTransaction">
     <Key>
-      <PropertyRef Name="Timestamp" />
+      <PropertyRef Name="Oid" />
     </Key>
     <Property Name="EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -222,5 +222,6 @@
     <Property Name="Maskflag" Type="Int64" />
     <Property Name="Permission" Type="Int64" />
     <Property Name="IsManual" Type="Boolean" />
+    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
   </EntityType>
 </Schema>

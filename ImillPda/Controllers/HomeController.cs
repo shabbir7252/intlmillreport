@@ -34,6 +34,7 @@ namespace ImillPda.Controllers
                     {
                         EntryId = tran.Entry_Id,
                         TransDate = tran.Voucher_Date,
+                        RequestNumber = tran.Voucher_No,
                         Locat_Cd = location.FirstOrDefault(x => x.Locat_Cd == tran.Locat_Cd).Locat_Cd,
                         LocationNameEn = location.FirstOrDefault(x => x.Locat_Cd == tran.Locat_Cd).L_Locat_Name,
                         LocationNameAr = location.FirstOrDefault(x => x.Locat_Cd == tran.Locat_Cd).A_Locat_Name,
@@ -217,6 +218,7 @@ namespace ImillPda.Controllers
             ViewBag.EntryId = entryId;
             ViewBag.location = location.FirstOrDefault(x => x.Locat_Cd == trans.Locat_Cd).A_Locat_Name;
             ViewBag.VoucherDate = trans.Voucher_Date;
+            ViewBag.ReqNo = trans.Voucher_No;
             return View();
         }
 

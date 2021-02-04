@@ -1,4 +1,5 @@
 ﻿using ImillReports.Contracts;
+using ImillReports.Models;
 using ImillReports.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,18 @@ namespace ImillReports.Repository
         private readonly ISalesReportRepository _salesReportRepository;
         private readonly ILocationRepository _locationRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ImillReportsEntities _contextReports;
 
         public DashboardRepository(
             IProductRepository productRepository,
             ISalesReportRepository salesReportRepository,
-            ILocationRepository locationRepository)
+            ILocationRepository locationRepository,
+            ImillReportsEntities contextReports)
         {
             _salesReportRepository = salesReportRepository;
             _locationRepository = locationRepository;
             _productRepository = productRepository;
+            _contextReports = contextReports;
         }
         public SalesOfMonthViewModel GetSalesOfMonth(DateTime? fromDate, DateTime? toDate)
         {
@@ -1104,8 +1108,9 @@ namespace ImillReports.Repository
                                                                   x.VoucherId != 2025 &&
                                                                   x.VoucherId != 2035 &&
                                                                   x.VoucherId != 2026 &&
-                                                                  x.VoucherId != 2037 &&
-                                                                  x.VoucherId != 2036).Sum(a => a.NetAmount);
+                                                                  x.VoucherId != 2036 &&
+                                                                  x.VoucherId != 2030 &&
+                                                                  x.VoucherId != 2037).Sum(a => a.NetAmount);
 
                 var salesMonthItem = new SalesMonthItem
                 {
@@ -1199,7 +1204,7 @@ namespace ImillReports.Repository
             return new SalesOfMonthViewModel
             {
                 SalesMonthItems = salesMonthItems,
-
+                SalesRecordCount = salesOfMonth.Count(), // Total Transaction Count to show in Dahsboard Loading Of Top 10
                 TotalSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(a => a.NetAmount),
                 TotalBranchSales = salesOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84 && (x.VoucherId != 2026 || x.VoucherId != 2036)).Sum(a => a.NetAmount),
 
@@ -1243,18 +1248,67 @@ namespace ImillReports.Repository
 
             var dashboardTransaction = _salesReportRepository.GetSalesDashboardTransaction(fromDate, toDate, "", "", "", false);
             var salesDetailsOfMonth = dashboardTransaction.SRItemsTransDetails;
+            var salesOfMonth = dashboardTransaction.SRItemsTrans;
 
             var locations = _locationRepository.GetLocations();
             var products = _productRepository.GetAllProducts().Items;
+            var branchSalesDetail = salesDetailsOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84);
+            var hoSalesDetails = salesDetailsOfMonth.Where(x => x.LocationId == 1 || x.LocationId == 84);
+
+
+            var hoSales = salesOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84));
+            var hoSalesSr = hoSales.Where(x => x.VoucherId == 2023).GroupBy(a => a.CustomerId);
+            
+            var hoSalesCash = hoSales.Where(x => x.VoucherId == 2022).GroupBy(a => a.CustomerId);
+            var cashCustomerId = hoSalesCash.Select(x => x.Key);
+            var cashSalesReturn = hoSales.Where(x => x.VoucherId == 2023 && cashCustomerId.Contains(x.CustomerId)).Sum(a => a.NetAmount);
+            var hoTotalSalesCash = hoSales.Where(x => x.VoucherId == 2022).Sum(x => x.NetAmount) - cashSalesReturn;
+            var top10HoCustomerCash = new List<ProductDetail>();
+
+            foreach (var item in hoSalesCash)
+            {
+                var srAmount = hoSalesSr.FirstOrDefault(x => x.Key == item.Key)?.Sum(a => a.NetAmount);
+                var netAmount = item.Sum(x => x.NetAmount) - (srAmount < 0 || srAmount == null ? 0 : srAmount);
+                var cashDetail = new ProductDetail
+                {
+                    Amount = netAmount,
+                    CustomerAr = item.FirstOrDefault().CustomerNameAr,
+                    CustomerEn = item.FirstOrDefault().CustomerName,
+                    Percentage = netAmount.HasValue ? (hoTotalSalesCash.Value != 0 ? 100 / hoTotalSalesCash.Value * netAmount.Value : 0) : 0
+                };
+
+                top10HoCustomerCash.Add(cashDetail);
+            }
+
+
+            var hoSalesCr = hoSales.Where(x => x.VoucherId == 2021).GroupBy(a => a.CustomerId);
+            var creditCustomerId = hoSalesCr.Select(x => x.Key);
+            var creditSalesReturn = hoSales.Where(x => x.VoucherId == 2023 && creditCustomerId.Contains(x.CustomerId)).Sum(a => a.NetAmount);
+            var hoTotalSalesCr = hoSales.Where(x => x.VoucherId == 2021).Sum(x => x.NetAmount) - creditSalesReturn;
+            var top10HoCustomerCredit = new List<ProductDetail>();
+
+            foreach (var item in hoSalesCr)
+            {
+                var srAmount = hoSalesSr.FirstOrDefault(x => x.Key == item.Key)?.Sum(a => a.NetAmount);
+                var netAmount = item.Sum(x => x.NetAmount) - (srAmount == null ? 0 : srAmount);
+                var crDetail = new ProductDetail
+                {
+                    Amount = netAmount,
+                    CustomerAr = item.FirstOrDefault().CustomerNameAr,
+                    CustomerEn = item.FirstOrDefault().CustomerName,
+                    Percentage = netAmount.HasValue ? (hoTotalSalesCr.Value != 0 ? 100 / hoTotalSalesCr.Value * netAmount.Value : 0) : 0
+                };
+
+                top10HoCustomerCredit.Add(crDetail);
+            }
 
 
             #region Top 10 Product by Amount
 
             #region Branch
 
-            var totalAmount = salesDetailsOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).Sum(x => x.Amount);
-
-            var salesDetails = salesDetailsOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.ProdId);
+            var totalAmount = branchSalesDetail.Sum(x => x.Amount);
+            var salesDetails = branchSalesDetail.GroupBy(x => x.ProdId);
 
             var top5ProductsByAmount = new List<Product>();
 
@@ -1264,19 +1318,13 @@ namespace ImillReports.Repository
                 var itemTotalAmount = item.Sum(a => a.Amount);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var individualSalesDetails = salesDetailsOfMonth.Where(x => x.ProdId == item.Key && x.LocationId != 1 && x.LocationId != 84).GroupBy(a => a.LocationId);
+                var individualSalesDetails = branchSalesDetail.Where(x => x.ProdId == item.Key).GroupBy(a => a.LocationId);
 
                 foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.Amount)))
                 {
                     var detailAmount = detail.Sum(x => x.Amount);
 
-                    var totalSellAmountInBranch = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                                                x.LocationId != 84 &&
-                                                                                                x.LocationId == detail.Key
-                                                                                                //&&
-                                                                                                //(x.BaseUnitId == 40 ||
-                                                                                                //x.BaseUnitId == 42)
-                                                                                                ).Sum(b => b.Amount);
+                    var totalSellAmountInBranch = branchSalesDetail.Where(x => x.LocationId == detail.Key).Sum(b => b.Amount);
 
                     var productDetail = new ProductDetail
                     {
@@ -1301,15 +1349,21 @@ namespace ImillReports.Repository
 
                 top5ProductsByAmount.Add(product);
             }
+
             #endregion
 
             #region HO
 
-            var totalAmountHo = salesDetailsOfMonth.Where(x => x.LocationId == 1 || x.LocationId == 84).Sum(x => x.Amount);
+            var totalAmountHo = hoSalesDetails.Sum(x => x.Amount);
+            var salesDetailsHo = hoSalesDetails.GroupBy(x => x.ProdId);
 
-            var salesDetailsHo = salesDetailsOfMonth.Where(x => x.LocationId == 1 || x.LocationId == 84).GroupBy(x => x.ProdId);
+            // 2021 = Credit
+            // 2022 = Cash
+            // 2023 = Sales Return            
 
             var top5HoProductsByAmount = new List<Product>();
+            
+            
 
             foreach (var item in salesDetailsHo.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
@@ -1317,14 +1371,13 @@ namespace ImillReports.Repository
                 var itemTotalAmount = item.Sum(a => a.Amount);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var individualSalesDetails = salesDetailsOfMonth.Where(x => x.ProdId == item.Key && (x.LocationId == 1 || x.LocationId == 84));
+                var individualSalesDetails = hoSalesDetails.Where(x => x.ProdId == item.Key);
 
                 foreach (var detail in individualSalesDetails.GroupBy(a => a.CustomerId).OrderByDescending(x => x.Sum(b => b.Amount)))
                 {
                     var detailAmount = detail.Sum(x => x.Amount);
 
-                    var totalSellAmountInHo = salesDetailsOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                                x.CustomerId == detail.Key).Sum(b => b.Amount);
+                    var totalSellAmountInHo = hoSalesDetails.Where(x => x.CustomerId == detail.Key).Sum(b => b.Amount);
 
                     var productDetail = new ProductDetail
                     {
@@ -1332,7 +1385,6 @@ namespace ImillReports.Repository
                         Location = "",
                         CustomerAr = detail.FirstOrDefault().CustomerNameAr,
                         Percentage = totalAmountHo.Value != 0 ? 100 / totalAmountHo.Value * detailAmount.Value : 0,
-                        // PercentageAllItem = totalSellAmountInHo != 0 ? 100 / totalSellAmountInHo * detailAmount : 0
                         PercentageAllItem = totalSellAmountInHo.Value != 0 ? 100 / totalSellAmountInHo.Value * detailAmount.Value : 0
                     };
 
@@ -1354,6 +1406,7 @@ namespace ImillReports.Repository
                 }
 
             }
+
             #endregion
 
             #endregion
@@ -1362,53 +1415,39 @@ namespace ImillReports.Repository
 
             #region Branch
 
-            var sellQtyKg = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                         x.LocationId != 84 &&
-                                                                         (x.BaseUnitId == 40)).Sum(x => x.BaseQuantity * x.SellQuantity);
+            var sellQtyKg = branchSalesDetail.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
 
-            var sellQtyGm = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                                 x.LocationId != 84 &&
-                                                                                 (x.BaseUnitId == 42)).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+            var sellQtyGm = branchSalesDetail.Where(x => x.BaseUnitId == 42).Sum(x => x.BaseQuantity * x.SellQuantity / 1000);
 
             var totalSellQtyKg = sellQtyKg + sellQtyGm;
 
-            //var salesDetailsByKg = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84 && x.SellUnitId == 40).GroupBy(x => x.SellQuantity)
-            //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
-
-            var salesDetailsByKg = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                                   x.LocationId != 84 &&
-                                                                                   (x.BaseUnitId == 40 ||
-                                                                                    x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
+            var salesDetailsByKg = branchSalesDetail.Where(x => x.BaseUnitId == 40 || x.BaseUnitId == 42).GroupBy(x => x.ProdId);
 
             var top5ProductsByKg = new List<Product>();
 
             foreach (var item in salesDetailsByKg.OrderByDescending(a => a.Sum(b => b.BaseUnitId == 40
                                                                                     ? b.BaseQuantity * b.SellQuantity
-                                                                                    : (b.BaseQuantity * b.SellQuantity) / 1000)).Take(10))
+                                                                                    : b.BaseQuantity * b.SellQuantity / 1000)).Take(10))
             {
                 var productDetails = new List<ProductDetail>();
-                var individualSalesDetails = salesDetailsOfMonth.Where(x => x.ProdId == item.Key &&
-                                                                                             x.LocationId != 1 &&
-                                                                                             x.LocationId != 84 &&
-                                                                                             (x.BaseUnitId == 40 ||
-                                                                                              x.BaseUnitId == 42)).GroupBy(a => a.LocationId);
+                var individualSalesDetails = branchSalesDetail.Where(x => x.ProdId == item.Key &&
+                                                                          (x.BaseUnitId == 40 ||
+                                                                          x.BaseUnitId == 42)).GroupBy(a => a.LocationId);
 
 
                 foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40
                                                                                                 ? x.BaseQuantity * x.SellQuantity
-                                                                                                : (x.BaseQuantity * x.SellQuantity) / 1000)))
+                                                                                                : x.BaseQuantity * x.SellQuantity / 1000)))
                 {
                     var detailSellQty = detail.Sum(x => x.BaseUnitId == 40
                                                         ? x.BaseQuantity * x.SellQuantity
-                                                        : (x.BaseQuantity * x.SellQuantity) / 1000);
+                                                        : x.BaseQuantity * x.SellQuantity / 1000);
 
-                    var totalSellQtyKgInBranch = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                                                 x.LocationId != 84 &&
-                                                                                                 x.LocationId == detail.Key &&
-                                                                                                 (x.BaseUnitId == 40 ||
-                                                                                                 x.BaseUnitId == 42)).Sum(b => b.BaseUnitId == 40
-                                                                                                                            ? b.BaseQuantity * b.SellQuantity
-                                                                                                                            : (b.BaseQuantity * b.SellQuantity) / 1000);
+                    var totalSellQtyKgInBranch = branchSalesDetail.Where(x => x.LocationId == detail.Key &&
+                                                                              (x.BaseUnitId == 40 || x.BaseUnitId == 42))
+                                                                  .Sum(b => b.BaseUnitId == 40
+                                                                                ? b.BaseQuantity * b.SellQuantity
+                                                                                : b.BaseQuantity * b.SellQuantity / 1000);
 
                     var productDetail = new ProductDetail
                     {
@@ -1424,7 +1463,7 @@ namespace ImillReports.Repository
 
                 var itemTotalQty = item.Sum(x => x.BaseUnitId == 40
                                                         ? x.BaseQuantity * x.SellQuantity
-                                                        : (x.BaseQuantity * x.SellQuantity) / 1000);
+                                                        : x.BaseQuantity * x.SellQuantity / 1000);
 
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
@@ -1439,21 +1478,18 @@ namespace ImillReports.Repository
 
                 top5ProductsByKg.Add(product);
             }
+
             #endregion
 
             #region HO
 
-            var hoSellQtyKg = salesDetailsOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                 (x.BaseUnitId == 40)).Sum(x => x.BaseQuantity * x.SellQuantity);
+            var hoSellQtyKg = hoSalesDetails.Where(x => x.BaseUnitId == 40).Sum(x => x.BaseQuantity * x.SellQuantity);
 
-            var hoSellQtyGm = salesDetailsOfMonth.Where(x => x.LocationId == 1 &&
-                                                                              (x.BaseUnitId == 42)).Sum(x => (x.BaseQuantity * x.SellQuantity) / 1000);
+            var hoSellQtyGm = hoSalesDetails.Where(x => x.BaseUnitId == 42).Sum(x => x.BaseQuantity * x.SellQuantity / 1000);
 
             var totalHoSellKgQty = hoSellQtyKg + hoSellQtyGm;
 
-            var salesDetailsHoByKg = salesDetailsOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                     (x.BaseUnitId == 40 ||
-                                                                                     x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
+            var salesDetailsHoByKg = hoSalesDetails.Where(x => (x.BaseUnitId == 40 || x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
 
             var top5ProductsHoByKg = new List<Product>();
 
@@ -1463,10 +1499,9 @@ namespace ImillReports.Repository
             {
 
                 var productDetails = new List<ProductDetail>();
-                var individualSalesDetails = salesDetailsOfMonth.Where(x => x.ProdId == item.Key &&
-                                                                                             (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                             (x.BaseUnitId == 40 ||
-                                                                                              x.BaseUnitId == 42));
+                var individualSalesDetails = hoSalesDetails.Where(x => x.ProdId == item.Key &&
+                                                                       (x.BaseUnitId == 40 ||
+                                                                        x.BaseUnitId == 42));
 
                 foreach (var detail in individualSalesDetails.GroupBy(x => x.CustomerId).OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40
                                                                                          ? x.BaseQuantity * x.SellQuantity
@@ -1476,12 +1511,11 @@ namespace ImillReports.Repository
                                                         ? x.BaseQuantity * x.SellQuantity
                                                         : (x.BaseQuantity * x.SellQuantity) / 1000);
 
-                    var totalSellQtyKgInHo = salesDetailsOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                              x.CustomerId == detail.Key &&
-                                                                                             (x.BaseUnitId == 40 || x.BaseUnitId == 42))
-                                                                                             .Sum(b => b.BaseUnitId == 40
-                                                                                                ? b.BaseQuantity * b.SellQuantity
-                                                                                                : (b.BaseQuantity * b.SellQuantity) / 1000);
+                    var totalSellQtyKgInHo = hoSalesDetails.Where(x => x.CustomerId == detail.Key &&
+                                                                       (x.BaseUnitId == 40 || x.BaseUnitId == 42))
+                                                           .Sum(b => b.BaseUnitId == 40
+                                                                        ? b.BaseQuantity * b.SellQuantity
+                                                                        : (b.BaseQuantity * b.SellQuantity) / 1000);
 
                     var productDetail = new ProductDetail
                     {
@@ -1521,20 +1555,15 @@ namespace ImillReports.Repository
 
             #region Branch
 
-            var totalSellQty = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                       x.LocationId != 84 &&
-                                                                       x.BaseUnitId != 40 &&
-                                                                       x.BaseUnitId != 42 &&
-                                                                       x.ProdId != 19595).Sum(x => x.BaseQuantity * x.SellQuantity);
+            var totalSellQty = branchSalesDetail.Where(x => x.BaseUnitId != 40 &&
+                                                            x.BaseUnitId != 42 &&
+                                                            x.ProdId != 19595)
+                                                .Sum(x => x.BaseQuantity * x.SellQuantity);
 
-            //var salesDetailsByQty = salesDetailsOfMonth.SalesReportItems.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.SellQuantity)
-            //    .SelectMany(g => g.Select((j, i) => new { j.ProductNameEn, j.ProductNameAr, j.SellUnit, j.SellQuantity, j.Location, j.LocationId, rn = i + 1 }));
-
-            var salesDetailsByQty = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                                    x.LocationId != 84 &&
-                                                                                    x.BaseUnitId != 40 &&
-                                                                                    x.BaseUnitId != 42 &&
-                                                                                    x.ProdId != 19595).GroupBy(x => x.ProdId);
+            var salesDetailsByQty = branchSalesDetail.Where(x => x.BaseUnitId != 40 &&
+                                                                 x.BaseUnitId != 42 &&
+                                                                 x.ProdId != 19595)
+                                                     .GroupBy(x => x.ProdId);
 
             var top5ProductsByQty = new List<Product>();
 
@@ -1542,23 +1571,20 @@ namespace ImillReports.Repository
             {
                 var productDetails = new List<ProductDetail>();
 
-                var individualSalesDetails = salesDetailsOfMonth.Where(x => x.ProdId == item.Key &&
-                                                                                             x.ProdId != 19595 &&
-                                                                                             x.LocationId != 1 &&
-                                                                                             x.LocationId != 84 &&
-                                                                                             x.BaseUnitId != 40 &&
-                                                                                             x.BaseUnitId != 42).GroupBy(a => a.LocationId);
+                var individualSalesDetails = branchSalesDetail.Where(x => x.ProdId == item.Key &&
+                                                                          x.ProdId != 19595 &&
+                                                                          x.BaseUnitId != 40 &&
+                                                                          x.BaseUnitId != 42)
+                                                              .GroupBy(a => a.LocationId);
 
                 foreach (var detail in individualSalesDetails.OrderByDescending(a => a.Sum(x => x.BaseQuantity * x.SellQuantity)))
                 {
                     var detailSellQty = detail.Sum(x => x.BaseQuantity * x.SellQuantity);
 
-                    var totalSellQtyInBranch = salesDetailsOfMonth.Where(x => x.LocationId != 1 &&
-                                                                                               x.LocationId != 84 &&
-                                                                                               x.ProdId != 19595 &&
-                                                                                               x.LocationId == detail.Key &&
-                                                                                               (x.BaseUnitId != 40 ||
-                                                                                               x.BaseUnitId != 42)).Sum(b => b.BaseQuantity * b.SellQuantity);
+                    var totalSellQtyInBranch = branchSalesDetail.Where(x => x.ProdId != 19595 &&
+                                                                            x.LocationId == detail.Key &&
+                                                                            (x.BaseUnitId != 40 ||
+                                                                            x.BaseUnitId != 42)).Sum(b => b.BaseQuantity * b.SellQuantity);
                     var productDetail = new ProductDetail
                     {
                         Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name,
@@ -1588,15 +1614,13 @@ namespace ImillReports.Repository
 
             #region HO
 
-            var totalSellHoQty = salesDetailsOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                     x.BaseUnitId != 40 &&
-                                                                                     x.BaseUnitId != 42 &&
-                                                                                     x.ProdId != 19595).Sum(x => x.SellQuantity);
+            var totalSellHoQty = hoSalesDetails.Where(x => x.BaseUnitId != 40 &&
+                                                           x.BaseUnitId != 42 &&
+                                                           x.ProdId != 19595).Sum(x => x.SellQuantity);
 
-            var salesDetailsHoByQty = salesDetailsOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84) &&
-                                                                                      x.BaseUnitId != 40 &&
-                                                                                      x.BaseUnitId != 42 &&
-                                                                                      x.ProdId != 19595).GroupBy(x => x.ProdId);
+            var salesDetailsHoByQty = hoSalesDetails.Where(x => x.BaseUnitId != 40 &&
+                                                                x.BaseUnitId != 42 &&
+                                                                x.ProdId != 19595).GroupBy(x => x.ProdId);
 
             var top5ProductsHoByQty = new List<Product>();
 
@@ -1604,21 +1628,20 @@ namespace ImillReports.Repository
             {
                 var productDetails = new List<ProductDetail>();
 
-                var individualSalesDetails = salesDetailsOfMonth.Where(x => x.ProdId == item.Key &&
-                                                                                             x.ProdId != 19595 &&
-                                                                                             (x.LocationId == 1) &&
-                                                                                             x.BaseUnitId != 40 &&
-                                                                                             x.BaseUnitId != 42);
+                var individualSalesDetails = hoSalesDetails.Where(x => x.ProdId == item.Key &&
+                                                                       x.ProdId != 19595 &&
+                                                                       x.BaseUnitId != 40 &&
+                                                                       x.BaseUnitId != 42);
 
                 foreach (var detail in individualSalesDetails.GroupBy(x => x.CustomerId).OrderByDescending(x => x.Sum(a => a.BaseQuantity * a.SellQuantity)))
                 {
                     var detailSellHoQty = detail.Sum(x => x.BaseQuantity * x.SellQuantity);
 
-                    var totalSellQtyInHo = salesDetailsOfMonth.Where(x => x.LocationId == 1 &&
-                                                                                           x.ProdId != 19595 &&
-                                                                                            x.CustomerId == detail.Key &&
-                                                                                           (x.BaseUnitId != 40 || x.BaseUnitId != 42))
-                                                                                           .Sum(b => b.BaseQuantity * b.SellQuantity);
+                    var totalSellQtyInHo = hoSalesDetails.Where(x => x.ProdId != 19595 &&
+                                                                     x.CustomerId == detail.Key &&
+                                                                     (x.BaseUnitId != 40 || x.BaseUnitId != 42))
+                                                         .Sum(b => b.BaseQuantity * b.SellQuantity);
+
                     var productDetail = new ProductDetail
                     {
                         CustomerAr = detail.FirstOrDefault().CustomerNameAr,
@@ -1659,9 +1682,29 @@ namespace ImillReports.Repository
                 Top5ProductsByKg = top5ProductsByKg,
                 Top5ProductsHoByKg = top5ProductsHoByKg,
                 Top5ProductsByQty = top5ProductsByQty,
-                Top5ProductsHoByQty = top5ProductsHoByQty
+                Top5ProductsHoByQty = top5ProductsHoByQty,
+                Top10HoCustomerCredit = top10HoCustomerCredit.Where(x => x.Amount != 0).OrderByDescending(x => x.Amount).Take(10).ToList(),
+                Top10HoCustomerCash = top10HoCustomerCash.Where(x => x.Amount != 0).OrderByDescending(x => x.Amount).Take(10).ToList()
             };
 
+        }
+
+        public SendEmailAsReport GetLastEmailSettings()
+        {
+            var settings = _contextReports.Settings.FirstOrDefault();
+            return new SendEmailAsReport
+            {
+                LastEmailDate = settings.RptEmailDate.Value,
+                WeekRptEmailSent = settings.WeekRptEmailSent.Value
+            };
+        }
+
+        public void SetWeeklyRptEmailDate()
+        {
+            var settings = _contextReports.Settings.FirstOrDefault();
+            settings.WeekRptEmailSent = true;
+            settings.RptEmailDate = DateTime.Now.AddDays(7);
+            _contextReports.SaveChanges();
         }
     }
 }
