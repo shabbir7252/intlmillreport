@@ -48,23 +48,17 @@
 
 
 
-        SendEmailAsReport();
+        SendWeeklyReport();
         const interval = setInterval(function () {
-            SendEmailAsReport()
+            SendWeeklyReport()
         }, 80000);
 
-        function SendEmailAsReport() {
+        function SendWeeklyReport() {
             $.ajax({
                 type: 'GET',
-                url: '@Url.Action("SendEmailAsReport", "Dashboard")',
+                url: '@Url.Action("SendWeeklyReport", "Dashboard")',
                 success: function (response) {
-                    if (response === "True") {
-                        @*var link = "@Url.Action("BranchSalesForPrint", "Dashboard", new { id = 3 })";
-                        window.open(link, '_blank');
-
-                        var link2 = "@Url.Action("BranchSalesForPrint", "Dashboard", new { id = 2})";
-                        window.open(link2, '_blank');*@
-
+                    if (response === "False") {
                         var link3 = "@Url.Action("BranchSalesForPrint", "Dashboard", new { reportType = 1})";
                         window.open(link3, '_blank');
                     }
@@ -317,7 +311,7 @@
             });
         }
 
-        //EmailTAEndReport();
+        EmailTAEndReport();
         //const emailEndInterval = setInterval(function () {
         //    EmailTAEndReport()
         //}, 40000);

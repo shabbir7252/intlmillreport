@@ -18,6 +18,14 @@
           <Property Name="Areacode" Type="varchar" MaxLength="50" />
           <Property Name="Departmentcode" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="tbl_DeviceCode">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeviceCode" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="NameAr" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_EmpAttendance">
           <Key>
             <PropertyRef Name="ID" />
@@ -83,7 +91,7 @@
           <Property Name="TransactionSecond" Type="int" />
           <Property Name="TransactionType" Type="char" MaxLength="1" />
           <Property Name="DeviceCode" Type="nvarchar" MaxLength="100" />
-          <Property Name="Timestamp" Type="bigint" Nullable="false" />
+          <Property Name="Timestamp" Type="bigint" />
           <Property Name="Temperature" Type="decimal" Precision="12" Scale="3" />
           <Property Name="pushed" Type="bit" />
           <Property Name="TransactionDateTime" Type="datetime" />
@@ -138,6 +146,8 @@
           <Property Name="EmailEndRange" Type="time" Precision="7" Nullable="false" />
           <Property Name="LateInRange" Type="time" Precision="7" Nullable="false" />
           <Property Name="EarlyOutRange" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EmailShiftEndStartRange" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EmailShiftEndLastRange" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_Transactions">
           <Key>
@@ -200,6 +210,7 @@
         </Association>
         <EntityContainer Name="FCCCentralizedDBModelStoreContainer">
           <EntitySet Name="tbl_Device" EntityType="Self.tbl_Device" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_DeviceCode" EntityType="Self.tbl_DeviceCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmpAttendance" EntityType="Self.tbl_EmpAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmpLocShiftMap" EntityType="Self.tbl_EmpLocShiftMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeLeaves" EntityType="Self.tbl_EmployeeLeaves" Schema="dbo" store:Type="Tables" />
@@ -379,6 +390,7 @@
           <EntitySet Name="tbl_ShiftEmailMap" EntityType="FCCCentralizedDBModel.tbl_ShiftEmailMap" />
           <EntitySet Name="tbl_Device" EntityType="FCCCentralizedDBModel.tbl_Device" />
           <EntitySet Name="tbl_EmpTransaction" EntityType="FCCCentralizedDBModel.tbl_EmpTransaction" />
+          <EntitySet Name="tbl_DeviceCode" EntityType="FCCCentralizedDBModel.tbl_DeviceCode" />
         </EntityContainer>
         <EntityType Name="tbl_EmployeeLeaves">
           <Key>
@@ -402,6 +414,8 @@
           <Property Name="EmailEndRange" Type="Time" Precision="7" Nullable="false" />
           <Property Name="LateInRange" Type="Time" Nullable="false" Precision="7" />
           <Property Name="EarlyOutRange" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EmailShiftEndStartRange" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EmailShiftEndLastRange" Type="Time" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="tbl_ShiftEmailMap">
           <Key>
@@ -441,7 +455,7 @@
           <Property Name="TransactionSecond" Type="Int32" />
           <Property Name="TransactionType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="DeviceCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Timestamp" Type="Int64" Nullable="false" />
+          <Property Name="Timestamp" Type="Int64" />
           <Property Name="Temperature" Type="Decimal" Precision="12" Scale="3" />
           <Property Name="pushed" Type="Boolean" />
           <Property Name="TransactionDateTime" Type="DateTime" Precision="3" />
@@ -450,6 +464,14 @@
           <Property Name="Permission" Type="Int64" />
           <Property Name="IsManual" Type="Boolean" />
           <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="tbl_DeviceCode">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeviceCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NameAr" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -563,6 +585,8 @@
           <EntitySetMapping Name="tbl_ShiftEmailSettings">
             <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_ShiftEmailSettings">
               <MappingFragment StoreEntitySet="tbl_ShiftEmailSettings">
+                <ScalarProperty Name="EmailShiftEndLastRange" ColumnName="EmailShiftEndLastRange" />
+                <ScalarProperty Name="EmailShiftEndStartRange" ColumnName="EmailShiftEndStartRange" />
                 <ScalarProperty Name="EarlyOutRange" ColumnName="EarlyOutRange" />
                 <ScalarProperty Name="LateInRange" ColumnName="LateInRange" />
                 <ScalarProperty Name="EmailEndRange" ColumnName="EmailEndRange" />
@@ -622,6 +646,15 @@
                 <ScalarProperty Name="TransactionYear" ColumnName="TransactionYear" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DeviceCode">
+            <EntityTypeMapping TypeName="FCCCentralizedDBModel.tbl_DeviceCode">
+              <MappingFragment StoreEntitySet="tbl_DeviceCode">
+                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+                <ScalarProperty Name="DeviceCode" ColumnName="DeviceCode" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

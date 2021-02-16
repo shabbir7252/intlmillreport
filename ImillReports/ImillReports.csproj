@@ -313,6 +313,12 @@
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ReportEmailMap.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReportEmailTransaction.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReportModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -364,6 +370,9 @@
     <Compile Include="Models\tbl_Device.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_DeviceCode.cs">
+      <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_EmpAttendance.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
     </Compile>
@@ -394,6 +403,18 @@
     <Compile Include="Models\tbl_Transactions.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Transaction_2015.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Transaction_2016.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Transaction_2017.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Transaction_2018.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Transaction_2019.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
@@ -401,6 +422,18 @@
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Transaction_2021.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2015.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2016.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2017.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trans_Detail_2018.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Trans_Detail_2019.cs">

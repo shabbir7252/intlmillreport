@@ -36,5 +36,6 @@ namespace ImillReports.Models
         public virtual DbSet<tbl_ShiftEmailMap> tbl_ShiftEmailMap { get; set; }
         public virtual DbSet<tbl_Device> tbl_Device { get; set; }
         public virtual DbSet<tbl_EmpTransaction> tbl_EmpTransaction { get; set; }
+        public virtual DbSet<tbl_DeviceCode> tbl_DeviceCode { get; set; }
     }
 }

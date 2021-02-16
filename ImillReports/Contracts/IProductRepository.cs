@@ -10,5 +10,6 @@ namespace ImillReports.Contracts
     public interface IProductRepository
     {
         ProductViewModel GetAllProducts();
+        List<ItemGroup> GetItemGroups();
     }
 }

@@ -3,7 +3,7 @@
     var barChartDataSource = ViewBag.BarChart;
     var pieChartDataSource = ViewBag.dataSourcePie;
     var salesRecordCount = ViewBag.SalesRecordCount;
-    var top10Branch = ViewBag.Top10Branch;
+    var top10Branch = (List<ImillReports.Models.ColumnChartData>)ViewBag.Top10Branch;
 }
 
 <label id="salesRecordCount" style="visibility:hidden">@salesRecordCount</label>
@@ -487,13 +487,13 @@
                                 @Html.EJS().AccumulationChart("partialChart").Series(series =>
                             {
                                 series.DataLabel(dl => dl.Visible(true).Name("text").Position(Syncfusion.EJ2.Charts.AccumulationLabelPosition.Outside).Font(ft => ft.FontWeight("600"))).Palettes(ViewBag.Palettes)
-                                .XName("x").YName("y").Name("")
+                                .XName("x").YName("y")
                                 .Type(Syncfusion.EJ2.Charts.AccumulationType.Pie)
                                 .Radius("80%")
                                 .StartAngle(0)
                                 .EndAngle(360)
                                 .DataSource(pieChartDataSource).Add();
-                            }).EnableSmartLabels(true).EnableAnimation(true).Title("").LegendSettings(ls => ls.Visible(true)).Tooltip(
+                            }).EnableSmartLabels(true).EnableAnimation(true).LegendSettings(ls => ls.Visible(true)).Tooltip(
                                tp => tp.Enable(true).Format("${point.x} : <b>${point.y}</b>")).Render()
                             </div>
                             <canvas id="canvas" width="800" height="600"></canvas>
@@ -519,21 +519,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @{
-                                var count = 1;
-                            }
-                            @foreach (var rec in top10Branch)
+                            @foreach (var rec in top10Branch.OrderByDescending(x => x.y).Take(10))
                             {
-                                if (count <= 10)
-                                {
                                     <tr>
                                         <td>@rec.x</td>
-                                        <td>@rec.y.ToString("0.000")</td>
+                                        <td>@rec.y.Value.ToString("0.000")</td>
                                         <td>@rec.branchPercent</td>
                                     </tr>
-                                }
-
-                                count += 1;
                             }
                         </tbody>
                     </table>

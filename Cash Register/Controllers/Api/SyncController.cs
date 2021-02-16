@@ -54,9 +54,10 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
-                throw;
             }
+
             return true;
         }
 
@@ -103,6 +104,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
 
@@ -163,8 +165,8 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
-                throw;
             }
             return true;
         }
@@ -209,8 +211,8 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
-                throw;
             }
             return true;
         }
@@ -356,7 +358,7 @@ namespace Cash_Register.Controllers.Api
         [Route("api/GetSerialSetting")]
         public string GetSerialSetting()
         {
-            var command = "";
+            string command;
             try
             {
                 var count = CheckBackDaysCol();
@@ -396,7 +398,7 @@ namespace Cash_Register.Controllers.Api
         [Route("api/AlterDb")]
         public string AlterDb()
         {
-            var command = "";
+            string command;
             try
             {
                 var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
@@ -462,6 +464,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -502,6 +505,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -541,6 +545,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -607,6 +612,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -645,6 +651,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -682,6 +689,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -711,6 +719,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
 
@@ -798,6 +807,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -835,6 +845,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -871,6 +882,7 @@ namespace Cash_Register.Controllers.Api
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }

@@ -32,6 +32,7 @@ namespace Cash_Register.Repository
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
 
@@ -248,6 +249,7 @@ namespace Cash_Register.Repository
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return 0;
             }
         }
@@ -303,6 +305,7 @@ namespace Cash_Register.Repository
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return 0;
             }
         }

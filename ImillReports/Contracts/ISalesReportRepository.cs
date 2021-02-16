@@ -25,5 +25,13 @@ namespace ImillReports.Contracts
         string GetSalesDetailMonth(int year, int month, int from, int to);
         List<DailyConsumptionVM> GetDailyConsumptionTrans(DateTime? fromDate, DateTime? toDate);
         void GetReportByItemGroup(DateTime? fromDate, DateTime? toDate);
+        SalesLocationTrendsViewModel GetMonthlyReportLocationWise(string locationsString, int year);
+        SalesLocationTrendsViewModel GetYearlyReportLocationWise(string locationsString);
+        SalesLocationTrendsViewModel GetMonthYearReportLocationWise(string locationsString, int month);
+        SalesLocationTrendsViewModel GetWeeklyReportLocationWise(string locationsString, DateTime? fromDate, DateTime? toDate);
+        SalesLocationTrendsViewModel GetMonthlyReportItemWise(string productString, int year);
+        SalesLocationTrendsViewModel GetWeeklyReportItemWise(string productString, DateTime? fromDate, DateTime? toDate);
+        SalesLocationTrendsViewModel GetYearlyReportItemWise(string productString);
+        SalesLocationTrendsViewModel GetMonthYearReportItemWise(string productString, int month);
     }
 }

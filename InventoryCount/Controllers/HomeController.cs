@@ -322,6 +322,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -362,6 +363,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -394,6 +396,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -405,21 +408,22 @@ namespace InventoryCount.Controllers
                 var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
                 var con = new SQLiteConnection(cs);
                 con.Open();
-                var cmd = new SQLiteCommand(con);
-
-                cmd.CommandText = "INSERT INTO [Transaction](TransactionNumber, TransNum, TransDate, ItemsCount, Location) VALUES(" +
+                var cmd = new SQLiteCommand(con)
+                {
+                    CommandText = "INSERT INTO [Transaction](TransactionNumber, TransNum, TransDate, ItemsCount, Location) VALUES(" +
                                "'" + transaction.TransactionNumber + "'," +
                                "'" + transaction.TransNum + "'," +
                                "'" + transaction.TransDate + "'," +
                                "'" + transaction.ItemCount + "'," +
                                "'" + transaction.Location + "'" +
-                               ")";
+                               ")"
+                };
 
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -452,6 +456,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -495,6 +500,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -540,6 +546,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -556,7 +563,7 @@ namespace InventoryCount.Controllers
             System.IO.File.WriteAllText(jsonPath, convertedJson);
         }
 
-        private void PrintAndEmail(List<TransactionDetailVM> transDetails, string transNum, bool? isEditedTrans)
+        private void PrintAndEmail(List<TransactionDetailVM> _, string _1, bool? _2)
         {
             FindAndKillProcess("AcroRd32");
 
@@ -565,7 +572,7 @@ namespace InventoryCount.Controllers
             var pathName = "~/Content/Print/";
             var path = Path.Combine(Server.MapPath(pathName));
             var fileName = "Material_Requests.pdf";
-            var filePath = Path.Combine(path, fileName);
+            Path.Combine(path, fileName);
             //System.IO.File.WriteAllBytes(filePath, pdf);
 
 
@@ -641,8 +648,10 @@ namespace InventoryCount.Controllers
                 var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
                 var con = new SQLiteConnection(cs);
                 con.Open();
-                var cmd = new SQLiteCommand(con);
-                cmd.CommandText = $"Update TransactionDetail Set Weight = {weight}, SalesRate = {salesRate}, Total = {total} where PartNumber = {partNumber} and TransactionId = {oid} and SerialNo = {serialNo}";
+                var cmd = new SQLiteCommand(con)
+                {
+                    CommandText = $"Update TransactionDetail Set Weight = {weight}, SalesRate = {salesRate}, Total = {total} where PartNumber = {partNumber} and TransactionId = {oid} and SerialNo = {serialNo}"
+                };
 
                 cmd.ExecuteNonQuery();
 
@@ -673,8 +682,10 @@ namespace InventoryCount.Controllers
                 var cs = @ConfigurationManager.ConnectionStrings["slconnection"].ConnectionString;
                 var con = new SQLiteConnection(cs);
                 con.Open();
-                var cmd = new SQLiteCommand(con);
-                cmd.CommandText = $"Delete from TransactionDetail where TransactionId = {oid} and PartNumber = '{partNumber}' and SerialNo = {serialNo}";
+                var cmd = new SQLiteCommand(con)
+                {
+                    CommandText = $"Delete from TransactionDetail where TransactionId = {oid} and PartNumber = '{partNumber}' and SerialNo = {serialNo}"
+                };
 
                 cmd.ExecuteNonQuery();
 
@@ -725,6 +736,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -766,6 +778,7 @@ namespace InventoryCount.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw;
             }
         }

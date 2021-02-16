@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using ImillReports.Contracts;
-using System.Collections.Generic;
-using System.Linq;
 using ImillReports.ViewModels;
+using System.Collections.Generic;
 
 namespace ImillReports.Controllers
 {
@@ -111,7 +111,6 @@ namespace ImillReports.Controllers
             return View(model);
         }
 
-
         [AllowAnonymous]
         [HttpGet]
         public string SyncHoDevice(int year, int month, int from, int toYear, int toMonth, int to, string ipAddress) {
@@ -120,6 +119,18 @@ namespace ImillReports.Controllers
             var toDate = new DateTime(toYear, toMonth, to, 23, 59, 59, DateTimeKind.Local);
 
             return _iTARepository.SyncHoDevice(fromDate, toDate, ipAddress);
-        } 
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public string SyncDevices(int year, int month, int from, int toYear, int toMonth, int to)
+        {
+
+            var fromDate = new DateTime(year, month, from, 0, 0, 0, DateTimeKind.Local);
+            var toDate = new DateTime(toYear, toMonth, to, 23, 59, 59, DateTimeKind.Local);
+
+            return _iTARepository.SyncDevices(fromDate, toDate);
+        }
+
     }
 }

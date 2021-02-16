@@ -19,6 +19,7 @@
         <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_ShiftEmailMap" Width="1.5" PointX="7.375" PointY="7.75" />
         <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_Device" Width="1.5" PointX="9.375" PointY="4.75" />
         <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_EmpTransaction" Width="1.5" PointX="5.25" PointY="3.625" />
+        <EntityTypeShape EntityType="FCCCentralizedDBModel.tbl_DeviceCode" Width="1.5" PointX="9.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

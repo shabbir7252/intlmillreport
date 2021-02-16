@@ -37,5 +37,6 @@ namespace ImillReports.Contracts
         string SendShiftStartDetailReport();
         string SendShiftEndDetailReport();
         string SyncHoDevice(DateTime? fromDate, DateTime? toDate, string ipAddress);
+        string SyncDevices(DateTime? fromDate, DateTime? toDate);
     }
 }

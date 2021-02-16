@@ -23,6 +23,9 @@ namespace ImillPda.Controllers
             var pdaTransEntryId = _contextPda.Transactions.Select(a => a.EntryId).ToList();
             var daysBack = DateTime.Now.AddDays(-2);
             var trans = _context.ICS_Transaction.Where(x => x.Voucher_Type == 423 && !pdaTransEntryId.Contains(x.Entry_Id) && x.Voucher_Date >= daysBack).ToList();
+            //var fdate = new DateTime(2021, 02, 02);
+            //var tdate = new DateTime(2021, 02, 02, 23, 59, 59);
+            //var trans = _context.ICS_Transaction.Where(x => x.Voucher_Type == 423 && !pdaTransEntryId.Contains(x.Entry_Id) && x.Voucher_Date >= fdate && x.Voucher_Date <= tdate).ToList();
             var entryIds = trans.Select(x => x.Entry_Id);
             var transDetails = _context.ICS_Transaction_Details.Where(x => entryIds.Contains(x.Entry_Id));
 
@@ -50,19 +53,45 @@ namespace ImillPda.Controllers
                 {
                     if (rec2.Count() > 1)
                     {
-                        foreach(var item in rec2.GroupBy(x => x.ItemCount))
-                        {
-                            if (item.Count() > 1)
-                            {
-                                item.OrderByDescending(x => x.UserDateTime).FirstOrDefault().IsHidden = false;
-                            }
-                            else
-                            {
-                                item.FirstOrDefault().IsHidden = false;
-                            }
-                        }
+                        var firstRec = rec2.OrderBy(x => x.UserDateTime).FirstOrDefault();
+                        firstRec.IsHidden = false;
+                        var firstTime = firstRec.UserDateTime;
+                        var ids = rec2.Where(x => x.Oid != firstRec.EntryId).Select(x => x.EntryId).ToList();
+                        var newRec = rec2.Where(x => x.EntryId != firstRec.EntryId).OrderBy(x => x.UserDateTime).ToList();
 
-                        
+                        while (ids.Count() > 1)
+                        {
+                            var newRecOid = newRec.Where(x => ids.Contains(x.EntryId) &&
+                                                         x.UserDateTime.TimeOfDay >= firstTime.TimeOfDay &&
+                                                         x.UserDateTime.TimeOfDay <= firstTime.AddMinutes(30).TimeOfDay)
+                                             .OrderBy(x => x.UserDateTime).Select(a => a.EntryId);
+
+                            foreach (var id in newRecOid)
+                                ids.Remove(id);
+
+                            if (ids.Any())
+                            {
+                                newRec = newRec.Where(x => ids.Contains(x.EntryId)).OrderBy(x => x.UserDateTime).ToList();
+                                if (newRec.Any())
+                                {
+                                    firstRec = newRec.OrderBy(x => x.UserDateTime).FirstOrDefault();
+                                    firstRec.IsHidden = false;
+                                    firstTime = firstRec.UserDateTime;
+                                }
+                            }
+
+                        }
+                        //foreach(var item in rec2.GroupBy(x => x.ItemCount))
+                        //{
+                        //    if (item.Count() > 1)
+                        //    {
+                        //        item.OrderByDescending(x => x.UserDateTime).FirstOrDefault().IsHidden = false;
+                        //    }
+                        //    else
+                        //    {
+                        //        item.FirstOrDefault().IsHidden = false;
+                        //    }
+                        //}
                     }
                     else if (rec2.Count() == 1)
                     {

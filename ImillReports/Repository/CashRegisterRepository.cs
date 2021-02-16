@@ -13,18 +13,15 @@ namespace ImillReports.Repository
         private readonly IMILLEntities _context;
         private readonly ILocationRepository _locationRepository;
         private readonly ISalesReportRepository _salesReportRepository;
-        private readonly IBaseRepository _baseRepository;
 
         public CashRegisterRepository(
             IMILLEntities context,
             ISalesReportRepository salesReportRepository,
-            ILocationRepository locationRepository,
-            IBaseRepository baseRepository)
+            ILocationRepository locationRepository)
         {
             _context = context;
             _locationRepository = locationRepository;
             _salesReportRepository = salesReportRepository;
-            _baseRepository = baseRepository;
         }
 
         private List<CashRegisterItem> GetCashRegisterItems(List<intlmill_cash_register> cashRegister)
@@ -145,6 +142,7 @@ namespace ImillReports.Repository
                     {
                         rec.ActualStaffDate = rec.trans_date_time.Date;
                         rec.staff_date = rec.trans_date_time.Date.ToString("dd-MM-yyyy");
+                        Console.WriteLine(ex);
                     }
                 }
             }
@@ -173,315 +171,315 @@ namespace ImillReports.Repository
             };
         }
 
-        public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt_old(DateTime? fromDate, DateTime? toDate)
-        {
-            var result = GetCashRegister(fromDate, fromDate, false).CashRegisterItems;
+        //public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt_old(DateTime? fromDate, DateTime? _toDate)
+        //{
+        //    var result = GetCashRegister(fromDate, fromDate, false).CashRegisterItems;
 
-            var cashRegisters = result.GroupBy(x => new { x.Location, x.StaffDate });
+        //    var cashRegisters = result.GroupBy(x => new { x.Location, x.StaffDate });
 
-            var locations = _locationRepository.GetLocations().LocationItems;
+        //    var locations = _locationRepository.GetLocations().LocationItems;
 
-            var cashRegVsSalesItems = new List<CashRegVsSalesItem>();
+        //    var cashRegVsSalesItems = new List<CashRegVsSalesItem>();
 
-            foreach (var item in cashRegisters)
-            {
-                var locationId = _locationRepository.GetLocations().LocationItems.FirstOrDefault(x => x.NameAr == item.Key.Location).LocationId;
+        //    foreach (var item in cashRegisters)
+        //    {
+        //        var locationId = _locationRepository.GetLocations().LocationItems.FirstOrDefault(x => x.NameAr == item.Key.Location).LocationId;
 
-                var salesReportFromDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 05, 00, 00);
-                var salesReportToDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 04, 59, 00).AddDays(1);
+        //        var salesReportFromDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 05, 00, 00);
+        //        var salesReportToDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 04, 59, 00).AddDays(1);
 
-                var salesReportItems = _salesReportRepository.GetSalesTransaction(salesReportFromDate, salesReportToDate, locationId.ToString(), "")
-                                                             .SalesReportItems.Where(x => x.GroupCD != 329);
+        //        var salesReportItems = _salesReportRepository.GetSalesTransaction(salesReportFromDate, salesReportToDate, locationId.ToString(), "")
+        //                                                     .SalesReportItems.Where(x => x.GroupCD != 329);
 
-                var crKnet = item.Sum(x => x.Knet);
-                var crVisa = item.Sum(x => x.Visa);
-                var crOnline = item.Sum(x => x.Online);
-                var crTalabat = item.Sum(x => x.Carriage);
-                var crDeliveroo = item.Sum(x => x.Deliveroo);
-                var crReserve = item.Sum(x => x.Reserve);
-                var crExpense = item.Sum(x => x.Expense);
-                var crCash = item.Sum(x => x.NetAmount) + crExpense;
+        //        var crKnet = item.Sum(x => x.Knet);
+        //        var crVisa = item.Sum(x => x.Visa);
+        //        var crOnline = item.Sum(x => x.Online);
+        //        var crTalabat = item.Sum(x => x.Carriage);
+        //        var crDeliveroo = item.Sum(x => x.Deliveroo);
+        //        var crReserve = item.Sum(x => x.Reserve);
+        //        var crExpense = item.Sum(x => x.Expense);
+        //        var crCash = item.Sum(x => x.NetAmount) + crExpense;
 
-                var totalCrSales = crKnet + crVisa + crOnline + crTalabat + crDeliveroo + crCash;
+        //        var totalCrSales = crKnet + crVisa + crOnline + crTalabat + crDeliveroo + crCash;
 
 
-                #region Innova Talabat
+        //        #region Innova Talabat
 
-                var talabatCash = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Cash);
-                var talabatCashReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Cash);
-                var talabatCashNet = talabatCash - Math.Abs(talabatCashReturn != null ? (decimal)talabatCashReturn : 0);
+        //        var talabatCash = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Cash);
+        //        var talabatCashReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Cash);
+        //        var talabatCashNet = talabatCash - Math.Abs(talabatCashReturn != null ? (decimal)talabatCashReturn : 0);
 
-                var talabatKnet = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Knet);
-                var talabatKnetReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Knet);
-                var talabatKnetNet = talabatKnet - Math.Abs(talabatKnetReturn != null ? (decimal)talabatKnetReturn : 0);
+        //        var talabatKnet = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Knet);
+        //        var talabatKnetReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Knet);
+        //        var talabatKnetNet = talabatKnet - Math.Abs(talabatKnetReturn != null ? (decimal)talabatKnetReturn : 0);
 
-                var talabatCc = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.CreditCard);
-                var talabatCcReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.CreditCard);
-                var talabatCcNet = talabatCc - Math.Abs(talabatCcReturn != null ? (decimal)talabatCcReturn : 0);
+        //        var talabatCc = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.CreditCard);
+        //        var talabatCcReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.CreditCard);
+        //        var talabatCcNet = talabatCc - Math.Abs(talabatCcReturn != null ? (decimal)talabatCcReturn : 0);
 
-                var talabatNet = talabatCashNet + talabatKnetNet + talabatCcNet;
+        //        var talabatNet = talabatCashNet + talabatKnetNet + talabatCcNet;
 
-                var talabat = talabatNet != null ? (decimal)talabatNet : 0;
+        //        var talabat = talabatNet != null ? (decimal)talabatNet : 0;
 
-                #endregion
+        //        #endregion
 
-                #region Innova Deliveroo
+        //        #region Innova Deliveroo
 
-                var deliverooCash = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Cash);
-                var deliverooCashReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Cash);
-                var deliverooCashNet = deliverooCash - Math.Abs(deliverooCashReturn != null ? (decimal)deliverooCashReturn : 0);
+        //        var deliverooCash = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Cash);
+        //        var deliverooCashReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Cash);
+        //        var deliverooCashNet = deliverooCash - Math.Abs(deliverooCashReturn != null ? (decimal)deliverooCashReturn : 0);
 
-                var deliverooKnet = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Knet);
-                var deliverooKnetReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Knet);
-                var deliverooKnetNet = deliverooKnet - Math.Abs(deliverooKnetReturn != null ? (decimal)deliverooKnetReturn : 0);
+        //        var deliverooKnet = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Knet);
+        //        var deliverooKnetReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Knet);
+        //        var deliverooKnetNet = deliverooKnet - Math.Abs(deliverooKnetReturn != null ? (decimal)deliverooKnetReturn : 0);
 
-                var deliverooCc = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.CreditCard);
-                var deliverooCcReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.CreditCard);
-                var deliverooCcNet = deliverooCc - Math.Abs(deliverooCcReturn != null ? (decimal)deliverooCcReturn : 0);
+        //        var deliverooCc = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.CreditCard);
+        //        var deliverooCcReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.CreditCard);
+        //        var deliverooCcNet = deliverooCc - Math.Abs(deliverooCcReturn != null ? (decimal)deliverooCcReturn : 0);
 
-                var deliverooNet = deliverooCashNet + deliverooKnetNet + deliverooCcNet;
+        //        var deliverooNet = deliverooCashNet + deliverooKnetNet + deliverooCcNet;
 
-                var deliveroo = deliverooNet != null ? (decimal)deliverooNet : 0;
+        //        var deliveroo = deliverooNet != null ? (decimal)deliverooNet : 0;
 
-                #endregion
+        //        #endregion
 
-                #region Innova Online
-                var onlineCash = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Cash);
-                var onlineCashReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Cash);
-                var onlineCashNet = onlineCash - Math.Abs(onlineCashReturn != null ? (decimal)onlineCashReturn : 0);
+        //        #region Innova Online
+        //        var onlineCash = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Cash);
+        //        var onlineCashReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Cash);
+        //        var onlineCashNet = onlineCash - Math.Abs(onlineCashReturn != null ? (decimal)onlineCashReturn : 0);
 
-                var onlineKnet = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Knet);
-                var onlineKnetReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Knet);
-                var onlineKnetNet = onlineKnet - Math.Abs(onlineKnetReturn != null ? (decimal)onlineKnetReturn : 0);
+        //        var onlineKnet = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Knet);
+        //        var onlineKnetReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Knet);
+        //        var onlineKnetNet = onlineKnet - Math.Abs(onlineKnetReturn != null ? (decimal)onlineKnetReturn : 0);
 
-                var onlineCc = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.CreditCard);
-                var onlineCcReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.CreditCard);
-                var onlineCcNet = onlineCc - Math.Abs(onlineCcReturn != null ? (decimal)onlineCcReturn : 0);
+        //        var onlineCc = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.CreditCard);
+        //        var onlineCcReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.CreditCard);
+        //        var onlineCcNet = onlineCc - Math.Abs(onlineCcReturn != null ? (decimal)onlineCcReturn : 0);
 
-                var onlineNet = onlineCashNet + onlineKnetNet + onlineCcNet;
+        //        var onlineNet = onlineCashNet + onlineKnetNet + onlineCcNet;
 
-                var online = onlineNet != null ? (decimal)onlineNet : 0;
-                #endregion
+        //        var online = onlineNet != null ? (decimal)onlineNet : 0;
+        //        #endregion
 
-                #region Innova Sales Return
+        //        #region Innova Sales Return
 
-                var cReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Cash);
-                var cashReturn = cReturn != null ? (decimal)cReturn : 0;
+        //        var cReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Cash);
+        //        var cashReturn = cReturn != null ? (decimal)cReturn : 0;
 
-                var kReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Knet);
-                var knetReturn = kReturn != null ? (decimal)kReturn : 0;
+        //        var kReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Knet);
+        //        var knetReturn = kReturn != null ? (decimal)kReturn : 0;
 
-                var creditReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.CreditCard);
-                var ccReturn = creditReturn != null ? (decimal)creditReturn : 0;
+        //        var creditReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.CreditCard);
+        //        var ccReturn = creditReturn != null ? (decimal)creditReturn : 0;
 
-                #endregion
-
-                var cash = salesReportItems.Sum(a => a.Cash) - onlineCashNet - talabatCashNet - deliverooCashNet - Math.Abs(knetReturn);
-                var knet = salesReportItems.Sum(a => a.Knet) - onlineKnetNet - talabatKnetNet - deliverooKnetNet + Math.Abs(knetReturn);
-                var cc = salesReportItems.Sum(a => a.CreditCard) - onlineCcNet - talabatCcNet - deliverooCcNet;
-                var totalInnovaSales = cash + knet + cc + talabat + deliveroo + online;
+        //        #endregion
+
+        //        var cash = salesReportItems.Sum(a => a.Cash) - onlineCashNet - talabatCashNet - deliverooCashNet - Math.Abs(knetReturn);
+        //        var knet = salesReportItems.Sum(a => a.Knet) - onlineKnetNet - talabatKnetNet - deliverooKnetNet + Math.Abs(knetReturn);
+        //        var cc = salesReportItems.Sum(a => a.CreditCard) - onlineCcNet - talabatCcNet - deliverooCcNet;
+        //        var totalInnovaSales = cash + knet + cc + talabat + deliveroo + online;
 
-                var cashRegVsSalesItem = new CashRegVsSalesItem
-                {
-                    Location = item.Key.Location,
-                    LocationShortName = locations.FirstOrDefault(a => a.NameAr == item.Key.Location) != null
-                                                ? locations.FirstOrDefault(a => a.NameAr == item.Key.Location).ShortName
-                                                : "",
-                    TransDate = item.Key.StaffDate,
+        //        var cashRegVsSalesItem = new CashRegVsSalesItem
+        //        {
+        //            Location = item.Key.Location,
+        //            LocationShortName = locations.FirstOrDefault(a => a.NameAr == item.Key.Location) != null
+        //                                        ? locations.FirstOrDefault(a => a.NameAr == item.Key.Location).ShortName
+        //                                        : "",
+        //            TransDate = item.Key.StaffDate,
 
-                    CRCash = crCash,
-                    CRKnet = crKnet,
-                    CRVisa = crVisa,
-                    CROnline = crOnline,
-                    CRTalabat = crTalabat,
-                    CRDeliveroo = crDeliveroo,
-                    CRReserve = crReserve,
-                    CRKnetVisa = crKnet + crVisa,
-                    TotalCRSales = totalCrSales,
+        //            CRCash = crCash,
+        //            CRKnet = crKnet,
+        //            CRVisa = crVisa,
+        //            CROnline = crOnline,
+        //            CRTalabat = crTalabat,
+        //            CRDeliveroo = crDeliveroo,
+        //            CRReserve = crReserve,
+        //            CRKnetVisa = crKnet + crVisa,
+        //            TotalCRSales = totalCrSales,
 
-                    Cash = cash,
-                    Knet = knet,
-                    CreditCard = cc,
-                    Online = online,
-                    Talabat = talabat,
-                    Deliveroo = deliveroo,
-                    KnetVisa = knet + cc,
-                    TotalInnovaSales = totalInnovaSales,
+        //            Cash = cash,
+        //            Knet = knet,
+        //            CreditCard = cc,
+        //            Online = online,
+        //            Talabat = talabat,
+        //            Deliveroo = deliveroo,
+        //            KnetVisa = knet + cc,
+        //            TotalInnovaSales = totalInnovaSales,
 
-                    CashDiff = crCash - cash,
-                    KnetDiff = crKnet - knet,
-                    CcDiff = crVisa - cc,
-                    TalabatDiff = crTalabat - talabat,
-                    DeliverooDiff = crDeliveroo - deliveroo,
-                    OnlineDiff = crOnline - online,
-                    KnetVisaDiff = (crKnet + crVisa) - (knet + cc),
-                    TotalDiff = totalCrSales - totalInnovaSales
+        //            CashDiff = crCash - cash,
+        //            KnetDiff = crKnet - knet,
+        //            CcDiff = crVisa - cc,
+        //            TalabatDiff = crTalabat - talabat,
+        //            DeliverooDiff = crDeliveroo - deliveroo,
+        //            OnlineDiff = crOnline - online,
+        //            KnetVisaDiff = (crKnet + crVisa) - (knet + cc),
+        //            TotalDiff = totalCrSales - totalInnovaSales
 
-                };
+        //        };
 
-                cashRegVsSalesItems.Add(cashRegVsSalesItem);
-            }
+        //        cashRegVsSalesItems.Add(cashRegVsSalesItem);
+        //    }
 
-            return new CashRegVsSalesViewModel
-            {
-                CashRegVsSalesItems = cashRegVsSalesItems
-            };
-        }
+        //    return new CashRegVsSalesViewModel
+        //    {
+        //        CashRegVsSalesItems = cashRegVsSalesItems
+        //    };
+        //}
 
-        public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt_old2(DateTime? fromDate, DateTime? toDate)
-        {
-            var result = GetCashRegister(fromDate, toDate, false).CashRegisterItems;
+        //public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt_old2(DateTime? fromDate, DateTime? toDate)
+        //{
+        //    var result = GetCashRegister(fromDate, toDate, false).CashRegisterItems;
 
-            var cashRegisters = result.GroupBy(x => new { x.Location, x.StaffDate });
+        //    var cashRegisters = result.GroupBy(x => new { x.Location, x.StaffDate });
 
-            var locations = _locationRepository.GetLocations().LocationItems;
+        //    var locations = _locationRepository.GetLocations().LocationItems;
 
-            var cashRegVsSalesItems = new List<CashRegVsSalesItem>();
+        //    var cashRegVsSalesItems = new List<CashRegVsSalesItem>();
 
-            foreach (var item in cashRegisters)
-            {
-                var locationId = _locationRepository.GetLocations().LocationItems.FirstOrDefault(x => x.NameAr == item.Key.Location).LocationId;
+        //    foreach (var item in cashRegisters)
+        //    {
+        //        var locationId = _locationRepository.GetLocations().LocationItems.FirstOrDefault(x => x.NameAr == item.Key.Location).LocationId;
 
-                var salesReportFromDate = new DateTime(item.Key.StaffDate.Year, item.Key.StaffDate.Month, item.Key.StaffDate.Day, 05, 00, 00);
-                var salesReportToDate = new DateTime(item.Key.StaffDate.Year, item.Key.StaffDate.Month, item.Key.StaffDate.Day, 04, 59, 00).AddDays(1);
+        //        var salesReportFromDate = new DateTime(item.Key.StaffDate.Year, item.Key.StaffDate.Month, item.Key.StaffDate.Day, 05, 00, 00);
+        //        var salesReportToDate = new DateTime(item.Key.StaffDate.Year, item.Key.StaffDate.Month, item.Key.StaffDate.Day, 04, 59, 00).AddDays(1);
 
-                var salesReportItems = _salesReportRepository.GetSalesTransaction(salesReportFromDate, salesReportToDate, locationId.ToString(), "")
-                                                             .SalesReportItems.Where(x => x.GroupCD != 329);
+        //        var salesReportItems = _salesReportRepository.GetSalesTransaction(salesReportFromDate, salesReportToDate, locationId.ToString(), "")
+        //                                                     .SalesReportItems.Where(x => x.GroupCD != 329);
 
-                var crKnet = item.Sum(x => x.Knet);
-                var crVisa = item.Sum(x => x.Visa);
-                var crOnline = item.Sum(x => x.Online);
-                var crTalabat = item.Sum(x => x.Carriage);
-                var crDeliveroo = item.Sum(x => x.Deliveroo);
-                var crReserve = item.Sum(x => x.Reserve);
-                var crExpense = item.Sum(x => x.Expense);
-                var crCash = item.Sum(x => x.NetAmount) + crExpense;
+        //        var crKnet = item.Sum(x => x.Knet);
+        //        var crVisa = item.Sum(x => x.Visa);
+        //        var crOnline = item.Sum(x => x.Online);
+        //        var crTalabat = item.Sum(x => x.Carriage);
+        //        var crDeliveroo = item.Sum(x => x.Deliveroo);
+        //        var crReserve = item.Sum(x => x.Reserve);
+        //        var crExpense = item.Sum(x => x.Expense);
+        //        var crCash = item.Sum(x => x.NetAmount) + crExpense;
 
-                var totalCrSales = crKnet + crVisa + crOnline + crTalabat + crDeliveroo + crCash;
+        //        var totalCrSales = crKnet + crVisa + crOnline + crTalabat + crDeliveroo + crCash;
 
 
-                #region Innova Talabat
+        //        #region Innova Talabat
 
-                var talabatCash = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Cash);
-                var talabatCashReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Cash);
-                var talabatCashNet = talabatCash - Math.Abs(talabatCashReturn != null ? (decimal)talabatCashReturn : 0);
+        //        var talabatCash = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Cash);
+        //        var talabatCashReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Cash);
+        //        var talabatCashNet = talabatCash - Math.Abs(talabatCashReturn != null ? (decimal)talabatCashReturn : 0);
 
-                var talabatKnet = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Knet);
-                var talabatKnetReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Knet);
-                var talabatKnetNet = talabatKnet - Math.Abs(talabatKnetReturn != null ? (decimal)talabatKnetReturn : 0);
-
-                var talabatCc = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.CreditCard);
-                var talabatCcReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.CreditCard);
-                var talabatCcNet = talabatCc - Math.Abs(talabatCcReturn != null ? (decimal)talabatCcReturn : 0);
-
-                var talabatNet = talabatCashNet + talabatKnetNet + talabatCcNet;
-
-                var talabat = talabatNet != null ? (decimal)talabatNet : 0;
+        //        var talabatKnet = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.Knet);
+        //        var talabatKnetReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.Knet);
+        //        var talabatKnetNet = talabatKnet - Math.Abs(talabatKnetReturn != null ? (decimal)talabatKnetReturn : 0);
+
+        //        var talabatCc = salesReportItems.Where(a => a.VoucherId == 2025).Sum(a => a.CreditCard);
+        //        var talabatCcReturn = salesReportItems.Where(a => a.VoucherId == 2035).Sum(a => a.CreditCard);
+        //        var talabatCcNet = talabatCc - Math.Abs(talabatCcReturn != null ? (decimal)talabatCcReturn : 0);
+
+        //        var talabatNet = talabatCashNet + talabatKnetNet + talabatCcNet;
+
+        //        var talabat = talabatNet != null ? (decimal)talabatNet : 0;
 
-                #endregion
-
-                #region Innova Deliveroo
-
-                var deliverooCash = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Cash);
-                var deliverooCashReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Cash);
-                var deliverooCashNet = deliverooCash - Math.Abs(deliverooCashReturn != null ? (decimal)deliverooCashReturn : 0);
-
-                var deliverooKnet = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Knet);
-                var deliverooKnetReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Knet);
-                var deliverooKnetNet = deliverooKnet - Math.Abs(deliverooKnetReturn != null ? (decimal)deliverooKnetReturn : 0);
-
-                var deliverooCc = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.CreditCard);
-                var deliverooCcReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.CreditCard);
-                var deliverooCcNet = deliverooCc - Math.Abs(deliverooCcReturn != null ? (decimal)deliverooCcReturn : 0);
-
-                var deliverooNet = deliverooCashNet + deliverooKnetNet + deliverooCcNet;
-
-                var deliveroo = deliverooNet != null ? (decimal)deliverooNet : 0;
-
-                #endregion
-
-                #region Innova Online
-                var onlineCash = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Cash);
-                var onlineCashReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Cash);
-                var onlineCashNet = onlineCash - Math.Abs(onlineCashReturn != null ? (decimal)onlineCashReturn : 0);
-
-                var onlineKnet = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Knet);
-                var onlineKnetReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Knet);
-                var onlineKnetNet = onlineKnet - Math.Abs(onlineKnetReturn != null ? (decimal)onlineKnetReturn : 0);
-
-                var onlineCc = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.CreditCard);
-                var onlineCcReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.CreditCard);
-                var onlineCcNet = onlineCc - Math.Abs(onlineCcReturn != null ? (decimal)onlineCcReturn : 0);
-
-                var onlineNet = onlineCashNet + onlineKnetNet + onlineCcNet;
-
-                var online = onlineNet != null ? (decimal)onlineNet : 0;
-                #endregion
-
-                #region Innova Sales Return
-
-                var cReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Cash);
-                var cashReturn = cReturn != null ? (decimal)cReturn : 0;
-
-                var kReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Knet);
-                var knetReturn = kReturn != null ? (decimal)kReturn : 0;
-
-                var creditReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.CreditCard);
-                var ccReturn = creditReturn != null ? (decimal)creditReturn : 0;
-
-                #endregion
-
-                var cash = salesReportItems.Sum(a => a.Cash) - onlineCashNet - talabatCashNet - deliverooCashNet - Math.Abs(knetReturn);
-                var knet = salesReportItems.Sum(a => a.Knet) - onlineKnetNet - talabatKnetNet - deliverooKnetNet + Math.Abs(knetReturn);
-                var cc = salesReportItems.Sum(a => a.CreditCard) - onlineCcNet - talabatCcNet - deliverooCcNet;
-                var totalInnovaSales = cash + knet + cc + talabat + deliveroo + online;
-
-                var cashRegVsSalesItem = new CashRegVsSalesItem
-                {
-                    Location = item.Key.Location,
-                    LocationShortName = locations.FirstOrDefault(a => a.NameAr == item.Key.Location) != null
-                                                ? locations.FirstOrDefault(a => a.NameAr == item.Key.Location).ShortName
-                                                : "",
-                    TransDate = item.Key.StaffDate,
-
-                    CRCash = crCash,
-                    CRKnet = crKnet,
-                    CRVisa = crVisa,
-                    CROnline = crOnline,
-                    CRTalabat = crTalabat,
-                    CRDeliveroo = crDeliveroo,
-                    CRReserve = crReserve,
-                    CRKnetVisa = crKnet + crVisa,
-                    TotalCRSales = totalCrSales,
-
-                    Cash = cash,
-                    Knet = knet,
-                    CreditCard = cc,
-                    Online = online,
-                    Talabat = talabat,
-                    Deliveroo = deliveroo,
-                    KnetVisa = knet + cc,
-                    TotalInnovaSales = totalInnovaSales,
-
-                    CashDiff = crCash - cash,
-                    KnetDiff = crKnet - knet,
-                    CcDiff = crVisa - cc,
-                    TalabatDiff = crTalabat - talabat,
-                    DeliverooDiff = crDeliveroo - deliveroo,
-                    OnlineDiff = crOnline - online,
-                    KnetVisaDiff = (crKnet + crVisa) - (knet + cc),
-                    TotalDiff = totalCrSales - totalInnovaSales
-
-                };
-
-                cashRegVsSalesItems.Add(cashRegVsSalesItem);
-            }
-
-            return new CashRegVsSalesViewModel
-            {
-                CashRegVsSalesItems = cashRegVsSalesItems
-            };
-        }
+        //        #endregion
+
+        //        #region Innova Deliveroo
+
+        //        var deliverooCash = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Cash);
+        //        var deliverooCashReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Cash);
+        //        var deliverooCashNet = deliverooCash - Math.Abs(deliverooCashReturn != null ? (decimal)deliverooCashReturn : 0);
+
+        //        var deliverooKnet = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.Knet);
+        //        var deliverooKnetReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.Knet);
+        //        var deliverooKnetNet = deliverooKnet - Math.Abs(deliverooKnetReturn != null ? (decimal)deliverooKnetReturn : 0);
+
+        //        var deliverooCc = salesReportItems.Where(a => a.VoucherId == 2030).Sum(a => a.CreditCard);
+        //        var deliverooCcReturn = salesReportItems.Where(a => a.VoucherId == 2037).Sum(a => a.CreditCard);
+        //        var deliverooCcNet = deliverooCc - Math.Abs(deliverooCcReturn != null ? (decimal)deliverooCcReturn : 0);
+
+        //        var deliverooNet = deliverooCashNet + deliverooKnetNet + deliverooCcNet;
+
+        //        var deliveroo = deliverooNet != null ? (decimal)deliverooNet : 0;
+
+        //        #endregion
+
+        //        #region Innova Online
+        //        var onlineCash = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Cash);
+        //        var onlineCashReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Cash);
+        //        var onlineCashNet = onlineCash - Math.Abs(onlineCashReturn != null ? (decimal)onlineCashReturn : 0);
+
+        //        var onlineKnet = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.Knet);
+        //        var onlineKnetReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.Knet);
+        //        var onlineKnetNet = onlineKnet - Math.Abs(onlineKnetReturn != null ? (decimal)onlineKnetReturn : 0);
+
+        //        var onlineCc = salesReportItems.Where(a => a.VoucherId == 2026).Sum(a => a.CreditCard);
+        //        var onlineCcReturn = salesReportItems.Where(a => a.VoucherId == 2036).Sum(a => a.CreditCard);
+        //        var onlineCcNet = onlineCc - Math.Abs(onlineCcReturn != null ? (decimal)onlineCcReturn : 0);
+
+        //        var onlineNet = onlineCashNet + onlineKnetNet + onlineCcNet;
+
+        //        var online = onlineNet != null ? (decimal)onlineNet : 0;
+        //        #endregion
+
+        //        #region Innova Sales Return
+
+        //        var cReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Cash);
+        //        var cashReturn = cReturn != null ? (decimal)cReturn : 0;
+
+        //        var kReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.Knet);
+        //        var knetReturn = kReturn != null ? (decimal)kReturn : 0;
+
+        //        var creditReturn = salesReportItems.Where(a => a.VoucherId == 2023 || a.VoucherId == 202).Sum(a => a.CreditCard);
+        //        var ccReturn = creditReturn != null ? (decimal)creditReturn : 0;
+
+        //        #endregion
+
+        //        var cash = salesReportItems.Sum(a => a.Cash) - onlineCashNet - talabatCashNet - deliverooCashNet - Math.Abs(knetReturn);
+        //        var knet = salesReportItems.Sum(a => a.Knet) - onlineKnetNet - talabatKnetNet - deliverooKnetNet + Math.Abs(knetReturn);
+        //        var cc = salesReportItems.Sum(a => a.CreditCard) - onlineCcNet - talabatCcNet - deliverooCcNet;
+        //        var totalInnovaSales = cash + knet + cc + talabat + deliveroo + online;
+
+        //        var cashRegVsSalesItem = new CashRegVsSalesItem
+        //        {
+        //            Location = item.Key.Location,
+        //            LocationShortName = locations.FirstOrDefault(a => a.NameAr == item.Key.Location) != null
+        //                                        ? locations.FirstOrDefault(a => a.NameAr == item.Key.Location).ShortName
+        //                                        : "",
+        //            TransDate = item.Key.StaffDate,
+
+        //            CRCash = crCash,
+        //            CRKnet = crKnet,
+        //            CRVisa = crVisa,
+        //            CROnline = crOnline,
+        //            CRTalabat = crTalabat,
+        //            CRDeliveroo = crDeliveroo,
+        //            CRReserve = crReserve,
+        //            CRKnetVisa = crKnet + crVisa,
+        //            TotalCRSales = totalCrSales,
+
+        //            Cash = cash,
+        //            Knet = knet,
+        //            CreditCard = cc,
+        //            Online = online,
+        //            Talabat = talabat,
+        //            Deliveroo = deliveroo,
+        //            KnetVisa = knet + cc,
+        //            TotalInnovaSales = totalInnovaSales,
+
+        //            CashDiff = crCash - cash,
+        //            KnetDiff = crKnet - knet,
+        //            CcDiff = crVisa - cc,
+        //            TalabatDiff = crTalabat - talabat,
+        //            DeliverooDiff = crDeliveroo - deliveroo,
+        //            OnlineDiff = crOnline - online,
+        //            KnetVisaDiff = (crKnet + crVisa) - (knet + cc),
+        //            TotalDiff = totalCrSales - totalInnovaSales
+
+        //        };
+
+        //        cashRegVsSalesItems.Add(cashRegVsSalesItem);
+        //    }
+
+        //    return new CashRegVsSalesViewModel
+        //    {
+        //        CashRegVsSalesItems = cashRegVsSalesItems
+        //    };
+        //}
 
         public CashRegVsSalesViewModel GetCashRegisterVsSalesRpt(DateTime? fromDate, DateTime? toDate)
         {
@@ -688,6 +686,7 @@ namespace ImillReports.Repository
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
 

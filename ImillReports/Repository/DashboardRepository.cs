@@ -1237,6 +1237,7 @@ namespace ImillReports.Repository
 
         }
 
+        // Dashboard - Details Are called from this function - 16/2/2020 
         public SalesOfMonthViewModel GetSalesRecordDetailOfMonth(DateTime? fromDate, DateTime? toDate)
         {
             //1 - Total Sales(Returns Deducted) - Excluding HO and ARD (HO : 1 and ARD : 84)
@@ -1258,7 +1259,7 @@ namespace ImillReports.Repository
 
             var hoSales = salesOfMonth.Where(x => (x.LocationId == 1 || x.LocationId == 84));
             var hoSalesSr = hoSales.Where(x => x.VoucherId == 2023).GroupBy(a => a.CustomerId);
-            
+
             var hoSalesCash = hoSales.Where(x => x.VoucherId == 2022).GroupBy(a => a.CustomerId);
             var cashCustomerId = hoSalesCash.Select(x => x.Key);
             var cashSalesReturn = hoSales.Where(x => x.VoucherId == 2023 && cashCustomerId.Contains(x.CustomerId)).Sum(a => a.NetAmount);
@@ -1325,29 +1326,35 @@ namespace ImillReports.Repository
                     var detailAmount = detail.Sum(x => x.Amount);
 
                     var totalSellAmountInBranch = branchSalesDetail.Where(x => x.LocationId == detail.Key).Sum(b => b.Amount);
-
-                    var productDetail = new ProductDetail
+                    var location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key);
+                    if (location != null)
                     {
-                        Amount = detailAmount,
-                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name,
-                        Percentage = totalAmount.Value != 0 ? 100 / totalAmount.Value * detailAmount.Value : 0,
-                        PercentageAllItem = totalSellAmountInBranch.Value != 0 ? 100 / totalSellAmountInBranch.Value * detailAmount.Value : 0
-                    };
+                        var productDetail = new ProductDetail
+                        {
+                            Amount = detailAmount,
+                            Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name,
+                            Percentage = totalAmount.Value != 0 ? 100 / totalAmount.Value * detailAmount.Value : 0,
+                            PercentageAllItem = totalSellAmountInBranch.Value != 0 ? 100 / totalSellAmountInBranch.Value * detailAmount.Value : 0
+                        };
 
-                    productDetails.Add(productDetail);
+                        productDetails.Add(productDetail);
+                    }
                 }
 
-                var product = new Product
+                if (prod != null)
                 {
-                    ProductId = prod.ProductId,
-                    Name = prod.Name,
-                    NameAr = prod.NameAr,
-                    Amount = itemTotalAmount.Value,
-                    Percentage = totalAmount.Value != 0 ? 100 / totalAmount.Value * itemTotalAmount.Value : 0,
-                    ProductDetails = productDetails
-                };
+                    var product = new Product
+                    {
+                        ProductId = prod.ProductId,
+                        Name = prod.Name,
+                        NameAr = prod.NameAr,
+                        Amount = itemTotalAmount.Value,
+                        Percentage = totalAmount.Value != 0 ? 100 / totalAmount.Value * itemTotalAmount.Value : 0,
+                        ProductDetails = productDetails
+                    };
 
-                top5ProductsByAmount.Add(product);
+                    top5ProductsByAmount.Add(product);
+                }
             }
 
             #endregion
@@ -1362,8 +1369,8 @@ namespace ImillReports.Repository
             // 2023 = Sales Return            
 
             var top5HoProductsByAmount = new List<Product>();
-            
-            
+
+
 
             foreach (var item in salesDetailsHo.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
@@ -1382,7 +1389,7 @@ namespace ImillReports.Repository
                     var productDetail = new ProductDetail
                     {
                         Amount = detailAmount,
-                        Location = "",
+                        Location = string.Empty,
                         CustomerAr = detail.FirstOrDefault().CustomerNameAr,
                         Percentage = totalAmountHo.Value != 0 ? 100 / totalAmountHo.Value * detailAmount.Value : 0,
                         PercentageAllItem = totalSellAmountInHo.Value != 0 ? 100 / totalSellAmountInHo.Value * detailAmount.Value : 0
@@ -1467,16 +1474,19 @@ namespace ImillReports.Repository
 
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                if (prod != null)
                 {
-                    Name = prod.Name,
-                    NameAr = prod.NameAr,
-                    SellQuantity = itemTotalQty.Value,
-                    Percentage = totalSellQtyKg.Value != 0 ? 100 / totalSellQtyKg.Value * itemTotalQty.Value : 0,
-                    ProductDetails = productDetails
-                };
+                    var product = new Product
+                    {
+                        Name = prod.Name,
+                        NameAr = prod.NameAr,
+                        SellQuantity = itemTotalQty.Value,
+                        Percentage = totalSellQtyKg.Value != 0 ? 100 / totalSellQtyKg.Value * itemTotalQty.Value : 0,
+                        ProductDetails = productDetails
+                    };
 
-                top5ProductsByKg.Add(product);
+                    top5ProductsByKg.Add(product);
+                }
             }
 
             #endregion
@@ -1534,16 +1544,20 @@ namespace ImillReports.Repository
 
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                if (prod != null)
                 {
-                    Name = prod.Name,
-                    NameAr = prod.NameAr,
-                    SellQuantity = itemTotalQty.Value,
-                    Percentage = totalHoSellKgQty.Value != 0 ? 100 / totalHoSellKgQty.Value * itemTotalQty.Value : 0,
-                    ProductDetails = productDetails
-                };
 
-                top5ProductsHoByKg.Add(product);
+                    var product = new Product
+                    {
+                        Name = prod.Name,
+                        NameAr = prod.NameAr,
+                        SellQuantity = itemTotalQty.Value,
+                        Percentage = totalHoSellKgQty.Value != 0 ? 100 / totalHoSellKgQty.Value * itemTotalQty.Value : 0,
+                        ProductDetails = productDetails
+                    };
+
+                    top5ProductsHoByKg.Add(product);
+                }
 
             }
 
@@ -1599,16 +1613,19 @@ namespace ImillReports.Repository
                 var itemTotalQty = item.Sum(a => a.SellQuantity);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                if (prod != null)
                 {
-                    Name = prod.Name,
-                    NameAr = prod.NameAr,
-                    SellQuantity = itemTotalQty.Value,
-                    Percentage = totalSellQty.Value != 0 ? 100 / totalSellQty.Value * itemTotalQty.Value : 0,
-                    ProductDetails = productDetails
-                };
+                    var product = new Product
+                    {
+                        Name = prod.Name,
+                        NameAr = prod.NameAr,
+                        SellQuantity = itemTotalQty.Value,
+                        Percentage = totalSellQty.Value != 0 ? 100 / totalSellQty.Value * itemTotalQty.Value : 0,
+                        ProductDetails = productDetails
+                    };
 
-                top5ProductsByQty.Add(product);
+                    top5ProductsByQty.Add(product);
+                }
             }
             #endregion
 
@@ -1689,22 +1706,148 @@ namespace ImillReports.Repository
 
         }
 
-        public SendEmailAsReport GetLastEmailSettings()
+        public SendEmailAsReport GetLastEmailSettings(bool isWeekly, bool isMonthly)
         {
             var settings = _contextReports.Settings.FirstOrDefault();
-            return new SendEmailAsReport
+            var sendEmailAsReport = new SendEmailAsReport();
+
+            if (isWeekly)
             {
-                LastEmailDate = settings.RptEmailDate.Value,
-                WeekRptEmailSent = settings.WeekRptEmailSent.Value
-            };
+                var weeklyEmailDate = settings.WeekplyRptDate ?? DateTime.Now;
+                sendEmailAsReport.LastEmailDate = weeklyEmailDate;
+                sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsWeekly && x.ReportDate == weeklyEmailDate);
+            }
+            else if (isMonthly)
+            {
+                var monthlyEmailDate = settings.MonthlyRptDate ?? DateTime.Now;
+                sendEmailAsReport.LastEmailDate = monthlyEmailDate;
+                sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsMonthly && x.ReportDate == monthlyEmailDate);
+            }
+            else
+            {
+                var yearlyEmailDate = settings.YearlyRptDate ?? DateTime.Now;
+                sendEmailAsReport.LastEmailDate = yearlyEmailDate;
+                sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsYearly && x.ReportDate == yearlyEmailDate);
+            }
+
+            return sendEmailAsReport;
         }
 
-        public void SetWeeklyRptEmailDate()
+        public void SetWeeklyRptEmailDate(bool isWeekly, bool isMonthly)
         {
             var settings = _contextReports.Settings.FirstOrDefault();
-            settings.WeekRptEmailSent = true;
-            settings.RptEmailDate = DateTime.Now.AddDays(7);
+
+            if (isWeekly)
+            {
+                settings.WeekplyRptDate = DateTime.Now.AddDays(7);
+                var emailTrans = new ReportEmailTransaction
+                {
+                    IsWeekly = true,
+                    IsMonthly = false,
+                    IsYearly = false,
+                    ReportDate = DateTime.Now
+                };
+
+                _contextReports.ReportEmailTransactions.Add(emailTrans);
+            }
+            else if (isMonthly)
+            {
+                var dt = DateTime.Now;
+                settings.MonthlyRptDate = new DateTime(dt.AddMonths(1).Year, dt.AddMonths(1).Month, 1);
+                var emailTrans = new ReportEmailTransaction
+                {
+                    IsWeekly = false,
+                    IsMonthly = true,
+                    IsYearly = false,
+                    ReportDate = DateTime.Now
+                };
+
+                _contextReports.ReportEmailTransactions.Add(emailTrans);
+            }
+            else
+            {
+
+            }
+
+
             _contextReports.SaveChanges();
+        }
+
+        public void UpdateWeeklyRptTransactions(int oid)
+        {
+            var rptEmailTrans = new ReportEmailTransaction
+            {
+                IsWeekly = true,
+                IsMonthly = false,
+                IsYearly = false,
+                ReportDate = DateTime.Now.Date,
+                ReportEmailMap = oid
+            };
+
+            _contextReports.ReportEmailTransactions.Add(rptEmailTrans);
+            _contextReports.SaveChanges();
+        }
+
+        public bool GetSettings()
+        {
+            var emailMaps = _contextReports.ReportEmailMaps.Where(x => x.IsRegForEmail);
+            if (emailMaps.Any())
+            {
+                var currentDay = DateTime.Now.DayOfWeek;
+                var timeOfDay = DateTime.Now.TimeOfDay;
+                var emails = emailMaps.Where(x => ((currentDay == DayOfWeek.Saturday && x.IsSat) ||
+                                                  (currentDay == DayOfWeek.Sunday && x.IsSun) ||
+                                                  (currentDay == DayOfWeek.Monday && x.IsMon) ||
+                                                  (currentDay == DayOfWeek.Tuesday && x.IsTues) ||
+                                                  (currentDay == DayOfWeek.Wednesday && x.IsWed) ||
+                                                  (currentDay == DayOfWeek.Thursday && x.IsThurs) ||
+                                                  (currentDay == DayOfWeek.Friday && x.IsFri)) &&
+                                                  x.WeeklyTime <= timeOfDay).ToList();
+
+                foreach (var item in emails)
+                {
+                    var todaysDate = DateTime.Now;
+                    var result = _contextReports.ReportEmailTransactions.Any(x => x.IsWeekly &&
+                                                                                  x.ReportEmailMap == item.Oid &&
+                                                                                  x.ReportDate == todaysDate.Date);
+                    if (!result) return false;
+                }
+            }
+
+            return true;
+        }
+
+        public List<ReportEmailsSettings> GetEmails()
+        {
+            var emailsToSend = new List<ReportEmailsSettings>();
+            var emailMaps = _contextReports.ReportEmailMaps.Where(x => x.IsRegForEmail);
+            if (emailMaps.Any())
+            {
+                var currentDay = DateTime.Now.DayOfWeek;
+
+                var emails = emailMaps.Where(x => (currentDay == DayOfWeek.Saturday && x.IsSat) ||
+                                                  (currentDay == DayOfWeek.Sunday && x.IsSun) ||
+                                                  (currentDay == DayOfWeek.Monday && x.IsMon) ||
+                                                  (currentDay == DayOfWeek.Tuesday && x.IsTues) ||
+                                                  (currentDay == DayOfWeek.Wednesday && x.IsWed) ||
+                                                  (currentDay == DayOfWeek.Thursday && x.IsThurs) ||
+                                                  (currentDay == DayOfWeek.Friday && x.IsFri));
+
+                foreach (var item in emails)
+                {
+                    var todaysDate = DateTime.Now.Date;
+                    var result = _contextReports.ReportEmailTransactions.Any(x => x.IsWeekly &&
+                                                                                  x.ReportEmailMap == item.Oid &&
+                                                                                  x.ReportDate == todaysDate);
+                    if (!result) emailsToSend.Add(new ReportEmailsSettings
+                    {
+                        Email = item.Email,
+                        Oid = item.Oid
+                    });
+                }
+            }
+
+            return emailsToSend;
         }
     }
 }

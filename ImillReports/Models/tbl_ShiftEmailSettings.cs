@@ -22,5 +22,7 @@ namespace ImillReports.Models
         public System.TimeSpan EmailEndRange { get; set; }
         public System.TimeSpan LateInRange { get; set; }
         public System.TimeSpan EarlyOutRange { get; set; }
+        public System.TimeSpan EmailShiftEndStartRange { get; set; }
+        public System.TimeSpan EmailShiftEndLastRange { get; set; }
     }
 }

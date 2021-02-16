@@ -1,5 +1,6 @@
 ﻿using ImillReports.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace ImillReports.Contracts
 {
@@ -9,7 +10,9 @@ namespace ImillReports.Contracts
         //string GetSalesOfMonthTest(DateTime? fromDate, DateTime? toDate);
         SalesOfMonthViewModel GetSalesRecordOfMonth(DateTime fromDate, DateTime toDate);
         SalesOfMonthViewModel GetSalesRecordDetailOfMonth(DateTime? fromDate, DateTime? toDate);
-        SendEmailAsReport GetLastEmailSettings();
-        void SetWeeklyRptEmailDate();
+        SendEmailAsReport GetLastEmailSettings(bool isWeekly, bool isMonthly);
+        void UpdateWeeklyRptTransactions(int oid);
+        bool GetSettings();
+        List<ReportEmailsSettings> GetEmails();
     }
 }

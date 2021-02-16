@@ -1,14 +1,599 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\shabb\AppData\local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\shabb\AppData\local\JetBrains\Rider2020.1\resharper-host\local\Transient\ReSharperHost\v201\SolutionCaches\_IntlmillReportApps.-1375146684.00" t="ExcludeRecursive" />
-    <e p="C:\Users\shabb\AppData\Roaming\JetBrains\Rider2020.1\consoles\ide" t="IncludeRecursive" />
-    <e p="C:\Users\shabb\AppData\Roaming\JetBrains\Rider2020.1\scratches" t="IncludeRecursive" />
-    <e p="F:\Projects\TheCode53\Projects\International Mill - Imill\_root\Reports\IntlmillReportApps" t="IncludeFlat">
+    <e p="C:\Users\Shabbir\AppData\local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Shabbir\AppData\local\JetBrains\Rider2020.3\resharper-host\local\Transient\Rider\v203\SolutionCaches\_IntlmillReportApps.-1496106490.00" t="ExcludeRecursive" />
+    <e p="D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps" t="IncludeFlat">
+      <e p="Cash Register" t="IncludeRecursive">
+        <e p="App_Data" t="Include" />
+        <e p="App_Start" t="Include">
+          <e p="BundleConfig.cs" t="Include" />
+          <e p="FilterConfig.cs" t="Include" />
+          <e p="RouteConfig.cs" t="Include" />
+          <e p="UnityConfig.cs" t="Include" />
+          <e p="UnityMvcActivator.cs" t="Include" />
+          <e p="WebApiConfig.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Cash Register.csproj" t="IncludeRecursive" />
+        <e p="Content" t="Include">
+          <e p="bootstrap-grid.css" t="Include" />
+          <e p="bootstrap-grid.css.map" t="Include" />
+          <e p="bootstrap-grid.min.css" t="Include" />
+          <e p="bootstrap-grid.min.css.map" t="Include" />
+          <e p="bootstrap-reboot.css" t="Include" />
+          <e p="bootstrap-reboot.css.map" t="Include" />
+          <e p="bootstrap-reboot.min.css" t="Include" />
+          <e p="bootstrap-reboot.min.css.map" t="Include" />
+          <e p="bootstrap.css" t="Include" />
+          <e p="bootstrap.css.map" t="Include" />
+          <e p="bootstrap.min.css" t="Include" />
+          <e p="bootstrap.min.css.map" t="Include" />
+          <e p="Bottstrap_Flatly" t="Include">
+            <e p="bootstrap.min.css" t="Include" />
+          </e>
+          <e p="fonts" t="Include">
+            <e p="Almarai-Bold.ttf" t="Include" />
+            <e p="Almarai-ExtraBold.ttf" t="Include" />
+            <e p="Almarai-Light.ttf" t="Include" />
+            <e p="Almarai-Regular.ttf" t="Include" />
+          </e>
+          <e p="gijgo" t="Include">
+            <e p="combined" t="Include">
+              <e p="gijgo.css" t="Include" />
+              <e p="gijgo.min.css" t="Include" />
+            </e>
+            <e p="fonts" t="Include">
+              <e p="gijgo-material.eot" t="Include" />
+              <e p="gijgo-material.svg" t="Include" />
+              <e p="gijgo-material.ttf" t="Include" />
+              <e p="gijgo-material.woff" t="Include" />
+            </e>
+            <e p="modular" t="Include">
+              <e p="checkbox.css" t="Include" />
+              <e p="checkbox.min.css" t="Include" />
+              <e p="colorpicker.css" t="Include" />
+              <e p="colorpicker.min.css" t="Include" />
+              <e p="core.css" t="Include" />
+              <e p="core.min.css" t="Include" />
+              <e p="datepicker.css" t="Include" />
+              <e p="datepicker.min.css" t="Include" />
+              <e p="datetimepicker.css" t="Include" />
+              <e p="datetimepicker.min.css" t="Include" />
+              <e p="dialog.css" t="Include" />
+              <e p="dialog.min.css" t="Include" />
+              <e p="dropdown.css" t="Include" />
+              <e p="dropdown.min.css" t="Include" />
+              <e p="editor.css" t="Include" />
+              <e p="editor.min.css" t="Include" />
+              <e p="grid.css" t="Include" />
+              <e p="grid.min.css" t="Include" />
+              <e p="slider.css" t="Include" />
+              <e p="slider.min.css" t="Include" />
+              <e p="timepicker.css" t="Include" />
+              <e p="timepicker.min.css" t="Include" />
+              <e p="tree.css" t="Include" />
+              <e p="tree.min.css" t="Include" />
+            </e>
+          </e>
+          <e p="Site.css" t="Include" />
+        </e>
+        <e p="Contracts" t="Include">
+          <e p="ICashRegisterRepository.cs" t="Include" />
+          <e p="ILocationRepository.cs" t="Include" />
+          <e p="ISalesmanRepository.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="Api" t="Include">
+            <e p="SyncController.cs" t="Include" />
+          </e>
+          <e p="CashRegisterController.cs" t="Include" />
+          <e p="HomeController.cs" t="Include" />
+        </e>
+        <e p="favicon.ico" t="Include" />
+        <e p="Global.asax" t="Include" />
+        <e p="Global.asax.cs" t="Include" />
+        <e p="Models" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Repository" t="Include">
+          <e p="CashRegisterRepository.cs" t="Include" />
+          <e p="LocationRepository.cs" t="Include" />
+          <e p="SalesmanRepository.cs" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="bootstrap.bundle.js" t="Include" />
+          <e p="bootstrap.bundle.js.map" t="Include" />
+          <e p="bootstrap.bundle.min.js" t="Include" />
+          <e p="bootstrap.bundle.min.js.map" t="Include" />
+          <e p="bootstrap.js" t="Include" />
+          <e p="bootstrap.js.map" t="Include" />
+          <e p="bootstrap.min.js" t="Include" />
+          <e p="bootstrap.min.js.map" t="Include" />
+          <e p="esm" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+          <e p="gijgo" t="Include">
+            <e p="combined" t="Include">
+              <e p="gijgo.js" t="Include" />
+              <e p="gijgo.min.js" t="Include" />
+              <e p="messages" t="Include">
+                <e p="messages.bg-bg.js" t="Include" />
+                <e p="messages.bg-bg.min.js" t="Include" />
+                <e p="messages.de-de.js" t="Include" />
+                <e p="messages.de-de.min.js" t="Include" />
+                <e p="messages.es-es.js" t="Include" />
+                <e p="messages.es-es.min.js" t="Include" />
+                <e p="messages.fr-fr.js" t="Include" />
+                <e p="messages.fr-fr.min.js" t="Include" />
+                <e p="messages.it-it.js" t="Include" />
+                <e p="messages.it-it.min.js" t="Include" />
+                <e p="messages.ja-jp.js" t="Include" />
+                <e p="messages.ja-jp.min.js" t="Include" />
+                <e p="messages.pt-br.js" t="Include" />
+                <e p="messages.pt-br.min.js" t="Include" />
+                <e p="messages.ru-ru.js" t="Include" />
+                <e p="messages.ru-ru.min.js" t="Include" />
+                <e p="messages.tr-tr.js" t="Include" />
+                <e p="messages.tr-tr.min.js" t="Include" />
+                <e p="messages.zh-cn.js" t="Include" />
+                <e p="messages.zh-cn.min.js" t="Include" />
+                <e p="messages.zh-tw.js" t="Include" />
+                <e p="messages.zh-tw.min.js" t="Include" />
+              </e>
+            </e>
+            <e p="modular" t="Include">
+              <e p="checkbox.js" t="Include" />
+              <e p="checkbox.min.js" t="Include" />
+              <e p="colorpicker.js" t="Include" />
+              <e p="colorpicker.min.js" t="Include" />
+              <e p="core.js" t="Include" />
+              <e p="core.min.js" t="Include" />
+              <e p="datepicker.js" t="Include" />
+              <e p="datepicker.min.js" t="Include" />
+              <e p="datetimepicker.js" t="Include" />
+              <e p="datetimepicker.min.js" t="Include" />
+              <e p="dialog.js" t="Include" />
+              <e p="dialog.min.js" t="Include" />
+              <e p="draggable.js" t="Include" />
+              <e p="draggable.min.js" t="Include" />
+              <e p="dropdown.js" t="Include" />
+              <e p="dropdown.min.js" t="Include" />
+              <e p="droppable.js" t="Include" />
+              <e p="droppable.min.js" t="Include" />
+              <e p="editor.js" t="Include" />
+              <e p="editor.min.js" t="Include" />
+              <e p="grid.js" t="Include" />
+              <e p="grid.min.js" t="Include" />
+              <e p="slider.js" t="Include" />
+              <e p="slider.min.js" t="Include" />
+              <e p="timepicker.js" t="Include" />
+              <e p="timepicker.min.js" t="Include" />
+              <e p="tree.js" t="Include" />
+              <e p="tree.min.js" t="Include" />
+            </e>
+          </e>
+          <e p="index.d.ts" t="Include" />
+          <e p="index.js.flow" t="Include" />
+          <e p="jquery-3.5.1.intellisense.js" t="Include" />
+          <e p="jquery-3.5.1.js" t="Include" />
+          <e p="jquery-3.5.1.min.js" t="Include" />
+          <e p="jquery-3.5.1.min.map" t="Include" />
+          <e p="jquery-3.5.1.slim.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.map" t="Include" />
+          <e p="jquery.validate-vsdoc.js" t="Include" />
+          <e p="jquery.validate.js" t="Include" />
+          <e p="jquery.validate.min.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+          <e p="modernizr-2.8.3.js" t="Include" />
+          <e p="popper-utils.js" t="Include" />
+          <e p="popper-utils.js.map" t="Include" />
+          <e p="popper-utils.min.js" t="Include" />
+          <e p="popper-utils.min.js.map" t="Include" />
+          <e p="popper.js" t="Include" />
+          <e p="popper.js.map" t="Include" />
+          <e p="popper.min.js" t="Include" />
+          <e p="popper.min.js.map" t="Include" />
+          <e p="README.md" t="Include" />
+          <e p="src" t="Include">
+            <e p="index.js" t="Include" />
+            <e p="methods" t="Include">
+              <e p="defaults.js" t="Include" />
+              <e p="destroy.js" t="Include" />
+              <e p="disableEventListeners.js" t="Include" />
+              <e p="enableEventListeners.js" t="Include" />
+              <e p="placements.js" t="Include" />
+              <e p="update.js" t="Include" />
+            </e>
+            <e p="modifiers" t="Include">
+              <e p="applyStyle.js" t="Include" />
+              <e p="arrow.js" t="Include" />
+              <e p="computeStyle.js" t="Include" />
+              <e p="flip.js" t="Include" />
+              <e p="hide.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="inner.js" t="Include" />
+              <e p="keepTogether.js" t="Include" />
+              <e p="offset.js" t="Include" />
+              <e p="preventOverflow.js" t="Include" />
+              <e p="shift.js" t="Include" />
+            </e>
+            <e p="utils" t="Include">
+              <e p="clockwise.js" t="Include" />
+              <e p="computeAutoPlacement.js" t="Include" />
+              <e p="debounce.js" t="Include" />
+              <e p="find.js" t="Include" />
+              <e p="findCommonOffsetParent.js" t="Include" />
+              <e p="findIndex.js" t="Include" />
+              <e p="getBordersSize.js" t="Include" />
+              <e p="getBoundaries.js" t="Include" />
+              <e p="getBoundingClientRect.js" t="Include" />
+              <e p="getClientRect.js" t="Include" />
+              <e p="getFixedPositionOffsetParent.js" t="Include" />
+              <e p="getOffsetParent.js" t="Include" />
+              <e p="getOffsetRect.js" t="Include" />
+              <e p="getOffsetRectRelativeToArbitraryNode.js" t="Include" />
+              <e p="getOppositePlacement.js" t="Include" />
+              <e p="getOppositeVariation.js" t="Include" />
+              <e p="getOuterSizes.js" t="Include" />
+              <e p="getParentNode.js" t="Include" />
+              <e p="getPopperOffsets.js" t="Include" />
+              <e p="getReferenceNode.js" t="Include" />
+              <e p="getReferenceOffsets.js" t="Include" />
+              <e p="getRoot.js" t="Include" />
+              <e p="getRoundedOffsets.js" t="Include" />
+              <e p="getScroll.js" t="Include" />
+              <e p="getScrollParent.js" t="Include" />
+              <e p="getStyleComputedProperty.js" t="Include" />
+              <e p="getSupportedPropertyName.js" t="Include" />
+              <e p="getViewportOffsetRectRelativeToArtbitraryNode.js" t="Include" />
+              <e p="getWindow.js" t="Include" />
+              <e p="getWindowSizes.js" t="Include" />
+              <e p="includeScroll.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="isBrowser.js" t="Include" />
+              <e p="isFixed.js" t="Include" />
+              <e p="isFunction.js" t="Include" />
+              <e p="isIE.js" t="Include" />
+              <e p="isModifierEnabled.js" t="Include" />
+              <e p="isModifierRequired.js" t="Include" />
+              <e p="isNumeric.js" t="Include" />
+              <e p="isOffsetContainer.js" t="Include" />
+              <e p="removeEventListeners.js" t="Include" />
+              <e p="runModifiers.js" t="Include" />
+              <e p="setAttributes.js" t="Include" />
+              <e p="setStyles.js" t="Include" />
+              <e p="setupEventListeners.js" t="Include" />
+            </e>
+          </e>
+          <e p="umd" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.flow" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+        </e>
+        <e p="ViewModels" t="Include">
+          <e p="CRegister.cs" t="Include" />
+          <e p="CRLocation.cs" t="Include" />
+          <e p="CRReserveAmount.cs" t="Include" />
+          <e p="CRSalesman.cs" t="Include" />
+          <e p="CRSerial.cs" t="Include" />
+        </e>
+        <e p="Views" t="Include">
+          <e p="_ViewStart.cshtml" t="Include" />
+          <e p="CashRegister" t="Include">
+            <e p="CRRecords.cshtml" t="Include" />
+            <e p="Edit.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="Print.cshtml" t="Include" />
+          </e>
+          <e p="Home" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="_Layout.cshtml" t="Include" />
+            <e p="Error.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="web.config" t="Include" />
+        <e p="Web.Debug.config" t="Include" />
+        <e p="Web.Release.config" t="Include" />
+      </e>
+      <e p="ImillPda" t="IncludeRecursive">
+        <e p="App_Data" t="Include" />
+        <e p="App_Start" t="Include">
+          <e p="BundleConfig.cs" t="Include" />
+          <e p="FilterConfig.cs" t="Include" />
+          <e p="IdentityConfig.cs" t="Include" />
+          <e p="RouteConfig.cs" t="Include" />
+          <e p="Startup.Auth.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Content" t="Include">
+          <e p="bootstrap-grid.css" t="Include" />
+          <e p="bootstrap-grid.css.map" t="Include" />
+          <e p="bootstrap-grid.min.css" t="Include" />
+          <e p="bootstrap-grid.min.css.map" t="Include" />
+          <e p="bootstrap-reboot.css" t="Include" />
+          <e p="bootstrap-reboot.css.map" t="Include" />
+          <e p="bootstrap-reboot.min.css" t="Include" />
+          <e p="bootstrap-reboot.min.css.map" t="Include" />
+          <e p="bootstrap.css" t="Include" />
+          <e p="bootstrap.css.map" t="Include" />
+          <e p="bootstrap.min.css" t="Include" />
+          <e p="bootstrap.min.css.map" t="Include" />
+          <e p="ej2" t="Include">
+            <e p="bootstrap-dark.css" t="Include" />
+            <e p="bootstrap.css" t="Include" />
+            <e p="bootstrap4.css" t="Include" />
+            <e p="compatibility" t="Include">
+              <e p="bootstrap.css" t="Include" />
+              <e p="bootstrap4.css" t="Include" />
+              <e p="fabric.css" t="Include" />
+              <e p="highcontrast.css" t="Include" />
+              <e p="material.css" t="Include" />
+            </e>
+            <e p="fabric-dark.css" t="Include" />
+            <e p="fabric.css" t="Include" />
+            <e p="highcontrast.css" t="Include" />
+            <e p="material-dark.css" t="Include" />
+            <e p="material.css" t="Include" />
+          </e>
+          <e p="Site.css" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AccountController.cs" t="Include" />
+          <e p="HomeController.cs" t="Include" />
+          <e p="ManageController.cs" t="Include" />
+        </e>
+        <e p="favicon.ico" t="Include" />
+        <e p="Global.asax" t="Include" />
+        <e p="Global.asax.cs" t="Include" />
+        <e p="ImillPda.csproj" t="IncludeRecursive" />
+        <e p="Models" t="Include">
+          <e p="AccountViewModels.cs" t="Include" />
+          <e p="ICS_Item.cs" t="Include" />
+          <e p="ICS_Item_Unit_Details.cs" t="Include" />
+          <e p="ICS_Transaction.cs" t="Include" />
+          <e p="ICS_Transaction_Details.cs" t="Include" />
+          <e p="IdentityModels.cs" t="Include" />
+          <e p="ImillPdaModel.Context.cs" t="Include" />
+          <e p="ImillPdaModel.Context.tt" t="Include" />
+          <e p="ImillPdaModel.cs" t="Include" />
+          <e p="ImillPdaModel.Designer.cs" t="Include" />
+          <e p="ImillPdaModel.edmx" t="Include" />
+          <e p="ImillPdaModel.edmx.diagram" t="Include" />
+          <e p="ImillPdaModel.tt" t="Include" />
+          <e p="ImillReportModel.Context.cs" t="Include" />
+          <e p="ImillReportModel.Context.tt" t="Include" />
+          <e p="ImillReportModel.cs" t="Include" />
+          <e p="ImillReportModel.Designer.cs" t="Include" />
+          <e p="ImillReportModel.edmx" t="Include" />
+          <e p="ImillReportModel.edmx.diagram" t="Include" />
+          <e p="ImillReportModel.tt" t="Include" />
+          <e p="ManageViewModels.cs" t="Include" />
+          <e p="OpenTransaction.cs" t="Include" />
+          <e p="SM_Location.cs" t="Include" />
+          <e p="Transaction.cs" t="Include" />
+          <e p="TransactionDetail.cs" t="Include" />
+          <e p="WishList.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="bootstrap.bundle.js" t="Include" />
+          <e p="bootstrap.bundle.js.map" t="Include" />
+          <e p="bootstrap.bundle.min.js" t="Include" />
+          <e p="bootstrap.bundle.min.js.map" t="Include" />
+          <e p="bootstrap.js" t="Include" />
+          <e p="bootstrap.js.map" t="Include" />
+          <e p="bootstrap.min.js" t="Include" />
+          <e p="bootstrap.min.js.map" t="Include" />
+          <e p="ej2" t="Include">
+            <e p="ej2.d.ts" t="Include" />
+            <e p="ej2.min.js" t="Include" />
+            <e p="ej2.min.js.map" t="Include" />
+            <e p="tsconfig.json" t="Include" />
+          </e>
+          <e p="esm" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+          <e p="index.d.ts" t="Include" />
+          <e p="index.js.flow" t="Include" />
+          <e p="jquery-3.5.1.intellisense.js" t="Include" />
+          <e p="jquery-3.5.1.js" t="Include" />
+          <e p="jquery-3.5.1.min.js" t="Include" />
+          <e p="jquery-3.5.1.min.map" t="Include" />
+          <e p="jquery-3.5.1.slim.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.map" t="Include" />
+          <e p="jquery.validate-vsdoc.js" t="Include" />
+          <e p="jquery.validate.js" t="Include" />
+          <e p="jquery.validate.min.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+          <e p="modernizr-2.8.3.js" t="Include" />
+          <e p="popper-utils.js" t="Include" />
+          <e p="popper-utils.js.map" t="Include" />
+          <e p="popper-utils.min.js" t="Include" />
+          <e p="popper-utils.min.js.map" t="Include" />
+          <e p="popper.js" t="Include" />
+          <e p="popper.js.map" t="Include" />
+          <e p="popper.min.js" t="Include" />
+          <e p="popper.min.js.map" t="Include" />
+          <e p="quaggaJS" t="Include">
+            <e p="quagga.js" t="Include" />
+            <e p="quagga.min.js" t="Include" />
+          </e>
+          <e p="README.md" t="Include" />
+          <e p="src" t="Include">
+            <e p="index.js" t="Include" />
+            <e p="methods" t="Include">
+              <e p="defaults.js" t="Include" />
+              <e p="destroy.js" t="Include" />
+              <e p="disableEventListeners.js" t="Include" />
+              <e p="enableEventListeners.js" t="Include" />
+              <e p="placements.js" t="Include" />
+              <e p="update.js" t="Include" />
+            </e>
+            <e p="modifiers" t="Include">
+              <e p="applyStyle.js" t="Include" />
+              <e p="arrow.js" t="Include" />
+              <e p="computeStyle.js" t="Include" />
+              <e p="flip.js" t="Include" />
+              <e p="hide.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="inner.js" t="Include" />
+              <e p="keepTogether.js" t="Include" />
+              <e p="offset.js" t="Include" />
+              <e p="preventOverflow.js" t="Include" />
+              <e p="shift.js" t="Include" />
+            </e>
+            <e p="utils" t="Include">
+              <e p="clockwise.js" t="Include" />
+              <e p="computeAutoPlacement.js" t="Include" />
+              <e p="debounce.js" t="Include" />
+              <e p="find.js" t="Include" />
+              <e p="findCommonOffsetParent.js" t="Include" />
+              <e p="findIndex.js" t="Include" />
+              <e p="getBordersSize.js" t="Include" />
+              <e p="getBoundaries.js" t="Include" />
+              <e p="getBoundingClientRect.js" t="Include" />
+              <e p="getClientRect.js" t="Include" />
+              <e p="getFixedPositionOffsetParent.js" t="Include" />
+              <e p="getOffsetParent.js" t="Include" />
+              <e p="getOffsetRect.js" t="Include" />
+              <e p="getOffsetRectRelativeToArbitraryNode.js" t="Include" />
+              <e p="getOppositePlacement.js" t="Include" />
+              <e p="getOppositeVariation.js" t="Include" />
+              <e p="getOuterSizes.js" t="Include" />
+              <e p="getParentNode.js" t="Include" />
+              <e p="getPopperOffsets.js" t="Include" />
+              <e p="getReferenceNode.js" t="Include" />
+              <e p="getReferenceOffsets.js" t="Include" />
+              <e p="getRoot.js" t="Include" />
+              <e p="getRoundedOffsets.js" t="Include" />
+              <e p="getScroll.js" t="Include" />
+              <e p="getScrollParent.js" t="Include" />
+              <e p="getStyleComputedProperty.js" t="Include" />
+              <e p="getSupportedPropertyName.js" t="Include" />
+              <e p="getViewportOffsetRectRelativeToArtbitraryNode.js" t="Include" />
+              <e p="getWindow.js" t="Include" />
+              <e p="getWindowSizes.js" t="Include" />
+              <e p="includeScroll.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="isBrowser.js" t="Include" />
+              <e p="isFixed.js" t="Include" />
+              <e p="isFunction.js" t="Include" />
+              <e p="isIE.js" t="Include" />
+              <e p="isModifierEnabled.js" t="Include" />
+              <e p="isModifierRequired.js" t="Include" />
+              <e p="isNumeric.js" t="Include" />
+              <e p="isOffsetContainer.js" t="Include" />
+              <e p="removeEventListeners.js" t="Include" />
+              <e p="runModifiers.js" t="Include" />
+              <e p="setAttributes.js" t="Include" />
+              <e p="setStyles.js" t="Include" />
+              <e p="setupEventListeners.js" t="Include" />
+            </e>
+          </e>
+          <e p="umd" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.flow" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="ViewModels" t="Include">
+          <e p="ItemResponseViewModel.cs" t="Include" />
+          <e p="RequestedItemVM.cs" t="Include" />
+          <e p="ScanResponseViewModel.cs" t="Include" />
+        </e>
+        <e p="Views" t="Include">
+          <e p="_ViewStart.cshtml" t="Include" />
+          <e p="Account" t="Include">
+            <e p="_ExternalLoginsListPartial.cshtml" t="Include" />
+            <e p="ConfirmEmail.cshtml" t="Include" />
+            <e p="ExternalLoginConfirmation.cshtml" t="Include" />
+            <e p="ExternalLoginFailure.cshtml" t="Include" />
+            <e p="ForgotPassword.cshtml" t="Include" />
+            <e p="ForgotPasswordConfirmation.cshtml" t="Include" />
+            <e p="Login.cshtml" t="Include" />
+            <e p="Register.cshtml" t="Include" />
+            <e p="ResetPassword.cshtml" t="Include" />
+            <e p="ResetPasswordConfirmation.cshtml" t="Include" />
+            <e p="SendCode.cshtml" t="Include" />
+            <e p="VerifyCode.cshtml" t="Include" />
+          </e>
+          <e p="Home" t="Include">
+            <e p="About.cshtml" t="Include" />
+            <e p="Contact.cshtml" t="Include" />
+            <e p="DeliveryRequest.cshtml" t="Include" />
+            <e p="GetRequestDetails.cshtml" t="Include" />
+            <e p="GetTransactionDetails.cshtml" t="Include" />
+            <e p="GetWishlistDetails.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="WishList.cshtml" t="Include" />
+          </e>
+          <e p="Manage" t="Include">
+            <e p="AddPhoneNumber.cshtml" t="Include" />
+            <e p="ChangePassword.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="ManageLogins.cshtml" t="Include" />
+            <e p="SetPassword.cshtml" t="Include" />
+            <e p="VerifyPhoneNumber.cshtml" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="_Layout.cshtml" t="Include" />
+            <e p="_LoginPartial.cshtml" t="Include" />
+            <e p="Error.cshtml" t="Include" />
+            <e p="Lockout.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="web.config" t="Include" />
+        <e p="Web.Debug.config" t="Include" />
+        <e p="Web.Release.config" t="Include" />
+      </e>
       <e p="ImillReports" t="IncludeRecursive">
         <e p="App_Data" t="Include">
           <e p="column_chooser.json" t="Include" />
+          <e p="DeviceCode.json" t="Include" />
         </e>
         <e p="App_Start" t="Include">
           <e p="BundleConfig.cs" t="Include" />
@@ -18,6 +603,7 @@
           <e p="Startup.Auth.cs" t="Include" />
           <e p="UnityConfig.cs" t="Include" />
           <e p="UnityMvcActivator.cs" t="Include" />
+          <e p="WebApiConfig.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="Content" t="Include">
@@ -32,24 +618,10 @@
                 <e p="buttons.dataTables.min.css" t="Include" />
                 <e p="buttons.foundation.css" t="Include" />
                 <e p="buttons.foundation.min.css" t="Include" />
-                <e p="buttons.jqueryui.css" t="Include" />
-                <e p="buttons.jqueryui.min.css" t="Include" />
-                <e p="buttons.semanticui.css" t="Include" />
-                <e p="buttons.semanticui.min.css" t="Include" />
                 <e p="common.scss" t="Include" />
                 <e p="mixins.scss" t="Include" />
               </e>
               <e p="js" t="Include">
-                <e p="buttons.bootstrap.js" t="Include" />
-                <e p="buttons.bootstrap.min.js" t="Include" />
-                <e p="buttons.bootstrap4.js" t="Include" />
-                <e p="buttons.bootstrap4.min.js" t="Include" />
-                <e p="buttons.colVis.js" t="Include" />
-                <e p="buttons.colVis.min.js" t="Include" />
-                <e p="buttons.flash.js" t="Include" />
-                <e p="buttons.flash.min.js" t="Include" />
-                <e p="buttons.foundation.js" t="Include" />
-                <e p="buttons.foundation.min.js" t="Include" />
                 <e p="buttons.html5.js" t="Include" />
                 <e p="buttons.html5.min.js" t="Include" />
                 <e p="buttons.jqueryui.js" t="Include" />
@@ -241,6 +813,7 @@
             <e p="InternationalMill.png" t="Include" />
             <e p="logo_black.png" t="Include" />
           </e>
+          <e p="Print" t="Include" />
           <e p="stylesheets" t="Include">
             <e p="bootstrap.min.css" t="Include" />
             <e p="color_skins.css" t="Include" />
@@ -259,17 +832,23 @@
           <e p="IProductRepository.cs" t="Include" />
           <e p="ISalesmanRepository.cs" t="Include" />
           <e p="ISalesReportRepository.cs" t="Include" />
+          <e p="ITARepository.cs" t="Include" />
           <e p="IVoucherTypesRepository.cs" t="Include" />
         </e>
         <e p="Controllers" t="Include">
           <e p="AccountController.cs" t="Include" />
+          <e p="Api" t="Include">
+            <e p="TASyncController.cs" t="Include" />
+          </e>
           <e p="CashRegisterController.cs" t="Include" />
           <e p="DashboardController.cs" t="Include" />
           <e p="HomeController.cs" t="Include" />
           <e p="LocationController.cs" t="Include" />
           <e p="ManageController.cs" t="Include" />
+          <e p="ManageTimeAttendanceController.cs" t="Include" />
           <e p="SalesmanController.cs" t="Include" />
           <e p="SalesReportController.cs" t="Include" />
+          <e p="TAReportController.cs" t="Include" />
         </e>
         <e p="favicon.ico" t="Include" />
         <e p="fonts" t="Include">
@@ -293,14 +872,24 @@
           <e p="Chart.cs" t="Include" />
           <e p="GL_Ledger.cs" t="Include" />
           <e p="ICS_Item.cs" t="Include" />
+          <e p="ICS_Item_Group.cs" t="Include" />
           <e p="ICS_Item_Unit_Details.cs" t="Include" />
           <e p="ICS_Transaction.cs" t="Include" />
           <e p="ICS_Transaction_Details.cs" t="Include" />
           <e p="ICS_Transaction_Types.cs" t="Include" />
           <e p="ICS_Unit.cs" t="Include" />
           <e p="IdentityModels.cs" t="Include" />
+          <e p="ImillReportModel.Context.cs" t="Include" />
+          <e p="ImillReportModel.Context.tt" t="Include" />
+          <e p="ImillReportModel.cs" t="Include" />
+          <e p="ImillReportModel.Designer.cs" t="Include" />
+          <e p="ImillReportModel.edmx" t="Include" />
+          <e p="ImillReportModel.edmx.diagram" t="Include" />
+          <e p="ImillReportModel.tt" t="Include" />
           <e p="intlmill_cash_register.cs" t="Include" />
           <e p="ManageViewModels.cs" t="Include" />
+          <e p="ReportEmailMap.cs" t="Include" />
+          <e p="ReportEmailTransaction.cs" t="Include" />
           <e p="ReportModel.Context.cs" t="Include" />
           <e p="ReportModel.Context.tt" t="Include" />
           <e p="ReportModel.cs" t="Include" />
@@ -308,11 +897,45 @@
           <e p="ReportModel.edmx" t="Include" />
           <e p="ReportModel.edmx.diagram" t="Include" />
           <e p="ReportModel.tt" t="Include" />
+          <e p="Setting.cs" t="Include" />
           <e p="SM_Location.cs" t="Include" />
           <e p="SM_SALESMAN.cs" t="Include" />
           <e p="spICSTrans_GetAll_Result.cs" t="Include" />
           <e p="spICSTransDetail_GetAll_Result.cs" t="Include" />
           <e p="spIUD_GetAll_Result.cs" t="Include" />
+          <e p="TAModel.Context.cs" t="Include" />
+          <e p="TAModel.Context.tt" t="Include" />
+          <e p="TAModel.cs" t="Include" />
+          <e p="TAModel.Designer.cs" t="Include" />
+          <e p="TAModel.edmx" t="Include" />
+          <e p="TAModel.edmx.diagram" t="Include" />
+          <e p="TAModel.tt" t="Include" />
+          <e p="tbl_Device.cs" t="Include" />
+          <e p="tbl_DeviceCode.cs" t="Include" />
+          <e p="tbl_EmpAttendance.cs" t="Include" />
+          <e p="tbl_EmpLocShiftMap.cs" t="Include" />
+          <e p="tbl_EmployeeLeaves.cs" t="Include" />
+          <e p="tbl_Employees.cs" t="Include" />
+          <e p="tbl_EmpTransaction.cs" t="Include" />
+          <e p="tbl_Location.cs" t="Include" />
+          <e p="tbl_Shift.cs" t="Include" />
+          <e p="tbl_ShiftEmailMap.cs" t="Include" />
+          <e p="tbl_ShiftEmailSettings.cs" t="Include" />
+          <e p="tbl_Transactions.cs" t="Include" />
+          <e p="Trans_Detail_2015.cs" t="Include" />
+          <e p="Trans_Detail_2016.cs" t="Include" />
+          <e p="Trans_Detail_2017.cs" t="Include" />
+          <e p="Trans_Detail_2018.cs" t="Include" />
+          <e p="Trans_Detail_2019.cs" t="Include" />
+          <e p="Trans_Detail_2020.cs" t="Include" />
+          <e p="Trans_Detail_2021.cs" t="Include" />
+          <e p="Transaction_2015.cs" t="Include" />
+          <e p="Transaction_2016.cs" t="Include" />
+          <e p="Transaction_2017.cs" t="Include" />
+          <e p="Transaction_2018.cs" t="Include" />
+          <e p="Transaction_2019.cs" t="Include" />
+          <e p="Transaction_2020.cs" t="Include" />
+          <e p="Transaction_2021.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
@@ -331,6 +954,7 @@
           <e p="ProductRepository.cs" t="Include" />
           <e p="SalesmanRepository.cs" t="Include" />
           <e p="SalesReportRepository.cs" t="Include" />
+          <e p="TARepository.cs" t="Include" />
           <e p="VoucherTypesRepository.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
@@ -343,6 +967,7 @@
             <e p="ej2.min.js" t="Include" />
             <e p="ej2.min.js.map" t="Include" />
           </e>
+          <e p="html2canvas.min.js" t="Include" />
           <e p="index2.js" t="Include" />
           <e p="jquery-3.4.1.intellisense.js" t="Include" />
           <e p="jquery-3.4.1.js" t="Include" />
@@ -375,6 +1000,8 @@
           <e p="ProductViewModel.cs" t="Include" />
           <e p="SalesmanViewModel.cs" t="Include" />
           <e p="SalesReportViewModel.cs" t="Include" />
+          <e p="ShiftViewModel.cs" t="Include" />
+          <e p="TimeAttendanceViewModel.cs" t="Include" />
           <e p="VoucherTypeViewModel.cs" t="Include" />
         </e>
         <e p="Views" t="Include">
@@ -398,8 +1025,12 @@
             <e p="Index.cshtml" t="Include" />
           </e>
           <e p="Dashboard" t="Include">
+            <e p="_BranchGraphs.cshtml" t="Include" />
+            <e p="_BranchSalesDetails.cshtml" t="Include" />
             <e p="BranchSales.cshtml" t="Include" />
+            <e p="BranchSalesForPrint.cshtml" t="Include" />
             <e p="Index.cshtml" t="Include" />
+            <e p="SyncSalesData.cshtml" t="Include" />
           </e>
           <e p="Home" t="Include">
             <e p="About.cshtml" t="Include" />
@@ -415,16 +1046,305 @@
             <e p="SetPassword.cshtml" t="Include" />
             <e p="VerifyPhoneNumber.cshtml" t="Include" />
           </e>
+          <e p="ManageTimeAttendance" t="Include">
+            <e p="AllocateShiftLocation.cshtml" t="Include" />
+            <e p="Employees.cshtml" t="Include" />
+            <e p="Locations.cshtml" t="Include" />
+            <e p="Shifts.cshtml" t="Include" />
+          </e>
           <e p="Salesman" t="Include" />
           <e p="SalesReport" t="Include">
+            <e p="DailyConsumption.cshtml" t="Include" />
             <e p="Index.cshtml" t="Include" />
             <e p="SalesDetailReport.cshtml" t="Include" />
             <e p="SalesHourlyReport.cshtml" t="Include" />
+            <e p="SalesTrend.cshtml" t="Include" />
           </e>
           <e p="Shared" t="Include">
             <e p="_Layout.cshtml" t="Include" />
             <e p="_LoginPartial.cshtml" t="Include" />
             <e p="_SalesDetailReport.cshtml" t="Include" />
+            <e p="Error.cshtml" t="Include" />
+            <e p="Lockout.cshtml" t="Include" />
+          </e>
+          <e p="TAReport" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="web.config" t="Include" />
+        <e p="Web.Debug.config" t="Include" />
+        <e p="Web.Release.config" t="Include" />
+      </e>
+      <e p="IntlmillReportApps.sln" t="IncludeFlat" />
+      <e p="InventoryCount" t="IncludeRecursive">
+        <e p="App_Browsers" t="Include">
+          <e p="qt.browser" t="Include" />
+        </e>
+        <e p="App_Data" t="Include" />
+        <e p="App_Start" t="Include">
+          <e p="BundleConfig.cs" t="Include" />
+          <e p="FilterConfig.cs" t="Include" />
+          <e p="IdentityConfig.cs" t="Include" />
+          <e p="RouteConfig.cs" t="Include" />
+          <e p="Startup.Auth.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Content" t="Include">
+          <e p="bootstrap-grid.css" t="Include" />
+          <e p="bootstrap-grid.css.map" t="Include" />
+          <e p="bootstrap-grid.min.css" t="Include" />
+          <e p="bootstrap-grid.min.css.map" t="Include" />
+          <e p="bootstrap-reboot.css" t="Include" />
+          <e p="bootstrap-reboot.css.map" t="Include" />
+          <e p="bootstrap-reboot.min.css" t="Include" />
+          <e p="bootstrap-reboot.min.css.map" t="Include" />
+          <e p="bootstrap.css" t="Include" />
+          <e p="bootstrap.css.map" t="Include" />
+          <e p="bootstrap.min.css" t="Include" />
+          <e p="bootstrap.min.css.map" t="Include" />
+          <e p="ej2" t="Include">
+            <e p="bootstrap-dark.css" t="Include" />
+            <e p="bootstrap.css" t="Include" />
+            <e p="bootstrap4.css" t="Include" />
+            <e p="compatibility" t="Include">
+              <e p="bootstrap.css" t="Include" />
+              <e p="bootstrap4.css" t="Include" />
+              <e p="fabric.css" t="Include" />
+              <e p="highcontrast.css" t="Include" />
+              <e p="material.css" t="Include" />
+            </e>
+            <e p="fabric-dark.css" t="Include" />
+            <e p="fabric.css" t="Include" />
+            <e p="highcontrast.css" t="Include" />
+            <e p="material-dark.css" t="Include" />
+            <e p="material.css" t="Include" />
+          </e>
+          <e p="Print" t="Include" />
+          <e p="Site.css" t="Include" />
+          <e p="TransactionOid.Json" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AccountController.cs" t="Include" />
+          <e p="HomeController.cs" t="Include" />
+          <e p="LoginController.cs" t="Include" />
+          <e p="ManageController.cs" t="Include" />
+        </e>
+        <e p="favicon.ico" t="Include" />
+        <e p="Global.asax" t="Include" />
+        <e p="Global.asax.cs" t="Include" />
+        <e p="InventoryCount.csproj" t="IncludeRecursive" />
+        <e p="Models" t="Include">
+          <e p="AccountViewModels.cs" t="Include" />
+          <e p="ICS_Item.cs" t="Include" />
+          <e p="IdentityModels.cs" t="Include" />
+          <e p="InvCountModel.Context.cs" t="Include" />
+          <e p="InvCountModel.Context.tt" t="Include" />
+          <e p="InvCountModel.cs" t="Include" />
+          <e p="InvCountModel.Designer.cs" t="Include" />
+          <e p="InvCountModel.edmx" t="Include" />
+          <e p="InvCountModel.edmx.diagram" t="Include" />
+          <e p="InvCountModel.tt" t="Include" />
+          <e p="InvModel.Context.cs" t="Include" />
+          <e p="InvModel.Context.tt" t="Include" />
+          <e p="InvModel.cs" t="Include" />
+          <e p="InvModel.Designer.cs" t="Include" />
+          <e p="InvModel.edmx" t="Include" />
+          <e p="InvModel.edmx.diagram" t="Include" />
+          <e p="InvModel.tt" t="Include" />
+          <e p="Item.cs" t="Include" />
+          <e p="Location.cs" t="Include" />
+          <e p="ManageViewModels.cs" t="Include" />
+          <e p="SM_Location.cs" t="Include" />
+          <e p="Transaction.cs" t="Include" />
+          <e p="TransactionDetail.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Rotativa" t="Include">
+          <e p="wkhtmltopdf.exe" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="bootstrap.bundle.js" t="Include" />
+          <e p="bootstrap.bundle.js.map" t="Include" />
+          <e p="bootstrap.bundle.min.js" t="Include" />
+          <e p="bootstrap.bundle.min.js.map" t="Include" />
+          <e p="bootstrap.js" t="Include" />
+          <e p="bootstrap.js.map" t="Include" />
+          <e p="bootstrap.min.js" t="Include" />
+          <e p="bootstrap.min.js.map" t="Include" />
+          <e p="ej2" t="Include">
+            <e p="ej2.d.ts" t="Include" />
+            <e p="ej2.min.js" t="Include" />
+            <e p="ej2.min.js.map" t="Include" />
+          </e>
+          <e p="esm" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+          <e p="index.d.ts" t="Include" />
+          <e p="index.js.flow" t="Include" />
+          <e p="jquery-3.5.1.intellisense.js" t="Include" />
+          <e p="jquery-3.5.1.js" t="Include" />
+          <e p="jquery-3.5.1.min.js" t="Include" />
+          <e p="jquery-3.5.1.min.map" t="Include" />
+          <e p="jquery-3.5.1.slim.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.map" t="Include" />
+          <e p="jquery.validate-vsdoc.js" t="Include" />
+          <e p="jquery.validate.js" t="Include" />
+          <e p="jquery.validate.min.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+          <e p="modernizr-2.8.3.js" t="Include" />
+          <e p="popper-utils.js" t="Include" />
+          <e p="popper-utils.js.map" t="Include" />
+          <e p="popper-utils.min.js" t="Include" />
+          <e p="popper-utils.min.js.map" t="Include" />
+          <e p="popper.js" t="Include" />
+          <e p="popper.js.map" t="Include" />
+          <e p="popper.min.js" t="Include" />
+          <e p="popper.min.js.map" t="Include" />
+          <e p="README.md" t="Include" />
+          <e p="src" t="Include">
+            <e p="index.js" t="Include" />
+            <e p="methods" t="Include">
+              <e p="defaults.js" t="Include" />
+              <e p="destroy.js" t="Include" />
+              <e p="disableEventListeners.js" t="Include" />
+              <e p="enableEventListeners.js" t="Include" />
+              <e p="placements.js" t="Include" />
+              <e p="update.js" t="Include" />
+            </e>
+            <e p="modifiers" t="Include">
+              <e p="applyStyle.js" t="Include" />
+              <e p="arrow.js" t="Include" />
+              <e p="computeStyle.js" t="Include" />
+              <e p="flip.js" t="Include" />
+              <e p="hide.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="inner.js" t="Include" />
+              <e p="keepTogether.js" t="Include" />
+              <e p="offset.js" t="Include" />
+              <e p="preventOverflow.js" t="Include" />
+              <e p="shift.js" t="Include" />
+            </e>
+            <e p="utils" t="Include">
+              <e p="clockwise.js" t="Include" />
+              <e p="computeAutoPlacement.js" t="Include" />
+              <e p="debounce.js" t="Include" />
+              <e p="find.js" t="Include" />
+              <e p="findCommonOffsetParent.js" t="Include" />
+              <e p="findIndex.js" t="Include" />
+              <e p="getBordersSize.js" t="Include" />
+              <e p="getBoundaries.js" t="Include" />
+              <e p="getBoundingClientRect.js" t="Include" />
+              <e p="getClientRect.js" t="Include" />
+              <e p="getFixedPositionOffsetParent.js" t="Include" />
+              <e p="getOffsetParent.js" t="Include" />
+              <e p="getOffsetRect.js" t="Include" />
+              <e p="getOffsetRectRelativeToArbitraryNode.js" t="Include" />
+              <e p="getOppositePlacement.js" t="Include" />
+              <e p="getOppositeVariation.js" t="Include" />
+              <e p="getOuterSizes.js" t="Include" />
+              <e p="getParentNode.js" t="Include" />
+              <e p="getPopperOffsets.js" t="Include" />
+              <e p="getReferenceNode.js" t="Include" />
+              <e p="getReferenceOffsets.js" t="Include" />
+              <e p="getRoot.js" t="Include" />
+              <e p="getRoundedOffsets.js" t="Include" />
+              <e p="getScroll.js" t="Include" />
+              <e p="getScrollParent.js" t="Include" />
+              <e p="getStyleComputedProperty.js" t="Include" />
+              <e p="getSupportedPropertyName.js" t="Include" />
+              <e p="getViewportOffsetRectRelativeToArtbitraryNode.js" t="Include" />
+              <e p="getWindow.js" t="Include" />
+              <e p="getWindowSizes.js" t="Include" />
+              <e p="includeScroll.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="isBrowser.js" t="Include" />
+              <e p="isFixed.js" t="Include" />
+              <e p="isFunction.js" t="Include" />
+              <e p="isIE.js" t="Include" />
+              <e p="isModifierEnabled.js" t="Include" />
+              <e p="isModifierRequired.js" t="Include" />
+              <e p="isNumeric.js" t="Include" />
+              <e p="isOffsetContainer.js" t="Include" />
+              <e p="removeEventListeners.js" t="Include" />
+              <e p="runModifiers.js" t="Include" />
+              <e p="setAttributes.js" t="Include" />
+              <e p="setStyles.js" t="Include" />
+              <e p="setupEventListeners.js" t="Include" />
+            </e>
+          </e>
+          <e p="umd" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.flow" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="ViewModels" t="Include">
+          <e p="CRLocation.cs" t="Include" />
+          <e p="GeneralMessage.cs" t="Include" />
+          <e p="ItemViewModel.cs" t="Include" />
+          <e p="LocationViewModel.cs" t="Include" />
+          <e p="ScanResponseViewModel.cs" t="Include" />
+          <e p="TransactionViewModel.cs" t="Include" />
+        </e>
+        <e p="Views" t="Include">
+          <e p="_ViewStart.cshtml" t="Include" />
+          <e p="Account" t="Include">
+            <e p="_ExternalLoginsListPartial.cshtml" t="Include" />
+            <e p="ConfirmEmail.cshtml" t="Include" />
+            <e p="ExternalLoginConfirmation.cshtml" t="Include" />
+            <e p="ExternalLoginFailure.cshtml" t="Include" />
+            <e p="ForgotPassword.cshtml" t="Include" />
+            <e p="ForgotPasswordConfirmation.cshtml" t="Include" />
+            <e p="Login.cshtml" t="Include" />
+            <e p="Register.cshtml" t="Include" />
+            <e p="ResetPassword.cshtml" t="Include" />
+            <e p="ResetPasswordConfirmation.cshtml" t="Include" />
+            <e p="SendCode.cshtml" t="Include" />
+            <e p="VerifyCode.cshtml" t="Include" />
+          </e>
+          <e p="Home" t="Include">
+            <e p="About.cshtml" t="Include" />
+            <e p="Contact.cshtml" t="Include" />
+            <e p="GetTransactionDetails.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="TransactionDetails.cshtml" t="Include" />
+            <e p="Transactions.cshtml" t="Include" />
+          </e>
+          <e p="Login" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Manage" t="Include">
+            <e p="AddPhoneNumber.cshtml" t="Include" />
+            <e p="ChangePassword.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="ManageLogins.cshtml" t="Include" />
+            <e p="SetPassword.cshtml" t="Include" />
+            <e p="VerifyPhoneNumber.cshtml" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="_Layout.cshtml" t="Include" />
+            <e p="_LoginPartial.cshtml" t="Include" />
             <e p="Error.cshtml" t="Include" />
             <e p="Lockout.cshtml" t="Include" />
           </e>
@@ -434,7 +1354,301 @@
         <e p="Web.Debug.config" t="Include" />
         <e p="Web.Release.config" t="Include" />
       </e>
-      <e p="IntlmillReportApps.sln" t="IncludeFlat" />
+      <e p="ItemInventory" t="IncludeRecursive">
+        <e p="App_Browsers" t="Include">
+          <e p="qt.browser" t="Include" />
+        </e>
+        <e p="App_Data" t="Include" />
+        <e p="App_Start" t="Include">
+          <e p="BundleConfig.cs" t="Include" />
+          <e p="FilterConfig.cs" t="Include" />
+          <e p="IdentityConfig.cs" t="Include" />
+          <e p="RouteConfig.cs" t="Include" />
+          <e p="Startup.Auth.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Content" t="Include">
+          <e p="bootstrap-grid.css" t="Include" />
+          <e p="bootstrap-grid.css.map" t="Include" />
+          <e p="bootstrap-grid.min.css" t="Include" />
+          <e p="bootstrap-grid.min.css.map" t="Include" />
+          <e p="bootstrap-reboot.css" t="Include" />
+          <e p="bootstrap-reboot.css.map" t="Include" />
+          <e p="bootstrap-reboot.min.css" t="Include" />
+          <e p="bootstrap-reboot.min.css.map" t="Include" />
+          <e p="bootstrap.css" t="Include" />
+          <e p="bootstrap.css.map" t="Include" />
+          <e p="bootstrap.min.css" t="Include" />
+          <e p="bootstrap.min.css.map" t="Include" />
+          <e p="business-frontpage.css" t="Include" />
+          <e p="configuration.json" t="Include" />
+          <e p="ej2" t="Include">
+            <e p="bootstrap-dark.css" t="Include" />
+            <e p="bootstrap.css" t="Include" />
+            <e p="bootstrap4.css" t="Include" />
+            <e p="compatibility" t="Include">
+              <e p="bootstrap.css" t="Include" />
+              <e p="bootstrap4.css" t="Include" />
+              <e p="fabric.css" t="Include" />
+              <e p="highcontrast.css" t="Include" />
+              <e p="material.css" t="Include" />
+            </e>
+            <e p="fabric-dark.css" t="Include" />
+            <e p="fabric.css" t="Include" />
+            <e p="highcontrast.css" t="Include" />
+            <e p="material-dark.css" t="Include" />
+            <e p="material.css" t="Include" />
+          </e>
+          <e p="Font" t="Include">
+            <e p="Cairo-Black.ttf" t="Include" />
+            <e p="Cairo-Bold.ttf" t="Include" />
+            <e p="Cairo-ExtraLight.ttf" t="Include" />
+            <e p="Cairo-Light.ttf" t="Include" />
+            <e p="Cairo-Regular.ttf" t="Include" />
+            <e p="Cairo-SemiBold.ttf" t="Include" />
+          </e>
+          <e p="images" t="Include">
+            <e p="InternationalMill.png" t="Include" />
+          </e>
+          <e p="Print" t="Include" />
+          <e p="Site.css" t="Include" />
+          <e p="TransactionOid.Json" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AccountController.cs" t="Include" />
+          <e p="HomeController.cs" t="Include" />
+          <e p="ItemController.cs" t="Include" />
+          <e p="ManageController.cs" t="Include" />
+          <e p="UnitController.cs" t="Include" />
+        </e>
+        <e p="favicon.ico" t="Include" />
+        <e p="Global.asax" t="Include" />
+        <e p="Global.asax.cs" t="Include" />
+        <e p="ItemInventory.csproj" t="IncludeRecursive" />
+        <e p="Models" t="Include">
+          <e p="AccountViewModels.cs" t="Include" />
+          <e p="HiResDateTime.cs" t="Include" />
+          <e p="ICS_Item.cs" t="Include" />
+          <e p="ICS_Unit.cs" t="Include" />
+          <e p="IdentityModels.cs" t="Include" />
+          <e p="ImillReportModel.Context.cs" t="Include" />
+          <e p="ImillReportModel.Context.tt" t="Include" />
+          <e p="ImillReportModel.cs" t="Include" />
+          <e p="ImillReportModel.Designer.cs" t="Include" />
+          <e p="ImillReportModel.edmx" t="Include" />
+          <e p="ImillReportModel.edmx.diagram" t="Include" />
+          <e p="ImillReportModel.tt" t="Include" />
+          <e p="InventoryModel.Context.cs" t="Include" />
+          <e p="InventoryModel.Context.tt" t="Include" />
+          <e p="InventoryModel.cs" t="Include" />
+          <e p="InventoryModel.Designer.cs" t="Include" />
+          <e p="InventoryModel.edmx" t="Include" />
+          <e p="InventoryModel.edmx.diagram" t="Include" />
+          <e p="InventoryModel.tt" t="Include" />
+          <e p="ItemPartNumber.cs" t="Include" />
+          <e p="ManageViewModels.cs" t="Include" />
+          <e p="PDFHelper.cs" t="Include" />
+          <e p="Transaction.cs" t="Include" />
+          <e p="TransactionDetail.cs" t="Include" />
+          <e p="Unit.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Rotativa" t="Include">
+          <e p="wkhtmltopdf.exe" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="bootstrap.bundle.js" t="Include" />
+          <e p="bootstrap.bundle.js.map" t="Include" />
+          <e p="bootstrap.bundle.min.js" t="Include" />
+          <e p="bootstrap.bundle.min.js.map" t="Include" />
+          <e p="bootstrap.js" t="Include" />
+          <e p="bootstrap.js.map" t="Include" />
+          <e p="bootstrap.min.js" t="Include" />
+          <e p="bootstrap.min.js.map" t="Include" />
+          <e p="ej2" t="Include">
+            <e p="ej2.d.ts" t="Include" />
+            <e p="ej2.min.js" t="Include" />
+            <e p="ej2.min.js.map" t="Include" />
+            <e p="tsconfig.json" t="Include" />
+          </e>
+          <e p="esm" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+          <e p="index.d.ts" t="Include" />
+          <e p="index.js.flow" t="Include" />
+          <e p="jquery-3.5.1.intellisense.js" t="Include" />
+          <e p="jquery-3.5.1.js" t="Include" />
+          <e p="jquery-3.5.1.min.js" t="Include" />
+          <e p="jquery-3.5.1.min.map" t="Include" />
+          <e p="jquery-3.5.1.slim.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.js" t="Include" />
+          <e p="jquery-3.5.1.slim.min.map" t="Include" />
+          <e p="jquery.validate-vsdoc.js" t="Include" />
+          <e p="jquery.validate.js" t="Include" />
+          <e p="jquery.validate.min.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.js" t="Include" />
+          <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+          <e p="modernizr-2.8.3.js" t="Include" />
+          <e p="popper-utils.js" t="Include" />
+          <e p="popper-utils.js.map" t="Include" />
+          <e p="popper-utils.min.js" t="Include" />
+          <e p="popper-utils.min.js.map" t="Include" />
+          <e p="popper.js" t="Include" />
+          <e p="popper.js.map" t="Include" />
+          <e p="popper.min.js" t="Include" />
+          <e p="popper.min.js.map" t="Include" />
+          <e p="README.md" t="Include" />
+          <e p="src" t="Include">
+            <e p="index.js" t="Include" />
+            <e p="methods" t="Include">
+              <e p="defaults.js" t="Include" />
+              <e p="destroy.js" t="Include" />
+              <e p="disableEventListeners.js" t="Include" />
+              <e p="enableEventListeners.js" t="Include" />
+              <e p="placements.js" t="Include" />
+              <e p="update.js" t="Include" />
+            </e>
+            <e p="modifiers" t="Include">
+              <e p="applyStyle.js" t="Include" />
+              <e p="arrow.js" t="Include" />
+              <e p="computeStyle.js" t="Include" />
+              <e p="flip.js" t="Include" />
+              <e p="hide.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="inner.js" t="Include" />
+              <e p="keepTogether.js" t="Include" />
+              <e p="offset.js" t="Include" />
+              <e p="preventOverflow.js" t="Include" />
+              <e p="shift.js" t="Include" />
+            </e>
+            <e p="utils" t="Include">
+              <e p="clockwise.js" t="Include" />
+              <e p="computeAutoPlacement.js" t="Include" />
+              <e p="debounce.js" t="Include" />
+              <e p="find.js" t="Include" />
+              <e p="findCommonOffsetParent.js" t="Include" />
+              <e p="findIndex.js" t="Include" />
+              <e p="getBordersSize.js" t="Include" />
+              <e p="getBoundaries.js" t="Include" />
+              <e p="getBoundingClientRect.js" t="Include" />
+              <e p="getClientRect.js" t="Include" />
+              <e p="getFixedPositionOffsetParent.js" t="Include" />
+              <e p="getOffsetParent.js" t="Include" />
+              <e p="getOffsetRect.js" t="Include" />
+              <e p="getOffsetRectRelativeToArbitraryNode.js" t="Include" />
+              <e p="getOppositePlacement.js" t="Include" />
+              <e p="getOppositeVariation.js" t="Include" />
+              <e p="getOuterSizes.js" t="Include" />
+              <e p="getParentNode.js" t="Include" />
+              <e p="getPopperOffsets.js" t="Include" />
+              <e p="getReferenceNode.js" t="Include" />
+              <e p="getReferenceOffsets.js" t="Include" />
+              <e p="getRoot.js" t="Include" />
+              <e p="getRoundedOffsets.js" t="Include" />
+              <e p="getScroll.js" t="Include" />
+              <e p="getScrollParent.js" t="Include" />
+              <e p="getStyleComputedProperty.js" t="Include" />
+              <e p="getSupportedPropertyName.js" t="Include" />
+              <e p="getViewportOffsetRectRelativeToArtbitraryNode.js" t="Include" />
+              <e p="getWindow.js" t="Include" />
+              <e p="getWindowSizes.js" t="Include" />
+              <e p="includeScroll.js" t="Include" />
+              <e p="index.js" t="Include" />
+              <e p="isBrowser.js" t="Include" />
+              <e p="isFixed.js" t="Include" />
+              <e p="isFunction.js" t="Include" />
+              <e p="isIE.js" t="Include" />
+              <e p="isModifierEnabled.js" t="Include" />
+              <e p="isModifierRequired.js" t="Include" />
+              <e p="isNumeric.js" t="Include" />
+              <e p="isOffsetContainer.js" t="Include" />
+              <e p="removeEventListeners.js" t="Include" />
+              <e p="runModifiers.js" t="Include" />
+              <e p="setAttributes.js" t="Include" />
+              <e p="setStyles.js" t="Include" />
+              <e p="setupEventListeners.js" t="Include" />
+            </e>
+          </e>
+          <e p="umd" t="Include">
+            <e p="popper-utils.js" t="Include" />
+            <e p="popper-utils.js.map" t="Include" />
+            <e p="popper-utils.min.js" t="Include" />
+            <e p="popper-utils.min.js.map" t="Include" />
+            <e p="popper.js" t="Include" />
+            <e p="popper.js.flow" t="Include" />
+            <e p="popper.js.map" t="Include" />
+            <e p="popper.min.js" t="Include" />
+            <e p="popper.min.js.map" t="Include" />
+          </e>
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="ViewModels" t="Include">
+          <e p="Configuration.cs" t="Include" />
+          <e p="GeneralMessage.cs" t="Include" />
+          <e p="ItemViewModel.cs" t="Include" />
+          <e p="TransactionViewModel.cs" t="Include" />
+          <e p="UnitViewModel.cs" t="Include" />
+        </e>
+        <e p="Views" t="Include">
+          <e p="_ViewStart.cshtml" t="Include" />
+          <e p="Account" t="Include">
+            <e p="_ExternalLoginsListPartial.cshtml" t="Include" />
+            <e p="ConfirmEmail.cshtml" t="Include" />
+            <e p="ExternalLoginConfirmation.cshtml" t="Include" />
+            <e p="ExternalLoginFailure.cshtml" t="Include" />
+            <e p="ForgotPassword.cshtml" t="Include" />
+            <e p="ForgotPasswordConfirmation.cshtml" t="Include" />
+            <e p="Login.cshtml" t="Include" />
+            <e p="Register.cshtml" t="Include" />
+            <e p="ResetPassword.cshtml" t="Include" />
+            <e p="ResetPasswordConfirmation.cshtml" t="Include" />
+            <e p="SendCode.cshtml" t="Include" />
+            <e p="VerifyCode.cshtml" t="Include" />
+          </e>
+          <e p="Home" t="Include">
+            <e p="AddItems.cshtml" t="Include" />
+            <e p="GetTransactionDetails.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="TransactionDetails.cshtml" t="Include" />
+          </e>
+          <e p="Item" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Manage" t="Include">
+            <e p="AddPhoneNumber.cshtml" t="Include" />
+            <e p="ChangePassword.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="ManageLogins.cshtml" t="Include" />
+            <e p="SetPassword.cshtml" t="Include" />
+            <e p="VerifyPhoneNumber.cshtml" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="_Layout.cshtml" t="Include" />
+            <e p="_LoginPartial.cshtml" t="Include" />
+            <e p="Error.cshtml" t="Include" />
+            <e p="Lockout.cshtml" t="Include" />
+          </e>
+          <e p="Unit" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="web.config" t="Include" />
+        <e p="Web.Debug.config" t="Include" />
+        <e p="Web.Release.config" t="Include" />
+      </e>
       <e p="packages" t="ExcludeRecursive" />
     </e>
   </component>

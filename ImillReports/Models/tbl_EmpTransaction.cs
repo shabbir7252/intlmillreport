@@ -24,7 +24,7 @@ namespace ImillReports.Models
         public Nullable<int> TransactionSecond { get; set; }
         public string TransactionType { get; set; }
         public string DeviceCode { get; set; }
-        public long Timestamp { get; set; }
+        public Nullable<long> Timestamp { get; set; }
         public Nullable<decimal> Temperature { get; set; }
         public Nullable<bool> pushed { get; set; }
         public Nullable<System.DateTime> TransactionDateTime { get; set; }

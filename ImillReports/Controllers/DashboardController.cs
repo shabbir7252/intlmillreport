@@ -228,8 +228,8 @@ namespace ImillReports.Controllers
 
 
             ViewBag.dataSourcePie = chartData;
-            chartData.Sort((x, y) => x.y.Value.CompareTo(y.y.Value));
-            chartData.Reverse();
+            //chartData.Sort((x, y) => x.y.Value.CompareTo(y.y.Value));
+            //chartData.Reverse();
             ViewBag.Top10Branch = chartData;
 
             //HttpCookie chartInfo = new HttpCookie("chartInfo");
@@ -272,15 +272,17 @@ namespace ImillReports.Controllers
                 datasets = new List<Datasets>()
             };
 
-            List<Datasets> _dataSet = new List<Datasets>();
-            _dataSet.Add(new Datasets()
+            var _dataSet = new List<Datasets>
             {
-                label = "",
-                data = dataArray,
-                backgroundColor = colorArray,
-                borderColor = colorArray,
-                borderWidth = "1"
-            });
+                new Datasets()
+                {
+                    label = "",
+                    data = dataArray,
+                    backgroundColor = colorArray,
+                    borderColor = colorArray,
+                    borderWidth = "1"
+                }
+            };
             _chart.datasets = _dataSet;
 
 
@@ -856,22 +858,31 @@ namespace ImillReports.Controllers
         [AllowAnonymous]
         public ActionResult BranchSalesForPrint(int reportType)
         {
-            var settings = _dashboardRepository.GetLastEmailSettings();
-            var todayDate = settings.LastEmailDate;
+            //var settings = reportType == 1
+            //    ? _dashboardRepository.GetLastEmailSettings(true, false)
+            //    : reportType == 2
+            //    ? _dashboardRepository.GetLastEmailSettings(false, true)
+            //    : _dashboardRepository.GetLastEmailSettings(false, false);
+
+            //var todayDate = settings.LastEmailDate;
 
             var fromDate = DateTime.Now;
             var toDate = DateTime.Now;
 
-            if (reportType == 3)
+            if (reportType == 1)
             {
-                fromDate = new DateTime(todayDate.Year, 01, 01, 00, 00, 00);
-                toDate = new DateTime(todayDate.Year, 12, 31, 23, 59, 59);
+                var backDate = DateTime.Now.Date.AddDays(-7);
+                fromDate = new DateTime(backDate.Year, backDate.Month, backDate.Day, 03, 00, 00);
+                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00);
+
+                // fromDate = new DateTime(2021, 1, 1, 3, 0, 0);
+                // toDate = new DateTime(2021, 1, 6, 2, 59, 0);
             }
             else if (reportType == 2)
             {
-                var lastDay = DateTime.DaysInMonth(todayDate.Year, todayDate.Month);
-                fromDate = new DateTime(todayDate.Year, todayDate.Month, 01, 00, 00, 00);
-                toDate = new DateTime(todayDate.Year, todayDate.Month, lastDay, 23, 59, 59);
+                //var lastDay = DateTime.DaysInMonth(todayDate.Year, todayDate.Month);
+                //fromDate = new DateTime(todayDate.Year, todayDate.Month, 01, 00, 00, 00);
+                //toDate = new DateTime(todayDate.Year, todayDate.Month, lastDay, 23, 59, 59);
             }
             else
             {
@@ -903,7 +914,7 @@ namespace ImillReports.Controllers
             var fromDate = new DateTime(2021, 01, 01, 12, 00, 00);
             var toDate = new DateTime(2021, 01, 01, 23, 59, 59);
 
-            var actionResult = new Rotativa.ActionAsPdf("BranchSalesForPrint", new { fromDate = fromDate, toDate = toDate })
+            var actionResult = new Rotativa.ActionAsPdf("BranchSalesForPrint", new { fromDate, toDate })
             {
                 PageSize = Rotativa.Options.Size.A4,
                 PageOrientation = Rotativa.Options.Orientation.Landscape,
@@ -965,43 +976,52 @@ namespace ImillReports.Controllers
                     }
                 }
 
-                _dashboardRepository.SetWeeklyRptEmailDate();
-
-                string mailbody = "<html><body><img src=\"cid:Email\" style=\"width:100%\"></body></html>";
+                string mailbody = "<html><body><div style=\"width:100%\"><img src=\"cid:Email\" style=\"width:100%\"></div></body></html>";
+                // string mailbody = "<html lang='en'><head><meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Intlmill Email</title></head><body> <table width='250px'> <tr> <td> <img src='cid:Email' alt='' style='width: 100%;'> </td></tr></table></body></html>";
                 AlternateView AlternateView_Html = AlternateView.CreateAlternateViewFromString(mailbody, null, MediaTypeNames.Text.Html);
-                LinkedResource Picture1 = new LinkedResource(path, MediaTypeNames.Image.Jpeg);
-                Picture1.ContentId = "Email";
+                var Picture1 = new LinkedResource(path, MediaTypeNames.Image.Jpeg)
+                {
+                    ContentId = "Email"
+                };
                 AlternateView_Html.LinkedResources.Add(Picture1);
-
                 var newAttachment = new Attachment(path);
                 // newAttachment.ContentDisposition.Inline = true;
 
-                MailMessage mailMessage = new MailMessage
+
+                var emails = _dashboardRepository.GetEmails();
+
+                foreach (var item in emails)
                 {
-                    Subject = $"Dashboard as Yearly Report",
-                    Body = mailbody,
-                    From = new MailAddress("imillmaterialreq@gmail.com"),
-                    IsBodyHtml = true
-                };
+                    
 
-                mailMessage.AlternateViews.Add(AlternateView_Html);
+                    MailMessage mailMessage = new MailMessage
+                    {
+                        Subject = $"Dashboard as Weekly Report",
+                        Body = mailbody,
+                        From = new MailAddress("imillmaterialreq@gmail.com"),
+                        IsBodyHtml = true
+                    };
 
-                mailMessage.Attachments.Add(newAttachment);
+                    mailMessage.AlternateViews.Add(AlternateView_Html);
 
+                    mailMessage.Attachments.Add(newAttachment);
 
-                mailMessage.To.Add(new MailAddress("shabbir.i@intlmill.com"));
+                    mailMessage.To.Add(new MailAddress(item.Email));
 
-                SmtpClient smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
-                };
+                    SmtpClient smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential("imillmaterialreq@gmail.com", "M@ter!alReq$t")
+                    };
 
-                smtp.Send(mailMessage);
+                    smtp.Send(mailMessage);
+
+                    _dashboardRepository.UpdateWeeklyRptTransactions(item.Oid);
+                }
 
                 newAttachment.Dispose();
                 AlternateView_Html.Dispose();
@@ -1009,21 +1029,30 @@ namespace ImillReports.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Upload failed");
+                return Json($"Upload failed : {ex.Message}");
             }
 
             return Json("File uploaded successfully");
         }
 
         [HttpGet]
-        public bool SendEmailAsReport()
+        public bool SendEmailAsReport(bool isWeekly, bool isMonthly)
         {
-            var settings = _dashboardRepository.GetLastEmailSettings();
-            var lastDate = settings.LastEmailDate;
-            // return true;
-            return lastDate.Date == DateTime.Now.Date &&
-                   DateTime.Now > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00) &&
-                   !settings.WeekRptEmailSent;
+            var settings = _dashboardRepository.GetLastEmailSettings(isWeekly, isMonthly);
+            //var lastDate = settings.LastEmailDate;
+            //// return true;
+            //return lastDate.Date == DateTime.Now.Date &&
+            //       DateTime.Now > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00) &&
+            //       !settings.WeekRptEmailSent;
+
+            return settings.WeekRptEmailSent;
+        }
+
+
+        [HttpGet]
+        public bool SendWeeklyReport()
+        {
+            return _dashboardRepository.GetSettings();
         }
 
     }

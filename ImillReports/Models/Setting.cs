@@ -18,7 +18,9 @@ namespace ImillReports.Models
         public System.DateTime SerialDate { get; set; }
         public long SerialNumber { get; set; }
         public Nullable<int> BackDays { get; set; }
-        public Nullable<System.DateTime> RptEmailDate { get; set; }
-        public Nullable<bool> WeekRptEmailSent { get; set; }
+        public Nullable<System.DateTime> WeekplyRptDate { get; set; }
+        public Nullable<System.DateTime> MonthlyRptDate { get; set; }
+        public Nullable<System.DateTime> YearlyRptDate { get; set; }
+        public Nullable<System.TimeSpan> EmailReportTime { get; set; }
     }
 }

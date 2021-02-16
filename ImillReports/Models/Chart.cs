@@ -26,5 +26,7 @@ namespace ImillReports.Models
         public string branchPercent;
         internal DateTime hour;
         internal DateTime date;
+
+        public int MonthNumber { get; internal set; }
     }
 }

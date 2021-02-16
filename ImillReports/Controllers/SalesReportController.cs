@@ -181,7 +181,7 @@ namespace ImillReports.Controllers
 
         [HttpGet]
         public ActionResult SalesDetailReport(DateTime? fromDate, DateTime? toDate, string[] locationStringArray,
-            string[] voucherTypeStringArray, bool? isChecked, string[] productStringArray, string[] productArStringArray, JsonResult querybuilder)
+            string[] voucherTypeStringArray, bool? _, string[] productStringArray, string[] _1, JsonResult _2)
         {
 
             if (fromDate == null)
@@ -403,11 +403,13 @@ namespace ImillReports.Controllers
                 //ViewBag.DataSource = source;
                 //return View();
 
-                var serializer = new JavaScriptSerializer();
+                var serializer = new JavaScriptSerializer
+                {
 
-                // For simplicity just use Int32's max value.
-                // You could always read the value from the config section mentioned above.
-                serializer.MaxJsonLength = Int32.MaxValue;
+                    // For simplicity just use Int32's max value.
+                    // You could always read the value from the config section mentioned above.
+                    MaxJsonLength = Int32.MaxValue
+                };
 
                 var result = new ContentResult
                 {
@@ -454,26 +456,24 @@ namespace ImillReports.Controllers
                 Voucher = x.Voucher
             }).ToList();
 
-            var test = "";
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Xlsx;
+                IWorkbook workbook = application.Workbooks.Create(1);
+                IWorksheet worksheet = workbook.Worksheets[0];
 
-            //using (ExcelEngine excelEngine = new ExcelEngine())
-            //{
-            //    IApplication application = excelEngine.Excel;
-            //    application.DefaultVersion = ExcelVersion.Xlsx;
-            //    IWorkbook workbook = application.Workbooks.Create(1);
-            //    IWorksheet worksheet = workbook.Worksheets[0];
+                //Import data to worksheet
+                worksheet.ImportData(exportData, 1, 1, true);
 
-            //    //Import data to worksheet
-            //    worksheet.ImportData(exportData, 1, 1, true);
+                var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
+                var reportNamePath = $"{cs}SalesReport.xlsx";
 
-            //    var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
-            //    var reportNamePath = $"{cs}SalesReport.xlsx";
-
-            //    //Save the file in the given path
-            //    Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
-            //    workbook.SaveAs(excelStream);
-            //    excelStream.Dispose();
-            //}
+                //Save the file in the given path
+                Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
+                workbook.SaveAs(excelStream);
+                excelStream.Dispose();
+            }
 
             return result;
         }
@@ -1342,11 +1342,16 @@ namespace ImillReports.Controllers
 
         #endregion
 
-
         #region Sales Trend
+
         // int trendType, int months, int reportType, int groupWise
-        public ActionResult SalesTrend()
+        [Authorize(Roles = "Admin,Sales, StaffAdmin")]
+        public ActionResult SalesTrend(int? trendType, int? trendYear, int? trendMonth, int? reportType, string[] locations,
+            DateTime? fromDate, DateTime? toDate, string[] products, string[] productsAr, string[] groups)
         {
+            ViewBag.From = fromDate.HasValue ? fromDate.Value.ToString("dd/MMM/yyyy hh:mm tt") : "";
+            ViewBag.To = toDate.HasValue ? toDate.Value.ToString("dd/MMM/yyyy hh:mm tt") : "";
+            ViewBag.TrendType = trendType;
             ViewBag.Trends = new List<Trends>
             {
                 new Trends
@@ -1383,58 +1388,2081 @@ namespace ImillReports.Controllers
                     Name = "Location",
                     NameAr = "Location"
                 },
-                new SalesReportType
+                //new SalesReportType
+                //{
+                //    Id= 2,
+                //    Name = "Item",
+                //    NameAr = "Item"
+                //},
+                //new SalesReportType
+                //{
+                //    Id= 3,
+                //    Name = "Group",
+                //    NameAr = "Group"
+                //}
+            };
+            ViewBag.ReportTypeVal = reportType;
+            var dbLocations = _locationRepository.GetLocations().LocationItems.Where(x => x.Type != Repository.LocationRepository.LocationType.HO);
+            
+
+            var locationArray = new List<int>();
+            if (locations != null)
+            {
+                locationArray.AddRange(from item in locations select int.Parse(item));
+                foreach (var currentLocation in
+                    from location in dbLocations
+                    from id in locationArray
+                    where location.LocationId == id
+                    select location)
                 {
-                    Id= 2,
-                    Name = "Item",
-                    NameAr = "Item"
+                    currentLocation.IsSelected = true;
+                }
+            }
+
+            ViewBag.Locations = dbLocations;
+            ViewBag.locationVal = new string[] { "" };
+
+            var dbProducts = _productRepository.GetAllProducts().Items.OrderBy(x => x.Name);
+            ViewBag.products = dbProducts;
+
+            var dbGroups = _productRepository.GetItemGroups().OrderBy(x => x.ParentGroupId);
+            ViewBag.ItemGroups = dbGroups;
+
+            ViewBag.Years = new List<SalesMonthsYears>
+            {
+                new SalesMonthsYears
+                {
+                    Name = "2015",
+                    Year = 2015
                 },
-                new SalesReportType
+                new SalesMonthsYears
                 {
-                    Id= 3,
-                    Name = "Group",
-                    NameAr = "Group"
+                    Name = "2016",
+                    Year = 2016
+                },
+                new SalesMonthsYears
+                {
+                    Name = "2017",
+                    Year = 2017
+                },
+                new SalesMonthsYears
+                {
+                    Name = "2018",
+                    Year = 2018
+                },
+                new SalesMonthsYears
+                {
+                    Name = "2019",
+                    Year = 2019
+                },
+                new SalesMonthsYears
+                {
+                    Name = "2020",
+                    Year = 2020
+                },
+                new SalesMonthsYears
+                {
+                    Name = "2021",
+                    Year = 2021
                 }
             };
+            ViewBag.TrendYear = trendYear;
 
-            ViewBag.Locations = _locationRepository.GetLocations().LocationItems;
+            ViewBag.Months = new List<SalesMonthsYears>
+            {
+                new SalesMonthsYears
+                {
+                    Name = "January",
+                    MonthNumber = 1
+                },
+                new SalesMonthsYears
+                {
+                    Name = "February",
+                    MonthNumber = 2
+                },
+                new SalesMonthsYears
+                {
+                    Name = "March",
+                    MonthNumber = 3
+                },
+                new SalesMonthsYears
+                {
+                    Name = "April",
+                    MonthNumber = 4
+                },
+                new SalesMonthsYears
+                {
+                    Name = "May",
+                    MonthNumber = 5
+                },
+                new SalesMonthsYears
+                {
+                    Name = "June",
+                    MonthNumber = 6
+                },
+                new SalesMonthsYears
+                {
+                    Name = "July",
+                    MonthNumber = 7
+                },
+                new SalesMonthsYears
+                {
+                    Name = "August",
+                    MonthNumber = 8
+                },
+                new SalesMonthsYears
+                {
+                    Name = "September",
+                    MonthNumber = 9
+                },
+                new SalesMonthsYears
+                {
+                    Name = "October",
+                    MonthNumber = 10
+                },
+                new SalesMonthsYears
+                {
+                    Name = "November",
+                    MonthNumber = 11
+                },
+                new SalesMonthsYears
+                {
+                    Name = "December",
+                    MonthNumber = 12
+                }
+            };
+            ViewBag.TrendMonth = trendMonth;
 
-            ViewBag.products = _productRepository.GetAllProducts().Items.OrderBy(x => x.Name);
+            if (trendType != null)
+            {
+                switch (trendType)
+                {
+                    // Yearly
+                    case 1:
+                        {
+                            if (reportType != null)
+                            {
+                                // Location
+                                if (reportType == 1)
+                                {
+                                    var locationsString = locations != null && locations.Length > 0
+                                        ? string.Join(",", locations)
+                                        : "";
 
-            List<ColumnChartData> chartData = new List<ColumnChartData>
-            {
-                    new ColumnChartData { x= "2014", y= 111 },
-                    new ColumnChartData { x= "2015", y= 127 },
-                    new ColumnChartData { x= "2016", y= 143 },
-                    new ColumnChartData { x= "2017", y= 159 }
-            };
-            ViewBag.dataSource = chartData;
-            List<ColumnChartData> chartData1 = new List<ColumnChartData>
-            {
-                    new ColumnChartData { x= "2014", y= 76 },
-                    new ColumnChartData { x= "2015", y= 99 },
-                    new ColumnChartData { x= "2016", y= 121 },
-                    new ColumnChartData { x= "2017", y= 142 }
-            };
-            ViewBag.dataSource1 = chartData1;
-            List<ColumnChartData> chartData2 = new List<ColumnChartData>
-            {
-                    new ColumnChartData { x= "2014", y= 66 },
-                    new ColumnChartData { x= "2015", y= 79 },
-                    new ColumnChartData { x= "2016", y= 91 },
-                    new ColumnChartData { x= "2017", y= 102 }
-            };
-            ViewBag.dataSource2 = chartData2;
-            List<ColumnChartData> chartData3 = new List<ColumnChartData>
-            {
-                    new ColumnChartData { x= "2014", y= 34 },
-                    new ColumnChartData { x= "2015", y= 38 },
-                    new ColumnChartData { x= "2016", y= 44 },
-                    new ColumnChartData { x= "2017", y= 51 }
-            };
-            ViewBag.dataSource3 = chartData3;
+                                    GetYearlyReportLocationWise(locationsString, dbLocations);
+
+                                }
+                                // Item
+                                else if (reportType == 2)
+                                {
+                                    if (products != null && products.Length > 0)
+                                    {
+                                        var productString = string.Join(",", products);
+                                        GetYearlyReportItemWise(productString, dbProducts);
+                                    }
+                                    else if (productsAr != null && productsAr.Length > 0)
+                                    {
+                                        var productString = string.Join(",", productsAr);
+                                        GetYearlyReportItemWise(productString, dbProducts);
+                                    }
+                                }
+                                // Group
+                                else if (reportType == 3)
+                                {
+                                    if (groups != null && groups.Length > 0)
+                                    {
+                                        GetYearlyReportGroupWise(groups, dbGroups, dbProducts);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                    // Month & Year
+                    case 2:
+                        {
+                            if (reportType != null)
+                            {
+                                // Location
+                                if (reportType == 1)
+                                {
+                                    var locationsString = locations != null && locations.Length > 0
+                                        ? string.Join(",", locations)
+                                        : "";
+
+                                    if (trendMonth.HasValue)
+                                    {
+                                        GetMonthYearReportLocationWise(locationsString, trendMonth.Value, dbLocations);
+                                    }
+                                    else
+                                    {
+                                        ViewBag.Validation = "Invalid Year!";
+                                        return View();
+                                    }
+                                }
+                                // Item
+                                else if (reportType == 2)
+                                {
+                                    if (trendMonth.HasValue)
+                                    {
+                                        if (products != null && products.Length > 0)
+                                        {
+                                            var productString = string.Join(",", products);
+                                            GetMonthYearReportItemWise(productString, trendMonth.Value, dbProducts);
+                                        }
+                                        else if (productsAr != null && productsAr.Length > 0)
+                                        {
+                                            var productString = string.Join(",", productsAr);
+                                            GetMonthYearReportItemWise(productString, trendMonth.Value, dbProducts);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ViewBag.Validation = "Invalid Year!";
+                                        return View();
+                                    }
+                                    
+                                }
+                                // Group
+                                else if (reportType == 3)
+                                {
+
+                                }
+                            }
+                            break;
+                        }
+
+                    // Monthly
+                    case 3:
+                        {
+                            if (reportType != null)
+                            {
+                                // Location
+                                if (reportType == 1)
+                                {
+                                    var locationsString = locations != null && locations.Length > 0
+                                        ? string.Join(",", locations)
+                                        : "";
+
+                                    if (trendYear.HasValue)
+                                    {
+                                        GetMonthlyReportLocationWise(locationsString, trendYear.Value, dbLocations);
+                                    }
+                                    else
+                                    {
+                                        ViewBag.Validation = "Invalid Year!";
+                                        return View();
+                                    }
+                                }
+
+                                // Item
+                                else if (reportType == 2)
+                                {
+                                    if (products != null && products.Length > 0)
+                                    {
+                                        var productString = string.Join(",", products);
+                                        GetMonthlyReportItemWise(productString, trendYear.Value, dbProducts);
+                                    }
+                                    else if (productsAr != null && productsAr.Length > 0)
+                                    {
+                                        var productString = string.Join(",", productsAr);
+                                        GetMonthlyReportItemWise(productString, trendYear.Value, dbProducts);
+                                    }
+                                }
+
+                                // Group
+                                else if (reportType == 3)
+                                {
+                                    if (groups != null && groups.Length > 0)
+                                    {
+                                        GetMonthlyReportGroupWise(groups, trendYear.Value, dbGroups, dbProducts);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                    // Weekly
+                    case 4:
+                        {
+                            if (reportType != null)
+                            {
+                                // Location
+                                if (reportType == 1)
+                                {
+                                    var locationsString = locations != null && locations.Length > 0
+                                        ? string.Join(",", locations)
+                                        : "";
+                                    GetWeeklyReportLocationWise(locationsString, fromDate, toDate, dbLocations);
+                                }
+                                // Item
+                                else if (reportType == 2)
+                                {
+                                    if (products != null && products.Length > 0)
+                                    {
+                                        var productString = string.Join(",", products);
+                                        GetWeeklyReportItemWise(productString, fromDate, toDate, dbProducts);
+                                    }
+                                    else if (productsAr != null && productsAr.Length > 0)
+                                    {
+                                        var productString = string.Join(",", productsAr);
+                                        GetWeeklyReportItemWise(productString, fromDate, toDate, dbProducts);
+                                    }
+                                }
+                                // Group
+                                else if (reportType == 3)
+                                {
+                                    if (groups != null && groups.Length > 0)
+                                    {
+                                        GetWeeklyReportGroupWise(groups, fromDate, toDate, dbGroups, dbProducts);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                }
+            }
+
             return View();
         }
+
+        private void GetMonthlyReportGroupWise(string[] groupsArray, int year, IOrderedEnumerable<ItemGroup> dbGroups, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.MonthlyReportGroupWise = true;
+            var productArray = new List<string>();
+            foreach (var groupString in groupsArray)
+            {
+                var groupId = int.Parse(groupString);
+                var prodIds = products.Where(x => x.GroupCd == groupId).Select(x => x.ProductId);
+                productArray.AddRange(from id in prodIds
+                                      select id.ToString());
+            }
+
+            var productString = string.Join(",", productArray.ToArray());
+
+
+            ViewBag.MonthlyReportItemWise = true;
+
+            var report = _salesReportRepository.GetMonthlyReportItemWise(productString, year).SalesLocationTrendsItems.GroupBy(x => x.GroupCd);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData25 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalMonthAmount = 0;
+                    var month = item.Month;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalMonthAmount += data.Where(x => x.Month == month).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalMonthPercent = totalMonthAmount == 0 ? 0 : 100 / totalMonthAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        MonthNumber = item.MonthNumber,
+                        x = month,
+                        y = amount,
+                        text = $"{month} : {amount.Value:0.000} ({totalMonthPercent.Value:0.0}%) <br> Group Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Month Total : {totalMonthAmount.Value:0.000}"
+                    });
+                }
+
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+            ViewBag.dataSource25 = chartData25;
+        }
+
+        private void GetWeeklyReportGroupWise(string[] groupsArray, DateTime? fromDate, DateTime? toDate, IOrderedEnumerable<ItemGroup> dbGroups, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.WeeklyReportGroupWise = true;
+            var productArray = new List<string>();
+            foreach (var groupString in groupsArray)
+            {
+                var groupId = int.Parse(groupString);
+                var prodIds = products.Where(x => x.GroupCd == groupId).Select(x => x.ProductId);
+                productArray.AddRange(from id in prodIds
+                                      select id.ToString());
+            }
+
+            var productString = string.Join(",", productArray.ToArray());
+
+
+            var report = _salesReportRepository.GetWeeklyReportItemWise(productString, fromDate, toDate).SalesLocationTrendsItems.GroupBy(x => x.GroupCd);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalWeekAmount = 0;
+                    var week = item.Week;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalWeekAmount += data.Where(x => x.WeekStartDate >= item.WeekStartDate && x.WeekEndDate <= item.WeekEndDate).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalWeekPercent = totalWeekAmount == 0 ? 0 : 100 / totalWeekAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        x = $"W-{week}",
+                        y = amount,
+                        text = $"W-{week} {item.WeekText}: {amount.Value:0.000} ({totalWeekPercent.Value:0.0}%) <br> Group Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Week Total : {totalWeekAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetYearlyReportGroupWise(string[] groupsArray, IOrderedEnumerable<ItemGroup> dbGroups, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.YearlyReportGroupWise = true;
+
+            var productArray = new List<string>();
+            foreach (var groupString in groupsArray)
+            {
+                var groupId = int.Parse(groupString);
+                var prodIds = products.Where(x => x.GroupCd == groupId).Select(x => x.ProductId);
+                productArray.AddRange(from id in prodIds
+                                      select id.ToString());
+            }
+
+            var productString = string.Join(",", productArray.ToArray());
+
+
+            var report = _salesReportRepository.GetYearlyReportItemWise(productString).SalesLocationTrendsItems.GroupBy(x => x.GroupCd);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = dbGroups.FirstOrDefault(x => x.ItemGroupId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalYearAmount = 0;
+                    var year = item.Year;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalYearAmount += data.Where(x => x.Year == year).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalYearPercent = totalYearAmount == 0 ? 0 : 100 / totalYearAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        MonthNumber = item.MonthNumber,
+                        x = year.ToString(),
+                        y = amount,
+                        text = $"{year} : {amount.Value:0.000} ({totalYearPercent.Value:0.0}%) <br> Group Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Year Total : {totalYearAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetMonthYearReportItemWise(string productString, int month, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.MonthYearReportLocationWise = true;
+            var report = _salesReportRepository.GetMonthYearReportItemWise(productString, month).SalesLocationTrendsItems.GroupBy(x => x.ProductId);
+            var monthName = new DateTime(2020, month, 1).ToString("MMM");
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalYearAmount = 0;
+                    var year = item.Year;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalYearAmount += data.Where(x => x.Year == year).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalYearPercent = totalYearAmount == 0 ? 0 : 100 / totalYearAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        x = $"{monthName}-{year}",
+                        y = amount,
+                        text = $"{year} : {amount.Value:0.000} ({totalYearPercent.Value:0.0}%) <br> Item Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Year Total : {totalYearAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetYearlyReportItemWise(string productString, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.YearlyReportLocationWise = true;
+
+            var report = _salesReportRepository.GetYearlyReportItemWise(productString).SalesLocationTrendsItems.GroupBy(x => x.ProductId);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalYearAmount = 0;
+                    var year = item.Year;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalYearAmount += data.Where(x => x.Year == year).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalYearPercent = totalYearAmount == 0 ? 0 : 100 / totalYearAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        MonthNumber = item.MonthNumber,
+                        x = year.ToString(),
+                        y = amount,
+                        text = $"{year} : {amount.Value:0.000} ({totalYearPercent.Value:0.0}%) <br> Item Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Year Total : {totalYearAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetWeeklyReportItemWise(string productString, DateTime? fromDate, DateTime? toDate, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.WeeklyReportItemWise = true;
+            var report = _salesReportRepository.GetWeeklyReportItemWise(productString, fromDate, toDate).SalesLocationTrendsItems.GroupBy(x => x.ProductId);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalWeekAmount = 0;
+                    var week = item.Week;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalWeekAmount += data.Where(x => x.WeekStartDate >= item.WeekStartDate && x.WeekEndDate <= item.WeekEndDate).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalWeekPercent = totalWeekAmount == 0 ? 0 : 100 / totalWeekAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        x = $"W-{week}",
+                        y = amount,
+                        text = $"W-{week} {item.WeekText}: {amount.Value:0.000} ({totalWeekPercent.Value:0.0}%) <br> Item Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Week Total : {totalWeekAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetMonthlyReportItemWise(string productString, int year, IOrderedEnumerable<Item> products)
+        {
+            ViewBag.MonthlyReportItemWise = true;
+
+            var report = _salesReportRepository.GetMonthlyReportItemWise(productString, year).SalesLocationTrendsItems.GroupBy(x => x.ProductId);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData25 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = products.FirstOrDefault(x => x.ProductId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalMonthAmount = 0;
+                    var month = item.Month;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalMonthAmount += data.Where(x => x.Month == month).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalMonthPercent = totalMonthAmount == 0 ? 0 : 100 / totalMonthAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        MonthNumber = item.MonthNumber,
+                        x = month,
+                        y = amount,
+                        text = $"{month} : {amount.Value:0.000} ({totalMonthPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Month Total : {totalMonthAmount.Value:0.000}"
+                    });
+                }
+
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+            ViewBag.dataSource25 = chartData25;
+        }
+
+        private void GetWeeklyReportLocationWise(string locationsString, DateTime? fromDate, DateTime? toDate, IEnumerable<LocationItem> locations)
+        {
+            ViewBag.WeeklyReportLocationWise = true;
+            var report = _salesReportRepository.GetWeeklyReportLocationWise(locationsString, fromDate, toDate).SalesLocationTrendsItems.GroupBy(x => x.LocationId);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalWeekAmount = 0;
+                    var week = item.Week;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalWeekAmount += data.Where(x => x.WeekStartDate >= item.WeekStartDate && x.WeekEndDate <= item.WeekEndDate).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalWeekPercent = totalWeekAmount == 0 ? 0 : 100 / totalWeekAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        x = $"W-{week}",
+                        y = amount,
+                        text = $"W-{week} {item.WeekText}: {amount.Value:0.000} ({totalWeekPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Week Total : {totalWeekAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+
+
+
+
+
+        }
+
+        private void GetMonthYearReportLocationWise(string locationsString, int month, IEnumerable<LocationItem> locations)
+        {
+            ViewBag.MonthYearReportLocationWise = true;
+            var report = _salesReportRepository.GetMonthYearReportLocationWise(locationsString, month).SalesLocationTrendsItems.GroupBy(x => x.LocationId);
+            var monthName = new DateTime(2020, month, 1).ToString("MMM");
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalYearAmount = 0;
+                    var year = item.Year;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalYearAmount += data.Where(x => x.Year == year).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalYearPercent = totalYearAmount == 0 ? 0 : 100 / totalYearAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        x = $"{monthName}-{year}",
+                        y = amount,
+                        text = $"{year} : {amount.Value:0.000} ({totalYearPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Year Total : {totalYearAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetYearlyReportLocationWise(string locationsString, IEnumerable<LocationItem> locations)
+        {
+            ViewBag.YearlyReportLocationWise = true;
+
+            var report = _salesReportRepository.GetYearlyReportLocationWise(locationsString).SalesLocationTrendsItems.GroupBy(x => x.LocationId);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalYearAmount = 0;
+                    var year = item.Year;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalYearAmount += data.Where(x => x.Year == year).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalYearPercent = totalYearAmount == 0 ? 0 : 100 / totalYearAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        MonthNumber = item.MonthNumber,
+                        x = year.ToString(),
+                        y = amount,
+                        text = $"{year} : {amount.Value:0.000} ({totalYearPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Year Total : {totalYearAmount.Value:0.000}"
+                    });
+                }
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+        }
+
+        private void GetMonthlyReportLocationWise(string locationsString, int year, IEnumerable<LocationItem> locations)
+        {
+            ViewBag.MonthlyReportLocationWise = true;
+
+            var report = _salesReportRepository.GetMonthlyReportLocationWise(locationsString, year).SalesLocationTrendsItems.GroupBy(x => x.LocationId);
+
+            var count = 1;
+            List<ColumnChartData> chartData1 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData2 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData3 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData4 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData5 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData6 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData7 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData8 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData9 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData10 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData11 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData12 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData13 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData14 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData15 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData16 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData17 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData18 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData19 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData20 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData21 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData22 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData23 = new List<ColumnChartData>();
+            List<ColumnChartData> chartData24 = new List<ColumnChartData>();
+
+            foreach (var items in report)
+            {
+
+                var listData = chartData1;
+                switch (count)
+                {
+                    case 1:
+                        listData = chartData1;
+                        ViewBag.locationName1 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 2:
+                        listData = chartData2;
+                        ViewBag.locationName2 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 3:
+                        listData = chartData3;
+                        ViewBag.locationName3 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 4:
+                        listData = chartData4;
+                        ViewBag.locationName4 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 5:
+                        listData = chartData5;
+                        ViewBag.locationName5 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 6:
+                        listData = chartData6;
+                        ViewBag.locationName6 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 7:
+                        listData = chartData7;
+                        ViewBag.locationName7 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 8:
+                        listData = chartData8;
+                        ViewBag.locationName8 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 9:
+                        listData = chartData9;
+                        ViewBag.locationName9 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 10:
+                        listData = chartData10;
+                        ViewBag.locationName10 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    case 11:
+                        listData = chartData11;
+                        ViewBag.locationName11 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+
+                    default:
+                        listData = chartData12;
+                        ViewBag.locationName12 = locations.FirstOrDefault(x => x.LocationId == items.Key).Name;
+                        break;
+                }
+
+                foreach (var item in items)
+                {
+                    decimal? totalMonthAmount = 0;
+                    var month = item.Month;
+                    var amount = item.Amount;
+
+                    foreach (var data in report)
+                    {
+                        totalMonthAmount += data.Where(x => x.Month == month).Sum(x => x.Amount);
+                    }
+
+                    decimal? totalAmount = items.Sum(x => x.Amount);
+
+                    var totalbranchPercent = totalAmount == 0 ? 0 : 100 / totalAmount * amount;
+                    var totalMonthPercent = totalMonthAmount == 0 ? 0 : 100 / totalMonthAmount * amount;
+
+                    listData.Add(new ColumnChartData
+                    {
+                        MonthNumber = item.MonthNumber,
+                        x = month,
+                        y = amount,
+                        text = $"{month} : {amount.Value:0.000} ({totalMonthPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Month Total : {totalMonthAmount.Value:0.000}"
+                    });
+                }
+
+
+                count += 1;
+
+            }
+
+            ViewBag.dataSource1 = chartData1;
+            ViewBag.dataSource2 = chartData2;
+            ViewBag.dataSource3 = chartData3;
+            ViewBag.dataSource4 = chartData4;
+            ViewBag.dataSource5 = chartData5;
+            ViewBag.dataSource6 = chartData6;
+            ViewBag.dataSource7 = chartData7;
+            ViewBag.dataSource8 = chartData8;
+            ViewBag.dataSource9 = chartData9;
+            ViewBag.dataSource10 = chartData10;
+            ViewBag.dataSource11 = chartData11;
+            ViewBag.dataSource12 = chartData12;
+            ViewBag.dataSource13 = chartData13;
+            ViewBag.dataSource14 = chartData14;
+            ViewBag.dataSource15 = chartData15;
+            ViewBag.dataSource16 = chartData16;
+            ViewBag.dataSource17 = chartData17;
+            ViewBag.dataSource18 = chartData18;
+            ViewBag.dataSource19 = chartData19;
+            ViewBag.dataSource20 = chartData20;
+            ViewBag.dataSource21 = chartData21;
+            ViewBag.dataSource22 = chartData22;
+            ViewBag.dataSource23 = chartData23;
+            ViewBag.dataSource24 = chartData24;
+
+
+        }
+
         #endregion
 
     }

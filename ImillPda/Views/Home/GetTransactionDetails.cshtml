@@ -36,6 +36,7 @@
                         Scan Barcode
                     </button>-->
                     @Html.EJS().TextBox("Barcode").Placeholder("Barcode").Change("GetItem").Render()
+                    @*<input class="form-control" id="Barcode" type="number" onchange="GetItem()" />*@
                 </div>
             </div>
         </div>
@@ -157,13 +158,14 @@
         //    window.location.reload();
         //}, 1800000);
 
-        var itemList = [];
-        var grid;
-        var flag = true;
-        var oid = 0;
-        var newPartNumber = '';
-        var weight = '';
-        var incQtyPartNums = [];
+        let itemList = [];
+        let grid;
+        let flag = true;
+        let oid = 0;
+        let newPartNumber = '';
+        let weight = '';
+        let incQtyPartNums = [];
+        let barcodeflag = true;
 
         function dataBound(args) {
             // this.autoFitColumns(['NameEn', 'NameAr', 'Actions']);
@@ -251,6 +253,7 @@
 
         function Dismiss() {
             document.getElementById('Barcode').ej2_instances[0].value = "";
+            // document.getElementById('Barcode');
             setTimeout(
                 function () {
                     FocusOnBarcode();
@@ -260,8 +263,10 @@
         function GetItem() {
             var barcode = document.getElementById('Barcode').ej2_instances[0].value;
 
-            if (barcode !== '') {
-                $.ajax({
+            if (barcodeflag) {
+                if (barcode !== '') {
+                    barcodeflag = false;
+                    $.ajax({
                     type: 'POST',
                     url: '@Url.Action("GetBarcodeValue", "Home")',
                     data: {
@@ -295,9 +300,6 @@
                                                 elem.ActQty = elem.Qty;
                                             }
                                         }
-
-
-
                                     } else {
                                         elem.ActQty = elem.ActQty + response.Weight;
                                     }
@@ -328,6 +330,7 @@
 
 
                                 document.getElementById('Barcode').ej2_instances[0].value = "";
+                                // barcode.val("");
                             }
                         } else {
                             alert(response.Message);
@@ -335,15 +338,14 @@
                         }
 
                         FocusOnBarcode();
-                        // document.getElementById('Barcode').focus();
+                        barcodeflag = true;
                     },
                     error: function (ex) {
                         alert(ex);
                     }
                 });
             }
-
-            // console.log('Item Changed : ', itemList);
+            }
         }
 
         $(document).ready(function () {
@@ -458,7 +460,7 @@
             refreshGrid = true;
         }
 
-        function FocusOnBarcode(){
+        function FocusOnBarcode() {
             document.getElementById('Barcode').focus();
         }
 

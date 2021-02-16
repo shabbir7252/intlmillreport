@@ -2,8 +2,30 @@
 @using Syncfusion.EJ2
 @using Syncfusion.EJ2.DropDowns
 
+
 @{
     ViewBag.Title = "Sales Trend";
+
+    var isAdmin = User.IsInRole("Admin");
+    string[] color = new string[] {
+        "#4286f4", "#f4b642", "#f441a9",
+        "#945713", "#7bb4eb", "#ea7a57",
+        "#00bdae", "#404041", "#e56590",
+        "#f8b883", "#70ad47", "#dd8abd",
+        "#F8BF00", "#E11C34", "#E6B3B3",
+        "#999999", "#7f84e8", "#FF99E6",
+        "#CCFF1A", "#555555", "#59A28F",
+        "#33FFCC", "#66994D", "#B366CC",
+        "#4D8000", "#B33300", "#CC80CC",
+        "#66664D", "#991AFF", "#E666FF",
+        "#4DB3FF", "#1AB399", "#E666B3",
+        "#33991A", "#CC9999", "#B3B31A",
+        "#00E680", "#4D8066", "#809980",
+        "#E6FF80", "#1AFF33", "#999933",
+        "#FF3380", "#CCCC00", "#66E64D",
+        "#4D80CC", "#9900B3", "#E64D66",
+        "#4DB380", "#FF4D4D", "#99E6E6" };
+
 }
 
 <div class="container-fluid">
@@ -12,10 +34,89 @@
     <div class="row clearfix">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
-                    @Html.EJS().DropDownList("trends").Placeholder("Select a Trend").PopupHeight("220px").DataSource(
-                    (IEnumerable<object>)ViewBag.Trends).Change("valueChange").Fields(new DropDownListFieldSettings { Text = "NameEn", Value = "Id" }).Render()
-                </div>
+                @using (Html.BeginForm("SalesTrend", "SalesReport", FormMethod.Get))
+                {
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-2">
+                                @Html.EJS().DropDownList("trendType").Value(ViewBag.TrendType).Placeholder("Select a Trend").PopupHeight("220px").Change("TrendChange").DataSource(
+                        (IEnumerable<object>)ViewBag.Trends).Fields(new DropDownListFieldSettings { Text = "NameEn", Value = "Id" }).Render()
+                            </div>
+
+                            <div class="col-2 type-year">
+                                @Html.EJS().DropDownList("trendYear").Value(ViewBag.TrendYear).Placeholder("Select year").PopupHeight("220px").DataSource(
+                        (IEnumerable<object>)ViewBag.Years).Fields(new DropDownListFieldSettings { Text = "Name", Value = "Year" }).Render()
+                            </div>
+
+                            <div class="col-2 type-month">
+                                @Html.EJS().DropDownList("trendMonth").Value(ViewBag.TrendMonth).Placeholder("Select Month").PopupHeight("220px").DataSource(
+                        (IEnumerable<object>)ViewBag.Months).Fields(new DropDownListFieldSettings { Text = "Name", Value = "MonthNumber" }).Render()
+                            </div>
+
+                            <div class="col-3 type-week">
+                                <div class="row">
+                                    <div class="col-6">
+                                        @Html.EJS().DateTimePicker("fromDate").Value(ViewBag.From).Placeholder("From").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.startDate).Render()
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.EJS().DateTimePicker("toDate").Value(ViewBag.To).Placeholder("To").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-2">
+                                @Html.EJS().DropDownList("reporttype").Value(ViewBag.ReportTypeVal).Placeholder("Select a Type").PopupHeight("220px").Change("TypeChange").DataSource(
+                        (IEnumerable<object>)ViewBag.ReportType).Fields(new DropDownListFieldSettings { Text = "Name", Value = "Id" }).Render()
+                            </div>
+
+                            <div class="col-3 type-location">
+                                @Html.EJS().MultiSelect("locations").Value(ViewBag.locationVal).ShowDropDownIcon().AllowFiltering(true).Placeholder("Select location(s)").EnableGroupCheckBox(true).DataSource(
+                       (IEnumerable<object>)ViewBag.Locations).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                       new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { GroupBy = "TypeName", Text = "Name", Value = "LocationId" }).ActionBegin("onBegin").DataBound("onBound").Render()
+                            </div>
+
+                            <div class="type-product col-4">
+                                <div class="row">
+
+                                    <div class="col-3 mt-2 px-0 text-center">
+                                        <div class="form-group form-check mb-0">
+                                            <input type="checkbox" class="form-check-input m-0 p-0" id="isChecked">
+                                            <label class="form-check-label" for="isChecked">Prod(En)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-8 prodEn">
+                                        @Html.EJS().MultiSelect("products").ShowDropDownIcon().AllowFiltering(true).Filtering("onfiltering").Placeholder("Select Products").DataSource(
+                                            (IEnumerable<object>)ViewBag.products
+                                            ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                                            new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "Name", Value = "ProductId" }).ActionBegin("onProductBegin").DataBound("onProductBound").Render()
+                                    </div>
+
+                                    <div class="col-8 prodAr">
+                                        @Html.EJS().MultiSelect("productsAr").ShowDropDownIcon().AllowFiltering(true).Filtering("onfilteringAr").EnableRtl(true).Placeholder("اختر المنتجات").DataSource(
+                                         (IEnumerable<object>
+                                             )ViewBag.products
+                                             ).Mode(Syncfusion.EJ2.DropDowns.VisualMode.CheckBox).ShowSelectAll(true).SelectAllText("Select All").UnSelectAllText("UnSelect All").Fields(
+                                             new Syncfusion.EJ2.DropDowns.MultiSelectFieldSettings { Text = "NameAr", Value = "ProductId" }).ActionBegin("onProductArBegin").DataBound("onProductArBound").Render()
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-3 type-group">
+                                @Html.EJS().MultiSelect("groups").ShowDropDownIcon(true).Placeholder("Select Group Item").Filtering("OnGroupFiltering").Mode(VisualMode.CheckBox).AllowFiltering(true).ShowSelectAll(true).FilterBarPlaceholder("Search Item Group").EnableGroupCheckBox(true).DataSource(
+                                        (IEnumerable<object>)ViewBag.ItemGroups).Fields(new MultiSelectFieldSettings { GroupBy = "GroupName", Text = "Name", Value = "ItemGroupId" }).EnableSelectionOrder(false).ActionBegin("OnItemGroupBegin").DataBound("OnItemGroupBound").Render()
+                            </div>
+
+                            <div class="col-1">
+                                <button type="submit" class="btn btn-raised bg-black waves-effect waves-light getRecords">Get Report</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+
             </div>
         </div>
     </div>
@@ -23,21 +124,311 @@
 
     <div class="row">
         <div class="col-12">
-            @Html.EJS().Chart("container-vertical").Series(series =>
- {
-     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource).Name("UK").Add();
-     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource1).Name("Germany").Add();
-     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource2).Name("France").Add();
-     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").DataSource(ViewBag.dataSource3).Name("Italy").Add();
- }).PrimaryXAxis(px => px.ValueType(Syncfusion.EJ2.Charts.ValueType.Category)
- .MajorGridLines(mg => mg.Width(0)).MinorGridLines(mg => mg.Width(0))
- .MajorTickLines(mt => mt.Width(0)).
- MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0))
- .LabelIntersectAction(Syncfusion.EJ2.Charts.LabelIntersectAction.Rotate90)
-       ).PrimaryYAxis(py => py.MajorTickLines(mt => mt.Width(0)).
-       MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0)).Title("Sales")
-       ).Title("Mobile Game Market by Country").ChartArea(area => area.Border(br => br.Color("transparent"))).Tooltip(tt => tt.Enable(true)).Render()
+            @if (ViewBag.MonthlyReportLocationWise != null || ViewBag.YearlyReportLocationWise != null ||
+                ViewBag.MonthYearReportLocationWise != null || ViewBag.WeeklyReportLocationWise != null ||
+                ViewBag.MonthlyReportItemWise != null || ViewBag.WeeklyReportItemWise != null ||
+                ViewBag.MonthlyReportGroupWise != null || ViewBag.WeeklyReportGroupWise != null)
+            {
+                @Html.EJS().Chart("ReportLocationWise").Palettes(color).Series(series =>
+           {
+               if (ViewBag.dataSource1 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource1).Name(ViewBag.locationName1).Add();
+               }
+
+               if (ViewBag.dataSource2 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource2).Name(ViewBag.locationName2).Add();
+               }
+
+               if (ViewBag.dataSource3 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource3).Name(ViewBag.locationName3).Add();
+               }
+
+               if (ViewBag.dataSource4 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource4).Name(ViewBag.locationName4).Add();
+               }
+
+               if (ViewBag.dataSource5 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource5).Name(ViewBag.locationName5).Add();
+               }
+
+               if (ViewBag.dataSource6 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource6).Name(ViewBag.locationName6).Add();
+               }
+
+               if (ViewBag.dataSource7 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource7).Name(ViewBag.locationName7).Add();
+               }
+
+               if (ViewBag.dataSource8 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource8).Name(ViewBag.locationName8).Add();
+               }
+
+               if (ViewBag.dataSource9 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource9).Name(ViewBag.locationName9).Add();
+               }
+
+               if (ViewBag.dataSource10 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource10).Name(ViewBag.locationName10).Add();
+               }
+
+               if (ViewBag.dataSource11 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource11).Name(ViewBag.locationName11).Add();
+               }
+
+               if (ViewBag.dataSource12 != null)
+               {
+                   series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn).XName("x").YName("y").TooltipMappingName("text").DataSource(ViewBag.dataSource12).Name(ViewBag.locationName12).Add();
+               }
+
+           }).PrimaryXAxis(px => px.ValueType(Syncfusion.EJ2.Charts.ValueType.Category)
+           .MajorGridLines(mg => mg.Width(0)).LabelRotation(-30).MinorGridLines(mg => mg.Width(0))
+           .MajorTickLines(mt => mt.Width(0)).
+           MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0))
+                // .LabelIntersectAction(Syncfusion.EJ2.Charts.LabelIntersectAction.Rotate90)
+                ).PrimaryYAxis(py => py.MajorTickLines(mt => mt.Width(0))
+                .MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0)).Title("Sales")).Title("").ChartArea(area =>
+                area.Border(br => br.Color("transparent"))).Tooltip(tt => tt.Enable(true).Format("${point.tooltip}")).Render()
+            }
         </div>
     </div>
 </div>
 
+
+@section scripts {
+
+    <script>
+
+
+
+        let typeLocation = $('.type-location');
+        let typeProduct = $('.type-product');
+        let typeGroup = $('.type-group');
+        let typeYear = $('.type-year');
+        let typeMonth = $('.type-month');
+        let typeWeek = $('.type-week');
+
+
+        typeProduct.hide();
+        typeGroup.hide();
+        typeYear.hide();
+        typeMonth.hide();
+        typeWeek.hide();
+
+        if ('@ViewBag.ReportTypeVal' === '1') {
+            typeLocation.show();
+        }
+
+         if ('@ViewBag.TrendType' === '2') {
+             typeMonth.show();
+        }
+
+        if ('@ViewBag.TrendType' === '3') {
+            typeYear.show();
+        }
+
+        if ('@ViewBag.TrendType' === '4') {
+            typeWeek.show();
+         }
+
+        $('.prodEn').hide();
+        let prodEnCheck = false;
+
+        $('#isChecked').change(function () {
+            if (this.checked) {
+                $('.prodEn').show();
+                $('.prodAr').hide();
+                prodEnCheck = true;
+            } else {
+                $('.prodEn').hide();
+                $('.prodAr').show();
+                prodEnCheck = false;
+            }
+        });
+
+        let selected = [];
+        function onBegin(e) {
+            this.fields = {
+                text: 'Name', value: 'LocationId', itemCreated: function (e) {
+                    let count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemSearch(e.curData.LocationId); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemSearch(e) {
+            if (selected.indexOf(e) == -1)
+                selected.push(e);
+        }
+
+        function onBound(e) {
+            this.value = selected;
+        }
+
+        function onfiltering(e) {
+            let CBObj = document.getElementById("products").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                let query = new ej.data.Query().from('products').select(['Name', 'ProductId']);
+                query = (e.text !== '') ? query.where('Name', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        function onfilteringAr(e) {
+            let CBObj = document.getElementById("productsAr").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                let query = new ej.data.Query().from('productsAr').select(['NameAr', 'ProductId']);
+                query = (e.text !== '') ? query.where('NameAr', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        let selectedProduct = [];
+        function onProductBegin(e) {
+            this.fields = {
+                text: 'Name', value: 'ProductId', itemCreated: function (e) {
+                    let count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemProductSearch(e.curData.ProductId); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemProductSearch(e) {
+            if (selectedProduct.indexOf(e) == -1)
+                selectedProduct.push(e);
+        }
+
+        function onProductBound(e) {
+            this.value = selectedProduct;
+        }
+
+        let selectedProductAr = [];
+        function onProductArBegin(e) {
+            this.fields = {
+                text: 'NameAr', value: 'ProductId', itemCreated: function (e) {
+                    let count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                itemProductSearch(e.curData.ProductId); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function itemProductArSearch(e) {
+            if (selectedProductAr.indexOf(e) == -1)
+                selectedProductAr.push(e);
+        }
+
+        function onProductArBound(e) {
+            this.value = selectedProductAr;
+        }
+
+
+
+        let selectedGroupItem = [];
+        function OnItemGroupBegin(e) {
+            this.fields = {
+                text: 'Name', value: 'ItemGroupId', itemCreated: function (e) {
+                    let count = 0;
+                    if (count === 0) {
+                        for (let i = 0; i < e.dataSource.length; i++) {
+                            if (e.curData.IsSelected == true)
+                                GroupItemSearch(e.curData.ItemGroupId); //pass the corresponding value
+                        }
+                    }
+                }
+            }
+        }
+
+        function GroupItemSearch(e) {
+            if (selectedGroupItem.indexOf(e) == -1)
+                selectedGroupItem.push(e);
+        }
+
+        function OnItemGroupBound(e) {
+            this.value = selectedGroupItem;
+        }
+
+        function OnGroupFiltering(e) {
+            let CBObj = document.getElementById("groups").ej2_instances[0];
+            if (e.text == '')
+                e.updateData(CBObj.dataSource);
+            else {
+                let query = new ej.data.Query().from('groups').select(['Name', 'ItemGroupId']);
+                query = (e.text !== '') ? query.where('Name', 'contains', e.text, true) : query;
+                e.updateData(CBObj.dataSource, query);
+            }
+        }
+
+        function TypeChange(args) {
+            let typeId = args.itemData.Id;
+            if (typeId === 1) {
+                typeLocation.show();
+                typeProduct.hide();
+                typeGroup.hide();
+            } else if (typeId === 2) {
+                typeProduct.show();
+                typeLocation.hide();
+                typeGroup.hide();
+            } else {
+                typeProduct.hide();
+                typeLocation.hide();
+                typeGroup.show();
+            }
+        }
+
+        function TrendChange(args) {
+            let trendId = args.itemData.Id;
+
+            if (trendId === 2) {
+                typeYear.hide();
+                typeMonth.show();
+                typeWeek.hide();
+            } else if (trendId === 3) {
+                typeYear.show();
+                typeMonth.hide();
+                typeWeek.hide();
+            } else if (trendId === 4) {
+                typeWeek.show();
+                typeMonth.hide();
+                typeYear.hide();
+            } else {
+                typeYear.hide();
+                typeMonth.hide();
+                typeWeek.hide();
+            }
+        }
+
+
+
+
+    </script>
+
+}

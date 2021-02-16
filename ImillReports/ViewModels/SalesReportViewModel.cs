@@ -220,4 +220,49 @@ namespace ImillReports.ViewModels
         public string NameEn { get; set; }
         public string NameAr { get; set; }
     }
+
+    public class ReportEmailsSettings
+    {
+        public int Oid { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class SalesLocationTrendsViewModel
+    {
+        public List<SalesLocationTrendsItem> SalesLocationTrendsItems { get; set; }
+    }
+
+    public class SalesLocationTrendsItem
+    {
+        public string Location { get; set; }
+        public int MonthNumber { get; set; }
+        public int Year { get; set; }
+        public string Month { get; set; }
+        public decimal? Amount { get; set; }
+        public int LocationId { get; internal set; }
+        public int Week { get; internal set; }
+        public string WeekText { get; set; }
+        public DateTime WeekStartDate { get; internal set; }
+        public DateTime WeekEndDate { get; internal set; }
+        public long ProductId { get; internal set; }
+        public string ProductName { get; internal set; }
+        public int GroupCd { get; internal set; }
+    }
+
+    public class SalesMonthsYears
+    {
+        public int Year { get; set; }
+        public string Name { get; set; }
+        public int MonthNumber { get; set; }
+    }
+
+    public class WeekRange
+    {
+        public string Range { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int Week { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+    }
 }

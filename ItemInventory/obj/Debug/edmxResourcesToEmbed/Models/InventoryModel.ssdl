@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ImillItemInventoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ItemPartNumber">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PartNumber" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TransactionDetails">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransDate" Type="datetime" Nullable="false" />
+    <Property Name="ItemOid" Type="bigint" Nullable="false" />
+    <Property Name="ItemNameEn" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ItemNameAr" Type="nvarchar" MaxLength="50" />
+    <Property Name="UnitOid" Type="bigint" Nullable="false" />
+    <Property Name="UnitNameEn" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UnitNameAr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdatedOn" Type="datetime" />
+    <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="TransactionNumber" Type="bigint" Nullable="false" />
+    <Property Name="TransactionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Transactions">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransDate" Type="datetime" Nullable="false" />
+    <Property Name="TransactionNumber" Type="bigint" Nullable="false" />
+    <Property Name="TransNum" Type="nvarchar" MaxLength="1000" />
+    <Property Name="ItemsCount" Type="int" Nullable="false" />
+    <Property Name="IsEmailSent" Type="bit" Nullable="false" />
+    <Property Name="IsPrinted" Type="bit" Nullable="false" />
+    <Property Name="EmailSentOn" Type="datetime" />
+    <Property Name="PrintedOn" Type="datetime" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="RequestedBy" Type="int" Nullable="false" />
+    <Property Name="Comments" Type="nvarchar" MaxLength="500" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdatedOn" Type="datetime" />
+    <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Unit">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NameEn" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="NameAr" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdatedOn" Type="datetime" />
+    <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsDeleted" Type="bit" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="nvarchar" MaxLength="128" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+    <Property Name="FullnameEn" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="FullnameAr" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" />
+    <Property Name="IsRegForEmail" Type="bit" Nullable="false" />
+    <Property Name="IsActiveDropDown" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_TransactionDetails_Transactions">
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="1" />
+    <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Transactions">
+        <PropertyRef Name="Oid" />
+      </Principal>
+      <Dependent Role="TransactionDetails">
+        <PropertyRef Name="TransactionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ImillItemInventoryModelStoreContainer">
+    <EntitySet Name="ItemPartNumber" EntityType="Self.ItemPartNumber" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_TransactionDetails_Transactions" Association="Self.FK_TransactionDetails_Transactions">
+      <End Role="Transactions" EntitySet="Transactions" />
+      <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
