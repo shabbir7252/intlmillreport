@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ImillPdaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="OpenTransactions">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EntryId" Type="bigint" Nullable="false" />
+    <Property Name="Prod_Cd" Type="bigint" Nullable="false" />
+    <Property Name="PartNumber" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Locat_Cd" Type="bigint" Nullable="false" />
+    <Property Name="RequiredQty" Type="numeric" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="ActualQty" Type="numeric" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="RequestedQty" Type="numeric" Precision="14" Scale="5" />
+    <Property Name="IsNewlyAdded" Type="bit" Nullable="false" />
+    <Property Name="IsReqQtyChanged" Type="bit" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedOn" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransDate" Type="datetime" Nullable="false" />
+    <Property Name="Locat_Cd" Type="bigint" Nullable="false" />
+    <Property Name="EntryId" Type="bigint" Nullable="false" />
+    <Property Name="RequestedDate" Type="datetime" Nullable="false" />
+    <Property Name="IsCompleted" Type="bit" Nullable="false" />
+    <Property Name="TransactionId" Type="int" Nullable="false" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="TransactionDetails">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Prod_Cd" Type="bigint" Nullable="false" />
+    <Property Name="NameEn" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="NameAr" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Qty" Type="numeric" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="ActualQty" Type="numeric" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="RequestedDate" Type="datetime" Nullable="false" />
+    <Property Name="DeliveryDate" Type="datetime" />
+    <Property Name="Entry_Id" Type="bigint" Nullable="false" />
+    <Property Name="TransactionOid" Type="int" Nullable="false" />
+    <Property Name="DeliveredQty" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="RemainingQty" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="IsDelivered" Type="bit" Nullable="false" />
+    <Property Name="Line_No" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WishList">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EntryId" Type="bigint" Nullable="false" />
+    <Property Name="RequestedDate" Type="datetime" Nullable="false" />
+    <Property Name="Prod_Cd" Type="bigint" Nullable="false" />
+    <Property Name="RequestedQty" Type="numeric" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="RemainingQty" Type="numeric" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="TransactionOid" Type="bigint" Nullable="false" />
+    <Property Name="TransDetailOid" Type="bigint" Nullable="false" />
+    <Property Name="NameEn" Type="varchar" MaxLength="100" />
+    <Property Name="NameAr" Type="nvarchar" MaxLength="100" />
+    <Property Name="Locat_Cd" Type="bigint" />
+  </EntityType>
+  <EntityContainer Name="ImillPdaModelStoreContainer">
+    <EntitySet Name="OpenTransactions" EntityType="Self.OpenTransactions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WishList" EntityType="Self.WishList" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
