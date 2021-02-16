@@ -209,6 +209,7 @@ D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\MigraDoc.RtfRendering-gdi.resources.dll
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\PdfSharp-gdi.resources.dll
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\PdfSharp.Charting-gdi.resources.dll
+D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csprojAssemblyReference.cache
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CoreCompileInputs.cache
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CopyComplete
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.dll
