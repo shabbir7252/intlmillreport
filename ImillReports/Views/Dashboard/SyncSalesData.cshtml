@@ -332,5 +332,28 @@
         // ****************** Sending Mail For Time Attendance End ***************** //
 
 
+        // ****************** Checking PDA Transactions ***************** //
+
+        ValidateTransDetail();
+        const transDetailInterval = setInterval(function () {
+            ValidateTransDetail();
+        }, 40000);
+
+        function ValidateTransDetail() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ValidateTransDetail", "Pda")',
+                success: function (response) {
+                    console.log("PDA : ", response);
+                },
+                error: function (ex) {
+                    console.log("PDA : ", ex);
+                }
+            });
+        }
+
+        // ****************** Checking PDA Transactions ***************** //
+
+
     </script>
 }

@@ -70,5 +70,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="EmailSettings">
+      <EntityTypeMapping TypeName="ImillPdaModel.EmailSetting">
+        <MappingFragment StoreEntitySet="EmailSetting">
+          <ScalarProperty Name="IsRegForEmail" ColumnName="IsRegForEmail" />
+          <ScalarProperty Name="Emails" ColumnName="Emails" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

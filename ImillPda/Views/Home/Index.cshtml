@@ -5,6 +5,7 @@
 
     List<object> commands = new List<object>();
     commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+    commands.Add(new { type = "Delete", buttonOption = new { iconCss = "e-icons e-delete", cssClass = "delete mt-3 bg-danger", name = "delete" } });
 }
 
 <style>
@@ -39,8 +40,10 @@
                 col.Field("IsHidden").Visible(false).ShowInColumnChooser(true).Add();
                 col.Field("ItemCount").Visible(false).ShowInColumnChooser(true).Add();
                 col.Field("RequestNumber").Visible(false).ShowInColumnChooser(false).Add();
+                col.Field("CustomDate").Visible(false).ShowInColumnChooser(false).Add();
+                col.Field("CustomTime").Visible(false).ShowInColumnChooser(false).Add();
                 col.Field("UserDateTime").HeaderText("Time").Visible(false).Format(new { type = "dateTime", format = "hh:mm:ss" }).ShowInColumnChooser(true).Add();
-                col.Field("TransDate").Width("70").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.Field("TransDate").Template("#templatedate").Width("70").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yy" }).CustomAttributes(new { @class = "customcss" }).Add();
                 col.Field("Locat_Cd").Visible(false).ShowInColumnChooser(false).Add();
                 col.Field("LocationNameEn").Visible(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                 col.Field("LocationNameAr").Template("#template").HeaderText("Location").Width("120").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
@@ -63,6 +66,13 @@
 
             </script>
 
+            <script id="templatedate" type="text/x-template">
+
+                <label>${CustomDate}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>${CustomTime}</label>
+            </script>
+
 
 
 
@@ -73,7 +83,7 @@
 
 @section scripts{
     <script>
-        var itemList = [];
+        let itemList = [];
         @*function RecordClick(args) {
             console.log("Args : ", args.rowData.EntryId);
             var link = "@Url.Action("GetTransactionDetails", "Home", new { entryId = -1 })";
@@ -82,26 +92,53 @@
         }*@
 
         $(document).ready(function () {
-           var grid = document.getElementById('Grid').ej2_instances[0];
-            itemList = grid.dataSource;
-            // console.log('Item List Before Applying : ', grid.dataSource);
-            grid.dataSource = itemList.filter(x => x.IsHidden == false);
-            grid.refresh();
-            // console.log('Item List After Applying : ', grid.dataSource);
+           //let grid = document.getElementById('Grid').ej2_instances[0];
+           // itemList = grid.dataSource;
+           // grid.dataSource = itemList.filter(x => x.IsHidden == false);
+           // grid.refresh();
         });
 
         function commandClick(args) {
-            var type = args.commandColumn.type;
+            let type = args.commandColumn.type;
             if (type === 'Edit') {
-                var link = "@Url.Action("GetTransactionDetails", "Home", new { entryId = -1 })";
+                let link = "@Url.Action("GetTransactionDetails", "Home", new { entryId = -1 })";
                 link = link.replace('-1', args.rowData.EntryId);
                 window.location.href = link;
+            }
+
+            if (type === 'Delete') {
+                let entryId = args.rowData.EntryId;
+
+                let confirm = window.confirm("Are You Sure, You want to delete?");
+
+                if (confirm) {
+                    alert('Kindly delete!');
+                    $.ajax({
+                        type: 'POST',
+                        data: {
+                            EntryId: entryId
+                        },
+                        url: '@Url.Action("DeleteTransaction", "Home")',
+                        success: function (response) {
+                            alert(response.Message);
+                            if (response.ReponseId === 1) {
+                                window.location.reload();
+                            } else {
+                                alert("error in deleting request!")
+                            }
+                        },
+                        error: function (ex) {
+                            console.log(ex);
+                            alert("Error Occured While Saving! " + ex);
+                        }
+                    });
+                }
             }
         }
 
         function handleClick(cb) {
             // cb.checked
-            var grid = document.getElementById('Grid').ej2_instances[0];
+            let grid = document.getElementById('Grid').ej2_instances[0];
             if(cb.checked){
                 grid.dataSource = itemList;
                 grid.refresh();

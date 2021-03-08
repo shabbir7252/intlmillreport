@@ -248,6 +248,7 @@
     <Compile Include="Contracts\ICashRegisterRepository.cs" />
     <Compile Include="Contracts\IDashboardRepository.cs" />
     <Compile Include="Contracts\ILocationRepository.cs" />
+    <Compile Include="Contracts\IPdaRepo.cs" />
     <Compile Include="Contracts\IProductRepository.cs" />
     <Compile Include="Contracts\ISalesmanRepository.cs" />
     <Compile Include="Contracts\ISalesReportRepository.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageTimeAttendanceController.cs" />
+    <Compile Include="Controllers\PdaController.cs" />
     <Compile Include="Controllers\SalesmanController.cs" />
     <Compile Include="Controllers\SalesReportController.cs" />
     <Compile Include="Controllers\TAReportController.cs" />
@@ -313,6 +315,21 @@
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PDA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PDA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PDA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PDA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PDA.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PDA.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReportEmailMap.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
@@ -445,12 +462,16 @@
     <Compile Include="Models\Trans_Detail_2021.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\WishList.cs">
+      <DependentUpon>PDA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Repository\BaseUnitRepository.cs" />
     <Compile Include="Repository\CashRegisterRepository.cs" />
     <Compile Include="Repository\DashboardRepository.cs" />
     <Compile Include="Repository\LocationRepository.cs" />
+    <Compile Include="Repository\PdaRepo.cs" />
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\SalesmanRepository.cs" />
     <Compile Include="Repository\SalesReportRepository.cs" />
@@ -648,6 +669,16 @@
       <DependentUpon>ImillReportModel.edmx</DependentUpon>
       <LastGenOutput>ImillReportModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\PDA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PDA.edmx</DependentUpon>
+      <LastGenOutput>PDA.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PDA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PDA.edmx</DependentUpon>
+      <LastGenOutput>PDA.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\ReportModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ReportModel.edmx</DependentUpon>
@@ -698,6 +729,13 @@
     </EntityDeploy>
     <Content Include="Models\TAModel.edmx.diagram">
       <DependentUpon>TAModel.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\PDA.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PDA.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PDA.edmx.diagram">
+      <DependentUpon>PDA.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\ej2\ej2.min.js" />
@@ -779,6 +817,7 @@
   <ItemGroup>
     <Folder Include="Content\Print\" />
     <Folder Include="Views\Location\" />
+    <Folder Include="Views\Pda\" />
     <Folder Include="Views\Salesman\" />
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ImillPdaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmailSetting">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Emails" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsRegForEmail" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="OpenTransactions">
           <Key>
             <PropertyRef Name="Oid" />
@@ -71,6 +79,7 @@
           <Property Name="Locat_Cd" Type="bigint" />
         </EntityType>
         <EntityContainer Name="ImillPdaModelStoreContainer">
+          <EntitySet Name="EmailSetting" EntityType="Self.EmailSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OpenTransactions" EntityType="Self.OpenTransactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
@@ -114,6 +123,7 @@
           <EntitySet Name="WishLists" EntityType="Self.WishList" />
           <EntitySet Name="TransactionDetails" EntityType="ImillPdaModel.TransactionDetail" />
           <EntitySet Name="OpenTransactions" EntityType="ImillPdaModel.OpenTransaction" />
+          <EntitySet Name="EmailSettings" EntityType="ImillPdaModel.EmailSetting" />
         </EntityContainer>
         <EntityType Name="TransactionDetail">
           <Key>
@@ -150,6 +160,14 @@
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="IsNewlyAdded" Type="Boolean" Nullable="false" />
           <Property Name="IsReqQtyChanged" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmailSetting">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Emails" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsRegForEmail" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -222,6 +240,15 @@
                 <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
                 <ScalarProperty Name="Prod_Cd" ColumnName="Prod_Cd" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailSettings">
+            <EntityTypeMapping TypeName="ImillPdaModel.EmailSetting">
+              <MappingFragment StoreEntitySet="EmailSetting">
+                <ScalarProperty Name="IsRegForEmail" ColumnName="IsRegForEmail" />
+                <ScalarProperty Name="Emails" ColumnName="Emails" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>

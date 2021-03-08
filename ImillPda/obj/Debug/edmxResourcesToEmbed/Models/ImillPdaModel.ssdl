@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ImillPdaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EmailSetting">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Emails" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="IsRegForEmail" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="OpenTransactions">
     <Key>
       <PropertyRef Name="Oid" />
@@ -66,6 +74,7 @@
     <Property Name="Locat_Cd" Type="bigint" />
   </EntityType>
   <EntityContainer Name="ImillPdaModelStoreContainer">
+    <EntitySet Name="EmailSetting" EntityType="Self.EmailSetting" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OpenTransactions" EntityType="Self.OpenTransactions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />

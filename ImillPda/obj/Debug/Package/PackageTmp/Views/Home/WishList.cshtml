@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ImillPda.ViewModels.TransactionVM>
+
+@{
+    ViewBag.Title = "Wishlist";
+
+    List<object> commands = new List<object>();
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mt-5">
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowTextWrap(true).AllowResizing(true).AllowExcelExport().Height("auto").Width("auto").ShowColumnChooser(true).Columns(col =>
+            {
+                col.Field("EntryId").Visible(false).ShowInColumnChooser(false).IsPrimaryKey(true).Add();
+                col.Field("TransDate").Width("70").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.Field("Locat_Cd").Visible(false).ShowInColumnChooser(false).Add();
+                col.Field("LocationNameEn").Visible(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.Field("LocationNameAr").HeaderText("Location").Width("120").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                col.HeaderText("Actions").HeaderText("A").Width("50").Commands(commands).Add();
+            }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ColumnChooser" }).Render()
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        function commandClick(args) {
+            var type = args.commandColumn.type;
+            if (type === 'Edit') {
+                var link = "@Url.Action("GetWishlistDetails", "Home", new { entryId = -1 })";
+                link = link.replace('-1', args.rowData.EntryId);
+                window.location.href = link;
+            }
+        }
+
+    </script>
+}

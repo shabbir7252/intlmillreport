@@ -34,6 +34,7 @@
     <EntitySet Name="WishLists" EntityType="Self.WishList" />
     <EntitySet Name="TransactionDetails" EntityType="ImillPdaModel.TransactionDetail" />
     <EntitySet Name="OpenTransactions" EntityType="ImillPdaModel.OpenTransaction" />
+    <EntitySet Name="EmailSettings" EntityType="ImillPdaModel.EmailSetting" />
   </EntityContainer>
   <EntityType Name="TransactionDetail">
     <Key>
@@ -70,5 +71,13 @@
     <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
     <Property Name="IsNewlyAdded" Type="Boolean" Nullable="false" />
     <Property Name="IsReqQtyChanged" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EmailSetting">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Emails" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsRegForEmail" Type="Boolean" Nullable="false" />
   </EntityType>
 </Schema>

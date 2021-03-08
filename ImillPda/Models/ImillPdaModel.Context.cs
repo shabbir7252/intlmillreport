@@ -29,5 +29,6 @@ namespace ImillPda.Models
         public virtual DbSet<WishList> WishLists { get; set; }
         public virtual DbSet<TransactionDetail> TransactionDetails { get; set; }
         public virtual DbSet<OpenTransaction> OpenTransactions { get; set; }
+        public virtual DbSet<EmailSetting> EmailSettings { get; set; }
     }
 }

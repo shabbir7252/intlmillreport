@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Intlmill PDA</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                @ViewBag.Title
+                @if (ViewBag.RequestNumber != null)
+                {
+                    <br />
+                    <small>Request No. : @ViewBag.RequestNumber</small>
+                }
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+
+                    @*@if (User.Identity.IsAuthenticated)
+                        {*@
+                    <li class="nav-item mt-3">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")">
+                            Requests
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item mt-3">
+                        <a class="nav-link" href="@Url.Action("DeliveryRequest", "Home")">Delivery</a>
+                    </li>
+
+                    <li class="nav-item mt-3">
+                        <a class="nav-link" href="@Url.Action("WishList", "Home")">WishList</a>
+                    </li>
+
+                    @*<li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Item")">Item Master</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Unit")">Unit Master</a>
+                        </li>*@
+
+                    @*<li class="nav-item mt-4">
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a style="color: #fff;" href="javascript:document.getElementById('logoutForm').submit()" class="mega-menu xs-hide" data-close="true">Logout</a>
+                            }
+                        </li>*@
+
+                    @*}
+                        else
+                        {
+
+                        }*@
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/ej2/ej2.min.js"></script>
+
+    @Html.EJS().ScriptManager()
+
+    @*<script src="~/Scripts/quaggaJS/quagga.min.js"></script>
+        <script>
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#camera')    // Or '#yourElement' (optional)
+                },
+                decoder: {
+                    readers: ["code_128_reader"]
+                }
+            }, function (err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+            });
+
+            Quagga.onDetected(function (data){
+                console.log(data);
+            });
+
+        </script>*@
+
+
+</body>
+</html>

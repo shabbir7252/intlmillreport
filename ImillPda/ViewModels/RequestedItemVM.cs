@@ -37,5 +37,7 @@ namespace ImillPda.ViewModels
         public DateTime UserDateTime { get; internal set; }
         public bool IsHidden { get; internal set; }
         public long RequestNumber { get; internal set; }
+        public string CustomDate { get; internal set; }
+        public string CustomTime { get; internal set; }
     }
 }

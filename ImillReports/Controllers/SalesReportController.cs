@@ -1388,18 +1388,18 @@ namespace ImillReports.Controllers
                     Name = "Location",
                     NameAr = "Location"
                 },
-                //new SalesReportType
-                //{
-                //    Id= 2,
-                //    Name = "Item",
-                //    NameAr = "Item"
-                //},
-                //new SalesReportType
-                //{
-                //    Id= 3,
-                //    Name = "Group",
-                //    NameAr = "Group"
-                //}
+                new SalesReportType
+                {
+                    Id= 2,
+                    Name = "Item",
+                    NameAr = "Item"
+                },
+                new SalesReportType
+                {
+                    Id= 3,
+                    Name = "Group",
+                    NameAr = "Group"
+                }
             };
             ViewBag.ReportTypeVal = reportType;
             var dbLocations = _locationRepository.GetLocations().LocationItems.Where(x => x.Type != Repository.LocationRepository.LocationType.HO);

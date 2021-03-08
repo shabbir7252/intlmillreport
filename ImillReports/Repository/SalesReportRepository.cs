@@ -2210,945 +2210,948 @@ namespace ImillReports.Repository
                 var startYear = fromDate.Value.Year;
                 var endYear = toDate.Value.Year;
 
-                //IQueryable<Trans_Detail_2015> transDetails2015 = null;
-                //IQueryable<Trans_Detail_2016> transDetails2016 = null;
-                //IQueryable<Trans_Detail_2017> transDetails2017 = null;
-                //IQueryable<Trans_Detail_2018> transDetails2018 = null;
-                //IQueryable<Trans_Detail_2019> transDetails2019 = null;
-                //IQueryable<Trans_Detail_2020> transDetails2020 = null;
-                //IQueryable<Trans_Detail_2021> transDetails2021 = null;
+                var startDate = fromDate.Value.Date;
+                var endDate = toDate.Value;
 
-                //for (var i = startYear; i <= endYear; i++)
-                //{
-                //    if (i == 2015)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2015 = _report.Trans_Detail_2015.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2015 = _report.Trans_Detail_2015.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
+                IQueryable<Trans_Detail_2015> transDetails2015 = null;
+                IQueryable<Trans_Detail_2016> transDetails2016 = null;
+                IQueryable<Trans_Detail_2017> transDetails2017 = null;
+                IQueryable<Trans_Detail_2018> transDetails2018 = null;
+                IQueryable<Trans_Detail_2019> transDetails2019 = null;
+                IQueryable<Trans_Detail_2020> transDetails2020 = null;
+                IQueryable<Trans_Detail_2021> transDetails2021 = null;
 
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2015
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-
-                //    if (i == 2016)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2016 = _report.Trans_Detail_2016.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2016 = _report.Trans_Detail_2016.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
-
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2016
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-
-                //    if (i == 2017)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2017 = _report.Trans_Detail_2017.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2017 = _report.Trans_Detail_2017.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
-
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2017
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-
-                //    if (i == 2018)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2018 = _report.Trans_Detail_2018.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2018 = _report.Trans_Detail_2018.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
-
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2018
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-
-                //    if (i == 2019)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2019 = _report.Trans_Detail_2019.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2019 = _report.Trans_Detail_2019.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
-
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2019
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-
-                //    if (i == 2020)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2020 = _report.Trans_Detail_2020.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2020 = _report.Trans_Detail_2020.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
-
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2020
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-
-                //    if (i == 2021)
-                //    {
-                //        if (productIdArray != null && productIdArray.Length > 0)
-                //            transDetails2021 = _report.Trans_Detail_2021.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value && 
-                //                                                                                     productIdArray.Contains(x.ProdId.Value));
-                //        else
-                //            transDetails2021 = _report.Trans_Detail_2021.Where(x => x.InvDateTime >= fromDate.Value && x.InvDateTime <= toDate.Value);
-
-                //        foreach (var entries in dividedEntry)
-                //        {
-                //            transactionDetails.AddRange(from detail in transDetails2021
-                //                                        where entries.Contains(detail.EntryId.Value)
-                //                                        select new TransDetailsViewModel
-                //                                        {
-                //                                            Amount = detail.Amount,
-                //                                            AmountRecieved = detail.AmountRecieved,
-                //                                            BaseQuantity = detail.BaseQuantity,
-                //                                            BaseUnit = detail.BaseUnit,
-                //                                            BaseUnitId = detail.BaseUnitId,
-                //                                            Cash = detail.Cash,
-                //                                            CreditCard = detail.CreditCard,
-                //                                            CreditCardType = detail.CreditCardType,
-                //                                            CustomerId = detail.CustomerId,
-                //                                            CustomerName = detail.CustomerName,
-                //                                            CustomerNameAr = detail.CustomerNameAr,
-                //                                            Date = detail.Date,
-                //                                            Discount = detail.Discount,
-                //                                            EntryId = detail.EntryId,
-                //                                            GroupCD = detail.GroupCD,
-                //                                            InvDateTime = detail.InvDateTime,
-                //                                            InvoiceNumber = detail.InvoiceNumber,
-                //                                            Knet = detail.Knet,
-                //                                            Location = detail.Location,
-                //                                            LocationId = detail.LocationId,
-                //                                            NetAmount = detail.NetAmount,
-                //                                            Oid = detail.Oid,
-                //                                            ProdId = detail.ProdId,
-                //                                            ProductNameAr = detail.ProductNameAr,
-                //                                            ProductNameEn = detail.ProductNameEn,
-                //                                            Salesman = detail.Salesman,
-                //                                            SalesReturn = detail.SalesReturn,
-                //                                            SellQuantity = detail.SellQuantity,
-                //                                            SellUnit = detail.SellUnit,
-                //                                            SellUnitId = detail.SellUnitId,
-                //                                            UnitPrice = detail.UnitPrice,
-                //                                            Voucher = detail.Voucher,
-                //                                            VoucherId = detail.VoucherId,
-                //                                            Year = detail.Year
-                //                                        });
-                //        }
-                //    }
-                //}
-
-
-
-
-                foreach (var entries in dividedEntry)
+                for (var i = startYear; i <= endYear; i++)
                 {
-                    if (productIdArray != null && productIdArray.Length > 0)
+                    if (i == 2015)
                     {
-                        var transDetails2015 = _report.Trans_Detail_2015.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2015
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2015 = _report.Trans_Detail_2015.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate && productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2015 = _report.Trans_Detail_2015.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
 
-                        var transDetails2016 = _report.Trans_Detail_2016.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2016
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
-
-                        var transDetails2017 = _report.Trans_Detail_2017.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2017
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
-
-                        var transDetails2018 = _report.Trans_Detail_2018.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2018
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
-
-                        var transDetails2019 = _report.Trans_Detail_2019.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2019
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
-
-                        var transDetails2020 = _report.Trans_Detail_2020.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2020
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
-
-                        var transDetails2021 = _report.Trans_Detail_2021.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2021
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2015
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
                     }
-                    else
+
+                    if (i == 2016)
                     {
-                        IQueryable<Trans_Detail_2015> transDetails2015 = _report.Trans_Detail_2015.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2015
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2016 = _report.Trans_Detail_2016.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate && productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2016 = _report.Trans_Detail_2016.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
 
-                        var transDetails2016 = _report.Trans_Detail_2016.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2016
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2016
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
+                    }
 
-                        var transDetails2017 = _report.Trans_Detail_2017.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2017
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                    if (i == 2017)
+                    {
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2017 = _report.Trans_Detail_2017.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate && productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2017 = _report.Trans_Detail_2017.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
 
-                        var transDetails2018 = _report.Trans_Detail_2018.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2018
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2017
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
+                    }
 
-                        var transDetails2019 = _report.Trans_Detail_2019.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2019
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                    if (i == 2018)
+                    {
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2018 = _report.Trans_Detail_2018.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate && productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2018 = _report.Trans_Detail_2018.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
 
-                        var transDetails2020 = _report.Trans_Detail_2020.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2020
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2018
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
+                    }
 
-                        var transDetails2021 = _report.Trans_Detail_2021.Where(x => entries.Contains(x.EntryId.Value));
-                        transactionDetails.AddRange(from detail in transDetails2021
-                                                    select new TransDetailsViewModel
-                                                    {
-                                                        Amount = detail.Amount,
-                                                        AmountRecieved = detail.AmountRecieved,
-                                                        BaseQuantity = detail.BaseQuantity,
-                                                        BaseUnit = detail.BaseUnit,
-                                                        BaseUnitId = detail.BaseUnitId,
-                                                        Cash = detail.Cash,
-                                                        CreditCard = detail.CreditCard,
-                                                        CreditCardType = detail.CreditCardType,
-                                                        CustomerId = detail.CustomerId,
-                                                        CustomerName = detail.CustomerName,
-                                                        CustomerNameAr = detail.CustomerNameAr,
-                                                        Date = detail.Date,
-                                                        Discount = detail.Discount,
-                                                        EntryId = detail.EntryId,
-                                                        GroupCD = detail.GroupCD,
-                                                        InvDateTime = detail.InvDateTime,
-                                                        InvoiceNumber = detail.InvoiceNumber,
-                                                        Knet = detail.Knet,
-                                                        Location = detail.Location,
-                                                        LocationId = detail.LocationId,
-                                                        NetAmount = detail.NetAmount,
-                                                        Oid = detail.Oid,
-                                                        ProdId = detail.ProdId,
-                                                        ProductNameAr = detail.ProductNameAr,
-                                                        ProductNameEn = detail.ProductNameEn,
-                                                        Salesman = detail.Salesman,
-                                                        SalesReturn = detail.SalesReturn,
-                                                        SellQuantity = detail.SellQuantity,
-                                                        SellUnit = detail.SellUnit,
-                                                        SellUnitId = detail.SellUnitId,
-                                                        UnitPrice = detail.UnitPrice,
-                                                        Voucher = detail.Voucher,
-                                                        VoucherId = detail.VoucherId,
-                                                        Year = detail.Year
-                                                    });
+                    if (i == 2019)
+                    {
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2019 = _report.Trans_Detail_2019.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate && productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2019 = _report.Trans_Detail_2019.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
+
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2019
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
+                    }
+
+                    if (i == 2020)
+                    {
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2020 = _report.Trans_Detail_2020.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate && productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2020 = _report.Trans_Detail_2020.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
+
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2020
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
+                    }
+
+                    if (i == 2021)
+                    {
+                        if (productIdArray != null && productIdArray.Length > 0)
+                            transDetails2021 = _report.Trans_Detail_2021.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate &&
+                                                                                                     productIdArray.Contains(x.ProdId.Value));
+                        else
+                            transDetails2021 = _report.Trans_Detail_2021.Where(x => x.InvDateTime >= startDate && x.InvDateTime <= endDate);
+
+                        foreach (var entries in dividedEntry)
+                        {
+                            transactionDetails.AddRange(from detail in transDetails2021
+                                                        where entries.Contains(detail.EntryId.Value)
+                                                        select new TransDetailsViewModel
+                                                        {
+                                                            Amount = detail.Amount,
+                                                            AmountRecieved = detail.AmountRecieved,
+                                                            BaseQuantity = detail.BaseQuantity,
+                                                            BaseUnit = detail.BaseUnit,
+                                                            BaseUnitId = detail.BaseUnitId,
+                                                            Cash = detail.Cash,
+                                                            CreditCard = detail.CreditCard,
+                                                            CreditCardType = detail.CreditCardType,
+                                                            CustomerId = detail.CustomerId,
+                                                            CustomerName = detail.CustomerName,
+                                                            CustomerNameAr = detail.CustomerNameAr,
+                                                            Date = detail.Date,
+                                                            Discount = detail.Discount,
+                                                            EntryId = detail.EntryId,
+                                                            GroupCD = detail.GroupCD,
+                                                            InvDateTime = detail.InvDateTime,
+                                                            InvoiceNumber = detail.InvoiceNumber,
+                                                            Knet = detail.Knet,
+                                                            Location = detail.Location,
+                                                            LocationId = detail.LocationId,
+                                                            NetAmount = detail.NetAmount,
+                                                            Oid = detail.Oid,
+                                                            ProdId = detail.ProdId,
+                                                            ProductNameAr = detail.ProductNameAr,
+                                                            ProductNameEn = detail.ProductNameEn,
+                                                            Salesman = detail.Salesman,
+                                                            SalesReturn = detail.SalesReturn,
+                                                            SellQuantity = detail.SellQuantity,
+                                                            SellUnit = detail.SellUnit,
+                                                            SellUnitId = detail.SellUnitId,
+                                                            UnitPrice = detail.UnitPrice,
+                                                            Voucher = detail.Voucher,
+                                                            VoucherId = detail.VoucherId,
+                                                            Year = detail.Year
+                                                        });
+                        }
                     }
                 }
+
+
+
+
+                //foreach (var entries in dividedEntry)
+                //{
+                //    if (productIdArray != null && productIdArray.Length > 0)
+                //    {
+                //        var transDetails2015 = _report.Trans_Detail_2015.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2015
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2016 = _report.Trans_Detail_2016.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2016
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2017 = _report.Trans_Detail_2017.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2017
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2018 = _report.Trans_Detail_2018.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2018
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2019 = _report.Trans_Detail_2019.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2019
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2020 = _report.Trans_Detail_2020.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2020
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2021 = _report.Trans_Detail_2021.Where(x => entries.Contains(x.EntryId.Value) && productIdArray.Contains(x.ProdId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2021
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+                //    }
+                //    else
+                //    {
+                //        IQueryable<Trans_Detail_2015> transDetails2015 = _report.Trans_Detail_2015.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2015
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2016 = _report.Trans_Detail_2016.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2016
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2017 = _report.Trans_Detail_2017.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2017
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2018 = _report.Trans_Detail_2018.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2018
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2019 = _report.Trans_Detail_2019.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2019
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2020 = _report.Trans_Detail_2020.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2020
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+
+                //        var transDetails2021 = _report.Trans_Detail_2021.Where(x => entries.Contains(x.EntryId.Value));
+                //        transactionDetails.AddRange(from detail in transDetails2021
+                //                                    select new TransDetailsViewModel
+                //                                    {
+                //                                        Amount = detail.Amount,
+                //                                        AmountRecieved = detail.AmountRecieved,
+                //                                        BaseQuantity = detail.BaseQuantity,
+                //                                        BaseUnit = detail.BaseUnit,
+                //                                        BaseUnitId = detail.BaseUnitId,
+                //                                        Cash = detail.Cash,
+                //                                        CreditCard = detail.CreditCard,
+                //                                        CreditCardType = detail.CreditCardType,
+                //                                        CustomerId = detail.CustomerId,
+                //                                        CustomerName = detail.CustomerName,
+                //                                        CustomerNameAr = detail.CustomerNameAr,
+                //                                        Date = detail.Date,
+                //                                        Discount = detail.Discount,
+                //                                        EntryId = detail.EntryId,
+                //                                        GroupCD = detail.GroupCD,
+                //                                        InvDateTime = detail.InvDateTime,
+                //                                        InvoiceNumber = detail.InvoiceNumber,
+                //                                        Knet = detail.Knet,
+                //                                        Location = detail.Location,
+                //                                        LocationId = detail.LocationId,
+                //                                        NetAmount = detail.NetAmount,
+                //                                        Oid = detail.Oid,
+                //                                        ProdId = detail.ProdId,
+                //                                        ProductNameAr = detail.ProductNameAr,
+                //                                        ProductNameEn = detail.ProductNameEn,
+                //                                        Salesman = detail.Salesman,
+                //                                        SalesReturn = detail.SalesReturn,
+                //                                        SellQuantity = detail.SellQuantity,
+                //                                        SellUnit = detail.SellUnit,
+                //                                        SellUnitId = detail.SellUnitId,
+                //                                        UnitPrice = detail.UnitPrice,
+                //                                        Voucher = detail.Voucher,
+                //                                        VoucherId = detail.VoucherId,
+                //                                        Year = detail.Year
+                //                                    });
+                //    }
+                //}
 
                 return new SalesReportDashboard
                 {

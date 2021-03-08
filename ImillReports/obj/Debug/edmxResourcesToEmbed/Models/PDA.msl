@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ImillPdaModelStoreContainer" CdmEntityContainer="ImillPdaEntities">
+    <EntitySetMapping Name="WishLists">
+      <EntityTypeMapping TypeName="ImillPdaModel.WishList">
+        <MappingFragment StoreEntitySet="WishList">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="Prod_Cd" ColumnName="Prod_Cd" />
+          <ScalarProperty Name="RequestedQty" ColumnName="RequestedQty" />
+          <ScalarProperty Name="RemainingQty" ColumnName="RemainingQty" />
+          <ScalarProperty Name="TransactionOid" ColumnName="TransactionOid" />
+          <ScalarProperty Name="TransDetailOid" ColumnName="TransDetailOid" />
+          <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
