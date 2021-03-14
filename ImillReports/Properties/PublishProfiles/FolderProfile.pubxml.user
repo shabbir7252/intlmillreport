@@ -25,10 +25,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 18:59:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>03/07/2021 19:34:17</publishTime>
+      <publishTime>03/13/2021 15:38:31</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>03/07/2021 19:34:17</publishTime>
+      <publishTime>03/13/2021 15:38:30</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>12/16/2020 09:59:12</publishTime>
@@ -55,10 +55,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/12/2013 07:30:52</publishTime>
     </File>
     <File Include="bin/ImillReports.dll">
-      <publishTime>03/07/2021 19:34:06</publishTime>
+      <publishTime>03/13/2021 15:38:21</publishTime>
     </File>
     <File Include="bin/ImillReports.pdb">
-      <publishTime>03/07/2021 19:34:06</publishTime>
+      <publishTime>03/13/2021 15:38:21</publishTime>
     </File>
     <File Include="bin/iTextSharp.dll">
       <publishTime>12/01/2011 16:26:30</publishTime>
@@ -868,7 +868,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/09/2020 16:25:25</publishTime>
     </File>
     <File Include="Models/ImillReportModel.edmx.diagram">
-      <publishTime>02/14/2021 18:52:54</publishTime>
+      <publishTime>03/12/2021 12:47:24</publishTime>
     </File>
     <File Include="Models/PDA.edmx.diagram">
       <publishTime>03/07/2021 12:24:20</publishTime>
@@ -880,7 +880,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2021 12:55:26</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>03/07/2021 19:34:09</publishTime>
+      <publishTime>03/13/2021 15:38:23</publishTime>
     </File>
     <File Include="readme_exporter.txt">
       <publishTime>12/17/2020 15:25:07</publishTime>
@@ -999,11 +999,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>03/18/2020 13:11:21</publishTime>
     </File>
+    <File Include="Views/BankDeposit/Index.cshtml">
+      <publishTime>03/12/2021 14:33:40</publishTime>
+    </File>
     <File Include="Views/CashRegister/CashRegVsSalesRpt.cshtml">
       <publishTime>11/01/2020 15:20:12</publishTime>
     </File>
     <File Include="Views/CashRegister/Index.cshtml">
-      <publishTime>10/18/2020 17:09:35</publishTime>
+      <publishTime>03/08/2021 14:19:53</publishTime>
     </File>
     <File Include="Views/Dashboard/BranchSales.cshtml">
       <publishTime>01/30/2021 23:21:28</publishTime>
@@ -1090,7 +1093,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/18/2020 13:11:22</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/06/2021 09:53:00</publishTime>
+      <publishTime>03/08/2021 14:41:47</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>03/18/2020 13:11:22</publishTime>

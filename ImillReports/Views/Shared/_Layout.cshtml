@@ -75,12 +75,12 @@
                         <li><a href="@Url.Action("BranchSales", "Dashboard")"><i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span></a></li>
 
                         @*<li>
-                                <a href="javascript:void(0);"><i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span></a>
-                                <ul class="pullDown">
-                                    <li><a href="@Url.Action("Index", "Dashboard")">General</a></li>
-                                    <li><a href="@Url.Action("BranchSales", "Dashboard")">Branch Sales</a></li>
-                                </ul>
-                            </li>*@
+                <a href="javascript:void(0);"><i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span></a>
+                <ul class="pullDown">
+                    <li><a href="@Url.Action("Index", "Dashboard")">General</a></li>
+                    <li><a href="@Url.Action("BranchSales", "Dashboard")">Branch Sales</a></li>
+                </ul>
+            </li>*@
                     }
                     <li>
                         <a href="javascript:void(0);"><i class="zmdi zmdi-assignment"></i> <span>Sales Reports</span></a>
@@ -118,6 +118,8 @@
                             </ul>
                         </li>
                     }
+
+                    <li><a href="@Url.Action("Index", "BankDeposit")"><i class="zmdi zmdi-balance"></i> <span>Bank Deposit</span></a></li>
 
 
                 </ul>
@@ -176,6 +178,11 @@
             </div>
         </div>
         @*<div id="area_chart" class="graph"></div>*@
+
+
+
+
+
         @RenderBody()
 
 

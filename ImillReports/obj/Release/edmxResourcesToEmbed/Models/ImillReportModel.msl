@@ -241,20 +241,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Settings">
-      <EntityTypeMapping TypeName="ImillReportsModel.Setting">
-        <MappingFragment StoreEntitySet="Settings">
-          <ScalarProperty Name="EmailReportTime" ColumnName="EmailReportTime" />
-          <ScalarProperty Name="YearlyRptDate" ColumnName="YearlyRptDate" />
-          <ScalarProperty Name="MonthlyRptDate" ColumnName="MonthlyRptDate" />
-          <ScalarProperty Name="WeekplyRptDate" ColumnName="WeekplyRptDate" />
-          <ScalarProperty Name="BackDays" ColumnName="BackDays" />
-          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
-          <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
-          <ScalarProperty Name="Oid" ColumnName="Oid" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ReportEmailTransactions">
       <EntityTypeMapping TypeName="ImillReportsModel.ReportEmailTransaction">
         <MappingFragment StoreEntitySet="ReportEmailTransactions">
@@ -600,6 +586,53 @@
           <ScalarProperty Name="InvDateTime" ColumnName="InvDateTime" />
           <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BankDeposits">
+      <EntityTypeMapping TypeName="ImillReportsModel.BankDeposit">
+        <MappingFragment StoreEntitySet="BankDeposit">
+          <ScalarProperty Name="Hamra" ColumnName="Hamra" />
+          <ScalarProperty Name="Innova" ColumnName="Innova" />
+          <ScalarProperty Name="TotalCash" ColumnName="TotalCash" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="DepositBy" ColumnName="DepositBy" />
+          <ScalarProperty Name="Cash" ColumnName="Cash" />
+          <ScalarProperty Name="Misc2" ColumnName="Misc2" />
+          <ScalarProperty Name="Misc" ColumnName="Misc" />
+          <ScalarProperty Name="Fintas" ColumnName="Fintas" />
+          <ScalarProperty Name="Av4" ColumnName="Av4" />
+          <ScalarProperty Name="Kout" ColumnName="Kout" />
+          <ScalarProperty Name="Jahra" ColumnName="Jahra" />
+          <ScalarProperty Name="Bnied" ColumnName="Bnied" />
+          <ScalarProperty Name="Surra" ColumnName="Surra" />
+          <ScalarProperty Name="Shahuda" ColumnName="Shahuda" />
+          <ScalarProperty Name="Gate" ColumnName="Gate" />
+          <ScalarProperty Name="Dasma" ColumnName="Dasma" />
+          <ScalarProperty Name="Mall360" ColumnName="Mall360" />
+          <ScalarProperty Name="Zahara" ColumnName="Zahara" />
+          <ScalarProperty Name="Yarmouk" ColumnName="Yarmouk" />
+          <ScalarProperty Name="KPC" ColumnName="KPC" />
+          <ScalarProperty Name="Avenues" ColumnName="Avenues" />
+          <ScalarProperty Name="Kaifan" ColumnName="Kaifan" />
+          <ScalarProperty Name="Qortuba" ColumnName="Qortuba" />
+          <ScalarProperty Name="Khaldiya" ColumnName="Khaldiya" />
+          <ScalarProperty Name="Dahiya" ColumnName="Dahiya" />
+          <ScalarProperty Name="Nuzha" ColumnName="Nuzha" />
+          <ScalarProperty Name="Salmiya" ColumnName="Salmiya" />
+          <ScalarProperty Name="Salhiyah" ColumnName="Salhiyah" />
+          <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Settings">
+      <EntityTypeMapping TypeName="ImillReportsModel.Setting">
+        <MappingFragment StoreEntitySet="Settings">
+          <ScalarProperty Name="BackDays" ColumnName="BackDays" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
           <ScalarProperty Name="Oid" ColumnName="Oid" />
         </MappingFragment>
       </EntityTypeMapping>

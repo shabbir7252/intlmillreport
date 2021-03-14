@@ -130,7 +130,7 @@ namespace ImillPda.Repository
                 throw ex;
             }
 
-            return transactionVMs.OrderByDescending(x => x.TransDate).ToList();
+            return transactionVMs.OrderByDescending(x => x.UserDateTime).ToList();
         }
 
         public TransactionDetailVm GetTransactionDetails(long entryId)

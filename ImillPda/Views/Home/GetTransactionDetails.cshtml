@@ -272,7 +272,8 @@
                     data: {
                         barcode: barcode
                     },
-                    success: function (response) {
+                        success: function (response) {
+                            debugger;
                         if (response.ResponseId === 1) {
                             var isItemInList = false;
                             newPartNumber = '';
@@ -337,7 +338,8 @@
                             console.log("Response : ", response);
                         }
 
-                        FocusOnBarcode();
+                        // FocusOnBarcode();
+                            Dismiss();
                         barcodeflag = true;
                     },
                     error: function (ex) {

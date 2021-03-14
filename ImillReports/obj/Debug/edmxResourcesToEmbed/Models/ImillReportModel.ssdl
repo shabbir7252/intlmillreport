@@ -1,5 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ImillReportsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BankDeposit">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransDate" Type="datetime" Nullable="false" />
+    <Property Name="Salhiyah" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Salmiya" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Nuzha" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Dahiya" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Khaldiya" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Qortuba" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Kaifan" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Avenues" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="KPC" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Yarmouk" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Zahara" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Mall360" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Dasma" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Gate" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Shahuda" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Surra" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Hamra" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Bnied" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Jahra" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Kout" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Av4" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Fintas" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="TotalCash" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Innova" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Misc" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Misc2" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Cash" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="DepositBy" Type="nvarchar" MaxLength="100" />
+    <Property Name="Comments" Type="nvarchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="ReportEmailMap">
     <Key>
       <PropertyRef Name="Oid" />
@@ -35,10 +71,6 @@
     <Property Name="SerialDate" Type="datetime" Nullable="false" />
     <Property Name="SerialNumber" Type="bigint" Nullable="false" />
     <Property Name="BackDays" Type="int" />
-    <Property Name="WeekplyRptDate" Type="datetime" />
-    <Property Name="MonthlyRptDate" Type="datetime" />
-    <Property Name="YearlyRptDate" Type="datetime" />
-    <Property Name="EmailReportTime" Type="time" Precision="7" />
   </EntityType>
   <EntityType Name="Trans_Detail_2015">
     <Key>
@@ -587,6 +619,7 @@
     <Property Name="Year" Type="int" />
   </EntityType>
   <EntityContainer Name="ImillReportsModelStoreContainer">
+    <EntitySet Name="BankDeposit" EntityType="Self.BankDeposit" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ReportEmailMap" EntityType="Self.ReportEmailMap" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ReportEmailTransactions" EntityType="Self.ReportEmailTransactions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />

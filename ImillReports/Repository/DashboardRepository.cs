@@ -1708,27 +1708,27 @@ namespace ImillReports.Repository
 
         public SendEmailAsReport GetLastEmailSettings(bool isWeekly, bool isMonthly)
         {
-            var settings = _contextReports.Settings.FirstOrDefault();
+            // var settings = _contextReports.Settings.FirstOrDefault();
             var sendEmailAsReport = new SendEmailAsReport();
 
-            if (isWeekly)
-            {
-                var weeklyEmailDate = settings.WeekplyRptDate ?? DateTime.Now;
-                sendEmailAsReport.LastEmailDate = weeklyEmailDate;
-                sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsWeekly && x.ReportDate == weeklyEmailDate);
-            }
-            else if (isMonthly)
-            {
-                var monthlyEmailDate = settings.MonthlyRptDate ?? DateTime.Now;
-                sendEmailAsReport.LastEmailDate = monthlyEmailDate;
-                sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsMonthly && x.ReportDate == monthlyEmailDate);
-            }
-            else
-            {
-                var yearlyEmailDate = settings.YearlyRptDate ?? DateTime.Now;
-                sendEmailAsReport.LastEmailDate = yearlyEmailDate;
-                sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsYearly && x.ReportDate == yearlyEmailDate);
-            }
+            //if (isWeekly)
+            //{
+            //    var weeklyEmailDate = settings.WeekplyRptDate ?? DateTime.Now;
+            //    sendEmailAsReport.LastEmailDate = weeklyEmailDate;
+            //    sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsWeekly && x.ReportDate == weeklyEmailDate);
+            //}
+            //else if (isMonthly)
+            //{
+            //    var monthlyEmailDate = settings.MonthlyRptDate ?? DateTime.Now;
+            //    sendEmailAsReport.LastEmailDate = monthlyEmailDate;
+            //    sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsMonthly && x.ReportDate == monthlyEmailDate);
+            //}
+            //else
+            //{
+            //    var yearlyEmailDate = settings.YearlyRptDate ?? DateTime.Now;
+            //    sendEmailAsReport.LastEmailDate = yearlyEmailDate;
+            //    sendEmailAsReport.WeekRptEmailSent = _contextReports.ReportEmailTransactions.Any(x => x.IsYearly && x.ReportDate == yearlyEmailDate);
+            //}
 
             return sendEmailAsReport;
         }
@@ -1737,40 +1737,40 @@ namespace ImillReports.Repository
         {
             var settings = _contextReports.Settings.FirstOrDefault();
 
-            if (isWeekly)
-            {
-                settings.WeekplyRptDate = DateTime.Now.AddDays(7);
-                var emailTrans = new ReportEmailTransaction
-                {
-                    IsWeekly = true,
-                    IsMonthly = false,
-                    IsYearly = false,
-                    ReportDate = DateTime.Now
-                };
+            //if (isWeekly)
+            //{
+            //    settings.WeekplyRptDate = DateTime.Now.AddDays(7);
+            //    var emailTrans = new ReportEmailTransaction
+            //    {
+            //        IsWeekly = true,
+            //        IsMonthly = false,
+            //        IsYearly = false,
+            //        ReportDate = DateTime.Now
+            //    };
 
-                _contextReports.ReportEmailTransactions.Add(emailTrans);
-            }
-            else if (isMonthly)
-            {
-                var dt = DateTime.Now;
-                settings.MonthlyRptDate = new DateTime(dt.AddMonths(1).Year, dt.AddMonths(1).Month, 1);
-                var emailTrans = new ReportEmailTransaction
-                {
-                    IsWeekly = false,
-                    IsMonthly = true,
-                    IsYearly = false,
-                    ReportDate = DateTime.Now
-                };
+            //    _contextReports.ReportEmailTransactions.Add(emailTrans);
+            //}
+            //else if (isMonthly)
+            //{
+            //    var dt = DateTime.Now;
+            //    settings.MonthlyRptDate = new DateTime(dt.AddMonths(1).Year, dt.AddMonths(1).Month, 1);
+            //    var emailTrans = new ReportEmailTransaction
+            //    {
+            //        IsWeekly = false,
+            //        IsMonthly = true,
+            //        IsYearly = false,
+            //        ReportDate = DateTime.Now
+            //    };
 
-                _contextReports.ReportEmailTransactions.Add(emailTrans);
-            }
-            else
-            {
+            //    _contextReports.ReportEmailTransactions.Add(emailTrans);
+            //}
+            //else
+            //{
 
-            }
+            //}
 
 
-            _contextReports.SaveChanges();
+            //_contextReports.SaveChanges();
         }
 
         public void UpdateWeeklyRptTransactions(int oid)

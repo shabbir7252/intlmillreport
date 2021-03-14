@@ -4,16 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="380816e445f445ccb89d7312d128e3a3" Name="Diagram1" ZoomLevel="90">
+      <Diagram DiagramId="380816e445f445ccb89d7312d128e3a3" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2020" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Trans_Detail_2020" Width="2" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Trans_Detail_2019" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2019" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Trans_Detail_2021" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2021" Width="1.5" PointX="2.75" PointY="9.75" />
-        <EntityTypeShape EntityType="ImillReportsModel.Setting" Width="1.875" PointX="5.375" PointY="9.75" />
-        <EntityTypeShape EntityType="ImillReportsModel.ReportEmailTransaction" Width="1.5" PointX="8.375" PointY="9.75" />
-        <EntityTypeShape EntityType="ImillReportsModel.ReportEmailMap" Width="1.5" PointX="10.375" PointY="9.75" />
+        <EntityTypeShape EntityType="ImillReportsModel.ReportEmailTransaction" Width="1.5" PointX="7.625" PointY="9.75" />
+        <EntityTypeShape EntityType="ImillReportsModel.ReportEmailMap" Width="1.5" PointX="9.5" PointY="9.625" />
         <EntityTypeShape EntityType="ImillReportsModel.Trans_Detail_2018" Width="1.5" PointX="11.375" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2018" Width="1.5" PointX="12.375" PointY="9.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Trans_Detail_2015" Width="1.5" PointX="13.375" PointY="0.75" />
@@ -22,6 +21,8 @@
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2015" Width="1.5" PointX="9.375" PointY="13.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2016" Width="1.5" PointX="14.375" PointY="9.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2017" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ImillReportsModel.BankDeposit" Width="1.5" PointX="16.375" PointY="9.75" />
+        <EntityTypeShape EntityType="ImillReportsModel.Setting" Width="1.5" PointX="5.5" PointY="9.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

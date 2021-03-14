@@ -439,41 +439,41 @@ namespace ImillReports.Controllers
                 ContentType = "application/json"
             };
 
-            var exportData = source.ToList().Select(x => new SalesReportItemFromXcel
-            {
-                Amount = x.AmountRecieved,
-                Cash = x.Cash,
-                CustomerName = x.CustomerName,
-                CustomerNameAr = x.CustomerNameAr,
-                Date = x.InvDateTime,
-                Discount = x.Discount,
-                Invoice = x.InvoiceNumber,
-                Knet = x.Knet,
-                Location = x.Location,
-                Salesman = x.Salesman,
-                TotalAmount = x.NetAmount,
-                Visa = x.CreditCard,
-                Voucher = x.Voucher
-            }).ToList();
+            //var exportData = source.ToList().Select(x => new SalesReportItemFromXcel
+            //{
+            //    Amount = x.AmountRecieved,
+            //    Cash = x.Cash,
+            //    CustomerName = x.CustomerName,
+            //    CustomerNameAr = x.CustomerNameAr,
+            //    Date = x.InvDateTime,
+            //    Discount = x.Discount,
+            //    Invoice = x.InvoiceNumber,
+            //    Knet = x.Knet,
+            //    Location = x.Location,
+            //    Salesman = x.Salesman,
+            //    TotalAmount = x.NetAmount,
+            //    Visa = x.CreditCard,
+            //    Voucher = x.Voucher
+            //}).ToList();
 
-            using (ExcelEngine excelEngine = new ExcelEngine())
-            {
-                IApplication application = excelEngine.Excel;
-                application.DefaultVersion = ExcelVersion.Xlsx;
-                IWorkbook workbook = application.Workbooks.Create(1);
-                IWorksheet worksheet = workbook.Worksheets[0];
+            //using (ExcelEngine excelEngine = new ExcelEngine())
+            //{
+            //    IApplication application = excelEngine.Excel;
+            //    application.DefaultVersion = ExcelVersion.Xlsx;
+            //    IWorkbook workbook = application.Workbooks.Create(1);
+            //    IWorksheet worksheet = workbook.Worksheets[0];
 
-                //Import data to worksheet
-                worksheet.ImportData(exportData, 1, 1, true);
+            //    //Import data to worksheet
+            //    worksheet.ImportData(exportData, 1, 1, true);
 
-                var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
-                var reportNamePath = $"{cs}SalesReport.xlsx";
+            //    var cs = @ConfigurationManager.ConnectionStrings["ExcelConnection"].ConnectionString;
+            //    var reportNamePath = $"{cs}SalesReport.xlsx";
 
-                //Save the file in the given path
-                Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
-                workbook.SaveAs(excelStream);
-                excelStream.Dispose();
-            }
+            //    //Save the file in the given path
+            //    Stream excelStream = System.IO.File.Create(Path.GetFullPath(@reportNamePath));
+            //    workbook.SaveAs(excelStream);
+            //    excelStream.Dispose();
+            //}
 
             return result;
         }
@@ -776,10 +776,10 @@ namespace ImillReports.Controllers
 
                     listData.Add(new ColumnChartData
                     {
-                        hour = hour,
-                        x = hour.ToString("hh:mm tt"),
+                        hour = hour.AddHours(1),
+                        x = hour.AddHours(1).ToString("hh:mm tt"),
                         y = amount,
-                        text = $"{hour:hh:mm tt} : {amount.Value:0.000} ({totalHourPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Hour Total : {totalHourAmount.Value:0.000}"
+                        text = $"{hour.AddHours(1):hh:mm tt} : {amount.Value:0.000} ({totalHourPercent.Value:0.0}%) <br> Branch Total : {totalAmount.Value:0.000} ({totalbranchPercent.Value:0.0}%) <br> Hour Total : {totalHourAmount.Value:0.000}"
                     });
                 }
 
@@ -1083,7 +1083,11 @@ namespace ImillReports.Controllers
                     decimal totalbranchPercent = totalTransCount == 0 ? 0 : 100 / totalTransCount * totalHourTransCount;
                     decimal totalHourPercent = totalHourTransCount == 0 ? 0 : 100 / totalHourTransCount * itemTransCount;
 
-                    listData.Add(new ColumnChartData { date = item.TransDate, hour = hour, x = item.Hour.ToString("hh:mm tt"), y = item.TransCount, text = $"{hour:hh:mm tt} : {itemTransCount} ({totalHourPercent:0.0}%) <br> Branch Total : {totalTransCount} ({totalbranchPercent:0.0}%) <br> Hour Total : {totalHourTransCount}" });
+                    listData.Add(new ColumnChartData { 
+                        date = item.TransDate, 
+                        hour = hour.AddHours(1), x = item.Hour.AddHours(1).ToString("hh:mm tt"), 
+                        y = item.TransCount, 
+                        text = $"{hour.AddHours(1):hh:mm tt} : {itemTransCount} ({totalHourPercent:0.0}%) <br> Branch Total : {totalTransCount} ({totalbranchPercent:0.0}%) <br> Hour Total : {totalHourTransCount}" });
                 }
 
                 var fromHour = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 6, 0, 0);
@@ -1388,18 +1392,18 @@ namespace ImillReports.Controllers
                     Name = "Location",
                     NameAr = "Location"
                 },
-                new SalesReportType
-                {
-                    Id= 2,
-                    Name = "Item",
-                    NameAr = "Item"
-                },
-                new SalesReportType
-                {
-                    Id= 3,
-                    Name = "Group",
-                    NameAr = "Group"
-                }
+                //new SalesReportType
+                //{
+                //    Id= 2,
+                //    Name = "Item",
+                //    NameAr = "Item"
+                //},
+                //new SalesReportType
+                //{
+                //    Id= 3,
+                //    Name = "Group",
+                //    NameAr = "Group"
+                //}
             };
             ViewBag.ReportTypeVal = reportType;
             var dbLocations = _locationRepository.GetLocations().LocationItems.Where(x => x.Type != Repository.LocationRepository.LocationType.HO);

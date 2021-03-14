@@ -1,0 +1,462 @@
+﻿
+@{
+    ViewBag.Title = "Bank Deposits";
+    ViewBag.SubTitle = "All transactions of bank deposits";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("Index", "BankDeposits", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("fromDate").Format("dd/MMM/yyyy").Value(ViewBag.startDate).Render()
+                        </div>
+                        <div class="col-2">
+                            @Html.EJS().DatePicker("toDate").Format("dd/MMM/yyyy").Value(ViewBag.endDate).Render()
+                        </div>
+
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+
+                            <button type="button" class="btn btn-primary ml-5" data-toggle="modal" data-target="#exampleModal">
+                                Add Record
+                            </button>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+           {
+               // col.Field("IsVerified").Template("#idtemplate").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
+               col.Field("Oid").Width("80").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
+               col.Field("TransDate").AllowEditing(false).HeaderText("التاريخ").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Salhiyah").Format("N3").HeaderText("الصالحية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Salmiya").Format("N3").HeaderText("السالمية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Nuzha").Format("N3").HeaderText("النزهه").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Dahiya").Format("N3").HeaderText("الضاحية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Khaldiya").Format("N3").HeaderText("الخالدية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Qortuba").Format("N3").HeaderText("قرطبة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Kaifan").Format("N3").HeaderText("كيفان").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Avenues").Format("N3").HeaderText("الأفنيوز").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("KPC").Format("N3").HeaderText("البترول").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Yarmouk").Format("N3").HeaderText("اليرموك").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Zahara").Format("N3").HeaderText("الزهراء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Mall360").Format("N3").HeaderText("360").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Dasma").Format("N3").HeaderText("الدسمة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Gate").Format("N3").HeaderText("ذي جيت").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Shahuda").Format("N3").HeaderText("الشهداء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Surra").Format("N3").HeaderText("السرة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Bnied").Format("N3").HeaderText("بنيد القار").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Jahra").Format("N3").HeaderText("الجهراء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Kout").Format("N3").HeaderText("الكوت").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Av4").Format("N3").HeaderText("الأفنيوز 4").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Fintas").Format("N3").HeaderText("الفنطاس").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("TotalCash").Format("N3").HeaderText("إجمالي نقدي").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Innova").Format("N3").HeaderText("انوفا").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Misc").Format("N3").HeaderText("متفرقات").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Misc2").Format("N3").HeaderText("متفرقات 2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Cash").Format("N3").HeaderText("نقدي").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("DepositBy").Format("N3").HeaderText("Deposit By").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               
+               
+           }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(page =>
+           { page.PageSizes(true); page.PageSize(25); }).EditSettings(edit =>
+           {
+               edit.AllowEditing(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal);
+           }).Toolbar(new List<string>() { "Search", "Update", "Cancel", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+           {
+               agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Salhiyah", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+               
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Salmiya", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Nuzha", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Dahiya", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Khaldiya", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Qortuba", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Kaifan", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Avenues", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "KPC", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Yarmouk", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Zahara", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Mall360", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Dasma", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Gate", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Shahuda", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Surra", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Bnied", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Jahra", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Kout", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Av4", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Fintas", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "TotalCash", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Innova", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Misc", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Misc2", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+               new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                   Field = "Cash", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
+               },
+
+              
+           }).Add();
+           }).DataBound("dataBound").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Deposit Amount</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    @using (Html.BeginForm("SaveTransaction", "BankDeposit", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="row mb-5 mt-4">
+                                <div class="col-3 mx-auto">
+                                    @Html.EJS().DatePicker("transDate").Placeholder("TransDate").EnableRtl(false).Format("dd/MMM/yyyy").Value(ViewBag.transDate).Render()
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="salheya">الصالحية (Salhiyah)</label>
+                                        <input type="number" class="form-control border" id="salheya" name="salheya" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="salmiya">السالمية (Salmiya)</label>
+                                        <input type="number" class="form-control border" id="salmiya" name="salmiya" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="nuzha">النزهه (Nuzha)</label>
+                                        <input type="number" class="form-control border" id="nuzha" name="nuzha" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="dahiya">الضاحية (Dahiya)</label>
+                                        <input type="number" class="form-control border" id="dahiya" name="dahiya" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="khaldiya">الخالدية (Khaldiya)</label>
+                                        <input type="number" class="form-control border" id="khaldiya" name="khaldiya" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="qortuba">قرطبة (Qortuba)</label>
+                                        <input type="number" class="form-control border" id="qortuba" name="qortuba" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="kaifan">كيفان (Kaifan)</label>
+                                        <input type="number" class="form-control border" id="kaifan" name="kaifan" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="avenues">الأفنيوز (Avenues)</label>
+                                        <input type="number" class="form-control border" id="avenues" name="avenues" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="kpc">البترول (KPC)</label>
+                                        <input type="number" class="form-control border" id="kpc" name="kpc" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="yarmouk">اليرموك (Yarmouk)</label>
+                                        <input type="number" class="form-control border" id="yarmouk" name="yarmouk" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="zahara">الزهراء (Zahara)</label>
+                                        <input type="number" class="form-control border" id="zahara" name="zahara" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="mall360">360</label>
+                                        <input type="number" class="form-control border" id="mall360" name="mall360" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="dasma">الدسمة(Dasma)</label>
+                                        <input type="number" class="form-control border" id="dasma" name="dasma" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="gate">ذي جيت(Gate Mall)</label>
+                                        <input type="number" class="form-control border" id="gate" name="gate" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="shahuda">الشهداء(Shahuda)</label>
+                                        <input type="number" class="form-control border" id="shahuda" name="shahuda" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="surra">السرة(Surra)</label>
+                                        <input type="number" class="form-control border" id="surra" name="surra" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="hamra">الحمراء(Hamra)</label>
+                                        <input type="number" class="form-control border" id="hamra" name="hamra" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="bnied">بنيد القار(Bnied Al Gar)</label>
+                                        <input type="number" class="form-control border" id="bnied" name="bnied" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="jahra">الجهراء (Jahra)</label>
+                                        <input type="number" class="form-control border" id="jahra" name="jahra" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="kout">الكوت (Al-Kout)</label>
+                                        <input type="number" class="form-control border" id="kout" name="kout" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="av4">الأفنيوز 4 (Avenues 4)</label>
+                                        <input type="number" class="form-control border" id="av4" name="av4" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="fintas">الفنطاس (Fintas)</label>
+                                        <input type="number" class="form-control border" id="fintas" name="fintas" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="misc">متفرقات (Miscellaneous)</label>
+                                        <input type="number" class="form-control border" id="misc" name="misc" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="misc2">متفرقات (Miscellaneous) 2</label>
+                                        <input type="number" class="form-control border" id="misc2" name="misc2" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="cash">نقدي (Cash)</label>
+                                        <input type="number" class="form-control border" id="cash" name="cash" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="depositby">Deposited by</label>
+                                        <input type="text" class="form-control border" id="depositby" name="depositby" value="0.000">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="comments">Comments</label>
+                                        <textarea class="form-control border" id="comments" rows="3" name="comments" value="0.000"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function dataBound(args) {
+        this.autoFitColumns(['TransDate', 'Salhiyah', 'Salmiya', 'Nuzha', 'Dahiya', 'Khaldiya', 'Qortuba', 'Kaifan',
+            'Avenues', 'KPC', 'Yarmouk', 'Zahara', 'Mall360', 'Dasma', 'Gate', 'Shahuda', 'Surra', 'Bnied', 'Jahra',
+            'Kout', 'Av4', 'Misc', 'Misc2', 'Cash', 'DepositBy', 'Fintas', 'TotalCash', 'Innova']);
+    }
+
+    function toolbarClick(args) {
+        var gridObj = document.getElementById("Grid").ej2_instances[0];
+        if (args.item.id === 'Grid_excelexport') {
+            var excelExportProperties = {
+                fileName: "BankDeposit.xlsx"
+            };
+            gridObj.excelExport(excelExportProperties);
+        }
+    }
+</script>

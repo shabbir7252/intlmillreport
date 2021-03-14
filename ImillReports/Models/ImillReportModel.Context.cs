@@ -31,7 +31,6 @@ namespace ImillReports.Models
         public virtual DbSet<Transaction_2019> Transaction_2019 { get; set; }
         public virtual DbSet<Trans_Detail_2021> Trans_Detail_2021 { get; set; }
         public virtual DbSet<Transaction_2021> Transaction_2021 { get; set; }
-        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ReportEmailTransaction> ReportEmailTransactions { get; set; }
         public virtual DbSet<ReportEmailMap> ReportEmailMaps { get; set; }
         public virtual DbSet<Trans_Detail_2018> Trans_Detail_2018 { get; set; }
@@ -42,5 +41,7 @@ namespace ImillReports.Models
         public virtual DbSet<Transaction_2015> Transaction_2015 { get; set; }
         public virtual DbSet<Transaction_2016> Transaction_2016 { get; set; }
         public virtual DbSet<Transaction_2017> Transaction_2017 { get; set; }
+        public virtual DbSet<BankDeposit> BankDeposits { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
     }
 }

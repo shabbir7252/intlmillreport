@@ -7,7 +7,6 @@
     <EntitySet Name="Transaction_2019" EntityType="ImillReportsModel.Transaction_2019" />
     <EntitySet Name="Trans_Detail_2021" EntityType="ImillReportsModel.Trans_Detail_2021" />
     <EntitySet Name="Transaction_2021" EntityType="ImillReportsModel.Transaction_2021" />
-    <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
     <EntitySet Name="ReportEmailTransactions" EntityType="ImillReportsModel.ReportEmailTransaction" />
     <EntitySet Name="ReportEmailMaps" EntityType="ImillReportsModel.ReportEmailMap" />
     <EntitySet Name="Trans_Detail_2018" EntityType="ImillReportsModel.Trans_Detail_2018" />
@@ -18,6 +17,8 @@
     <EntitySet Name="Transaction_2015" EntityType="ImillReportsModel.Transaction_2015" />
     <EntitySet Name="Transaction_2016" EntityType="ImillReportsModel.Transaction_2016" />
     <EntitySet Name="Transaction_2017" EntityType="ImillReportsModel.Transaction_2017" />
+    <EntitySet Name="BankDeposits" EntityType="ImillReportsModel.BankDeposit" />
+    <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
   </EntityContainer>
   <EntityType Name="Transaction_2020">
     <Key>
@@ -252,19 +253,6 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
-  </EntityType>
-  <EntityType Name="Setting">
-    <Key>
-      <PropertyRef Name="Oid" />
-    </Key>
-    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="SerialNumber" Type="Int64" Nullable="false" />
-    <Property Name="BackDays" Type="Int32" />
-    <Property Name="WeekplyRptDate" Type="DateTime" Precision="3" />
-    <Property Name="MonthlyRptDate" Type="DateTime" Precision="3" />
-    <Property Name="YearlyRptDate" Type="DateTime" Precision="3" />
-    <Property Name="EmailReportTime" Type="Time" Precision="7" />
   </EntityType>
   <EntityType Name="ReportEmailTransaction">
     <Key>
@@ -604,5 +592,50 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+  </EntityType>
+  <EntityType Name="BankDeposit">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="Int32" Nullable="false" />
+    <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Salhiyah" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Salmiya" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Nuzha" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Dahiya" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Khaldiya" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Qortuba" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Kaifan" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Avenues" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="KPC" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Yarmouk" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Zahara" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Mall360" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Dasma" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Gate" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Shahuda" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Surra" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Bnied" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Jahra" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Kout" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Av4" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Fintas" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Misc" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Misc2" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Cash" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="DepositBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Comments" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TotalCash" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Innova" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="Hamra" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+  </EntityType>
+  <EntityType Name="Setting">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SerialNumber" Type="Int64" Nullable="false" />
+    <Property Name="BackDays" Type="Int32" />
   </EntityType>
 </Schema>
