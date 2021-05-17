@@ -1,4 +1,5 @@
 ﻿using ImillPda.ViewModels;
+using System;
 using System.Collections.Generic;
 
 namespace ImillPda.Contracts
@@ -20,5 +21,8 @@ namespace ImillPda.Contracts
         ScanResponseViewModel UpdateQuantity(string partNumber, int entryId, int qty);
         ItemResponseViewmodel DraftTransactions(string entryId, List<RequestedItemVM> itemList);
         ItemResponseViewmodel DeleteOpenTransaction(string entryId);
+        List<ConsolidatedItems> GetConsolidatedItems(DateTime fromDate, string productIds, string group, string type);
+        ProductViewModel GetGroupProduct(List<long> groupIds);
+        string SaveConsTrans(DateTime fromDate, List<ConsolidatedItems> consolidatedItems);
     }
 }

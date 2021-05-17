@@ -18,5 +18,9 @@ namespace ImillReports.Models
         public System.DateTime SerialDate { get; set; }
         public long SerialNumber { get; set; }
         public Nullable<int> BackDays { get; set; }
+        public string GmEmail { get; set; }
+        public string PurchaseEmail { get; set; }
+        public string AdditionalCc1 { get; set; }
+        public string AdditionalCc2 { get; set; }
     }
 }

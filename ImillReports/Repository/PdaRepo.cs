@@ -38,7 +38,10 @@ namespace ImillReports.Repository
                             if (transDetailItem != null)
                             {
                                 // transDetails.Remove(transDetailItem);
-                                message += $"{transDetailItem.Entry_Id} ";
+                                //message += $"{transDetailItem.Entry_Id} ";
+                                //var transDetail = _imillContext.ICS_Transaction_Details.FirstOrDefault(x => x.Line_No == item.TransDetailOid);
+                                //transDetail.Reference_No = ($"Qty={item.RequestedQty}, Deleted By PDA User");
+                                //transDetail.Qty = 0;
                                 _imillContext.ICS_Transaction_Details.Remove(transDetailItem);
                                 skipChange = false;
                             }

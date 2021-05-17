@@ -60,6 +60,7 @@ namespace ImillReports.ViewModels
         public long EntryId { get; internal set; }
         public int CustomerId { get; internal set; }
         public int Year { get; internal set; }
+        public long LineNumber { get; internal set; }
     }
 
     public class TransactionViewModel
@@ -145,6 +146,11 @@ namespace ImillReports.ViewModels
         public Nullable<long> EntryId { get; set; }
         public Nullable<int> CustomerId { get; set; }
         public Nullable<int> Year { get; set; }
+        public string Part_Number { get; internal set; }
+        public string Comments { get; internal set; }
+        public decimal AltQty { get; internal set; }
+        public decimal? Package { get; internal set; }
+        public decimal? PackQty { get; internal set; }
     }
 
     public class DailyConsumptionVM

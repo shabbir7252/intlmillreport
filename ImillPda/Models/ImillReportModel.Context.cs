@@ -30,5 +30,7 @@ namespace ImillPda.Models
         public virtual DbSet<ICS_Transaction_Details> ICS_Transaction_Details { get; set; }
         public virtual DbSet<SM_Location> SM_Location { get; set; }
         public virtual DbSet<ICS_Item_Unit_Details> ICS_Item_Unit_Details { get; set; }
+        public virtual DbSet<Imill_BranchOrderItem> Imill_BranchOrderItem { get; set; }
+        public virtual DbSet<ICS_Item_Group> ICS_Item_Group { get; set; }
     }
 }

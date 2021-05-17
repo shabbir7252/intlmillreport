@@ -44,19 +44,6 @@ namespace ImillReports.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spIUD_GetAll_Result>("spIUD_GetAll");
         }
     
-        public virtual ObjectResult<spICSTransDetail_GetAll_Result> spICSTransDetail_GetAll(string intArray, string prodArray)
-        {
-            var intArrayParameter = intArray != null ?
-                new ObjectParameter("intArray", intArray) :
-                new ObjectParameter("intArray", typeof(string));
-    
-            var prodArrayParameter = prodArray != null ?
-                new ObjectParameter("prodArray", prodArray) :
-                new ObjectParameter("prodArray", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTransDetail_GetAll_Result>("spICSTransDetail_GetAll", intArrayParameter, prodArrayParameter);
-        }
-    
         public virtual ObjectResult<spICSTrans_GetAll_Result> spICSTrans_GetAll(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string locationArray, string voucherTypeArray, Nullable<System.DateTime> fromHoDate, Nullable<System.DateTime> toHoDate)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -84,6 +71,19 @@ namespace ImillReports.Models
                 new ObjectParameter("toHoDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTrans_GetAll_Result>("spICSTrans_GetAll", fromDateParameter, toDateParameter, locationArrayParameter, voucherTypeArrayParameter, fromHoDateParameter, toHoDateParameter);
+        }
+    
+        public virtual ObjectResult<spICSTransDetail_GetAll_Result> spICSTransDetail_GetAll(string intArray, string prodArray)
+        {
+            var intArrayParameter = intArray != null ?
+                new ObjectParameter("intArray", intArray) :
+                new ObjectParameter("intArray", typeof(string));
+    
+            var prodArrayParameter = prodArray != null ?
+                new ObjectParameter("prodArray", prodArray) :
+                new ObjectParameter("prodArray", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spICSTransDetail_GetAll_Result>("spICSTransDetail_GetAll", intArrayParameter, prodArrayParameter);
         }
     }
 }

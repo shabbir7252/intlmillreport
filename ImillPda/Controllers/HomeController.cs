@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ImillPda.ViewModels;
 using ImillPda.Repository;
 using System.Collections.Generic;
+using ImillPda.Contracts;
 
 namespace ImillPda.Controllers
 {
@@ -14,11 +15,13 @@ namespace ImillPda.Controllers
         //public ImillPdaEntities _contextPda = new ImillPdaEntities();
         private readonly TransactionRepo _transContext;
         private readonly ItemRepo _itemContext;
+        private readonly IProductRepository _productRepository;
 
-        public HomeController(TransactionRepo transContext, ItemRepo itemContext)
+        public HomeController(TransactionRepo transContext, ItemRepo itemContext, IProductRepository productRepository)
         {
             _transContext = transContext;
             _itemContext = itemContext;
+            _productRepository = productRepository;
         }
 
         [HttpGet]
@@ -1062,6 +1065,94 @@ namespace ImillPda.Controllers
             };
 
             return result;
+        }
+
+        public ActionResult ConsolidatedReport()
+        {
+            ViewBag.startDate = DateTime.Now;
+
+            var products = _productRepository.GetAllProducts().Items;
+            ViewBag.products = products.OrderBy(x => x.Name);
+
+            var groups = _productRepository.GetItemGroups();
+            ViewBag.groups = groups.OrderBy(x => x.GroupNumber);
+
+            ViewBag.ConsReportType = new List<ConsolidatedReportType> { 
+                new ConsolidatedReportType
+                {
+                    Id = 1,
+                    NameEn = "Location"
+                },
+                new ConsolidatedReportType
+                {
+                    Id = 2,
+                    NameEn = "Item"
+                }
+            };
+
+            return View();
+        }
+
+        public ContentResult GetConsolidatedItems(string from, string product, string productAr, bool isChecked, string group, string type)
+        {
+            try
+            {
+                var fromDate = DateTime.Now;
+                var productIds = isChecked ? product : productAr;
+
+                if (!string.IsNullOrEmpty(from))
+                    fromDate = DateTime.Parse(from);
+
+                ViewBag.startDate = fromDate;
+                ViewBag.validation = "false";
+
+                var source = _transContext.GetConsolidatedItems(fromDate, productIds, group, type);
+
+                var result = new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(source),
+                    ContentType = "application/json"
+                };
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public ContentResult GetProducts(List<long> groupIds)
+        {
+            var source = _transContext.GetGroupProduct(groupIds);
+
+            var result = new ContentResult
+            {
+                Content = JsonConvert.SerializeObject(source),
+                ContentType = "application/json"
+            };
+
+            return result;
+        }
+
+        public ContentResult SaveConsolidateTrans(string from, List<ConsolidatedItems> consolidatedItems)
+        {
+
+            if (!string.IsNullOrEmpty(from))
+            {
+                var fromDate = DateTime.Parse(from);
+                var source = _transContext.SaveConsTrans(fromDate, consolidatedItems);
+
+                var result = new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(source),
+                    ContentType = "application/json"
+                };
+
+                return result;
+            }
+            return null;
         }
     }
 }

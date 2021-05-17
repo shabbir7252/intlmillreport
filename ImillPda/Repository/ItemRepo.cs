@@ -27,7 +27,8 @@ namespace ImillPda.Repository
                     Prod_Cd = x.Prod_Cd,
                     L_Prod_Name = x.L_Prod_Name,
                     A_Prod_Name = x.A_Prod_Name,
-                    Item_Type_Cd = x.Item_Type_Cd
+                    Item_Type_Cd = x.Item_Type_Cd,
+                    GroupCd = x.Group_Cd
                 });
             }
             catch (Exception ex)

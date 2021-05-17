@@ -48,10 +48,10 @@
 
 
 
-        SendWeeklyReport();
-        const interval = setInterval(function () {
-            SendWeeklyReport()
-        }, 80000);
+        //SendWeeklyReport();
+        //const interval = setInterval(function () {
+        //    SendWeeklyReport()
+        //}, 80000);
 
         function SendWeeklyReport() {
             $.ajax({
@@ -188,33 +188,47 @@
 
         // ****************** Month Sales Data Sync (Manual) ***************** //
 
+        var monthDate = new Date(2020, 1, 1);
+        var monthEndDate = new Date(2020, 1, 31);
+        Date.prototype.addDays = function (days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        };
+
         SyncSalesMonthReport();
+        const MonthInterval = setInterval(function () {
+            SyncSalesMonthReport();
+        }, 180000);
 
         function SyncSalesMonthReport() {
-            console.log("Have Started!");
-            var month = 10;
             var year = 2020;
-            var from = 26;
-            var to = 31;
+            var month = monthDate.getMonth();
+            var from = monthDate.getDate();
+            var to = monthDate.addDays(2).getDate();
+            if (monthDate > endDate) {
+                console.log("2020 Month Ended!");
+            } else {
+                monthDate = monthDate.addDays(3);
+                    $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetSalesMonthSync", "SalesReport")',
+                    data: {
+                        year: year,
+                        month: month,
+                        from: from,
+                        to: to
+                    },
+                    success: function (response) {
+                        console.log("Sales Month: ", response);
+                        SyncSalesDetailMonthReport(year, month, from, to);
+                    },
+                    error: function (ex) {
+                        console.log("Sales Month: ", ex);
+                    }
 
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("GetSalesMonthSync", "SalesReport")',
-                data: {
-                    year: year,
-                    month: month,
-                    from: from,
-                    to: to
-                },
-                success: function (response) {
-                    console.log("Sales Month: ", response);
-                    SyncSalesDetailMonthReport(year, month, from, to);
-                },
-                error: function (ex) {
-                    console.log("Sales Month: ", ex);
-                }
-
-            });
+                });
+            }
         }
 
         function SyncSalesDetailMonthReport(year, month, from, to) {
@@ -293,10 +307,10 @@
 
         // ****************** Sending Mail For Time Attendance ***************** //
 
-        // EmailTAReport();
-        //const emailInterval = setInterval(function () {
-        //    EmailTAReport();
-        //}, 30000);
+         EmailTAReport();
+        const emailInterval = setInterval(function () {
+            EmailTAReport();
+        }, 30000);
 
         function EmailTAReport() {
             $.ajax({
@@ -353,6 +367,100 @@
         }
 
         // ****************** Checking PDA Transactions ***************** //
+
+
+        // ****************** Purchase Order Sync ***************** //
+
+        PurchaseOrder();
+        const purchaseOrder = setInterval(function () {
+            PurchaseOrder();
+        }, 30000);
+
+        function PurchaseOrder() {
+
+            var year = 2020;
+            var month = 11;
+            var from = 20;
+            var to = 20;
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("EmailNewPurchaseOrder", "PurchaseOrder")',
+                data : {
+                    year: year,
+                    month: month,
+                    from: from,
+                    to: to
+                },
+                success: function (response) {
+                    console.log("PurchaseOrder : ", response);
+                },
+                error: function (ex) {
+                    console.log("PurchaseOrder : ", ex);
+                }
+            });
+        }
+
+        // ****************** End Purchase Order Sync ***************** //
+
+
+
+
+
+
+        // ****************** Month Sales Data Sync (Manual) ***************** //
+
+        SyncSalesMonthReport();
+
+        function SyncSalesMonthReport() {
+            console.log("Have Started!");
+            var month = 09;
+            var year = 2020;
+            var from = 30;
+            var to = 30;
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesMonthSync", "SalesReport")',
+                data: {
+                    year: year,
+                    month: month,
+                    from: from,
+                    to: to
+                },
+                success: function (response) {
+                    console.log("Sales Month: ", response);
+                    SyncSalesDetailMonthReport(year, month, from, to);
+                },
+                error: function (ex) {
+                    console.log("Sales Month: ", ex);
+                }
+
+            });
+        }
+
+        function SyncSalesDetailMonthReport(year, month, from, to) {
+            console.log("Have Started Details!");
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSalesDetailMonthSync", "SalesReport")',
+                data: {
+                    year: year,
+                    month: month,
+                    from: from,
+                    to: to
+                },
+                success: function (response) {
+                    console.log("Sales Detail Month: ", response);
+                },
+                error: function (ex) {
+                    console.log("Sales Detail Month: ", ex);
+                }
+
+            });
+        }
+
+        // ****************** Month Sales Data Sync (Manual) End ***************** //
 
 
     </script>

@@ -47,6 +47,7 @@ namespace ImillPda
             container.RegisterType<ITransactionRepo, TransactionRepo>();
             container.RegisterType<IItemRepo, ItemRepo>();
             container.RegisterType<ILocationRepo, LocationRepo>();
+            container.RegisterType<IProductRepository, ProductRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

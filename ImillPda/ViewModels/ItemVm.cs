@@ -12,5 +12,6 @@ namespace ImillPda.ViewModels
         public string L_Prod_Name { get; set; }
         public string A_Prod_Name { get; set; }
         public byte Item_Type_Cd { get; set; }
+        public int GroupCd { get; internal set; }
     }
 }

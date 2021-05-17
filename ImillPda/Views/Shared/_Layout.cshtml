@@ -27,7 +27,7 @@
                 <ul class="navbar-nav ml-auto">
 
                     @*@if (User.Identity.IsAuthenticated)
-                        {*@
+        {*@
                     <li class="nav-item mt-3">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">
                             Requests
@@ -43,26 +43,30 @@
                         <a class="nav-link" href="@Url.Action("WishList", "Home")">WishList</a>
                     </li>
 
+                    <li class="nav-item mt-3">
+                        <a class="nav-link" href="@Url.Action("ConsolidatedReport", "Home")">Consolidated Report</a>
+                    </li>
+
                     @*<li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Item")">Item Master</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Unit")">Unit Master</a>
-                        </li>*@
+            <a class="nav-link" href="@Url.Action("Index", "Item")">Item Master</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Unit")">Unit Master</a>
+        </li>*@
 
                     @*<li class="nav-item mt-4">
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <a style="color: #fff;" href="javascript:document.getElementById('logoutForm').submit()" class="mega-menu xs-hide" data-close="true">Logout</a>
-                            }
-                        </li>*@
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <a style="color: #fff;" href="javascript:document.getElementById('logoutForm').submit()" class="mega-menu xs-hide" data-close="true">Logout</a>
+            }
+        </li>*@
 
                     @*}
-                        else
-                        {
+        else
+        {
 
-                        }*@
+        }*@
                 </ul>
             </div>
         </div>

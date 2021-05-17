@@ -3451,7 +3451,7 @@ namespace ImillReports.Repository
         public SalesReportViewModel GetSalesDetailReport(DateTime? fromDate, DateTime? toDate, string locationArray, string voucherTypesArray, string productStringArray)
         {
             long entryId = 0;
-            long prodId = 0;
+            // long prodId = 0;
             try
             {
                 if (fromDate == null) fromDate = DateTime.Now;
@@ -3466,15 +3466,25 @@ namespace ImillReports.Repository
                 var entryIdArray = new List<string>();
                 entryIdArray.AddRange(from item in transactions select item.EntryId.ToString());
 
+                //var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
+                //var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, productStringArray).ToList();
+
                 var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
-                var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, productStringArray).ToList();
+                long[] entryIds = Array.ConvertAll(entryIdArray.ToArray(), s => long.Parse(s));
+                // var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+                var transactionDetails = _context.ICS_Transaction_Details.Where(x => entryIds.Contains(x.Entry_Id)).ToList();
+
+                var dbItems = _context.ICS_Item.ToList();
+                var itemUnits = _context.ICS_Unit.ToList();
+                var itemUnitDetails = _context.ICS_Item_Unit_Details.ToList();
 
                 var salesReportItems = new List<SalesReportItem>();
 
                 foreach (var detail in transactionDetails)
                 {
-                    prodId = detail.ProdId;
+                    // prodId = detail.Prod_Cd;
                     var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
+                    var IUD = itemUnitDetails.FirstOrDefault(x => x.Unit_Entry_Id == detail.Unit_Entry_ID);
 
                     var salesReportItem = new SalesReportItem
                     {
@@ -3500,15 +3510,28 @@ namespace ImillReports.Repository
                         CustomerId = trans.CustomerId,
                         CustomerName = trans.CustomerName,
                         CustomerNameAr = trans.CustomerNameAr,
-                        ProdId = detail.ProdId,
-                        ProductNameEn = detail.ProdEn,
-                        ProductNameAr = detail.ProdAr,
-                        BaseQuantity = detail.IUDBaseQty,
-                        BaseUnit = detail.BaseUnit,
-                        BaseUnitId = detail.BaseUnitId,
+                        //ProdId = detail.ProdId,
+                        //ProductNameEn = detail.ProdEn,
+                        //ProductNameAr = detail.ProdAr,
+                        //BaseQuantity = detail.IUDBaseQty,
+                        //BaseUnit = detail.BaseUnit,
+                        //BaseUnitId = detail.BaseUnitId,
+                        //SellQuantity = detail.Qty,
+                        //SellUnit = detail.SellUnit,
+                        //SellUnitId = detail.SellUnitId,
+
+                        ProdId = detail.Prod_Cd,
+                        ProductNameEn = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).L_Prod_Name,
+                        ProductNameAr = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).A_Prod_Name,
+                        BaseQuantity = IUD.Base_Qty,
+                        BaseUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Base_Unit_Cd).L_Unit_Name,
+                        BaseUnitId = IUD.Base_Unit_Cd,
                         SellQuantity = detail.Qty,
-                        SellUnit = detail.SellUnit,
-                        SellUnitId = detail.SellUnitId,
+                        SellUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Alt_Unit_Cd).L_Unit_Name,
+                        SellUnitId = IUD.Alt_Unit_Cd,
+                        LineNumber = detail.Line_No,
+
+
                         Discount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
@@ -3548,7 +3571,7 @@ namespace ImillReports.Repository
                         {
                             entryId = item.EntryId;
                             trans_detail_2020 = _report.Trans_Detail_2020.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                            if (!trans_detail_2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber ==item.InvoiceNumber))
                             {
                                 var iTrans = new Trans_Detail_2020
                                 {
@@ -3604,7 +3627,7 @@ namespace ImillReports.Repository
                         {
                             entryId = item.EntryId;
                             trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                            if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
                                 var iTrans = new Trans_Detail_2021
                                 {
@@ -3655,8 +3678,6 @@ namespace ImillReports.Repository
                     }
                 }
 
-
-
                 return new SalesReportViewModel
                 {
                     SalesReportItems = salesReportItems
@@ -3664,8 +3685,6 @@ namespace ImillReports.Repository
             }
             catch (Exception ex)
             {
-                var test = entryId;
-                var test2 = prodId;
                 throw ex;
             }
         }
@@ -4301,14 +4320,24 @@ namespace ImillReports.Repository
                 var entryIdArray = new List<string>();
                 entryIdArray.AddRange(from item in transactions select item.EntryId.ToString());
 
+                //var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
+                //var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+
                 var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
-                var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+                long[] entryIds = Array.ConvertAll(entryIdArray.ToArray(), s => long.Parse(s));
+                // var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+                var transactionDetails = _context.ICS_Transaction_Details.Where(x => entryIds.Contains(x.Entry_Id)).ToList();
+
+                var dbItems = _context.ICS_Item.ToList();
+                var itemUnits = _context.ICS_Unit.ToList();
+                var itemUnitDetails = _context.ICS_Item_Unit_Details.ToList();
 
                 var salesReportItems = new List<SalesReportItem>();
 
                 foreach (var detail in transactionDetails)
                 {
                     var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
+                    var IUD = itemUnitDetails.FirstOrDefault(x => x.Unit_Entry_Id == detail.Unit_Entry_ID);
 
                     var salesReportItem = new SalesReportItem
                     {
@@ -4324,15 +4353,27 @@ namespace ImillReports.Repository
                         CustomerId = trans.CustomerId,
                         CustomerName = trans.CustomerName,
                         CustomerNameAr = trans.CustomerNameAr,
-                        ProdId = detail.ProdId,
-                        ProductNameEn = detail.ProdEn,
-                        ProductNameAr = detail.ProdAr,
-                        BaseQuantity = detail.IUDBaseQty,
-                        BaseUnit = detail.BaseUnit,
-                        BaseUnitId = detail.BaseUnitId,
+                        //ProdId = detail.ProdId,
+                        //ProductNameEn = detail.ProdEn,
+                        //ProductNameAr = detail.ProdAr,
+                        //BaseQuantity = detail.IUDBaseQty,
+                        //BaseUnit = detail.BaseUnit,
+                        //BaseUnitId = detail.BaseUnitId,
+                        //SellQuantity = detail.Qty,
+                        //SellUnit = detail.SellUnit,
+                        //SellUnitId = detail.SellUnitId,
+
+                        ProdId = detail.Prod_Cd,
+                        ProductNameEn = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).L_Prod_Name,
+                        ProductNameAr = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).A_Prod_Name,
+                        BaseQuantity = IUD.Base_Qty,
+                        BaseUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Base_Unit_Cd).L_Unit_Name,
+                        BaseUnitId = IUD.Base_Unit_Cd,
                         SellQuantity = detail.Qty,
-                        SellUnit = detail.SellUnit,
-                        SellUnitId = detail.SellUnitId,
+                        SellUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Alt_Unit_Cd).L_Unit_Name,
+                        SellUnitId = IUD.Alt_Unit_Cd,
+                        LineNumber = detail.Line_No,
+
                         Discount = trans.VoucherId == 202 ||
                                trans.VoucherId == 2023 ||
                                trans.VoucherId == 2035 ||
@@ -4386,9 +4427,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2015
                                     {
@@ -4424,8 +4465,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2015.Add(iTrans);
@@ -4445,9 +4486,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2016
                                     {
@@ -4483,8 +4524,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2016.Add(iTrans);
@@ -4504,9 +4545,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2017
                                     {
@@ -4542,8 +4583,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2017.Add(iTrans);
@@ -4563,9 +4604,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2018
                                     {
@@ -4601,8 +4642,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2018.Add(iTrans);
@@ -4622,9 +4663,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2019
                                     {
@@ -4660,8 +4701,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2019.Add(iTrans);
@@ -4681,9 +4722,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2020
                                     {
@@ -4719,8 +4760,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2020.Add(iTrans);
@@ -4740,9 +4781,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2021
                                     {
@@ -4778,8 +4819,8 @@ namespace ImillReports.Repository
                                         UnitPrice = item.UnitPrice,
                                         Voucher = item.Voucher,
                                         VoucherId = item.VoucherId,
-                                        Year = item.Year
-
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
                                     };
 
                                     newTransDetail2021.Add(iTrans);
@@ -5500,62 +5541,152 @@ namespace ImillReports.Repository
                 entryIdArray.AddRange(from item in transactions select item.EntryId.ToString());
 
                 var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
-                var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+                long[] entryIds = Array.ConvertAll(entryIdArray.ToArray(), s => long.Parse(s));
+                // var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+                var transactionDetails = _context.ICS_Transaction_Details.Where(x => entryIds.Contains(x.Entry_Id)).ToList();
+
+                var dbItems = _context.ICS_Item.ToList();
+                var itemUnits = _context.ICS_Unit.ToList();
+                var itemUnitDetails = _context.ICS_Item_Unit_Details.ToList();
 
                 var salesReportItems = new List<SalesReportItem>();
 
                 foreach (var detail in transactionDetails)
                 {
-                    var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
-
-                    var salesReportItem = new SalesReportItem
+                    if(detail.Line_No >= 0)
                     {
-                        EntryId = detail.Entry_Id,
-                        Location = trans.Location,
-                        LocationId = trans.LocationId,
-                        InvDateTime = trans.InvDateTime,
-                        Salesman = trans.Salesman,
-                        Voucher = trans.Voucher,
-                        VoucherId = trans.VoucherId,
-                        InvoiceNumber = trans.InvoiceNumber,
-                        GroupCD = trans.GroupCD,
-                        CustomerId = trans.CustomerId,
-                        CustomerName = trans.CustomerName,
-                        CustomerNameAr = trans.CustomerNameAr,
-                        ProdId = detail.ProdId,
-                        ProductNameEn = detail.ProdEn,
-                        ProductNameAr = detail.ProdAr,
-                        BaseQuantity = detail.IUDBaseQty,
-                        BaseUnit = detail.BaseUnit,
-                        BaseUnitId = detail.BaseUnitId,
-                        SellQuantity = detail.Qty,
-                        SellUnit = detail.SellUnit,
-                        SellUnitId = detail.SellUnitId,
-                        Discount = trans.VoucherId == 202 ||
-                               trans.VoucherId == 2023 ||
-                               trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036 ||
-                               trans.VoucherId == 2037
-                                ? -detail.FC_Prod_Dis
-                                : detail.FC_Prod_Dis,
-                        Amount = trans.VoucherId == 202 ||
-                               trans.VoucherId == 2023 ||
-                               trans.VoucherId == 2035 ||
-                               trans.VoucherId == 2036 ||
-                               trans.VoucherId == 2037
-                                ? -detail.FC_Amount
-                                : detail.FC_Amount,
-                        Year = trans.InvDateTime.Year,
-                        Date = trans.InvDateTime.Date
-                    };
+                        var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
+                        var IUD = itemUnitDetails.FirstOrDefault(x => x.Unit_Entry_Id == detail.Unit_Entry_ID);
+                        var salesReportItem = new SalesReportItem
+                        {
+                            EntryId = detail.Entry_Id,
+                            Location = trans.Location,
+                            LocationId = trans.LocationId,
+                            InvDateTime = trans.InvDateTime,
+                            Salesman = trans.Salesman,
+                            Voucher = trans.Voucher,
+                            VoucherId = trans.VoucherId,
+                            InvoiceNumber = trans.InvoiceNumber,
+                            GroupCD = trans.GroupCD,
+                            CustomerId = trans.CustomerId,
+                            CustomerName = trans.CustomerName,
+                            CustomerNameAr = trans.CustomerNameAr,
+                            //ProdId = detail.ProdId,
+                            //ProductNameEn = detail.ProdEn,
+                            //ProductNameAr = detail.ProdAr,
+                            //BaseQuantity = detail.IUDBaseQty,
+                            //BaseUnit = detail.BaseUnit,
+                            //BaseUnitId = detail.BaseUnitId,
+                            //SellQuantity = detail.Qty,
+                            //SellUnit = detail.SellUnit,
+                            //SellUnitId = detail.SellUnitId,
+                            //LineNumber = detail.LineNumber,
 
-                    salesReportItems.Add(salesReportItem);
+                            ProdId = detail.Prod_Cd,
+                            ProductNameEn = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).L_Prod_Name,
+                            ProductNameAr = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).A_Prod_Name,
+                            BaseQuantity = IUD.Base_Qty,
+                            BaseUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Base_Unit_Cd).L_Unit_Name,
+                            BaseUnitId = IUD.Base_Unit_Cd,
+                            SellQuantity = detail.Qty,
+                            SellUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Alt_Unit_Cd).L_Unit_Name,
+                            SellUnitId = IUD.Alt_Unit_Cd,
+                            LineNumber = detail.Line_No,
+
+
+                            Discount = trans.VoucherId == 202 ||
+                                   trans.VoucherId == 2023 ||
+                                   trans.VoucherId == 2035 ||
+                                   trans.VoucherId == 2036 ||
+                                   trans.VoucherId == 2037
+                                    ? -detail.FC_Prod_Dis
+                                    : detail.FC_Prod_Dis,
+                            Amount = trans.VoucherId == 202 ||
+                                   trans.VoucherId == 2023 ||
+                                   trans.VoucherId == 2035 ||
+                                   trans.VoucherId == 2036 ||
+                                   trans.VoucherId == 2037
+                                    ? -detail.FC_Amount
+                                    : detail.FC_Amount,
+                            Year = trans.InvDateTime.Year,
+                            Date = trans.InvDateTime.Date
+                        };
+
+                        salesReportItems.Add(salesReportItem);
+                    }
                 }
 
                 foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
                 {
                     var startDate = items.OrderBy(x => x.InvDateTime).FirstOrDefault().Date;
                     var endDate = items.OrderByDescending(x => x.InvDateTime).FirstOrDefault().Date;
+
+                    if (items.Key == 2021)
+                    {
+                        List<Trans_Detail_2021> trans_detail_2021 = null;
+                        var newTransDetail2021 = new List<Trans_Detail_2021>();
+
+                        trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                        foreach (var item in items)
+                        {
+                            //if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            //{
+                            //    if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            //    {
+                            
+                            if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
+                            {
+                                if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
+                                {
+                                    var iTrans = new Trans_Detail_2021
+                                    {
+                                        Amount = item.Amount,
+                                        AmountRecieved = item.AmountRecieved,
+                                        BaseQuantity = item.BaseQuantity,
+                                        BaseUnit = item.BaseUnit,
+                                        BaseUnitId = item.BaseUnitId,
+                                        Cash = item.Cash,
+                                        CreditCard = item.CreditCard,
+                                        CreditCardType = item.CreditCardType,
+                                        CustomerId = item.CustomerId,
+                                        CustomerName = item.CustomerName,
+                                        CustomerNameAr = item.CustomerNameAr,
+                                        Date = item.Date,
+                                        Discount = item.Discount,
+                                        EntryId = item.EntryId,
+                                        GroupCD = item.GroupCD,
+                                        InvDateTime = item.InvDateTime,
+                                        InvoiceNumber = item.InvoiceNumber,
+                                        Knet = item.Knet,
+                                        Location = item.Location,
+                                        LocationId = item.LocationId,
+                                        NetAmount = item.NetAmount,
+                                        ProdId = item.ProdId,
+                                        ProductNameAr = item.ProductNameAr,
+                                        ProductNameEn = item.ProductNameEn,
+                                        Salesman = item.Salesman,
+                                        SalesReturn = item.SalesReturn,
+                                        SellQuantity = item.SellQuantity,
+                                        SellUnit = item.SellUnit,
+                                        SellUnitId = item.SellUnitId,
+                                        UnitPrice = item.UnitPrice,
+                                        Voucher = item.Voucher,
+                                        VoucherId = item.VoucherId,
+                                        Year = item.Year,
+                                        Line_No = item.LineNumber
+                                    };
+
+                                    newTransDetail2021.Add(iTrans);
+                                }
+                            }
+                        }
+                        if (newTransDetail2021.Any())
+                        {
+                            _report.Trans_Detail_2021.AddRange(newTransDetail2021);
+                            _report.SaveChanges();
+                        }
+                    }
 
                     if (items.Key == 2020)
                     {
@@ -5566,9 +5697,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2020
                                     {
@@ -5618,68 +5749,6 @@ namespace ImillReports.Repository
                         }
                     }
 
-                    if (items.Key == 2021)
-                    {
-                        List<Trans_Detail_2021> trans_detail_2021 = null;
-                        var newTransDetail2021 = new List<Trans_Detail_2021>();
-
-                        trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Trans_Detail_2021
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTransDetail2021.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2021.Any())
-                        {
-                            _report.Trans_Detail_2021.AddRange(newTransDetail2021);
-                            _report.SaveChanges();
-                        }
-                    }
-
                     if (items.Key == 2019)
                     {
                         List<Trans_Detail_2019> trans_detail_2019 = null;
@@ -5689,9 +5758,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2019
                                     {
@@ -5751,9 +5820,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2018
                                     {
@@ -5813,9 +5882,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2017
                                     {
@@ -5875,9 +5944,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2016
                                     {
@@ -5937,9 +6006,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                            if (!trans_detail_2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
-                                if (!newTransDetail2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                if (!newTransDetail2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                                 {
                                     var iTrans = new Trans_Detail_2015
                                     {

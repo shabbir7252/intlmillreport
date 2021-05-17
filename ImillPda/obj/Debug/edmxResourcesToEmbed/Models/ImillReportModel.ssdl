@@ -103,6 +103,30 @@
     <Property Name="MadeIn" Type="nvarchar" MaxLength="50" />
     <Property Name="PackDate" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="ICS_Item_Group">
+    <Key>
+      <PropertyRef Name="Group_Cd" />
+    </Key>
+    <Property Name="Group_Cd" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="M_Group_Cd" Type="int" Nullable="false" />
+    <Property Name="Group_No" Type="bigint" Nullable="false" />
+    <Property Name="L_Group_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="A_Group_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Group_Level" Type="smallint" Nullable="false" />
+    <Property Name="Show" Type="bit" Nullable="false" />
+    <Property Name="Protected" Type="bit" Nullable="false" />
+    <Property Name="Comments" Type="varchar" MaxLength="100" />
+    <Property Name="User_Cd" Type="smallint" Nullable="false" />
+    <Property Name="User_Date_Time" Type="smalldatetime" Nullable="false" />
+    <Property Name="Time_Stamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Parent_Groups" Type="varchar" MaxLength="5000" />
+    <Property Name="Parent_Group_cd_1" Type="int" />
+    <Property Name="Parent_Group_cd_2" Type="int" />
+    <Property Name="Parent_Group_cd_3" Type="int" />
+    <Property Name="Parent_Group_cd_4" Type="int" />
+    <Property Name="Parent_Group_cd_5" Type="int" />
+  </EntityType>
   <EntityType Name="ICS_Item_Unit_Details">
     <Key>
       <PropertyRef Name="Prod_Cd" />
@@ -284,6 +308,17 @@
     <Property Name="Additional_Field_5" Type="nvarchar" MaxLength="100" />
     <Property Name="Additional_Field_6" Type="nvarchar" MaxLength="100" />
     <Property Name="Additional_Field_7" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Imill_BranchOrderItem">
+    <Key>
+      <PropertyRef Name="OrderItemId" />
+    </Key>
+    <Property Name="OrderItemId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Locat_cd" Type="bigint" Nullable="false" />
+    <Property Name="Prod_Cd" Type="bigint" Nullable="false" />
+    <Property Name="Show" Type="bit" Nullable="false" />
+    <Property Name="SortOrder" Type="bigint" Nullable="false" />
+    <Property Name="QtyRange" Type="nvarchar" MaxLength="2000" />
   </EntityType>
   <EntityType Name="SM_Location">
     <Key>
@@ -615,11 +650,37 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Product_Group_Product_Group">
+    <End Role="ICS_Item_Group" Type="Self.ICS_Item_Group" Multiplicity="1" />
+    <End Role="ICS_Item_Group1" Type="Self.ICS_Item_Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Item_Group">
+        <PropertyRef Name="Group_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item_Group1">
+        <PropertyRef Name="M_Group_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Product_Group">
+    <End Role="ICS_Item_Group" Type="Self.ICS_Item_Group" Multiplicity="1" />
+    <End Role="ICS_Item" Type="Self.ICS_Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICS_Item_Group">
+        <PropertyRef Name="Group_Cd" />
+      </Principal>
+      <Dependent Role="ICS_Item">
+        <PropertyRef Name="Group_Cd" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="IMILLModelStoreContainer">
     <EntitySet Name="ICS_Item" EntityType="Self.ICS_Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ICS_Item_Group" EntityType="Self.ICS_Item_Group" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ICS_Item_Unit_Details" EntityType="Self.ICS_Item_Unit_Details" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ICS_Transaction" EntityType="Self.ICS_Transaction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ICS_Transaction_Details" EntityType="Self.ICS_Transaction_Details" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Imill_BranchOrderItem" EntityType="Self.Imill_BranchOrderItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SM_Location" EntityType="Self.SM_Location" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Alt_Unit_Details_Product" Association="Self.FK_Alt_Unit_Details_Product">
       <End Role="ICS_Item" EntitySet="ICS_Item" />
@@ -652,6 +713,14 @@ warning 6035: The relationship 'FK_ICS_Transaction_Details_Alt_Unit_Details' has
     <AssociationSet Name="FK_ICS_Transaction_Location" Association="Self.FK_ICS_Transaction_Location">
       <End Role="SM_Location" EntitySet="SM_Location" />
       <End Role="ICS_Transaction" EntitySet="ICS_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Group_Product_Group" Association="Self.FK_Product_Group_Product_Group">
+      <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+      <End Role="ICS_Item_Group1" EntitySet="ICS_Item_Group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Product_Group" Association="Self.FK_Product_Product_Group">
+      <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
+      <End Role="ICS_Item" EntitySet="ICS_Item" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

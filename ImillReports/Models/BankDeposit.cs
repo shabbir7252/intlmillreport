@@ -45,5 +45,49 @@ namespace ImillReports.Models
         public decimal TotalCash { get; set; }
         public decimal Innova { get; set; }
         public decimal Hamra { get; set; }
+        public Nullable<decimal> SalhiyahAm { get; set; }
+        public Nullable<decimal> SalhiyahPm { get; set; }
+        public Nullable<decimal> SalmiyaAm { get; set; }
+        public Nullable<decimal> SalmiyaPm { get; set; }
+        public Nullable<decimal> NuzhaAm { get; set; }
+        public Nullable<decimal> NuzhaPm { get; set; }
+        public Nullable<decimal> DahiyaAm { get; set; }
+        public Nullable<decimal> DahiyaPm { get; set; }
+        public Nullable<decimal> KhaldiyaAm { get; set; }
+        public Nullable<decimal> KhaldiyaPm { get; set; }
+        public Nullable<decimal> QortubaAm { get; set; }
+        public Nullable<decimal> QortubaPm { get; set; }
+        public Nullable<decimal> KaifanAm { get; set; }
+        public Nullable<decimal> KaifanPm { get; set; }
+        public Nullable<decimal> AvenuesAm { get; set; }
+        public Nullable<decimal> AvenuesPm { get; set; }
+        public Nullable<decimal> KPCAm { get; set; }
+        public Nullable<decimal> KPCPm { get; set; }
+        public Nullable<decimal> YarmoukAm { get; set; }
+        public Nullable<decimal> YarmoukPm { get; set; }
+        public Nullable<decimal> ZaharaAm { get; set; }
+        public Nullable<decimal> ZaharaPm { get; set; }
+        public Nullable<decimal> Mall360Am { get; set; }
+        public Nullable<decimal> Mall360Pm { get; set; }
+        public Nullable<decimal> DasmaAm { get; set; }
+        public Nullable<decimal> DasmaPm { get; set; }
+        public Nullable<decimal> GateAm { get; set; }
+        public Nullable<decimal> GatePm { get; set; }
+        public Nullable<decimal> ShahudaAm { get; set; }
+        public Nullable<decimal> ShahudaPm { get; set; }
+        public Nullable<decimal> SurraAm { get; set; }
+        public Nullable<decimal> SurraPm { get; set; }
+        public Nullable<decimal> HamraAm { get; set; }
+        public Nullable<decimal> HamraPm { get; set; }
+        public Nullable<decimal> BniedAm { get; set; }
+        public Nullable<decimal> BniedPm { get; set; }
+        public Nullable<decimal> JahraAm { get; set; }
+        public Nullable<decimal> JahraPm { get; set; }
+        public Nullable<decimal> KoutAm { get; set; }
+        public Nullable<decimal> KoutPm { get; set; }
+        public Nullable<decimal> Av4Am { get; set; }
+        public Nullable<decimal> Av4Pm { get; set; }
+        public Nullable<decimal> FintasAm { get; set; }
+        public Nullable<decimal> FintasPm { get; set; }
     }
 }

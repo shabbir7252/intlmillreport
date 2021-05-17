@@ -23,6 +23,7 @@
         <EntityTypeShape EntityType="ImillReportsModel.Transaction_2017" Width="1.5" PointX="15.375" PointY="0.75" />
         <EntityTypeShape EntityType="ImillReportsModel.BankDeposit" Width="1.5" PointX="16.375" PointY="9.75" />
         <EntityTypeShape EntityType="ImillReportsModel.Setting" Width="1.5" PointX="5.5" PointY="9.625" />
+        <EntityTypeShape EntityType="ImillReportsModel.PurchaseOrder" Width="1.5" PointX="17.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillPda\Models\ImillReportModel.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ImillPda\Models\ImillReportModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

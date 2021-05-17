@@ -534,7 +534,7 @@ namespace ImillReports.Controllers
 
         #region Sales Hourly Report
 
-        [Authorize(Roles = "Admin,Sales, StaffAdmin")]
+        [Authorize(Roles = "Admin,Sales, StaffAdmin, Purchase")]
         public ActionResult SalesHourlyReport(DateTime? fromDate, string[] locationStringArray)
         {
             if (fromDate == null)
@@ -1349,7 +1349,7 @@ namespace ImillReports.Controllers
         #region Sales Trend
 
         // int trendType, int months, int reportType, int groupWise
-        [Authorize(Roles = "Admin,Sales, StaffAdmin")]
+        [Authorize(Roles = "Admin,Sales, StaffAdmin, Purchase")]
         public ActionResult SalesTrend(int? trendType, int? trendYear, int? trendMonth, int? reportType, string[] locations,
             DateTime? fromDate, DateTime? toDate, string[] products, string[] productsAr, string[] groups)
         {

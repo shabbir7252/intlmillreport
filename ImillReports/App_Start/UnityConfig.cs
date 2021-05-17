@@ -68,6 +68,7 @@ namespace ImillReports
             container.RegisterType<IBaseRepository, BaseRepository>();
             container.RegisterType<IPdaRepo, PdaRepo>();
             container.RegisterType<IBankDepositRepo, BankDepositRepo>();
+            container.RegisterType<IPurchaseOrderRepo, PurchaseOrderRepo>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

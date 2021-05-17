@@ -21,9 +21,15 @@ namespace ImillReports.Models
         public decimal Qty { get; set; }
         public decimal FC_Prod_Dis { get; set; }
         public decimal FC_Amount { get; set; }
+        public System.Guid row_id { get; set; }
         public short BaseUnitId { get; set; }
         public short SellUnitId { get; set; }
         public string BaseUnit { get; set; }
         public string SellUnit { get; set; }
+        public Nullable<decimal> UnitPrice { get; set; }
+        public Nullable<decimal> UnitTotal { get; set; }
+        public decimal AltQty { get; set; }
+        public long LineNumber { get; set; }
+        public Nullable<decimal> Package { get; set; }
     }
 }

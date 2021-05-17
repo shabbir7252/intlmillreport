@@ -133,7 +133,9 @@ namespace ImillReports.Controllers
                 Visa = visa
             };
 
-            return _cashRegisterRepository.Update(cashRegUpdateVM);
+           //  System.IO.StreamWriter path = System.IO.File.CreateText(Server.MapPath("~/App_Data/cr_log.json"));
+
+            return _cashRegisterRepository.Update(cashRegUpdateVM, Server.MapPath("~/App_Data/cr_log.json"));
         }
 
     }

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ImillPdaModelStoreContainer" CdmEntityContainer="ImillPdaEntities">
+    <EntitySetMapping Name="Transactions">
+      <EntityTypeMapping TypeName="ImillPdaModel.Transaction">
+        <MappingFragment StoreEntitySet="Transaction">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WishLists">
+      <EntityTypeMapping TypeName="ImillPdaModel.WishList">
+        <MappingFragment StoreEntitySet="WishList">
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <ScalarProperty Name="TransDetailOid" ColumnName="TransDetailOid" />
+          <ScalarProperty Name="TransactionOid" ColumnName="TransactionOid" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="Prod_Cd" ColumnName="Prod_Cd" />
+          <ScalarProperty Name="RequestedQty" ColumnName="RequestedQty" />
+          <ScalarProperty Name="RemainingQty" ColumnName="RemainingQty" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransactionDetails">
+      <EntityTypeMapping TypeName="ImillPdaModel.TransactionDetail">
+        <MappingFragment StoreEntitySet="TransactionDetails">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
+          <ScalarProperty Name="IsDelivered" ColumnName="IsDelivered" />
+          <ScalarProperty Name="RemainingQty" ColumnName="RemainingQty" />
+          <ScalarProperty Name="DeliveredQty" ColumnName="DeliveredQty" />
+          <ScalarProperty Name="TransactionOid" ColumnName="TransactionOid" />
+          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="ActualQty" ColumnName="ActualQty" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="NameEn" ColumnName="NameEn" />
+          <ScalarProperty Name="Prod_Cd" ColumnName="Prod_Cd" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OpenTransactions">
+      <EntityTypeMapping TypeName="ImillPdaModel.OpenTransaction">
+        <MappingFragment StoreEntitySet="OpenTransactions">
+          <ScalarProperty Name="IsReqQtyChanged" ColumnName="IsReqQtyChanged" />
+          <ScalarProperty Name="IsNewlyAdded" ColumnName="IsNewlyAdded" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="RequestedQty" ColumnName="RequestedQty" />
+          <ScalarProperty Name="ActualQty" ColumnName="ActualQty" />
+          <ScalarProperty Name="RequiredQty" ColumnName="RequiredQty" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+          <ScalarProperty Name="Prod_Cd" ColumnName="Prod_Cd" />
+          <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmailSettings">
+      <EntityTypeMapping TypeName="ImillPdaModel.EmailSetting">
+        <MappingFragment StoreEntitySet="EmailSetting">
+          <ScalarProperty Name="IsRegForEmail" ColumnName="IsRegForEmail" />
+          <ScalarProperty Name="Emails" ColumnName="Emails" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

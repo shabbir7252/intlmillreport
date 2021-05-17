@@ -191,10 +191,6 @@
       <End Role="ICS_Transaction_Types" EntitySet="ICS_Transaction_Types" />
       <End Role="ICS_Transaction_Types1" EntitySet="ICS_Transaction_Types" />
     </AssociationSet>
-    <FunctionImport Name="spICSTransDetail_GetAll" ReturnType="Collection(IMILLModel.spICSTransDetail_GetAll_Result)">
-      <Parameter Name="intArray" Mode="In" Type="String" />
-      <Parameter Name="prodArray" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="spICSTrans_GetAll" ReturnType="Collection(IMILLModel.spICSTrans_GetAll_Result)">
       <Parameter Name="fromDate" Mode="In" Type="DateTime" />
       <Parameter Name="toDate" Mode="In" Type="DateTime" />
@@ -213,6 +209,10 @@
       <End Role="ICS_Item_Group" EntitySet="ICS_Item_Group" />
       <End Role="ICS_Item_Group1" EntitySet="ICS_Item_Group" />
     </AssociationSet>
+    <FunctionImport Name="spICSTransDetail_GetAll" ReturnType="Collection(IMILLModel.spICSTransDetail_GetAll_Result)">
+      <Parameter Name="intArray" Mode="In" Type="String" />
+      <Parameter Name="prodArray" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="spIUD_GetAll_Result">
     <Property Type="Int64" Name="Unit_Entry_Id" Nullable="false" />
@@ -1754,20 +1754,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <ComplexType Name="spICSTransDetail_GetAll_Result">
-    <Property Type="Int64" Name="Entry_Id" Nullable="false" />
-    <Property Type="Int64" Name="ProdId" Nullable="false" />
-    <Property Type="String" Name="ProdEn" Nullable="false" MaxLength="200" />
-    <Property Type="String" Name="ProdAr" Nullable="false" MaxLength="200" />
-    <Property Type="Decimal" Name="IUDBaseQty" Nullable="false" Precision="14" Scale="5" />
-    <Property Type="Decimal" Name="Qty" Nullable="false" Precision="14" Scale="5" />
-    <Property Type="Decimal" Name="FC_Prod_Dis" Nullable="false" Precision="19" />
-    <Property Type="Decimal" Name="FC_Amount" Nullable="false" Precision="19" />
-    <Property Type="Int16" Name="BaseUnitId" Nullable="false" />
-    <Property Type="Int16" Name="SellUnitId" Nullable="false" />
-    <Property Type="String" Name="BaseUnit" Nullable="false" MaxLength="20" />
-    <Property Type="String" Name="SellUnit" Nullable="false" MaxLength="20" />
-  </ComplexType>
   <ComplexType Name="spICSTrans_GetAll_Result">
     <Property Type="Int64" Name="Entry_Id" Nullable="false" />
     <Property Type="DateTime" Name="Voucher_Date" Nullable="false" Precision="16" />
@@ -1879,4 +1865,24 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="spICSTransDetail_GetAll_Result">
+    <Property Type="Int64" Name="Entry_Id" Nullable="false" />
+    <Property Type="Int64" Name="ProdId" Nullable="false" />
+    <Property Type="String" Name="ProdEn" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ProdAr" Nullable="false" MaxLength="200" />
+    <Property Type="Decimal" Name="IUDBaseQty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="Decimal" Name="Qty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="Decimal" Name="FC_Prod_Dis" Nullable="false" Precision="19" />
+    <Property Type="Decimal" Name="FC_Amount" Nullable="false" Precision="19" />
+    <Property Type="Guid" Name="row_id" Nullable="false" />
+    <Property Type="Int16" Name="BaseUnitId" Nullable="false" />
+    <Property Type="Int16" Name="SellUnitId" Nullable="false" />
+    <Property Type="String" Name="BaseUnit" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="SellUnit" Nullable="false" MaxLength="20" />
+    <Property Type="Decimal" Name="UnitPrice" Nullable="true" Precision="36" Scale="14" />
+    <Property Type="Decimal" Name="UnitTotal" Nullable="true" Precision="36" Scale="14" />
+    <Property Type="Decimal" Name="AltQty" Nullable="false" Precision="14" Scale="5" />
+    <Property Type="Int64" Name="LineNumber" Nullable="false" />
+    <Property Type="Decimal" Name="Package" Nullable="true" Precision="14" Scale="5" />
+  </ComplexType>
 </Schema>

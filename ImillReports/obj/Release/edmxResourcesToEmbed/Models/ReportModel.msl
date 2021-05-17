@@ -909,24 +909,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="spICSTransDetail_GetAll" FunctionName="IMILLModel.Store.spICSTransDetail_GetAll">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
-          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
-          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
-          <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
-          <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
-          <ScalarProperty Name="IUDBaseQty" ColumnName="IUDBaseQty" />
-          <ScalarProperty Name="Qty" ColumnName="Qty" />
-          <ScalarProperty Name="FC_Prod_Dis" ColumnName="FC_Prod_Dis" />
-          <ScalarProperty Name="FC_Amount" ColumnName="FC_Amount" />
-          <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
-          <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
-          <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
-          <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spICSTrans_GetAll" FunctionName="IMILLModel.Store.spICSTrans_GetAll">
       <ResultMapping>
         <ComplexTypeMapping TypeName="IMILLModel.spICSTrans_GetAll_Result">
@@ -1017,5 +999,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spICSTransDetail_GetAll" FunctionName="IMILLModel.Store.spICSTransDetail_GetAll">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="IMILLModel.spICSTransDetail_GetAll_Result">
+          <ScalarProperty Name="Entry_Id" ColumnName="Entry_Id" />
+          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+          <ScalarProperty Name="ProdEn" ColumnName="ProdEn" />
+          <ScalarProperty Name="ProdAr" ColumnName="ProdAr" />
+          <ScalarProperty Name="IUDBaseQty" ColumnName="IUDBaseQty" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="FC_Prod_Dis" ColumnName="FC_Prod_Dis" />
+          <ScalarProperty Name="FC_Amount" ColumnName="FC_Amount" />
+          <ScalarProperty Name="row_id" ColumnName="row_id" />
+          <ScalarProperty Name="BaseUnitId" ColumnName="BaseUnitId" />
+          <ScalarProperty Name="SellUnitId" ColumnName="SellUnitId" />
+          <ScalarProperty Name="BaseUnit" ColumnName="BaseUnit" />
+          <ScalarProperty Name="SellUnit" ColumnName="SellUnit" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="UnitTotal" ColumnName="UnitTotal" />
+          <ScalarProperty Name="AltQty" ColumnName="AltQty" />
+          <ScalarProperty Name="LineNumber" ColumnName="LineNumber" />
+          <ScalarProperty Name="Package" ColumnName="Package" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

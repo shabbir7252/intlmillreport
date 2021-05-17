@@ -10,6 +10,6 @@ namespace ImillReports.Contracts
         CashRegVsSalesViewModel GetCashRegisterVsSalesRpt(DateTime? fromDate, DateTime? toDate);
 
         bool UpdateVerifiedIds(List<int> verifiedIds, List<int> deVerifiedIds);
-        string Update(CashRegUpdateVM cashRegUpdateVM);
+        string Update(CashRegUpdateVM cashRegUpdateVM, string path);
     }
 }

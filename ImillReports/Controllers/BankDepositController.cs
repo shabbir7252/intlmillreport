@@ -21,7 +21,7 @@ namespace ImillReports.Controllers
         public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
             if (fromDate == null)
-                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 7, 00, 00, 00);
+                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(-7).Day, 00, 00, 00);
 
             if (toDate == null)
             {
@@ -40,21 +40,16 @@ namespace ImillReports.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult SaveTransaction(DateTime? transDate, decimal salheya, decimal salmiya, decimal nuzha,
-            decimal dahiya, decimal khaldiya, decimal qortuba, decimal kaifan, decimal avenues, decimal kpc, decimal yarmouk,
-            decimal zahara, decimal mall360, decimal dasma, decimal gate, decimal shahuda, decimal surra, decimal hamra, decimal bnied,
-            decimal jahra, decimal kout, decimal av4, decimal fintas, decimal misc, decimal misc2, decimal cash, string depositby,
-            string comments)
+        public bool Update(string transDate, long oid, decimal misc, decimal misc2, decimal cash, 
+            string depositby, string comments)
         {
-            if (transDate == null)
-                transDate = DateTime.Now;
+            var recordDate = DateTime.Now;
+            if (!string.IsNullOrEmpty(transDate))
+                recordDate = Convert.ToDateTime(transDate, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
-            var bankDeposit = _bankDepositRepo.SaveTransaction(transDate.Value, salheya, salmiya, nuzha, dahiya, khaldiya, qortuba,
-                kaifan, avenues, kpc, yarmouk, zahara, mall360, dasma, gate, shahuda, surra, hamra, bnied, jahra, kout, av4, fintas, 
-                misc, misc2, cash, depositby, comments);
+            var bankDeposit = _bankDepositRepo.SaveTransaction(recordDate, oid, misc, misc2, cash, depositby, comments);
 
-
-            return RedirectToAction("Index");
+            return bankDeposit;
         }
     }
 }

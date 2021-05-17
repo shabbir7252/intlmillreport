@@ -23,6 +23,9 @@ namespace ImillPda.ViewModels
         public bool IsNewlyAdded { get; set; }
         public bool IsReqQtyChanged { get; set; }
         public decimal OrgQty { get; set; }
+        public long? SortOrder { get; internal set; }
+        public string RequestedDateString { get; set; }
+        public string DeliveryDateString { get; set; }
     }
 
     public class TransactionVM {

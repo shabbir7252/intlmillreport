@@ -37,7 +37,7 @@
     <div class="row clearfix">
         <div class="col-12">
             <div class="card">
-                @using (Html.BeginForm("Index", "BankDeposits", FormMethod.Get))
+                @using (Html.BeginForm("Index", "BankDeposit", FormMethod.Get))
                 {
                     <div class="row p-3">
                         <div class="col-2">
@@ -49,11 +49,6 @@
 
                         <div class="col-3">
                             <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
-
-                            <button type="button" class="btn btn-primary ml-5" data-toggle="modal" data-target="#exampleModal">
-                                Add Record
-                            </button>
-
                         </div>
                     </div>
                 }
@@ -64,40 +59,104 @@
     <div class="row clearfix">
         <div class="col-12">
             <div class="card">
-                @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+                @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).ActionComplete("actionComplete").FrozenColumns(1).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
            {
                // col.Field("IsVerified").Template("#idtemplate").Type("checkbox").Width("60").AllowFiltering(true).AllowSorting(true).Add();
                col.Field("Oid").Width("80").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
                col.Field("TransDate").AllowEditing(false).HeaderText("التاريخ").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Salhiyah").Format("N3").HeaderText("الصالحية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Salmiya").Format("N3").HeaderText("السالمية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Nuzha").Format("N3").HeaderText("النزهه").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Dahiya").Format("N3").HeaderText("الضاحية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Khaldiya").Format("N3").HeaderText("الخالدية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Qortuba").Format("N3").HeaderText("قرطبة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Kaifan").Format("N3").HeaderText("كيفان").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Avenues").Format("N3").HeaderText("الأفنيوز").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("KPC").Format("N3").HeaderText("البترول").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Yarmouk").Format("N3").HeaderText("اليرموك").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Zahara").Format("N3").HeaderText("الزهراء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Mall360").Format("N3").HeaderText("360").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Dasma").Format("N3").HeaderText("الدسمة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Gate").Format("N3").HeaderText("ذي جيت").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Shahuda").Format("N3").HeaderText("الشهداء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Surra").Format("N3").HeaderText("السرة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Bnied").Format("N3").HeaderText("بنيد القار").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Jahra").Format("N3").HeaderText("الجهراء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Kout").Format("N3").HeaderText("الكوت").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Av4").Format("N3").HeaderText("الأفنيوز 4").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Fintas").Format("N3").HeaderText("الفنطاس").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("TotalCash").Format("N3").HeaderText("إجمالي نقدي").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               col.Field("Innova").Format("N3").HeaderText("انوفا").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+               col.Field("Salhiyah").AllowEditing(false).Template("#templateSalhiyah").Format("N3").HeaderText("الصالحية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("SalhiyahAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("SalhiyahPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Salmiya").AllowEditing(false).Template("#templateSalmiya").Format("N3").HeaderText("السالمية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("SalmiyaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("SalmiyaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Nuzha").AllowEditing(false).Template("#templateNuzha").Format("N3").HeaderText("النزهه").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("NuzhaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("NuzhaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Dahiya").Template("#templateDahiya").AllowEditing(false).Format("N3").HeaderText("الضاحية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("DahiyaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("DahiyaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Khaldiya").AllowEditing(false).Template("#templateKhaldiya").Format("N3").HeaderText("الخالدية").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("KhaldiyaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("KhaldiyaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Qortuba").AllowEditing(false).Template("#templateQortuba").Format("N3").HeaderText("قرطبة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("QortubaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("QortubaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Kaifan").AllowEditing(false).Template("#templateKaifan").Format("N3").HeaderText("كيفان").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("KaifanAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("KaifanPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Avenues").AllowEditing(false).Template("#templateAvenues").Format("N3").HeaderText("الأفنيوز").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("AvenuesAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("AvenuesPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("KPC").AllowEditing(false).Template("#templateKPC").Format("N3").HeaderText("البترول").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("KPCAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("KPCPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Yarmouk").AllowEditing(false).Template("#templateYarmouk").Format("N3").HeaderText("اليرموك").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("YarmoukAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("YarmoukPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Zahara").AllowEditing(false).Template("#templateZahara").Format("N3").HeaderText("الزهراء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("ZaharaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("ZaharaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Mall360").AllowEditing(false).Template("#templateMall360").Format("N3").HeaderText("360").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Mall360Am").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("Mall360Pm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Dasma").AllowEditing(false).Template("#templateDasma").Format("N3").HeaderText("الدسمة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("DasmaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("DasmaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Gate").AllowEditing(false).Template("#templateGate").Format("N3").HeaderText("ذي جيت").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("GateAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("GatePm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Shahuda").AllowEditing(false).Template("#templateShahuda").Format("N3").HeaderText("الشهداء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("ShahudaAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("ShahudaPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Surra").AllowEditing(false).Template("#templateSurra").Format("N3").HeaderText("السرة").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("SurraAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("SurraPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Bnied").AllowEditing(false).Template("#templateBnied").Format("N3").HeaderText("بنيد القار").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("BniedAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("BniedPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Jahra").AllowEditing(false).Template("#templateJahra").Format("N3").HeaderText("الجهراء").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("JahraAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("JahraPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Kout").AllowEditing(false).Template("#templateKout").Format("N3").HeaderText("الكوت").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("KoutAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("KoutPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Av4").AllowEditing(false).Template("#templateAv4").Format("N3").HeaderText("الأفنيوز 4").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Av4Am").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("Av4Pm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("Fintas").AllowEditing(false).Template("#templateFintas").Format("N3").HeaderText("الفنطاس").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("FintasAm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+               col.Field("FintasPm").AllowEditing(false).Visible(false).ShowInColumnChooser(false).Add();
+
+               col.Field("TotalCash").AllowEditing(false).Format("N3").HeaderText("إجمالي نقدي").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Innova").AllowEditing(false).Format("N3").HeaderText("انوفا").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                col.Field("Misc").Format("N3").HeaderText("متفرقات").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                col.Field("Misc2").Format("N3").HeaderText("متفرقات 2").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                col.Field("Cash").Format("N3").HeaderText("نقدي").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                col.Field("DepositBy").Format("N3").HeaderText("Deposit By").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
-               
-               
+
+
            }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(page =>
            { page.PageSizes(true); page.PageSize(25); }).EditSettings(edit =>
            {
@@ -109,7 +168,7 @@
                new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                    Field = "Salhiyah", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
                },
-               
+
                new Syncfusion.EJ2.Grids.GridAggregateColumn() {
                    Field = "Salmiya", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
                },
@@ -210,10 +269,137 @@
                    Field = "Cash", Format = "N3", Type = "Sum", FooterTemplate = "${Sum}"
                },
 
-              
+
            }).Add();
            }).DataBound("dataBound").AllowSelection(true).SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Multiple).PersistSelection(true).CheckboxOnly(true)).Render()
             </div>
+
+            <script id="templateSalhiyah" type="text/x-template">
+                <label>${Salhiyah}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${SalhiyahAm}</label> <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${SalhiyahPm}</label>
+            </script>
+
+            <script id="templateSalmiya" type="text/x-template">
+                <label>${Salmiya}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${SalmiyaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${SalmiyaPm}</label>
+            </script>
+
+            <script id="templateNuzha" type="text/x-template">
+                <label>${Salmiya}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${NuzhaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${NuzhaPm}</label>
+            </script>
+
+            <script id="templateDahiya" type="text/x-template">
+                <label>${Dahiya}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${DahiyaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${DahiyaPm}</label>
+            </script>
+
+            <script id="templateKhaldiya" type="text/x-template">
+                <label>${Khaldiya}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${KhaldiyaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${KhaldiyaPm}</label>
+            </script>
+
+            <script id="templateQortuba" type="text/x-template">
+                <label>${Qortuba}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${QortubaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${QortubaPm}</label>
+            </script>
+
+            <script id="templateKaifan" type="text/x-template">
+                <label>${Kaifan}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${KaifanAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${KaifanPm}</label>
+            </script>
+
+            <script id="templateAvenues" type="text/x-template">
+                <label>${Avenues}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${AvenuesAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${AvenuesPm}</label>
+            </script>
+
+            <script id="templateKPC" type="text/x-template">
+                <label>${KPC}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${KPCAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${KPCPm}</label>
+            </script>
+
+            <script id="templateYarmouk" type="text/x-template">
+                <label>${Yarmouk}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${YarmoukAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${YarmoukPm}</label>
+            </script>
+
+            <script id="templateZahara" type="text/x-template">
+                <label>${Zahara}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${ZaharaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${ZaharaPm}</label>
+            </script>
+
+            <script id="templateMall360" type="text/x-template">
+                <label>${Mall360}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${Mall360Am}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${Mall360Pm}</label>
+            </script>
+
+            <script id="templateDasma" type="text/x-template">
+                <label>${Dasma}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${DasmaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${DasmaPm}</label>
+            </script>
+
+            <script id="templateGate" type="text/x-template">
+                <label>${Gate}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${GateAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${GatePm}</label>
+            </script>
+
+            <script id="templateShahuda" type="text/x-template">
+                <label>${Shahuda}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${ShahudaAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${ShahudaPm}</label>
+            </script>
+
+            <script id="templateSurra" type="text/x-template">
+                <label>${Surra}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${SurraAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${SurraPm}</label>
+            </script>
+
+            <script id="templateBnied" type="text/x-template">
+                <label>${Bnied}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${BniedAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${BniedPm}</label>
+            </script>
+
+            <script id="templateJahra" type="text/x-template">
+                <label>${Jahra}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${JahraAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${JahraPm}</label>
+            </script>
+            
+            <script id="templateKout" type="text/x-template">
+                <label>${Kout}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${KoutAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${KoutPm}</label>
+            </script>
+
+            <script id="templateAv4" type="text/x-template">
+                <label>${Av4}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${Av4Am}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${Av4Pm}</label>
+            </script>
+            
+            <script id="templateFintas" type="text/x-template">
+                <label>${Fintas}</label>
+                <hr style="margin: 1px 0 5px;" />
+                <label>AM : ${FintasAm}</label>  <label style="margin-left:10px;margin-right:10px">|</label>  <label>PM : ${FintasPm}</label>
+            </script>
+
         </div>
     </div>
 
@@ -451,12 +637,55 @@
     }
 
     function toolbarClick(args) {
+        console.log('toolbarclick : ', args);
         var gridObj = document.getElementById("Grid").ej2_instances[0];
         if (args.item.id === 'Grid_excelexport') {
             var excelExportProperties = {
                 fileName: "BankDeposit.xlsx"
             };
             gridObj.excelExport(excelExportProperties);
+        }
+    }
+
+    function formatDateToString(date) {
+        var dd = (date.getDate() < 10 ? '0' : '')
+            + date.getDate();
+
+        var MM = ((date.getMonth() + 1) < 10 ? '0' : '')
+            + (date.getMonth() + 1);
+
+        return dd + "-" + MM + "-" + date.getFullYear();
+    } 
+
+
+    function actionComplete(args) {
+
+        if (args.requestType === 'save') {
+
+            var date = formatDateToString(new Date(args.data.TransDate));
+            var transDate = JSON.stringify(date).slice(1, 11);
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    oid: args.data.Oid,
+                    transDate: transDate,
+                    misc: args.data.Misc,
+                    misc2: args.data.Misc2,
+                    cash: args.data.Cash,
+                    depositBy: args.data.DepositBy
+                },
+                url: '@Url.Action("Update", "BankDeposit")',
+                success: function (response) {
+                    console.log('resp : ', response);
+                    if (response == false) {
+                        alert("Error occured while saving!");
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+            });
         }
     }
 </script>

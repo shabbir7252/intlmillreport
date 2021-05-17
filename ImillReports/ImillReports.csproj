@@ -251,6 +251,7 @@
     <Compile Include="Contracts\ILocationRepository.cs" />
     <Compile Include="Contracts\IPdaRepo.cs" />
     <Compile Include="Contracts\IProductRepository.cs" />
+    <Compile Include="Contracts\IPurchaseOrderRepo.cs" />
     <Compile Include="Contracts\ISalesmanRepository.cs" />
     <Compile Include="Contracts\ISalesReportRepository.cs" />
     <Compile Include="Contracts\ITARepository.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageTimeAttendanceController.cs" />
     <Compile Include="Controllers\PdaController.cs" />
+    <Compile Include="Controllers\PurchaseOrderController.cs" />
     <Compile Include="Controllers\SalesmanController.cs" />
     <Compile Include="Controllers\SalesReportController.cs" />
     <Compile Include="Controllers\TAReportController.cs" />
@@ -334,6 +336,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PDA.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PurchaseOrder.cs">
+      <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ReportEmailMap.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
@@ -479,6 +484,7 @@
     <Compile Include="Repository\LocationRepository.cs" />
     <Compile Include="Repository\PdaRepo.cs" />
     <Compile Include="Repository\ProductRepository.cs" />
+    <Compile Include="Repository\PurchaseOrderRepo.cs" />
     <Compile Include="Repository\SalesmanRepository.cs" />
     <Compile Include="Repository\SalesReportRepository.cs" />
     <Compile Include="Repository\TARepository.cs" />
@@ -488,9 +494,11 @@
     <Compile Include="ViewModels\BaseUnitViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CashRegisterViewModel.cs" />
+    <Compile Include="ViewModels\CRLogViewModel.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\LocationViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\PurchaseOrderViewModel.cs" />
     <Compile Include="ViewModels\SalesmanViewModel.cs" />
     <Compile Include="ViewModels\SalesReportViewModel.cs" />
     <Compile Include="ViewModels\ShiftViewModel.cs" />
@@ -665,6 +673,7 @@
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff2" />
     <Content Include="App_Data\column_chooser.json" />
+    <Content Include="App_Data\cr_log.json" />
     <None Include="manifest.appcacherrr" />
     <Content Include="Models\ImillReportModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -821,6 +830,8 @@
     <Content Include="Views\Dashboard\BranchSalesForPrint.cshtml" />
     <Content Include="Views\SalesReport\SalesTrend.cshtml" />
     <Content Include="Views\BankDeposit\Index.cshtml" />
+    <Content Include="Views\PurchaseOrder\Index.cshtml" />
+    <Content Include="Views\PurchaseOrder\GetDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Print\" />

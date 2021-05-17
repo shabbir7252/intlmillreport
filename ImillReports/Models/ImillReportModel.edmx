@@ -12,27 +12,71 @@
           <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TransDate" Type="datetime" Nullable="false" />
           <Property Name="Salhiyah" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="SalhiyahAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="SalhiyahPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Salmiya" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="SalmiyaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="SalmiyaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Nuzha" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="NuzhaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="NuzhaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Dahiya" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="DahiyaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="DahiyaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Khaldiya" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="KhaldiyaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="KhaldiyaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Qortuba" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="QortubaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="QortubaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Kaifan" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="KaifanAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="KaifanPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Avenues" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="AvenuesAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="AvenuesPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="KPC" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="KPCAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="KPCPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Yarmouk" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="YarmoukAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="YarmoukPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Zahara" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="ZaharaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="ZaharaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Mall360" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="Mall360Am" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="Mall360Pm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Dasma" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="DasmaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="DasmaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Gate" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="GateAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="GatePm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Shahuda" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="ShahudaAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="ShahudaPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Surra" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="SurraAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="SurraPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Hamra" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="HamraAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="HamraPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Bnied" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="BniedAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="BniedPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Jahra" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="JahraAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="JahraPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Kout" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="KoutAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="KoutPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Av4" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="Av4Am" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="Av4Pm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="Fintas" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="FintasAm" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="FintasPm" Type="decimal" Precision="18" Scale="3" />
           <Property Name="TotalCash" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="Innova" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="Misc" Type="decimal" Precision="18" Scale="3" Nullable="false" />
@@ -40,6 +84,25 @@
           <Property Name="Cash" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="DepositBy" Type="nvarchar" MaxLength="100" />
           <Property Name="Comments" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PurchaseOrder">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EntryId" Type="bigint" Nullable="false" />
+          <Property Name="LdgrCd" Type="int" Nullable="false" />
+          <Property Name="VoucherDate" Type="datetime" Nullable="false" />
+          <Property Name="LpoStatus" Type="int" Nullable="false" />
+          <Property Name="LpoInvoiceStatus" Type="int" Nullable="false" />
+          <Property Name="LpoPaymentStatus" Type="int" Nullable="false" />
+          <Property Name="PaymentRemarks" Type="nvarchar" MaxLength="4000" />
+          <Property Name="GmComments" Type="nvarchar" MaxLength="4000" />
+          <Property Name="LpoStatusTransDate" Type="datetime" />
+          <Property Name="LpoPaymentTransDate" Type="datetime" />
+          <Property Name="QAStatus" Type="int" />
+          <Property Name="QARemarks" Type="nvarchar" MaxLength="4000" />
+          <Property Name="QAStatusTransDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ReportEmailMap">
           <Key>
@@ -76,6 +139,10 @@
           <Property Name="SerialDate" Type="datetime" Nullable="false" />
           <Property Name="SerialNumber" Type="bigint" Nullable="false" />
           <Property Name="BackDays" Type="int" />
+          <Property Name="GmEmail" Type="varchar" MaxLength="100" />
+          <Property Name="PurchaseEmail" Type="varchar" MaxLength="100" />
+          <Property Name="AdditionalCc1" Type="varchar" MaxLength="100" />
+          <Property Name="AdditionalCc2" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Trans_Detail_2015">
           <Key>
@@ -115,6 +182,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Trans_Detail_2016">
           <Key>
@@ -154,6 +222,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Trans_Detail_2017">
           <Key>
@@ -193,6 +262,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Trans_Detail_2018">
           <Key>
@@ -232,6 +302,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Trans_Detail_2019">
           <Key>
@@ -271,6 +342,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Trans_Detail_2020">
           <Key>
@@ -310,6 +382,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Trans_Detail_2021">
           <Key>
@@ -349,6 +422,7 @@
           <Property Name="EntryId" Type="bigint" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="Year" Type="int" />
+          <Property Name="Line_No" Type="bigint" />
         </EntityType>
         <EntityType Name="Transaction_2015">
           <Key>
@@ -625,6 +699,7 @@
         </EntityType>
         <EntityContainer Name="ImillReportsModelStoreContainer">
           <EntitySet Name="BankDeposit" EntityType="Self.BankDeposit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseOrder" EntityType="Self.PurchaseOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportEmailMap" EntityType="Self.ReportEmailMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportEmailTransactions" EntityType="Self.ReportEmailTransactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
@@ -666,6 +741,7 @@
           <EntitySet Name="Transaction_2017" EntityType="ImillReportsModel.Transaction_2017" />
           <EntitySet Name="BankDeposits" EntityType="ImillReportsModel.BankDeposit" />
           <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
+          <EntitySet Name="PurchaseOrders" EntityType="ImillReportsModel.PurchaseOrder" />
         </EntityContainer>
         <EntityType Name="Transaction_2020">
           <Key>
@@ -744,6 +820,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Trans_Detail_2019">
           <Key>
@@ -783,6 +860,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Transaction_2019">
           <Key>
@@ -861,6 +939,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Transaction_2021">
           <Key>
@@ -966,6 +1045,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Transaction_2018">
           <Key>
@@ -1044,6 +1124,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Trans_Detail_2016">
           <Key>
@@ -1083,6 +1164,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Trans_Detail_2017">
           <Key>
@@ -1122,6 +1204,7 @@
           <Property Name="EntryId" Type="Int64" />
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Year" Type="Int32" />
+          <Property Name="Line_No" Type="Int64" />
         </EntityType>
         <EntityType Name="Transaction_2015">
           <Key>
@@ -1275,6 +1358,50 @@
           <Property Name="TotalCash" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
           <Property Name="Innova" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
           <Property Name="Hamra" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <Property Name="SalhiyahAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="SalhiyahPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="SalmiyaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="SalmiyaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="NuzhaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="NuzhaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="DahiyaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="DahiyaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KhaldiyaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KhaldiyaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="QortubaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="QortubaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KaifanAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KaifanPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="AvenuesAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="AvenuesPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KPCAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KPCPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="YarmoukAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="YarmoukPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="ZaharaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="ZaharaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Mall360Am" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Mall360Pm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="DasmaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="DasmaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="GateAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="GatePm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="ShahudaAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="ShahudaPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="SurraAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="SurraPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="HamraAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="HamraPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="BniedAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="BniedPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="JahraAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="JahraPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KoutAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="KoutPm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Av4Am" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Av4Pm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="FintasAm" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="FintasPm" Type="Decimal" Precision="18" Scale="3" />
         </EntityType>
         <EntityType Name="Setting">
           <Key>
@@ -1284,6 +1411,29 @@
           <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SerialNumber" Type="Int64" Nullable="false" />
           <Property Name="BackDays" Type="Int32" />
+          <Property Name="GmEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PurchaseEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AdditionalCc1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AdditionalCc2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PurchaseOrder">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EntryId" Type="Int64" Nullable="false" />
+          <Property Name="LdgrCd" Type="Int32" Nullable="false" />
+          <Property Name="VoucherDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LpoStatus" Type="Int32" Nullable="false" />
+          <Property Name="LpoInvoiceStatus" Type="Int32" Nullable="false" />
+          <Property Name="LpoPaymentStatus" Type="Int32" Nullable="false" />
+          <Property Name="PaymentRemarks" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="GmComments" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="LpoStatusTransDate" Type="DateTime" Precision="3" />
+          <Property Name="LpoPaymentTransDate" Type="DateTime" Precision="3" />
+          <Property Name="QAStatus" Type="Int32" />
+          <Property Name="QARemarks" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="QAStatusTransDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1334,6 +1484,7 @@
           <EntitySetMapping Name="Trans_Detail_2020">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2020">
               <MappingFragment StoreEntitySet="Trans_Detail_2020">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1374,6 +1525,7 @@
           <EntitySetMapping Name="Trans_Detail_2019">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2019">
               <MappingFragment StoreEntitySet="Trans_Detail_2019">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1454,6 +1606,7 @@
           <EntitySetMapping Name="Trans_Detail_2021">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2021">
               <MappingFragment StoreEntitySet="Trans_Detail_2021">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1563,6 +1716,7 @@
           <EntitySetMapping Name="Trans_Detail_2018">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2018">
               <MappingFragment StoreEntitySet="Trans_Detail_2018">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1643,6 +1797,7 @@
           <EntitySetMapping Name="Trans_Detail_2015">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2015">
               <MappingFragment StoreEntitySet="Trans_Detail_2015">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1683,6 +1838,7 @@
           <EntitySetMapping Name="Trans_Detail_2016">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2016">
               <MappingFragment StoreEntitySet="Trans_Detail_2016">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1723,6 +1879,7 @@
           <EntitySetMapping Name="Trans_Detail_2017">
             <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2017">
               <MappingFragment StoreEntitySet="Trans_Detail_2017">
+                <ScalarProperty Name="Line_No" ColumnName="Line_No" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -1883,6 +2040,50 @@
           <EntitySetMapping Name="BankDeposits">
             <EntityTypeMapping TypeName="ImillReportsModel.BankDeposit">
               <MappingFragment StoreEntitySet="BankDeposit">
+                <ScalarProperty Name="FintasPm" ColumnName="FintasPm" />
+                <ScalarProperty Name="FintasAm" ColumnName="FintasAm" />
+                <ScalarProperty Name="Av4Pm" ColumnName="Av4Pm" />
+                <ScalarProperty Name="Av4Am" ColumnName="Av4Am" />
+                <ScalarProperty Name="KoutPm" ColumnName="KoutPm" />
+                <ScalarProperty Name="KoutAm" ColumnName="KoutAm" />
+                <ScalarProperty Name="JahraPm" ColumnName="JahraPm" />
+                <ScalarProperty Name="JahraAm" ColumnName="JahraAm" />
+                <ScalarProperty Name="BniedPm" ColumnName="BniedPm" />
+                <ScalarProperty Name="BniedAm" ColumnName="BniedAm" />
+                <ScalarProperty Name="HamraPm" ColumnName="HamraPm" />
+                <ScalarProperty Name="HamraAm" ColumnName="HamraAm" />
+                <ScalarProperty Name="SurraPm" ColumnName="SurraPm" />
+                <ScalarProperty Name="SurraAm" ColumnName="SurraAm" />
+                <ScalarProperty Name="ShahudaPm" ColumnName="ShahudaPm" />
+                <ScalarProperty Name="ShahudaAm" ColumnName="ShahudaAm" />
+                <ScalarProperty Name="GatePm" ColumnName="GatePm" />
+                <ScalarProperty Name="GateAm" ColumnName="GateAm" />
+                <ScalarProperty Name="DasmaPm" ColumnName="DasmaPm" />
+                <ScalarProperty Name="DasmaAm" ColumnName="DasmaAm" />
+                <ScalarProperty Name="Mall360Pm" ColumnName="Mall360Pm" />
+                <ScalarProperty Name="Mall360Am" ColumnName="Mall360Am" />
+                <ScalarProperty Name="ZaharaPm" ColumnName="ZaharaPm" />
+                <ScalarProperty Name="ZaharaAm" ColumnName="ZaharaAm" />
+                <ScalarProperty Name="YarmoukPm" ColumnName="YarmoukPm" />
+                <ScalarProperty Name="YarmoukAm" ColumnName="YarmoukAm" />
+                <ScalarProperty Name="KPCPm" ColumnName="KPCPm" />
+                <ScalarProperty Name="KPCAm" ColumnName="KPCAm" />
+                <ScalarProperty Name="AvenuesPm" ColumnName="AvenuesPm" />
+                <ScalarProperty Name="AvenuesAm" ColumnName="AvenuesAm" />
+                <ScalarProperty Name="KaifanPm" ColumnName="KaifanPm" />
+                <ScalarProperty Name="KaifanAm" ColumnName="KaifanAm" />
+                <ScalarProperty Name="QortubaPm" ColumnName="QortubaPm" />
+                <ScalarProperty Name="QortubaAm" ColumnName="QortubaAm" />
+                <ScalarProperty Name="KhaldiyaPm" ColumnName="KhaldiyaPm" />
+                <ScalarProperty Name="KhaldiyaAm" ColumnName="KhaldiyaAm" />
+                <ScalarProperty Name="DahiyaPm" ColumnName="DahiyaPm" />
+                <ScalarProperty Name="DahiyaAm" ColumnName="DahiyaAm" />
+                <ScalarProperty Name="NuzhaPm" ColumnName="NuzhaPm" />
+                <ScalarProperty Name="NuzhaAm" ColumnName="NuzhaAm" />
+                <ScalarProperty Name="SalmiyaPm" ColumnName="SalmiyaPm" />
+                <ScalarProperty Name="SalmiyaAm" ColumnName="SalmiyaAm" />
+                <ScalarProperty Name="SalhiyahPm" ColumnName="SalhiyahPm" />
+                <ScalarProperty Name="SalhiyahAm" ColumnName="SalhiyahAm" />
                 <ScalarProperty Name="Hamra" ColumnName="Hamra" />
                 <ScalarProperty Name="Innova" ColumnName="Innova" />
                 <ScalarProperty Name="TotalCash" ColumnName="TotalCash" />
@@ -1920,9 +2121,33 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="ImillReportsModel.Setting">
               <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="AdditionalCc2" ColumnName="AdditionalCc2" />
+                <ScalarProperty Name="AdditionalCc1" ColumnName="AdditionalCc1" />
+                <ScalarProperty Name="PurchaseEmail" ColumnName="PurchaseEmail" />
+                <ScalarProperty Name="GmEmail" ColumnName="GmEmail" />
                 <ScalarProperty Name="BackDays" ColumnName="BackDays" />
                 <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
                 <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseOrders">
+            <EntityTypeMapping TypeName="ImillReportsModel.PurchaseOrder">
+              <MappingFragment StoreEntitySet="PurchaseOrder">
+                <ScalarProperty Name="QAStatusTransDate" ColumnName="QAStatusTransDate" />
+                <ScalarProperty Name="QARemarks" ColumnName="QARemarks" />
+                <ScalarProperty Name="QAStatus" ColumnName="QAStatus" />
+                <ScalarProperty Name="LpoPaymentTransDate" ColumnName="LpoPaymentTransDate" />
+                <ScalarProperty Name="LpoStatusTransDate" ColumnName="LpoStatusTransDate" />
+                <ScalarProperty Name="GmComments" ColumnName="GmComments" />
+                <ScalarProperty Name="PaymentRemarks" ColumnName="PaymentRemarks" />
+                <ScalarProperty Name="LpoPaymentStatus" ColumnName="LpoPaymentStatus" />
+                <ScalarProperty Name="LpoInvoiceStatus" ColumnName="LpoInvoiceStatus" />
+                <ScalarProperty Name="LpoStatus" ColumnName="LpoStatus" />
+                <ScalarProperty Name="VoucherDate" ColumnName="VoucherDate" />
+                <ScalarProperty Name="LdgrCd" ColumnName="LdgrCd" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
                 <ScalarProperty Name="Oid" ColumnName="Oid" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -1,0 +1,436 @@
+﻿@using Syncfusion.EJ2
+@*@model ImillReports.ViewModels.PurchaseOrderViewModel*@
+
+@{
+    ViewBag.Title = "Purchase Order";
+    //ViewBag.SubTitle = "Sales report according to locations";
+
+    List<object> commands = new List<object>();
+    // commands.Add(new { type = "Add", buttonOption = new { iconCss = "e-icons e-upload", name = "details" } });
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit", cssClass = "edit", name = "edit" } });
+
+    var groupByString = ViewBag.Username == "shareef" ? "LpoStatusString" : ViewBag.Username == "admin" ? "CustomerNameAr" : "LpoPaymentStatusString";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+
+    .lpo-status .btn:not(.btn-link):not(.btn-circle) {
+        display: none !important;
+    }
+
+    .payment-status .btn:not(.btn-link):not(.btn-circle) {
+        display: none !important;
+    }
+
+    .qa-status .btn:not(.btn-link):not(.btn-circle) {
+        display: none !important;
+    }
+</style>
+
+<div class="container-fluid">
+    @if (ViewBag.validation == "true")
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Start Date is Greater then End Date
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row clearfix">
+        <div class="col-12">
+
+            <div class="card">
+                @using (Html.BeginForm("Index", "PurchaseOrder", FormMethod.Get))
+                {
+                    <div class="row p-3">
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("fromDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.startDate).Render()
+                        </div>
+                        <div class="col-3">
+                            @Html.EJS().DateTimePicker("toDate").Format("dd/MMM/yyyy hh:mm a").Value(ViewBag.endDate).Render()
+                        </div>
+                        <div class="col-2 py-2">
+                            <button type="submit" class="btn btn-raised bg-black waves-effect waves-light">Get Records</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="card mt-3">
+                <div class="body">
+
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                    <h5 class="text-center loading-text mt-2">Loading...</h5>
+
+                    @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
+               {
+                   col.HeaderText("Actions").Width("120").Commands(commands).Add();
+                   col.Field("Oid").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Visible(false).IsPrimaryKey(true).Add();
+                   col.Field("VoucherDate").Width("100").HeaderText("Date").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("GmComments").HeaderText("GM Comments").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("VoucherNameAr").HeaderText("Voucher").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("VoucherNumber").HeaderText("Voucher Number").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("CustomerNameAr").HeaderText("Supplier Name(Ar)").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("VoucherAmount").Width("80").Format("N3").HeaderText("Total Amount").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LpoStatusString").HeaderText("PO Status").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LpoStatusTransDate").Width("100").HeaderText("LPO Status Updated On").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LpoInvoiceString").HeaderText("Supplier Invoice").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+                   col.Field("QAStatusString").HeaderText("QA Status").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("QATransDate").Width("100").HeaderText("QA Status Updated On").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("QARemarks").HeaderText("QA Remarks").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+                   col.Field("LpoPaymentStatusString").HeaderText("Payment Status").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LpoPaymentTransDate").Width("100").HeaderText("Payment Status Updated On").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("PaymentRemarks").HeaderText("Payment Remarks").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("EntryId").Visible(false).HeaderText("Invoice").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LocatCd").Visible(false).Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LdgrCd").Visible(false).HeaderText("Invoice").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("VoucherType").Visible(false).Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                   col.Field("LocationNameAr").Visible(false).HeaderText("Location").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+
+               }).AllowGrouping().GroupSettings(group => { group.Columns(new string[] { groupByString }); }).AllowPaging(true).AllowSorting(true).AllowFiltering().CommandClick("commandClick").FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                   page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                   {
+                       agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                           new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                               Field = "VoucherAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                           } }).Add();
+                   }).DataBound("dataBound").RecordDoubleClick("RowSelected").Load("load").Render()
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @*@using (Html.BeginForm("UpdateLPOStatus", "PurchaseOrder", FormMethod.Post))*@
+
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-12 lpo-status">
+                        <label class="lpo-status-text">PO Status</label>
+                        @if (ViewBag.Username == "shareef")
+                        {
+                            <select class="form-select lpo-status w-100" style="padding: 0.5rem 0">
+                                <option value=0>Pending</option>
+                                <option value=1>Approve</option>
+                                <option value=2>Reject</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select disabled="disabled" class="form-select lpo-status w-100" style="padding: 0.5rem 0">
+                                <option value=0>Pending</option>
+                                <option value=1>Approve</option>
+                                <option value=2>Reject</option>
+                            </select>
+                        }
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group gm-comments">
+                            <label for="gmcomment">GM Comments</label>
+                            @if (ViewBag.Username == "shareef")
+                            {
+                                <textarea class="form-control" style="border: 1px solid;" id="gmcomment" rows="3"></textarea>
+                            }
+                            else
+                            {
+                                <textarea class="form-control" disabled="disabled" style="border: 1px solid;" id="gmcomment" rows="3"></textarea>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12 qa-status">
+                        <label class="qa-status-text">QA Status</label>
+                        @if (ViewBag.Username == "admin")
+                        {
+                            <select class="form-select qa-status w-100" style="padding: 0.5rem 0">
+                                <option value=0>Pending</option>
+                                <option value=1>Approve</option>
+                                <option value=2>Reject</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-select qa-status w-100" disabled="disabled" style="padding: 0.5rem 0">
+                                <option value=0>Pending</option>
+                                <option value=1>Approve</option>
+                                <option value=2>Reject</option>
+                            </select>
+                        }
+                    </div>
+
+                    <div class="col-12 pt-3">
+                        <div class="form-group qa-comments">
+                            <label for="qa-remarks">QA Remarks</label>
+                            @if (ViewBag.Username == "admin")
+                            {
+                                <textarea class="form-control" style="border: 1px solid;" id="qa-remarks" rows="3"></textarea>
+                            }
+                            else
+                            {
+                                <textarea class="form-control" disabled="disabled" style="border: 1px solid;" id="qa-remarks" rows="3"></textarea>
+                            }
+                        </div>
+                    </div>
+
+                    
+                        @if (ViewBag.Username == "accounts")
+                        {
+                            <div class="col-12 payment-status">
+                            <label class="payment-status-text">Payment Status</label>
+                            <select class="form-select payment-status w-100" style="padding: 0.5rem 0">
+                                <option value=0>Pending</option>
+                                <option value=1>Cheque Ready</option>
+                            </select>
+                            </div>
+                        }
+                        @* else
+                        {
+                            <select class="form-select payment-status w-100" disabled="disabled" style="padding: 0.5rem 0">
+                                <option value=0>Pending</option>
+                                <option value=1>Cheque Ready</option>
+                            </select>
+                        } *@
+                    
+
+                    
+                            @if (ViewBag.Username == "accounts")
+                            {
+                                <div class="col-12 pt-3">
+                                <div class="form-group pm-comments">
+                                <label for="payment-remarks">Payment Remarks</label>
+                                <textarea class="form-control" style="border: 1px solid;" id="payment-remarks" rows="3"></textarea>
+                                </div>
+                                </div>
+                            }
+                            @* else
+                            {
+                                <textarea class="form-control" disabled="disabled" style="border: 1px solid;" id="payment-remarks" rows="3"></textarea>
+                            } *@
+                        
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="loading-footer">
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                    <h5 class="text-center loading-text mt-2">Loading...</h5>
+                </div>
+                <div class="button-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-update-status" onclick="UpdateLpoStatus()">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        $('.preloader').hide();
+        $('.loading-text').hide();
+        $('.loading-footer').hide();
+
+        var oid = 0;
+        var entryId = 0;
+        var transDate = '';
+        var ldgrCd = 0;
+
+        function dataBound(args) {
+            this.autoFitColumns(['VoucherDate', 'VoucherNumber', 'VoucherNameAr', 'VoucherAmount', 'LpoStatusString',
+                'LpoInvoiceString', 'LpoPaymentStatusString', 'PaymentRemarks', 'GmComments', 'LpoStatusTransDate',
+                'LpoPaymentTransDate']);
+        }
+
+        function load() {
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            var pageSize = grid.pageSettings.pageSize;   //initial page size
+            var pageResize = 25; //new page size is obtained here
+            grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+        }
+
+        function RowSelected(args) {
+            var link = "@Url.Action("GetDetails", "PurchaseOrder", new { entryId = -1, transDate = -2 })";
+            link = link.replace('-1', args.rowData.EntryId);
+            link = link.replace('-2', transDate);
+            // window.location.href = link;
+            window.open(link, '_blank');
+        }
+
+        function formatDateToString(date) {
+            var dd = (date.getDate() < 10 ? '0' : '')
+                + date.getDate();
+
+            var MM = ((date.getMonth() + 1) < 10 ? '0' : '')
+                + (date.getMonth() + 1);
+
+            return dd + "-" + MM + "-" + date.getFullYear();
+        }
+
+        function commandClick(args) {
+            console.log('Row Data : ', args.rowData);
+            let type = args.commandColumn.type;
+
+            var date = formatDateToString(new Date(args.rowData.VoucherDate));
+            transDate = JSON.stringify(date).slice(1, 11);
+
+            if (type === 'Edit') {
+
+                // $('.qa-comments').hide();
+                // $('.qa-status').hide();
+                $('.pm-comments').hide();
+                $('.payment-status-label').hide();
+                $('.payment-status').hide();
+                $('.modal-title').html("Update Invoice Status");
+                $('.lpo-status').show();
+                $('.lpo-status option[value="' + args.rowData.LpoStatus + '"]').attr("selected", "selected");
+                $('.payment-status option[value="' + args.rowData.LpoPaymentStatus + '"]').attr("selected", "selected");
+                $('.qa-status option[value="' + args.rowData.QAStatus + '"]').attr("selected", "selected");
+                $('#gmcomment').html(args.rowData.GmComments);
+                $('#payment-remarks').html(args.rowData.PaymentRemarks);
+                $('#qa-remarks').html(args.rowData.QARemarks);
+                $('.btn-update-status').show();
+
+                $('.modal').modal('show');
+
+                if (args.rowData.VoucherType === 101) {
+                    $('.modal-title').html("Update Payment Status");
+                    
+                    if(args.rowData.QAStatus === 1){
+                        $('.payment-status').show();
+                        $('.payment-status-label').show();
+                        $('.pm-comments').show();
+                    }
+                }
+
+                if(args.rowData.VoucherType === 105 && "@ViewBag.Username" == "accounts"){
+                    $('.btn-update-status').hide();
+                }
+
+                oid = args.rowData.Oid;
+                entryId = args.rowData.EntryId;
+                ldgrCd = args.rowData.LdgrCd;
+            }
+
+            if (type === 'Add') {
+                var link = "@Url.Action("GetDetails", "PurchaseOrder", new { entryId = -1, transDate = -2 })";
+                link = link.replace('-1', args.rowData.EntryId);
+                link = link.replace('-2', transDate);
+                // window.location.href = link;
+                window.open(link, '_blank');
+            }
+        }
+
+        function UpdateLpoStatus() {
+
+            var lpoStatus = $('.lpo-status').children("option:selected").val();
+            var qaStatus = $('.qa-status').children("option:selected").val();
+            var paymentStatus = $('.payment-status').children("option:selected").val();
+            var gmStatus = $('#gmcomment').val();
+            var pmStatus = $('#payment-remarks').val();
+            var qaRemarks = $('#qa-remarks').val();
+
+            $('.loading-footer').show();
+            $('.loading-text').show();
+            $('.button-footer').hide();
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    oid: oid,
+                    entryId: entryId,
+                    ldgrCd: ldgrCd,
+                    transDate: transDate,
+                    lpoStatus: lpoStatus,
+                    paymentStatus: paymentStatus,
+                    qaStatus: qaStatus,
+                    gmcomment: gmStatus,
+                    pmStatus: pmStatus,
+                    qaRemarks: qaRemarks,
+                    username: '@ViewBag.Username'
+                },
+                url: '@Url.Action("UpdateLpoStatus", "PurchaseOrder")',
+                success: function (response) {
+                    $('#gmcomment').val("");
+                    $('.pm-comments').val("");
+                    $('.qa-comments').val("");
+                    $('.modal').modal('hide');
+
+                    $('.loading-footer').hide();
+
+                    window.location.reload();
+                },
+                error: function (ex) {
+                    alert("Error Occured While Saving! " + ex);
+                }
+            });
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                if (args.item.id === 'Grid_excelexport') {
+                    var gridObj = document.getElementById("Grid").ej2_instances[0];
+                    var excelExportProperties = {
+                        fileName: "PurchaseOrder.xlsx",
+                        theme: "none",
+                        includeHiddenColumn: false
+                    };
+                    gridObj.excelExport(excelExportProperties);
+                    // document.getElementById('download').click();
+                }
+            }
+        }
+
+
+    </script>
+}

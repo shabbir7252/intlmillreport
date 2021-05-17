@@ -2,15 +2,15 @@
 using System.Net;
 using System.Web;
 using System.Linq;
+using System.Data;
 using System.Net.Mail;
 using ClosedXML.Excel;
+using Newtonsoft.Json;
 using System.Data.Entity;
 using ImillReports.Models;
 using ImillReports.Contracts;
 using ImillReports.ViewModels;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Data;
 
 namespace ImillReports.Repository
 {
@@ -25,12 +25,15 @@ namespace ImillReports.Repository
 
         public string SyncTAReport(int year, int month, int from, int toYear, int toMonth, int to)
         {
-            var fromDate = new DateTime(year, month, from, 00, 00, 00);
-            var toDate = new DateTime(toYear, toMonth, to, 23, 59, 59);
+            var fromDate = new DateTime(year, month, from, 00, 00, 00).AddDays(-1);
+            var toDate = new DateTime(toYear, toMonth, to, 23, 59, 59).AddHours(12);
 
             var fetchedTrans = _context.tbl_Transactions.Where(a => a.TransDate >= fromDate && a.TransDate <= toDate);
             _context.tbl_Transactions.RemoveRange(fetchedTrans);
             _context.SaveChanges();
+
+            // var fDate = fromDate;
+            // var tDate = toDate.AddDays(1);
 
             var deviceCodes = _context.tbl_DeviceCode.ToList();
             var empTransactions = _context.tbl_EmpTransaction.Where(x => x.TransactionDateTime >= fromDate &&
@@ -38,7 +41,6 @@ namespace ImillReports.Repository
                                                              .GroupBy(a => a.EmployeeID).ToList();
 
             var employeeLeaves = _context.tbl_EmployeeLeaves.ToList();
-
 
             // var resultFlag = await _context.StableAllotment.AnyAsync(x =>
             // x.StableRoom == stableRoom && x.StartDate <= model.StartDate && x.EndDate >= model.StartDate ||
@@ -60,11 +62,12 @@ namespace ImillReports.Repository
                     if (selectedDateTime.Count > 0)
                     {
                         var firstRecord = selectedDateTime.OrderBy(x => x.TransactionDateTime).FirstOrDefault();
-
+                        var storedFirstRecord = firstRecord;
                         if (firstRecord.EmployeeID != "")
                         {
                             foreach (var rec in selectedDateTime)
                             {
+                                firstRecord = storedFirstRecord;
                                 var empId = int.TryParse(firstRecord.EmployeeID, out int val) == true ? int.Parse(firstRecord.EmployeeID) : 0;
                                 var employeeName = "";
                                 var employeeNameAr = "";
@@ -126,47 +129,108 @@ namespace ImillReports.Repository
                                             ? _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsThur.Value == true)
                                             : _context.tbl_EmpLocShiftMap.FirstOrDefault(x => x.EmpId == empOid && x.IsFri.Value == true);
 
+                                        var skipFlag = false;
                                         if (empLocShiftMap != null)
                                         {
                                             shift = _context.tbl_Shift.FirstOrDefault(x => x.Oid == empLocShiftMap.ShiftOid);
                                             shiftStart = shift.StartTime;
                                             shiftEnd = shift.EndTime;
+
+                                            if (shiftStart >= new TimeSpan(21, 00, 00) && shiftStart <= new TimeSpan(23, 59, 59))
+                                            {
+                                                iFirstTime = new DateTime(i.Year, i.Month, i.Day, shiftStart.Value.Hours, shiftStart.Value.Minutes, shiftStart.Value.Seconds);
+                                                iLastTime = new DateTime(i.Year, i.Month, i.Day, shiftEnd.Value.Hours, shiftEnd.Value.Minutes, shiftEnd.Value.Seconds).AddDays(1).AddHours(3);
+
+                                                if (iLastTime.Date > toDate.Date)
+                                                {
+                                                    continue;
+                                                }
+                                                selectedDateTime = item.Where(x => x.TransactionDateTime >= iFirstTime && x.TransactionDateTime <= iLastTime).ToList();
+                                                firstRecord = selectedDateTime.OrderBy(x => x.TransactionDateTime).FirstOrDefault();
+                                                if (firstRecord != null)
+                                                {
+                                                    punchIn = firstRecord.TransactionDateTime;
+                                                    skipFlag = true;
+                                                }
+                                            }
+
                                             var location = locations.FirstOrDefault(x => x.Oid == empLocShiftMap.LocationOid);
                                             locationOid = location.Oid;
                                             locationNameAr = location.NameAr;
-                                        }
 
-                                        // var lastRecord = selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
-                                        var lastRecord = selectedDateTime.OrderBy(x => x.TransactionDateTime).FirstOrDefault(x => x.TransactionDateTime.Value.TimeOfDay >= shiftEnd);
-                                        lastRecord = lastRecord ?? selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
-                                        var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
-                                                                                       ? lastRecord.TransactionDateTime
-                                                                                       : firstRecord.TransactionDateTime;
 
-                                        if (empId != 0)
-                                        {
-                                            var taModel = new TimeAttendanceViewModel()
+                                            // var lastRecord = selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
+                                            var shiftEndFirstRange = shiftEnd.Value.Subtract(new TimeSpan(1, 0, 0));
+                                            var shiftEndSecondRange = shiftEnd.Value.Add(new TimeSpan(1, 0, 0));
+
+                                            if (selectedDateTime.Any())
                                             {
-                                                TransDate = firstRecord.TransactionDateTime.Value.Date,
-                                                DeviceCode = deviceCodes.FirstOrDefault(x => x.DeviceCode == firstRecord.DeviceCode).NameAr,
-                                                EmployeeId = empId,
-                                                EmployeeName = employeeName,
-                                                EmployeeNameAr = employeeNameAr,
-                                                Location = locationNameAr,
-                                                LocationId = locationOid,
-                                                TemperatureIn = firstRecord.Temperature,
-                                                TemperatureOut = lastRecord.Temperature,
-                                                PunchIn = punchIn,
-                                                PunchOut = punchOut,
-                                                ShiftStart = shiftStart,
-                                                ShiftEnd = shiftEnd,
-                                                LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
-                                                EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
-                                                TotalHoursWorked = punchOut.Value.TimeOfDay - punchIn.Value.TimeOfDay,
-                                                IsOpened = shift == null
-                                            };
+                                                var lastRecord = selectedDateTime.OrderBy(x => x.TransactionDateTime)
+                                                    .FirstOrDefault(x => x.TransactionDateTime.Value.TimeOfDay >= shiftEndFirstRange &&
+                                                    x.TransactionDateTime.Value.TimeOfDay <= shiftEndSecondRange);
+                                                lastRecord = lastRecord ?? selectedDateTime.OrderByDescending(x => x.TransactionDateTime).FirstOrDefault();
+                                                var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
+                                                                                               ? lastRecord.TransactionDateTime
+                                                                                               : firstRecord.TransactionDateTime;
 
-                                            taModels.Add(taModel);
+                                                if (empId != 0)
+                                                {
+                                                    if (!skipFlag)
+                                                    {
+                                                        var taModel = new TimeAttendanceViewModel()
+                                                        {
+                                                            TransDate = firstRecord.TransactionDateTime.Value.Date,
+                                                            DeviceCode = deviceCodes.FirstOrDefault(x => x.DeviceCode == firstRecord.DeviceCode).NameAr,
+                                                            EmployeeId = empId,
+                                                            EmployeeName = employeeName,
+                                                            EmployeeNameAr = employeeNameAr,
+                                                            Location = locationNameAr,
+                                                            LocationId = locationOid,
+                                                            TemperatureIn = firstRecord.Temperature,
+                                                            TemperatureOut = lastRecord.Temperature,
+                                                            PunchIn = punchIn,
+                                                            PunchOut = punchOut,
+                                                            ShiftStart = shiftStart,
+                                                            ShiftEnd = shiftEnd,
+                                                            LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
+                                                            EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
+                                                            TotalHoursWorked = punchOut.Value - punchIn.Value,
+                                                            IsOpened = shift == null
+                                                        };
+
+                                                        taModels.Add(taModel);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (punchOut != punchIn)
+                                                        {
+                                                            var taModel = new TimeAttendanceViewModel()
+                                                            {
+                                                                TransDate = firstRecord.TransactionDateTime.Value.Date,
+                                                                DeviceCode = deviceCodes.FirstOrDefault(x => x.DeviceCode == firstRecord.DeviceCode).NameAr,
+                                                                EmployeeId = empId,
+                                                                EmployeeName = employeeName,
+                                                                EmployeeNameAr = employeeNameAr,
+                                                                Location = locationNameAr,
+                                                                LocationId = locationOid,
+                                                                TemperatureIn = firstRecord.Temperature,
+                                                                TemperatureOut = lastRecord.Temperature,
+                                                                PunchIn = punchIn,
+                                                                PunchOut = punchOut,
+                                                                ShiftStart = shiftStart,
+                                                                ShiftEnd = shiftEnd,
+                                                                LateIn = shiftStart != null && punchIn.Value.TimeOfDay > shiftStart ? (punchIn.Value.TimeOfDay - shiftStart).Value : new TimeSpan(),
+                                                                EarlyOut = shiftEnd != null && shiftEnd > punchOut.Value.TimeOfDay ? (shiftEnd - punchOut.Value.TimeOfDay).Value : new TimeSpan(),
+                                                                TotalHoursWorked = punchOut.Value - punchIn.Value,
+                                                                IsOpened = shift == null
+                                                            };
+
+                                                            taModels.Add(taModel);
+                                                        }
+                                                    }
+
+                                                }
+                                            }
                                         }
                                     }
                                     else
@@ -401,7 +465,7 @@ namespace ImillReports.Repository
             var toDateObj = toDate.Date;
 
             var dbTransactions = new List<tbl_Transactions>();
-            var transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDateObj && x.TransDate <= toDateObj);
+            var transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDateObj && x.TransDate <= toDateObj).ToList();
             foreach (var item in taModels.OrderBy(x => x.PunchIn.Value))
             {
                 if (!transactions.Any(x => x.TransDate == item.TransDate && x.EmployeeId == item.EmployeeId && x.PunchIn == item.PunchIn && x.PunchOut == item.PunchOut))
@@ -469,13 +533,17 @@ namespace ImillReports.Repository
             if (fromDate == null) fromDate = DateTime.Now;
             if (toDate == null) toDate = DateTime.Now;
 
+            toDate = toDate.Value.AddHours(12);
+
             var tAModels = new List<TimeAttendanceViewModel>();
             var transactions = new List<tbl_Transactions>();
 
             if (employees == null || employees.Length <= 0)
                 transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate).ToList();
             else
+            {
                 transactions = _context.tbl_Transactions.Where(x => x.TransDate >= fromDate && x.TransDate <= toDate && employees.Contains(x.EmployeeId)).ToList();
+            }
 
             foreach (var item in transactions)
             {
@@ -719,6 +787,7 @@ namespace ImillReports.Repository
 
             if (type == "notScanned")
             {
+                toDate = toDate.Value.AddHours(-12);
                 var taAbsentModels = new List<TimeAttendanceViewModel>();
                 var devices = _context.tbl_Device.Select(x => x.DeviceCode).ToList();
                 var locationOids = _context.tbl_Location.Where(x => x.IsActive.Value).Select(a => a.Oid).ToList();
@@ -815,17 +884,23 @@ namespace ImillReports.Repository
             //var flagCount = 0;
             //var nonFlagCount = 0;
 
+
             if (employees.Count() > 0)
+            {
+                var innerShift = _context.tbl_Shift;
+                var employeeList = _context.tbl_Employees;
+                var empLocShift = _context.tbl_EmpLocShiftMap;
+
                 foreach (var oid in employees)
                 {
-                    var empObj = _context.tbl_Employees.FirstOrDefault(x => x.Oid == oid);
+                    var empObj = employeeList.FirstOrDefault(x => x.Oid == oid);
                     var shiftOid = int.Parse(shift);
-                    var innerShift = _context.tbl_Shift;
+
                     var recShift = innerShift.FirstOrDefault(x => x.Oid == shiftOid);
 
                     var locationOid = int.Parse(location);
 
-                    var empLocShiftMap = _context.tbl_EmpLocShiftMap.Where(x => x.EmpId == empObj.Oid).ToList();
+                    var empLocShiftMap = empLocShift.Where(x => x.EmpId == empObj.Oid);
 
                     if (empLocShiftMap.Any())
                     {
@@ -848,11 +923,8 @@ namespace ImillReports.Repository
                                 }
                             }
 
-
-
-                            foreach (var item in empLocShiftMap)
+                            foreach (var item in empLocShiftMap.Where(x => x.fromDate <= fromDate && x.toDate >= fromDate || x.fromDate <= toDate && x.toDate >= toDate))
                             {
-
                                 if (item.IsFri.Value && fri)
                                 {
                                     var actualShift = innerShift.FirstOrDefault(x => x.Oid == item.ShiftOid);
@@ -1034,7 +1106,7 @@ namespace ImillReports.Repository
                     //    flagCount += 1;
                     //}
                 }
-
+            }
             //if (flagCount <= 0 && nonFlagCount > 0)
             //    return 1;
 
@@ -2009,10 +2081,11 @@ namespace ImillReports.Repository
                                             worksheet.Cell(1, 1).Value = "Employee Id";
                                             worksheet.Cell(1, 2).Value = "Employee Name";
                                             worksheet.Cell(1, 3).Value = "Location";
-                                            worksheet.Cell(1, 4).Value = "Shift Start";
-                                            worksheet.Cell(1, 5).Value = "Shift End";
-                                            worksheet.Cell(1, 6).Value = "Punch In";
-                                            worksheet.Cell(1, 7).Value = "Late In";
+                                            worksheet.Cell(1, 4).Value = "Device";
+                                            worksheet.Cell(1, 5).Value = "Shift Start";
+                                            worksheet.Cell(1, 6).Value = "Shift End";
+                                            worksheet.Cell(1, 7).Value = "Punch In";
+                                            worksheet.Cell(1, 8).Value = "Late In";
 
                                             var count = 2;
 
@@ -2022,10 +2095,11 @@ namespace ImillReports.Repository
                                                 worksheet.Cell(count, 1).Value = rec.EmployeeId;
                                                 worksheet.Cell(count, 2).Value = rec.EmployeeName;
                                                 worksheet.Cell(count, 3).Value = rec.Location;
-                                                worksheet.Cell(count, 4).Value = rec.ShiftStart.Value.ToString();
-                                                worksheet.Cell(count, 5).Value = rec.ShiftEnd.Value.ToString();
-                                                worksheet.Cell(count, 6).Value = punchIn;
-                                                worksheet.Cell(count, 7).Value = rec.LateIn.ToString();
+                                                worksheet.Cell(count, 4).Value = rec.DeviceCode;
+                                                worksheet.Cell(count, 5).Value = rec.ShiftStart.Value.ToString();
+                                                worksheet.Cell(count, 6).Value = rec.ShiftEnd.Value.ToString();
+                                                worksheet.Cell(count, 7).Value = punchIn;
+                                                worksheet.Cell(count, 8).Value = rec.LateIn.ToString();
                                                 count += 1;
 
                                                 emailMidPart +=
@@ -2214,13 +2288,14 @@ namespace ImillReports.Repository
                                             worksheet.Cell(1, 1).Value = "Employee Id";
                                             worksheet.Cell(1, 2).Value = "Employee Name";
                                             worksheet.Cell(1, 3).Value = "Location";
-                                            worksheet.Cell(1, 4).Value = "Shift Start";
-                                            worksheet.Cell(1, 5).Value = "Shift End";
-                                            worksheet.Cell(1, 6).Value = "Punch In";
-                                            worksheet.Cell(1, 7).Value = "Punch Out";
-                                            worksheet.Cell(1, 8).Value = "Late In";
-                                            worksheet.Cell(1, 9).Value = "Early Out";
-                                            worksheet.Cell(1, 10).Value = "Total Hour Worked";
+                                            worksheet.Cell(1, 4).Value = "Device";
+                                            worksheet.Cell(1, 5).Value = "Shift Start";
+                                            worksheet.Cell(1, 6).Value = "Shift End";
+                                            worksheet.Cell(1, 7).Value = "Punch In";
+                                            worksheet.Cell(1, 8).Value = "Punch Out";
+                                            worksheet.Cell(1, 9).Value = "Late In";
+                                            worksheet.Cell(1, 10).Value = "Early Out";
+                                            worksheet.Cell(1, 11).Value = "Total Hour Worked";
 
                                             var count = 2;
 
@@ -2247,13 +2322,14 @@ namespace ImillReports.Repository
                                                 worksheet.Cell(count, 1).Value = rec.EmployeeId;
                                                 worksheet.Cell(count, 2).Value = rec.EmployeeName;
                                                 worksheet.Cell(count, 3).Value = rec.Location;
-                                                worksheet.Cell(count, 4).Value = rec.ShiftStart.Value.ToString();
-                                                worksheet.Cell(count, 5).Value = rec.ShiftEnd.Value.ToString();
-                                                worksheet.Cell(count, 6).Value = punchIn;
-                                                worksheet.Cell(count, 7).Value = calcPunchOut;
-                                                worksheet.Cell(count, 8).Value = rec.LateIn.ToString();
-                                                worksheet.Cell(count, 9).Value = calcEarlyOut;
-                                                worksheet.Cell(count, 10).Value = calcConvertedHours;
+                                                worksheet.Cell(count, 4).Value = rec.DeviceCode;
+                                                worksheet.Cell(count, 5).Value = rec.ShiftStart.Value.ToString();
+                                                worksheet.Cell(count, 6).Value = rec.ShiftEnd.Value.ToString();
+                                                worksheet.Cell(count, 7).Value = punchIn;
+                                                worksheet.Cell(count, 8).Value = calcPunchOut;
+                                                worksheet.Cell(count, 9).Value = rec.LateIn.ToString();
+                                                worksheet.Cell(count, 10).Value = calcEarlyOut;
+                                                worksheet.Cell(count, 11).Value = calcConvertedHours;
                                                 count += 1;
 
                                                 emailMidPart +=
@@ -2563,6 +2639,7 @@ namespace ImillReports.Repository
             try
             {
                 var today = DateTime.Now;
+                // var message = "";
                 if (fromDate == null)
                     fromDate = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0, DateTimeKind.Local);
                 if (toDate == null)
@@ -2580,7 +2657,16 @@ namespace ImillReports.Repository
 
                     var empTransList = new List<tbl_EmpTransaction>();
 
-                    var firstResponse = GetMachineData(fromDate.Value, toDate.Value, ipAddress, offset);
+                    Root firstResponse = null;
+                    try
+                    {
+                        firstResponse = GetMachineData(fromDate.Value, toDate.Value, ipAddress, offset);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
                     if (firstResponse != null)
                     {
                         if (firstResponse.Response != null)

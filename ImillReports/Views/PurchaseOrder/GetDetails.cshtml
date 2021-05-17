@@ -1,0 +1,54 @@
+﻿@using Syncfusion.EJ2.Grids;
+@model ImillReports.ViewModels.TransDetailsViewModel
+
+@*@{
+    ViewBag.Title = "GetDetails";
+}*@
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mt-3">
+            <div class="body">
+
+                @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().Height("400").Width("auto").ShowColumnChooser(true).Columns(col =>
+           {
+               // col.Field("VoucherId").Width("100").HeaderText("رقم السند").TextAlign(TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("InvDateTime").Width("100").HeaderText("تاريخ السند").TextAlign(TextAlign.Center).Format(new { type = "dateTime", format = "dd/MMM/yyyy" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Part_Number").Width("100").HeaderText("كود الصنف").TextAlign(TextAlign.Center).CustomAttributes(new { @class = "customcss" }).Add();
+               // col.Field("InvoiceNumber").HeaderText("Invoice").Width("80").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               // col.Field("CustomerName").HeaderText("Cust Name").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               // col.Field("CustomerNameAr").HeaderText("المورد").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               // col.Field("Voucher").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               // col.Field("ProductNameEn").HeaderText("Prod (En)").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "Menu" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("ProductNameAr").HeaderText("اسم المنتج").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "Menu" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Package").HeaderText("الشد").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("BaseQuantity").HeaderText("الشد الكمية").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("SellUnit").HeaderText("الوحد").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("BaseUnit").HeaderText("Base Unit").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("SellQuantity").HeaderText("الكمية").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("UnitPrice").HeaderText("السعر/المعد").Format("N3").Width("100").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               //col.Field("Discount").Width("80").Format("N3").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Amount").HeaderText("المبلغ").Width("80").Format("N3").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+               col.Field("Comments").HeaderText("ملاحظات").Width("80").Format("N3").TextAlign(TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+           }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+               page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+               {
+                   agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+
+                       new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                           Field = "Discount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                       },
+
+                       new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                           Field = "Amount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                       }
+
+                   }).Add();
+               }).Render()
+
+            </div>
+        </div>
+    </div>
+</div>
+

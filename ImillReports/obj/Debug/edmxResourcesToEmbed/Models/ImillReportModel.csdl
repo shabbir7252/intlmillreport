@@ -19,6 +19,7 @@
     <EntitySet Name="Transaction_2017" EntityType="ImillReportsModel.Transaction_2017" />
     <EntitySet Name="BankDeposits" EntityType="ImillReportsModel.BankDeposit" />
     <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
+    <EntitySet Name="PurchaseOrders" EntityType="ImillReportsModel.PurchaseOrder" />
   </EntityContainer>
   <EntityType Name="Transaction_2020">
     <Key>
@@ -97,6 +98,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Trans_Detail_2019">
     <Key>
@@ -136,6 +138,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Transaction_2019">
     <Key>
@@ -214,6 +217,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Transaction_2021">
     <Key>
@@ -319,6 +323,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Transaction_2018">
     <Key>
@@ -397,6 +402,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Trans_Detail_2016">
     <Key>
@@ -436,6 +442,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Trans_Detail_2017">
     <Key>
@@ -475,6 +482,7 @@
     <Property Name="EntryId" Type="Int64" />
     <Property Name="CustomerId" Type="Int32" />
     <Property Name="Year" Type="Int32" />
+    <Property Name="Line_No" Type="Int64" />
   </EntityType>
   <EntityType Name="Transaction_2015">
     <Key>
@@ -628,6 +636,50 @@
     <Property Name="TotalCash" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
     <Property Name="Innova" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
     <Property Name="Hamra" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+    <Property Name="SalhiyahAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="SalhiyahPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="SalmiyaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="SalmiyaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="NuzhaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="NuzhaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="DahiyaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="DahiyaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KhaldiyaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KhaldiyaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="QortubaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="QortubaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KaifanAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KaifanPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="AvenuesAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="AvenuesPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KPCAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KPCPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="YarmoukAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="YarmoukPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="ZaharaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="ZaharaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="Mall360Am" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="Mall360Pm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="DasmaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="DasmaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="GateAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="GatePm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="ShahudaAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="ShahudaPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="SurraAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="SurraPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="HamraAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="HamraPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="BniedAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="BniedPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="JahraAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="JahraPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KoutAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="KoutPm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="Av4Am" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="Av4Pm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="FintasAm" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="FintasPm" Type="Decimal" Precision="18" Scale="3" />
   </EntityType>
   <EntityType Name="Setting">
     <Key>
@@ -637,5 +689,28 @@
     <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="SerialNumber" Type="Int64" Nullable="false" />
     <Property Name="BackDays" Type="Int32" />
+    <Property Name="GmEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PurchaseEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AdditionalCc1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AdditionalCc2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="PurchaseOrder">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EntryId" Type="Int64" Nullable="false" />
+    <Property Name="LdgrCd" Type="Int32" Nullable="false" />
+    <Property Name="VoucherDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LpoStatus" Type="Int32" Nullable="false" />
+    <Property Name="LpoInvoiceStatus" Type="Int32" Nullable="false" />
+    <Property Name="LpoPaymentStatus" Type="Int32" Nullable="false" />
+    <Property Name="PaymentRemarks" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="GmComments" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="LpoStatusTransDate" Type="DateTime" Precision="3" />
+    <Property Name="LpoPaymentTransDate" Type="DateTime" Precision="3" />
+    <Property Name="QAStatus" Type="Int32" />
+    <Property Name="QARemarks" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="QAStatusTransDate" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

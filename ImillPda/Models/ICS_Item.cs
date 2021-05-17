@@ -124,5 +124,6 @@ namespace ImillPda.Models
         public virtual ICollection<ICS_Transaction_Details> ICS_Transaction_Details { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ICS_Item_Unit_Details> ICS_Item_Unit_Details { get; set; }
+        public virtual ICS_Item_Group ICS_Item_Group { get; set; }
     }
 }

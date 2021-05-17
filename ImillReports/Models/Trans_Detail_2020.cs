@@ -48,5 +48,6 @@ namespace ImillReports.Models
         public Nullable<long> EntryId { get; set; }
         public Nullable<int> CustomerId { get; set; }
         public Nullable<int> Year { get; set; }
+        public Nullable<long> Line_No { get; set; }
     }
 }

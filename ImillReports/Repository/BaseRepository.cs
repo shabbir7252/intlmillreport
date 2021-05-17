@@ -19,12 +19,12 @@ namespace ImillReports.Repository
             if (locationType == LocationType.Coops)
             {
                 return new List<int>{
-                55, 57, 58, 59, 60, 61, 62, 64, 74, 77, 80, 85 };
+                55, 57, 58, 59, 60, 61, 62, 64, 74, 77, 80, 85, 88 };
             }
             else
             {
                 return new List<int>{
-                54, 56, 63, 65, 66, 68, 73, 76, 78, 81, 82, 83
+                54, 56, 63, 65, 66, 68, 73, 76, 78, 81, 82, 83, 87
                 };
             }
         }

@@ -17,14 +17,16 @@ namespace ImillPda.Repository
         private readonly ImillPdaEntities _contextPda = new ImillPdaEntities();
         private readonly ILocationRepo _locationContext;
         private readonly IItemRepo _itemContext;
+        private readonly IProductRepository _productRepository;
 
         public TransactionRepo(IMILLEntities context, ImillPdaEntities contextPda,
-            ILocationRepo locationContext, IItemRepo itemContext)
+            ILocationRepo locationContext, IItemRepo itemContext, IProductRepository productRepository)
         {
             _context = context;
             _contextPda = contextPda;
-            _locationContext = locationContext;
             _itemContext = itemContext;
+            _locationContext = locationContext;
+            _productRepository = productRepository;
         }
 
         public List<TransactionVM> GetTransactions()
@@ -36,7 +38,7 @@ namespace ImillPda.Repository
             {
                 var locations = _locationContext.GetLocations();
                 var pdaTransEntryId = _contextPda.Transactions.Select(a => a.EntryId).ToList();
-                var daysBack = DateTime.Now.AddDays(-2);
+                var daysBack = DateTime.Now.AddDays(-3);
                 var trans = _context.ICS_Transaction.Where(x => x.Voucher_Type == 423 && !pdaTransEntryId.Contains(x.Entry_Id) && x.Voucher_Date >= daysBack);
 
                 //var fdate = new DateTime(2021, 02, 02);
@@ -133,27 +135,135 @@ namespace ImillPda.Repository
             return transactionVMs.OrderByDescending(x => x.UserDateTime).ToList();
         }
 
+        public List<TransactionVM> GetTransactionsDateWise(DateTime dateTime)
+        {
+            CheckEmptyTransactions();
+            var transactionVMs = new List<TransactionVM>();
+
+            var from = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 00, 00, 00);
+            var to = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59);
+
+            try
+            {
+                var locations = _locationContext.GetLocations();
+                // var pdaTransEntryId = _contextPda.Transactions.Select(a => a.EntryId).ToList();
+                var trans = _context.ICS_Transaction.Where(x => x.Voucher_Type == 423 && x.Voucher_Date >= from && x.Voucher_Date <= to);
+
+                foreach (var tran in trans)
+                {
+                    var location = locations.FirstOrDefault(x => x.Locat_Cd == tran.Locat_Cd);
+                    var locatCd = location != null ? location.Locat_Cd : 0;
+                    var locationNameEn = location != null ? location.L_Locat_Name : "";
+                    var locationNameAr = location != null ? location.A_Locat_Name : "";
+
+                    transactionVMs.Add(
+                        new TransactionVM
+                        {
+                            EntryId = tran.Entry_Id,
+                            TransDate = tran.Voucher_Date,
+                            CustomDate = tran.Voucher_Date.ToString("dd/MMM/yyyy"),
+                            RequestNumber = tran.Voucher_No,
+                            Locat_Cd = short.Parse(locatCd.ToString()),
+                            LocationNameEn = locationNameEn,
+                            LocationNameAr = locationNameAr,
+                            UserDateTime = tran.User_Date_Time != null ? tran.User_Date_Time : DateTime.Now,
+                            CustomTime = tran.User_Date_Time != null ? tran.User_Date_Time.ToShortTimeString() : DateTime.Now.ToShortTimeString(),
+                            ItemCount = 0,
+                            IsHidden = true
+                        });
+                }
+
+                foreach (var rec in transactionVMs.GroupBy(x => x.TransDate))
+                {
+                    foreach (var rec2 in rec.GroupBy(x => x.Locat_Cd))
+                    {
+                        if (rec2.Count() > 1)
+                        {
+                            var firstRec = rec2.OrderBy(x => x.UserDateTime).FirstOrDefault();
+                            firstRec.IsHidden = false;
+                            var firstTime = firstRec.UserDateTime;
+                            var ids = rec2.Where(x => x.Oid != firstRec.EntryId).Select(x => x.EntryId).ToList();
+                            var newRec = rec2.Where(x => x.EntryId != firstRec.EntryId).OrderBy(x => x.UserDateTime);
+
+                            while (ids.Count() > 1)
+                            {
+                                var newRecOid = newRec.Where(x => ids.Contains(x.EntryId) &&
+                                                             x.UserDateTime.TimeOfDay >= firstTime.TimeOfDay &&
+                                                             x.UserDateTime.TimeOfDay <= firstTime.AddMinutes(30).TimeOfDay)
+                                                 .OrderBy(x => x.UserDateTime).Select(a => a.EntryId).ToList();
+
+                                if (!newRecOid.Any())
+                                {
+                                    foreach (var remainingId in ids)
+                                    {
+                                        var remainingRec = newRec.FirstOrDefault(x => x.EntryId == remainingId);
+                                        if (remainingRec != null)
+                                            remainingRec.IsHidden = false;
+                                    }
+
+                                    break;
+                                }
+
+                                foreach (var id in newRecOid)
+                                    ids.Remove(id);
+
+                                if (ids.Any())
+                                {
+                                    newRec = newRec.Where(x => ids.Contains(x.EntryId)).OrderBy(x => x.UserDateTime);
+                                    if (newRec.Any())
+                                    {
+                                        firstRec = newRec.OrderBy(x => x.UserDateTime).FirstOrDefault();
+                                        firstRec.IsHidden = false;
+                                        firstTime = firstRec.UserDateTime;
+                                    }
+                                }
+
+                            }
+                        }
+                        else if (rec2.Count() == 1)
+                        {
+                            rec2.FirstOrDefault().IsHidden = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return transactionVMs.OrderByDescending(x => x.UserDateTime).ToList();
+        }
+
         public TransactionDetailVm GetTransactionDetails(long entryId)
         {
             var modelList = new List<RequestedItemVM>();
             var items = _itemContext.GetItems();
             var trans = _context.ICS_Transaction.FirstOrDefault(x => x.Entry_Id == entryId);
             var transDetails = _context.ICS_Transaction_Details.Where(x => x.Entry_Id == entryId).ToList();
+            var branchOrderItems = _context.Imill_BranchOrderItem.ToList();
 
             modelList.AddRange(from det in transDetails
+                               let prod = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd)
                                select new RequestedItemVM
                                {
                                    Oid = det.Line_No,
-                                   Prod_Cd = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).Prod_Cd,
-                                   PartNumber = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).Part_No,
-                                   NameEn = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).L_Prod_Name,
-                                   NameAr = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).A_Prod_Name,
+                                   Prod_Cd = prod.Prod_Cd,
+                                   SortOrder = branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd) != null
+                                                        ? branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd).SortOrder
+                                                        : 1000,
+                                   PartNumber = prod.Part_No,
+                                   NameEn = prod.L_Prod_Name,
+                                   NameAr = prod.A_Prod_Name,
                                    Qty = det.Qty,
                                    RequestedDate = trans.Voucher_Date,
                                    DeliveryDate = trans.Voucher_Date,
                                    ActQty = 0,
                                    LineNo = det.Line_No,
-                                   OrgQty = det.Qty
+                                   OrgQty = det.Qty,
+                                   Locat_Cd = trans.Locat_Cd,
+                                   RequestedDateString = trans.Voucher_Date.ToString("dd/MM/yyyy hh:mm:ss"),
+                                   DeliveryDateString = trans.Voucher_Date.ToString("dd/MM/yyyy hh:mm:ss")
                                });
 
             var openTransaction = _contextPda.OpenTransactions.Where(x => x.EntryId == entryId);
@@ -171,15 +281,18 @@ namespace ImillPda.Repository
                         modelRec.IsNewlyAdded = rec.IsNewlyAdded;
                         modelRec.IsReqQtyChanged = rec.IsReqQtyChanged;
                         modelRec.IsVerified = true;
+                        modelRec.RequestedDate = rec.CreatedOn;
+                        modelRec.RequestedDateString = rec.CreatedOn.ToString("dd/MM/yyyy hh:mm:ss");
                     }
                 }
             }
 
             var locationNameAr = _locationContext.GetLocation(trans.Locat_Cd).A_Locat_Name;
+
             var model = new TransactionDetailVm
             {
                 Comments = trans.Comments,
-                RequestedItems = modelList.OrderByDescending(x => x.RequestedDate),
+                RequestedItems = modelList.OrderBy(x => x.SortOrder.Value),
                 LocationNameAr = locationNameAr,
                 VoucherDate = trans.Voucher_Date,
                 VoucherNo = trans.Voucher_No
@@ -343,6 +456,8 @@ namespace ImillPda.Repository
                 message = JsonConvert.SerializeObject(transactionDetails);
                 _contextPda.SaveChanges();
 
+                SendWishListEmail(wishList, trans.Voucher_No, trans.Locat_Cd);
+
                 source.ReponseId = 3;
                 source.Message = "Transaction Saved Successfully! ";
                 message = "PDA Transaction Saved Successful";
@@ -361,7 +476,14 @@ namespace ImillPda.Repository
                     {
                         var innTransDet = innovaTransDetail.FirstOrDefault(x => x.Line_No == wList.TransDetailOid);
                         if (innTransDet != null)
+                        {
+                            //var transDetail = _context.ICS_Transaction_Details.FirstOrDefault(x => x.Line_No == innTransDet.Line_No);
+                            //transDetail.Reference_No = $"Qty={wList.RequestedQty}, Deleted by PDA User";
+                            //transDetail.Qty = 0;
+
                             _context.ICS_Transaction_Details.Remove(innTransDet);
+                        }
+
                     }
                     else
                     {
@@ -371,7 +493,7 @@ namespace ImillPda.Repository
                     }
                 }
 
-                message = "An Attempt to Save In Innova Failed.";
+                message += "An Attempt to Save In Innova Failed. Press Ok to continue...";
                 _context.SaveChanges();
                 source.ReponseId = 2;
                 source.Message = "Transaction Saved Successfully! Changes Saved in System, ";
@@ -383,15 +505,71 @@ namespace ImillPda.Repository
                 source.Message = "Transaction Saved Successfully! Changes Saved in System, Transaction Completed!";
                 message = "Transaction Saved Successfully! Changes Saved in System, Transaction Completed!";
 
-                SendEmail(trans.Voucher_No, trans.Locat_Cd);
+                // SendEmail(trans.Voucher_No, trans.Locat_Cd);
             }
             catch (Exception ex)
             {
                 source.ReponseId = 0;
-                source.Message = ex.InnerException.Message + " : : " + message;
+                source.Message = message;
             }
 
             return source;
+        }
+
+        private void SendWishListEmail(List<WishList> wishList, long voucher_No, short locat_Cd)
+        {
+            try
+            {
+                if (wishList.Count() > 0)
+                {
+                    var settings = _contextPda.EmailSettings.Where(x => x.IsRegForEmail);
+                    var locationNameAr = _context.SM_Location.FirstOrDefault(x => x.Locat_Cd == locat_Cd).A_Locat_Name;
+
+                    var firstString = "<html> <body> <table style='min-width: 820px; width:100%; border: 1px solid black;'> <thead> <tr> <th style='text-align: center'>التاريخ</th> <th style='text-align: center'>اسم المنتج</th> <th style='text-align: center'>اسم المنتج</th> <th style='text-align: center'>المطلوب</th> <th style='text-align: center'>الغير متوفر</th> </tr></thead> <tbody>";
+                    var midBodyString = "";
+                    foreach (var detail in wishList)
+                    {
+                        var reqDate = detail.RequestedDate != null ? detail.RequestedDate.ToString("dd-MM-yyyy") : "";
+                        midBodyString += $"<tr>" +
+                            $"<td style='border: 1px solid #dddddd; text-align: center'>{reqDate}</td>" +
+                            $"<td style='border: 1px solid #dddddd; text-align: left'>{detail.NameEn}</td>" +
+                            $"<td style='border: 1px solid #dddddd; text-align: right'>{detail.NameAr}</td>" +
+                            $"<td style='border: 1px solid #dddddd; text-align: center'>{detail.RequestedQty}</td>" +
+                            $"<td style='border: 1px solid #dddddd; text-align: center'>{detail.RemainingQty}</td>" +
+                            $"</tr>";
+                    }
+                    var lastBodyString = "</tbody></table></body></html>";
+
+                    var htmlString = string.Format(firstString + midBodyString + lastBodyString);
+
+                    MailMessage mailMessage = new MailMessage
+                    {
+                        Subject = $"Wishlist Created | نواقص فرع : {locationNameAr} | طلب رقم : {voucher_No} ",
+                        Body = htmlString,
+                        IsBodyHtml = true,
+                        From = new MailAddress("pda.intlmill@gmail.com"),
+                    };
+
+                    foreach (var setting in settings)
+                        mailMessage.To.Add(new MailAddress(setting.Emails));
+
+                    SmtpClient smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential("pda.intlmill@gmail.com", "pda@intlmill2021")
+                    };
+
+                    smtp.Send(mailMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private void SendEmail(long voucher_No, short locat_Cd)
@@ -457,16 +635,21 @@ namespace ImillPda.Repository
             var items = _itemContext.GetItems();
             var trans = _contextPda.Transactions.FirstOrDefault(x => x.Oid == oid);
             var transDetails = _contextPda.TransactionDetails.Where(x => x.TransactionOid == trans.Oid).ToList();
+            var branchOrderItems = _context.Imill_BranchOrderItem.ToList();
 
             foreach (var det in transDetails)
             {
+                var prod = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd);
                 modelList.Add(new RequestedItemVM
                 {
                     Oid = det.Oid,
-                    Prod_Cd = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).Prod_Cd,
-                    PartNumber = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).Part_No,
-                    NameEn = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).L_Prod_Name,
-                    NameAr = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).A_Prod_Name,
+                    SortOrder = branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd) != null
+                                                        ? branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd).SortOrder
+                                                        : 1000,
+                    Prod_Cd = prod.Prod_Cd,
+                    PartNumber = prod.Part_No,
+                    NameEn = prod.L_Prod_Name,
+                    NameAr = prod.A_Prod_Name,
                     Qty = det.Qty,
                     RequestedDate = trans.RequestedDate,
                     ActQty = det.ActualQty,
@@ -474,7 +657,7 @@ namespace ImillPda.Repository
                 });
             }
 
-            return modelList.OrderByDescending(x => x.RequestedDate).ToList();
+            return modelList.OrderBy(x => x.SortOrder).ToList();
         }
 
         public ItemResponseViewmodel SaveDeliveryRequest(List<RequestedItemVM> itemList)
@@ -562,16 +745,21 @@ namespace ImillPda.Repository
             var items = _itemContext.GetItems();
             var trans = _contextPda.Transactions.FirstOrDefault(x => x.EntryId == entryId);
             var wishlist = _contextPda.WishLists.Where(x => x.EntryId == entryId && x.RemainingQty > 0).ToList();
+            var branchOrderItems = _context.Imill_BranchOrderItem.ToList();
 
             foreach (var det in wishlist)
             {
+                var prod = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd);
                 modelList.Add(new RequestedItemVM
                 {
                     Oid = det.Oid,
-                    Prod_Cd = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).Prod_Cd,
-                    PartNumber = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).Part_No,
-                    NameEn = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).L_Prod_Name,
-                    NameAr = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd).A_Prod_Name,
+                    SortOrder = branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd) != null
+                                    ? branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd).SortOrder
+                                    : 1000,
+                    Prod_Cd = prod.Prod_Cd,
+                    PartNumber = prod.Part_No,
+                    NameEn = prod.L_Prod_Name,
+                    NameAr = prod.A_Prod_Name,
                     Qty = det.RemainingQty,
                     RequestedDate = trans.RequestedDate,
                     DeliveryDate = trans.RequestedDate,
@@ -745,7 +933,8 @@ namespace ImillPda.Repository
                             Processed_Others_Base_Qty = 0,
                             Fc_Prod_Dis_Per = 0,
                             Commission_Amt = 0,
-                            master_discount = 0
+                            master_discount = 0,
+                            Reference_No = "Newly Added By PDA User"
                         };
 
                         _context.ICS_Transaction_Details.Add(transDetail);
@@ -822,6 +1011,10 @@ namespace ImillPda.Repository
                 {
                     if (item.IsVerified)
                     {
+                        var reqDate = string.IsNullOrEmpty(item.RequestedDateString) 
+                            ? item.RequestedDate 
+                            : Convert.ToDateTime(item.RequestedDateString, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+
                         if (dbOpenTrans.Any(x => x.Prod_Cd == item.Prod_Cd && x.PartNumber == item.PartNumber))
                         {
                             message = $"Changing Transaction in PDA Prod : {item.Prod_Cd}";
@@ -831,6 +1024,7 @@ namespace ImillPda.Repository
                             dbOpenTran.RequiredQty = item.OrgQty;
                             dbOpenTran.IsNewlyAdded = item.IsNewlyAdded;
                             dbOpenTran.IsReqQtyChanged = item.IsReqQtyChanged;
+                            dbOpenTran.CreatedOn = reqDate;
                         }
                         else
                         {
@@ -846,7 +1040,7 @@ namespace ImillPda.Repository
                                 RequiredQty = item.OrgQty,
                                 IsNewlyAdded = item.IsNewlyAdded,
                                 IsReqQtyChanged = item.IsReqQtyChanged,
-                                CreatedOn = DateTime.Now
+                                CreatedOn = reqDate
                             });
                         }
                     }
@@ -876,6 +1070,20 @@ namespace ImillPda.Repository
             return source;
         }
 
+        public ProductViewModel GetGroupProduct(List<long> groupIds)
+        {
+            if (groupIds != null)
+            {
+                var products = _productRepository.GetAllProducts().Items;
+                return new ProductViewModel
+                {
+                    Items = products.Where(x => groupIds.Contains(x.GroupCd)).ToList()
+                };
+            }
+
+            return new ProductViewModel();
+        }
+
         public ItemResponseViewmodel DeleteOpenTransaction(string entryId)
         {
             var source = new ItemResponseViewmodel();
@@ -898,6 +1106,190 @@ namespace ImillPda.Repository
                 source.Message = ex.InnerException.Message + " : : " + message;
             }
             return source;
+        }
+
+        public List<ConsolidatedItems> GetConsolidatedItems(DateTime fromDate, string productIds, string group, string type)
+        {
+            var items = _itemContext.GetItems();
+            var locations = _locationContext.GetLocations().ToList();
+            var consolidatedItems = new List<ConsolidatedItems>();
+            var consolidatedItems2 = new List<ConsolidatedItems>();
+
+            long[] productIdArray = null;
+            if (!string.IsNullOrEmpty(productIds))
+            {
+                var productIdStringArray = productIds.Split(',');
+                productIdArray = Array.ConvertAll(productIdStringArray, s => long.Parse(s));
+            }
+            else if (!string.IsNullOrEmpty(group))
+            {
+                var groupStringArray = group.Split(',');
+                var groupIdArray = Array.ConvertAll(groupStringArray, s => long.Parse(s));
+                productIdArray = items.Where(x => groupIdArray.Contains(x.GroupCd)).Select(x => x.Prod_Cd).ToArray();
+            }
+
+            var transactions = GetTransactionsDateWise(fromDate).Where(x => !x.IsHidden);
+
+            var openTransaction = _contextPda.OpenTransactions.Where(x => x.CreatedOn >= fromDate && x.CreatedOn <= fromDate).ToList();
+
+            foreach (var trans in transactions)
+            {
+                var transDetails = GetTransactionDetails(trans.EntryId);
+
+                
+                    var transDetailArray = productIdArray != null
+                                        ? transDetails.RequestedItems.Where(x => productIdArray.Contains(x.Prod_Cd)).GroupBy(a => a.Locat_Cd).ToList()
+                                        : transDetails.RequestedItems.GroupBy(a => a.Locat_Cd).ToList();
+
+                    foreach (var item in transDetailArray)
+                    {
+                        var locatCd = item.FirstOrDefault().Locat_Cd;
+
+                        foreach (var prod in item)
+                        {
+                            var isAnyTrans = openTransaction.Any(x => x.Locat_Cd == locatCd && x.Prod_Cd == prod.Prod_Cd);
+                            if (isAnyTrans) continue;
+
+                            var consItem = new ConsolidatedItems
+                            {
+                                Locat_Cd = locations.FirstOrDefault(x => x.Locat_Cd == locatCd).Locat_Cd,
+                                LocationNameEn = locations.FirstOrDefault(x => x.Locat_Cd == locatCd).L_Locat_Name,
+                                LocationNameAr = locations.FirstOrDefault(x => x.Locat_Cd == locatCd).A_Locat_Name,
+                                Prod_Cd = prod.Prod_Cd,
+                                ProductNameAr = prod.NameAr,
+                                ProductNameEn = prod.NameEn,
+                                TotalQuantity = prod.Qty
+                            };
+
+                            consolidatedItems.Add(consItem);
+                        }
+                    }
+            }
+
+            if(type == "2")
+            {
+                var consItems = consolidatedItems.GroupBy(x => x.Prod_Cd);
+
+                foreach(var item in consItems)
+                {
+                    var consItem = new ConsolidatedItems
+                    {
+                        Prod_Cd = item.FirstOrDefault().Prod_Cd,
+                        ProductNameAr = item.FirstOrDefault().ProductNameAr,
+                        ProductNameEn = item.FirstOrDefault().ProductNameEn,
+                        TotalQuantity = item.Sum(x => x.TotalQuantity)
+                    };
+
+                    consolidatedItems2.Add(consItem);
+                }
+
+                return consolidatedItems2.OrderBy(x => x.ProductNameEn).ToList();
+            }
+
+            return consolidatedItems.OrderBy(x => x.ProductNameEn).ToList();
+        }
+
+        //public List<TransactionDetailVm> GetTransactionsDetail(string entryId)
+        //{
+        //    var modelList = new List<RequestedItemVM>();
+        //    var items = _itemContext.GetItems();
+        //    var trans = _context.ICS_Transaction.FirstOrDefault(x => x.Entry_Id == entryId);
+        //    var transDetails = _context.ICS_Transaction_Details.Where(x => x.Entry_Id == entryId).ToList();
+        //    var branchOrderItems = _context.Imill_BranchOrderItem.ToList();
+
+        //    modelList.AddRange(from det in transDetails
+        //                       let prod = items.FirstOrDefault(x => x.Prod_Cd == det.Prod_Cd)
+        //                       select new RequestedItemVM
+        //                       {
+        //                           Oid = det.Line_No,
+        //                           Prod_Cd = prod.Prod_Cd,
+        //                           SortOrder = branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd) != null
+        //                                                ? branchOrderItems.FirstOrDefault(x => x.Prod_Cd == prod.Prod_Cd).SortOrder
+        //                                                : 1000,
+        //                           PartNumber = prod.Part_No,
+        //                           NameEn = prod.L_Prod_Name,
+        //                           NameAr = prod.A_Prod_Name,
+        //                           Qty = det.Qty,
+        //                           RequestedDate = trans.Voucher_Date,
+        //                           DeliveryDate = trans.Voucher_Date,
+        //                           ActQty = 0,
+        //                           LineNo = det.Line_No,
+        //                           OrgQty = det.Qty,
+        //                           Locat_Cd = trans.Locat_Cd
+        //                       });
+
+        //    var openTransaction = _contextPda.OpenTransactions.Where(x => x.EntryId == entryId);
+
+        //    if (openTransaction.Any())
+        //    {
+        //        foreach (var rec in openTransaction)
+        //        {
+        //            if (modelList.Any(x => x.Prod_Cd == rec.Prod_Cd && x.PartNumber == rec.PartNumber))
+        //            {
+        //                var modelRec = modelList.FirstOrDefault(x => x.Prod_Cd == rec.Prod_Cd && x.PartNumber == rec.PartNumber);
+        //                modelRec.Qty = rec.RequestedQty ?? rec.RequiredQty;
+        //                modelRec.ActQty = rec.ActualQty;
+        //                modelRec.OrgQty = rec.RequiredQty;
+        //                modelRec.IsNewlyAdded = rec.IsNewlyAdded;
+        //                modelRec.IsReqQtyChanged = rec.IsReqQtyChanged;
+        //                modelRec.IsVerified = true;
+        //            }
+        //        }
+        //    }
+
+        //    var locationNameAr = _locationContext.GetLocation(trans.Locat_Cd).A_Locat_Name;
+
+        //    var model = new TransactionDetailVm
+        //    {
+        //        Comments = trans.Comments,
+        //        RequestedItems = modelList.OrderBy(x => x.SortOrder.Value),
+        //        LocationNameAr = locationNameAr,
+        //        VoucherDate = trans.Voucher_Date,
+        //        VoucherNo = trans.Voucher_No
+        //    };
+
+        //    return model;
+        //}
+
+        public string SaveConsTrans(DateTime fromDate, List<ConsolidatedItems> consolidatedItems)
+        {
+            try
+            {
+                var transactions = GetTransactionsDateWise(fromDate);
+                foreach (var item in consolidatedItems.Where(x => x.IsVerified).GroupBy(x => x.Locat_Cd))
+                {
+                    foreach (var rec in item)
+                    {
+                        var locatCd = rec.Locat_Cd;
+                        var trans = locatCd == 0 
+                            ? transactions.Where(x => !x.IsHidden) 
+                            : transactions.Where(x => !x.IsHidden && x.Locat_Cd == rec.Locat_Cd);
+
+                        foreach (var transRec in trans)
+                        {
+                            var transDetail = GetTransactionDetails(transRec.EntryId).RequestedItems;
+
+                            foreach (var detailItem in transDetail)
+                            {
+                                if (rec.Prod_Cd == detailItem.Prod_Cd)
+                                {
+                                    detailItem.IsVerified = true;
+                                    detailItem.ActQty = rec.TotalQuantity;
+                                }
+                            }
+
+                            DraftTransactions(transRec.EntryId.ToString(), transDetail.ToList());
+                        }
+
+                    }
+                }
+
+                return "true";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

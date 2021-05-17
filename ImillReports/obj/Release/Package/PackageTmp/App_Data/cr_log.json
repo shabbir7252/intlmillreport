@@ -1,0 +1,51 @@
+[
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:02",
+    "PropertyName": "Talabat",
+    "OldValue": "0.0000",
+    "NewValue": "100"
+  },
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:02",
+    "PropertyName": "deliveroo",
+    "OldValue": "0.0000",
+    "NewValue": "200"
+  },
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:02",
+    "PropertyName": "total_sales",
+    "OldValue": "492.4750",
+    "NewValue": "592.475"
+  },
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:02",
+    "PropertyName": "net_sales",
+    "OldValue": "342.4750",
+    "NewValue": "442.475"
+  },
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:33",
+    "PropertyName": "cheque",
+    "OldValue": "0.0000",
+    "NewValue": "10"
+  },
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:33",
+    "PropertyName": "total_sales",
+    "OldValue": "592.4750",
+    "NewValue": "602.475"
+  },
+  {
+    "Oid": 10435,
+    "UpdatedOn": "29/04/2021 04:45:33",
+    "PropertyName": "net_sales",
+    "OldValue": "442.4750",
+    "NewValue": "452.475"
+  }
+]

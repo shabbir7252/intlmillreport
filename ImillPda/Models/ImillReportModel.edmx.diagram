@@ -18,6 +18,10 @@
         <AssociationConnector Association="IMILLModel.FK_ICS_Transaction_Details_Location_Less_Locat_Cd" />
         <EntityTypeShape EntityType="IMILLModel.ICS_Item_Unit_Details" Width="1.5" PointX="3" PointY="21.125" />
         <AssociationConnector Association="IMILLModel.FK_Alt_Unit_Details_Product" />
+        <EntityTypeShape EntityType="IMILLModel.Imill_BranchOrderItem" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="IMILLModel.ICS_Item_Group" Width="1.5" PointX="0.75" PointY="47.5" />
+        <AssociationConnector Association="IMILLModel.FK_Product_Product_Group" />
+        <AssociationConnector Association="IMILLModel.FK_Product_Group_Product_Group" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

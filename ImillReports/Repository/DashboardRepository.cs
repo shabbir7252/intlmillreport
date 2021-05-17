@@ -1458,7 +1458,7 @@ namespace ImillReports.Repository
 
                     var productDetail = new ProductDetail
                     {
-                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key).Name,
+                        Location = locations.LocationItems.FirstOrDefault(x => x.LocationId == detail.Key)?.Name,
                         SellQuantity = detailSellQty.Value,
                         Percentage = totalSellQtyKg.Value != 0 ? 100 / totalSellQtyKg.Value * detailSellQty.Value : 0,
                         PercentageAllItem = totalSellQtyKgInBranch.Value != 0 ? 100 / totalSellQtyKgInBranch.Value * detailSellQty.Value : 0

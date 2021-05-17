@@ -44,6 +44,7 @@
     <EntitySetMapping Name="Trans_Detail_2020">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2020">
         <MappingFragment StoreEntitySet="Trans_Detail_2020">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -84,6 +85,7 @@
     <EntitySetMapping Name="Trans_Detail_2019">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2019">
         <MappingFragment StoreEntitySet="Trans_Detail_2019">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -164,6 +166,7 @@
     <EntitySetMapping Name="Trans_Detail_2021">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2021">
         <MappingFragment StoreEntitySet="Trans_Detail_2021">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -273,6 +276,7 @@
     <EntitySetMapping Name="Trans_Detail_2018">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2018">
         <MappingFragment StoreEntitySet="Trans_Detail_2018">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -353,6 +357,7 @@
     <EntitySetMapping Name="Trans_Detail_2015">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2015">
         <MappingFragment StoreEntitySet="Trans_Detail_2015">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -393,6 +398,7 @@
     <EntitySetMapping Name="Trans_Detail_2016">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2016">
         <MappingFragment StoreEntitySet="Trans_Detail_2016">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -433,6 +439,7 @@
     <EntitySetMapping Name="Trans_Detail_2017">
       <EntityTypeMapping TypeName="ImillReportsModel.Trans_Detail_2017">
         <MappingFragment StoreEntitySet="Trans_Detail_2017">
+          <ScalarProperty Name="Line_No" ColumnName="Line_No" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
@@ -593,6 +600,50 @@
     <EntitySetMapping Name="BankDeposits">
       <EntityTypeMapping TypeName="ImillReportsModel.BankDeposit">
         <MappingFragment StoreEntitySet="BankDeposit">
+          <ScalarProperty Name="FintasPm" ColumnName="FintasPm" />
+          <ScalarProperty Name="FintasAm" ColumnName="FintasAm" />
+          <ScalarProperty Name="Av4Pm" ColumnName="Av4Pm" />
+          <ScalarProperty Name="Av4Am" ColumnName="Av4Am" />
+          <ScalarProperty Name="KoutPm" ColumnName="KoutPm" />
+          <ScalarProperty Name="KoutAm" ColumnName="KoutAm" />
+          <ScalarProperty Name="JahraPm" ColumnName="JahraPm" />
+          <ScalarProperty Name="JahraAm" ColumnName="JahraAm" />
+          <ScalarProperty Name="BniedPm" ColumnName="BniedPm" />
+          <ScalarProperty Name="BniedAm" ColumnName="BniedAm" />
+          <ScalarProperty Name="HamraPm" ColumnName="HamraPm" />
+          <ScalarProperty Name="HamraAm" ColumnName="HamraAm" />
+          <ScalarProperty Name="SurraPm" ColumnName="SurraPm" />
+          <ScalarProperty Name="SurraAm" ColumnName="SurraAm" />
+          <ScalarProperty Name="ShahudaPm" ColumnName="ShahudaPm" />
+          <ScalarProperty Name="ShahudaAm" ColumnName="ShahudaAm" />
+          <ScalarProperty Name="GatePm" ColumnName="GatePm" />
+          <ScalarProperty Name="GateAm" ColumnName="GateAm" />
+          <ScalarProperty Name="DasmaPm" ColumnName="DasmaPm" />
+          <ScalarProperty Name="DasmaAm" ColumnName="DasmaAm" />
+          <ScalarProperty Name="Mall360Pm" ColumnName="Mall360Pm" />
+          <ScalarProperty Name="Mall360Am" ColumnName="Mall360Am" />
+          <ScalarProperty Name="ZaharaPm" ColumnName="ZaharaPm" />
+          <ScalarProperty Name="ZaharaAm" ColumnName="ZaharaAm" />
+          <ScalarProperty Name="YarmoukPm" ColumnName="YarmoukPm" />
+          <ScalarProperty Name="YarmoukAm" ColumnName="YarmoukAm" />
+          <ScalarProperty Name="KPCPm" ColumnName="KPCPm" />
+          <ScalarProperty Name="KPCAm" ColumnName="KPCAm" />
+          <ScalarProperty Name="AvenuesPm" ColumnName="AvenuesPm" />
+          <ScalarProperty Name="AvenuesAm" ColumnName="AvenuesAm" />
+          <ScalarProperty Name="KaifanPm" ColumnName="KaifanPm" />
+          <ScalarProperty Name="KaifanAm" ColumnName="KaifanAm" />
+          <ScalarProperty Name="QortubaPm" ColumnName="QortubaPm" />
+          <ScalarProperty Name="QortubaAm" ColumnName="QortubaAm" />
+          <ScalarProperty Name="KhaldiyaPm" ColumnName="KhaldiyaPm" />
+          <ScalarProperty Name="KhaldiyaAm" ColumnName="KhaldiyaAm" />
+          <ScalarProperty Name="DahiyaPm" ColumnName="DahiyaPm" />
+          <ScalarProperty Name="DahiyaAm" ColumnName="DahiyaAm" />
+          <ScalarProperty Name="NuzhaPm" ColumnName="NuzhaPm" />
+          <ScalarProperty Name="NuzhaAm" ColumnName="NuzhaAm" />
+          <ScalarProperty Name="SalmiyaPm" ColumnName="SalmiyaPm" />
+          <ScalarProperty Name="SalmiyaAm" ColumnName="SalmiyaAm" />
+          <ScalarProperty Name="SalhiyahPm" ColumnName="SalhiyahPm" />
+          <ScalarProperty Name="SalhiyahAm" ColumnName="SalhiyahAm" />
           <ScalarProperty Name="Hamra" ColumnName="Hamra" />
           <ScalarProperty Name="Innova" ColumnName="Innova" />
           <ScalarProperty Name="TotalCash" ColumnName="TotalCash" />
@@ -630,9 +681,33 @@
     <EntitySetMapping Name="Settings">
       <EntityTypeMapping TypeName="ImillReportsModel.Setting">
         <MappingFragment StoreEntitySet="Settings">
+          <ScalarProperty Name="AdditionalCc2" ColumnName="AdditionalCc2" />
+          <ScalarProperty Name="AdditionalCc1" ColumnName="AdditionalCc1" />
+          <ScalarProperty Name="PurchaseEmail" ColumnName="PurchaseEmail" />
+          <ScalarProperty Name="GmEmail" ColumnName="GmEmail" />
           <ScalarProperty Name="BackDays" ColumnName="BackDays" />
           <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
           <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PurchaseOrders">
+      <EntityTypeMapping TypeName="ImillReportsModel.PurchaseOrder">
+        <MappingFragment StoreEntitySet="PurchaseOrder">
+          <ScalarProperty Name="QAStatusTransDate" ColumnName="QAStatusTransDate" />
+          <ScalarProperty Name="QARemarks" ColumnName="QARemarks" />
+          <ScalarProperty Name="QAStatus" ColumnName="QAStatus" />
+          <ScalarProperty Name="LpoPaymentTransDate" ColumnName="LpoPaymentTransDate" />
+          <ScalarProperty Name="LpoStatusTransDate" ColumnName="LpoStatusTransDate" />
+          <ScalarProperty Name="GmComments" ColumnName="GmComments" />
+          <ScalarProperty Name="PaymentRemarks" ColumnName="PaymentRemarks" />
+          <ScalarProperty Name="LpoPaymentStatus" ColumnName="LpoPaymentStatus" />
+          <ScalarProperty Name="LpoInvoiceStatus" ColumnName="LpoInvoiceStatus" />
+          <ScalarProperty Name="LpoStatus" ColumnName="LpoStatus" />
+          <ScalarProperty Name="VoucherDate" ColumnName="VoucherDate" />
+          <ScalarProperty Name="LdgrCd" ColumnName="LdgrCd" />
+          <ScalarProperty Name="EntryId" ColumnName="EntryId" />
           <ScalarProperty Name="Oid" ColumnName="Oid" />
         </MappingFragment>
       </EntityTypeMapping>

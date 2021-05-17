@@ -65,6 +65,7 @@
                        col.Field("NameAr").Template("#template").Width("100").AllowEditing(false).TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("Qty").Visible(false).AllowEditing(false).Width("65").HeaderText("RQ").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
                        col.Field("ActQty").AllowEditing(true).Width("65").AllowFiltering(false).HeaderText("AQ").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                       col.Field("RequestedDate").Visible(false).Add();
 
                    }).AllowPaging(false).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(page =>
                    { page.PageSizes(true); page.PageSize(20); }).EditSettings(edit =>
@@ -467,7 +468,7 @@
         }
 
         function SaveItems() {
-
+            debugger;
             $('.grid-row').hide();
             $('.loading-row').show();
             var entryId = '@ViewBag.EntryId';

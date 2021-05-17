@@ -214,9 +214,6 @@ D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CopyComplete
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.dll
 D:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.pdb
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\Syncfusion.EJ2.dll
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Helpers.xml
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Razor.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\ItemInventory.dll.config
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\ItemInventory.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\ItemInventory.pdb
@@ -274,6 +271,7 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\PdfSharp.Charting-gdi.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\RandomSolutions.ArrayToPdf.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\Rotativa.dll
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\Syncfusion.EJ2.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\Syncfusion.Licensing.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Helpers.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Mvc.dll
@@ -303,8 +301,10 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\PdfSharp-gdi.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\PdfSharp.Charting-gdi.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\Syncfusion.EJ2.xml
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Helpers.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Mvc.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Optimization.xml
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.Razor.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.WebPages.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.WebPages.Deployment.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\System.Web.WebPages.Razor.xml
@@ -317,6 +317,7 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\MigraDoc.RtfRendering-gdi.resources.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\PdfSharp-gdi.resources.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\PdfSharp.Charting-gdi.resources.dll
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csprojAssemblyReference.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CoreCompileInputs.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CopyComplete
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.dll

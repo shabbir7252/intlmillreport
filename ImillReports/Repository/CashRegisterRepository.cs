@@ -5,6 +5,9 @@ using ImillReports.Contracts;
 using ImillReports.ViewModels;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.IO;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ImillReports.Repository
 {
@@ -637,7 +640,7 @@ namespace ImillReports.Repository
                 i = i.AddDays(1);
             }
 
-            
+
 
             return new CashRegVsSalesViewModel
             {
@@ -693,33 +696,245 @@ namespace ImillReports.Repository
             return true;
         }
 
-        public string Update(CashRegUpdateVM cashRegUpdateVM)
+        public string Update(CashRegUpdateVM cashRegUpdateVM, string jsonPath)
         {
             try
             {
                 var cashRegister = _context.intlmill_cash_register.FirstOrDefault(x => x.id == cashRegUpdateVM.Oid);
+                var isChanged = false;
+                // var logs = new List<CRLogViewModel>();
 
-                cashRegister.staff_date = cashRegUpdateVM.StaffDate;
-                cashRegister.shift_type = cashRegUpdateVM.ShiftType;
-                cashRegister.shift_type = cashRegUpdateVM.ShiftType;
-                cashRegister.carriage = cashRegUpdateVM.Talabat;
-                cashRegister.deliveroo = cashRegUpdateVM.Deliveroo;
-                cashRegister.cheque = cashRegUpdateVM.Cheque;
-                cashRegister.online = cashRegUpdateVM.Online;
-                cashRegister.knet = cashRegUpdateVM.Knet;
-                cashRegister.visa = cashRegUpdateVM.Visa;
-                cashRegister.total_cash = cashRegUpdateVM.Cash;
-                cashRegister.expense = cashRegUpdateVM.Expense;
-                cashRegister.reserve = cashRegUpdateVM.Reserve;
-                cashRegister.net_cash = cashRegUpdateVM.Cash - cashRegUpdateVM.Reserve;
+                using (var fileStream = new FileStream(jsonPath, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    var streamReader = new StreamReader(fileStream, Encoding.UTF8);
+                    var crLogFile = streamReader.ReadToEnd();
+                    var logs = JsonConvert.DeserializeObject<List<CRLogViewModel>>(crLogFile);
 
-                var total_sales = cashRegUpdateVM.Cheque + cashRegUpdateVM.Talabat + cashRegUpdateVM.Online + cashRegUpdateVM.Knet + cashRegUpdateVM.Visa + cashRegUpdateVM.Cash;
-                cashRegister.total_sales = total_sales;
-                cashRegister.net_sales = total_sales - cashRegUpdateVM.Reserve;
+                    if (cashRegister.staff_date != cashRegUpdateVM.StaffDate)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "staff_date",
+                            OldValue = cashRegister.staff_date,
+                            NewValue = cashRegUpdateVM.StaffDate
+                        });
+                        cashRegister.staff_date = cashRegUpdateVM.StaffDate;
+                        isChanged = true;
+                    }
 
-                cashRegister.UpdatedOn = DateTime.Now;
+                    if (cashRegister.shift_type != cashRegUpdateVM.ShiftType)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "shift_type",
+                            OldValue = cashRegister.shift_type.ToString(),
+                            NewValue = cashRegUpdateVM.ShiftType.ToString()
+                        });
+                        cashRegister.shift_type = cashRegUpdateVM.ShiftType;
+                        isChanged = true;
+                    }
 
-                _context.SaveChanges();
+                    if (cashRegister.carriage != cashRegUpdateVM.Talabat)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "Talabat",
+                            OldValue = cashRegister.carriage.ToString(),
+                            NewValue = cashRegUpdateVM.Talabat.ToString()
+                        });
+                        cashRegister.carriage = cashRegUpdateVM.Talabat;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.deliveroo != cashRegUpdateVM.Deliveroo)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "deliveroo",
+                            OldValue = cashRegister.deliveroo.ToString(),
+                            NewValue = cashRegUpdateVM.Deliveroo.ToString()
+                        });
+
+                        cashRegister.deliveroo = cashRegUpdateVM.Deliveroo;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.cheque != cashRegUpdateVM.Cheque)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "cheque",
+                            OldValue = cashRegister.cheque.ToString(),
+                            NewValue = cashRegUpdateVM.Cheque.ToString()
+                        });
+
+                        cashRegister.cheque = cashRegUpdateVM.Cheque;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.online != cashRegUpdateVM.Online)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "online",
+                            OldValue = cashRegister.online.ToString(),
+                            NewValue = cashRegUpdateVM.Online.ToString()
+                        });
+
+                        cashRegister.online = cashRegUpdateVM.Online;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.knet != cashRegUpdateVM.Knet)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "knet",
+                            OldValue = cashRegister.knet.ToString(),
+                            NewValue = cashRegUpdateVM.Knet.ToString()
+                        });
+
+                        cashRegister.knet = cashRegUpdateVM.Knet;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.visa != cashRegUpdateVM.Visa)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "visa",
+                            OldValue = cashRegister.visa.ToString(),
+                            NewValue = cashRegUpdateVM.Visa.ToString()
+                        });
+
+                        cashRegister.visa = cashRegUpdateVM.Visa;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.total_cash != cashRegUpdateVM.Cash)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "total_cash",
+                            OldValue = cashRegister.total_cash.ToString(),
+                            NewValue = cashRegUpdateVM.Cash.ToString()
+                        });
+
+                        cashRegister.total_cash = cashRegUpdateVM.Cash;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.expense != cashRegUpdateVM.Expense)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "expense",
+                            OldValue = cashRegister.expense.ToString(),
+                            NewValue = cashRegUpdateVM.Expense.ToString()
+                        });
+
+                        cashRegister.expense = cashRegUpdateVM.Expense;
+                        isChanged = true;
+                    }
+
+                    if (cashRegister.reserve != cashRegUpdateVM.Reserve)
+                    {
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "reserve",
+                            OldValue = cashRegister.reserve.ToString(),
+                            NewValue = cashRegUpdateVM.Reserve.ToString()
+                        });
+
+                        cashRegister.reserve = cashRegUpdateVM.Reserve;
+                        isChanged = true;
+                    }
+
+                    
+
+                    if (isChanged)
+                    {
+                        var netCash = cashRegUpdateVM.Cash - cashRegUpdateVM.Reserve;
+
+
+                        if (cashRegister.net_cash != netCash)
+                        {
+                            logs.Add(new CRLogViewModel
+                            {
+                                Oid = cashRegister.id,
+                                UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                                PropertyName = "reserve",
+                                OldValue = cashRegister.net_cash.ToString(),
+                                NewValue = netCash.ToString()
+                            });
+
+                            cashRegister.net_cash = netCash;
+                        }
+
+                        var total_sales = cashRegUpdateVM.Cheque + cashRegUpdateVM.Talabat + cashRegUpdateVM.Online + cashRegUpdateVM.Knet + cashRegUpdateVM.Visa + cashRegUpdateVM.Cash;
+                        var netSales = total_sales - cashRegUpdateVM.Reserve;
+
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "total_sales",
+                            OldValue = cashRegister.total_sales.ToString(),
+                            NewValue = total_sales.ToString()
+                        });
+
+                        logs.Add(new CRLogViewModel
+                        {
+                            Oid = cashRegister.id,
+                            UpdatedOn = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
+                            PropertyName = "net_sales",
+                            OldValue = cashRegister.net_sales.ToString(),
+                            NewValue = netSales.ToString()
+                        });
+
+
+                        cashRegister.total_sales = total_sales;
+                        cashRegister.net_sales = netSales;
+                        cashRegister.UpdatedOn = DateTime.Now;
+
+                        _context.SaveChanges();
+
+                        streamReader.Close();
+                        var convertedJson = JsonConvert.SerializeObject(logs, Formatting.Indented);
+                        File.WriteAllText(jsonPath, convertedJson);
+                        fileStream.Close();
+
+                        //using (StreamWriter file = path)
+                        //{
+                        //    JsonSerializer serializer = new JsonSerializer();
+                        //    serializer.Serialize(file, logs);
+                        //}
+                    }
+                }
+
+                
 
                 return "Record Updated Successfully";
 

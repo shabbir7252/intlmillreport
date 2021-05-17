@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace ImillReports.Controllers
 {
-    [Authorize(Roles = "Sales, HR, Admin, HO, StaffAdmin")]
+    [Authorize(Roles = "Sales, HR, Admin, HO, StaffAdmin, Purchase")]
     public class DashboardController : Controller
     {
         private readonly IDashboardRepository _dashboardRepository;
