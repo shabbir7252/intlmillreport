@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace ImillReports.Controllers
 {
-    [Authorize(Roles = "Sales, HR, Admin, HO, StaffAdmin, Purchase")]
+    [Authorize(Roles = "Sales, HR, Admin, HO, StaffAdmin, Purchase, QC")]
     public class DashboardController : Controller
     {
         private readonly IDashboardRepository _dashboardRepository;
@@ -462,6 +462,9 @@ namespace ImillReports.Controllers
 
             if (User.IsInRole("HR"))
                 return RedirectToAction("Index", "TAReport");
+
+            if (User.IsInRole("QC"))
+                return RedirectToAction("Index", "PurchaseOrder");
 
             if (fromDate == null)
                 fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);

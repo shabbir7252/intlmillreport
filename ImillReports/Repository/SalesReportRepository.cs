@@ -3571,7 +3571,7 @@ namespace ImillReports.Repository
                         {
                             entryId = item.EntryId;
                             trans_detail_2020 = _report.Trans_Detail_2020.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber ==item.InvoiceNumber))
+                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
                             {
                                 var iTrans = new Trans_Detail_2020
                                 {
@@ -3850,7 +3850,7 @@ namespace ImillReports.Repository
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
-                                           transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
+  transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                            !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
                                            transaction.Credit_Card_Type == "CC"
                                                ? -transaction.Net_Amt_FC
@@ -5553,7 +5553,7 @@ namespace ImillReports.Repository
 
                 foreach (var detail in transactionDetails)
                 {
-                    if(detail.Line_No >= 0)
+                    if (detail.Line_No >= 0)
                     {
                         var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
                         var IUD = itemUnitDetails.FirstOrDefault(x => x.Unit_Entry_Id == detail.Unit_Entry_ID);
@@ -5634,7 +5634,7 @@ namespace ImillReports.Repository
                             //{
                             //    if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
                             //    {
-                            
+
                             if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
                             {
                                 if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))

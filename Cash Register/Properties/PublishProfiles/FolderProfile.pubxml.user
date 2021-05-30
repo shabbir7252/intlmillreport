@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\shabb\Desktop\_Publishe_Files\imillcashregister</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\Shabbir\Dropbox (Old)\My PC (Shabbir-Dev)\Desktop\_Publishe_Files\CR</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
@@ -14,16 +14,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 18:59:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/26/2020 12:19:30</publishTime>
+      <publishTime>05/23/2021 10:00:12</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/26/2020 12:19:30</publishTime>
+      <publishTime>05/23/2021 10:00:12</publishTime>
     </File>
     <File Include="bin/Cash Register.dll">
-      <publishTime>10/26/2020 12:19:12</publishTime>
+      <publishTime>05/23/2021 10:00:07</publishTime>
     </File>
     <File Include="bin/Cash Register.pdb">
-      <publishTime>10/26/2020 12:19:12</publishTime>
+      <publishTime>05/23/2021 10:00:07</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>09/14/2019 17:01:18</publishTime>
@@ -344,7 +344,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2020 21:28:48</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/26/2020 12:19:17</publishTime>
+      <publishTime>05/23/2021 10:00:08</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>07/06/2020 21:36:31</publishTime>
@@ -860,7 +860,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/06/2020 21:28:48</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/26/2020 12:19:13</publishTime>
+      <publishTime>05/23/2021 09:13:31</publishTime>
     </File>
   </ItemGroup>
 </Project>

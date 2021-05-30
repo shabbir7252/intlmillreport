@@ -17,7 +17,7 @@ namespace ImillReports.Controllers
         {
             var username = User.Identity.Name;
             
-            var from = username == "admin" 
+            var from = username == "qader" 
                 ? new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00).AddDays(-7) 
                 : new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00);
 

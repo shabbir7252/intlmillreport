@@ -2066,7 +2066,7 @@ namespace ImillReports.Repository
                                                 taShowAllEmpRec.Add(rec);
                                     }
 
-                                    var emailFirstPart = "<html lang='en'><head> <meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Employee Shift PunchIn/PunchOut Rec</title> <style>table{font-family: arial, sans-serif; border-collapse: collapse; width: 100%; font-size: 12px;}td, th{border: 1px solid #dddddd; text-align: left; padding: 8px;}tr:nth-child(even){background-color: #dddddd;}</style></head><body> <table style='min-width: 820px; width:100%;'> <thead> <tr> <th>Employee Id</th> <th>Employee Name</th> <th>Location</th> <th>Shift Start</th> <th>Shift End</th> <th>Punch In</th> <th>Late In</th> </tr></thead> <tbody>";
+                                    var emailFirstPart = "<html lang='en'><head> <meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Employee Shift PunchIn/PunchOut Rec</title> <style>table{font-family: arial, sans-serif; border-collapse: collapse; width: 100%; font-size: 12px;}td, th{border: 1px solid #dddddd; text-align: left; padding: 8px;}tr:nth-child(even){background-color: #dddddd;}</style></head><body> <table style='min-width: 820px; width:100%;'> <thead> <tr> <th>Employee Id</th> <th>Employee Name</th> <th>Location</th> <th>Device</th> <th>Shift Start</th> <th>Shift End</th> <th>Punch In</th> <th>Late In</th> </tr></thead> <tbody>";
                                     var emailMidPart = "";
                                     var emailSecondPart = "</tbody> </table></body></html>";
 
@@ -2103,7 +2103,7 @@ namespace ImillReports.Repository
                                                 count += 1;
 
                                                 emailMidPart +=
-                                                    $"<tr><td>{rec.EmployeeId}</td><td>{rec.EmployeeName}</td><td>{rec.Location}</td>" +
+                                                    $"<tr><td>{rec.EmployeeId}</td><td>{rec.EmployeeName}</td><td>{rec.Location}</td><td>{rec.DeviceCode}</td>" +
                                                     $"<td>{rec.ShiftStart.Value}</td><td>{rec.ShiftEnd.Value}</td><td>{punchIn}</td>" +
                                                     $"<td>{rec.LateIn}</td></tr>";
                                             }
@@ -2273,7 +2273,7 @@ namespace ImillReports.Repository
 
                                     }
 
-                                    var emailFirstPart = "<html lang='en'><head> <meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Employee Shift PunchIn/PunchOut Rec</title> <style>table{font-family: arial, sans-serif; border-collapse: collapse; width: 100%; font-size: 12px;}td, th{border: 1px solid #dddddd; text-align: left; padding: 8px;}tr:nth-child(even){background-color: #dddddd;}</style></head><body> <table style='min-width: 820px; width:100%;'> <thead> <tr> <th>Employee Id</th> <th>Employee Name</th> <th>Location</th> <th>Shift Start</th> <th>Shift End</th> <th>Punch In</th> <th>Punch Out</th> <th>Late In</th> <th>Early Out</th> <th>Total Hour Worked</th> </tr></thead> <tbody>";
+                                    var emailFirstPart = "<html lang='en'><head> <meta charset='UTF-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <title>Employee Shift PunchIn/PunchOut Rec</title> <style>table{font-family: arial, sans-serif; border-collapse: collapse; width: 100%; font-size: 12px;}td, th{border: 1px solid #dddddd; text-align: left; padding: 8px;}tr:nth-child(even){background-color: #dddddd;}</style></head><body> <table style='min-width: 820px; width:100%;'> <thead> <tr> <th>Employee Id</th> <th>Employee Name</th> <th>Location</th> <th>Device</th> <th>Shift Start</th> <th>Shift End</th> <th>Punch In</th> <th>Punch Out</th> <th>Late In</th> <th>Early Out</th> <th>Total Hour Worked</th> </tr></thead> <tbody>";
                                     var emailMidPart = "";
                                     var emailSecondPart = "</tbody> </table></body></html>";
 
@@ -2333,7 +2333,7 @@ namespace ImillReports.Repository
                                                 count += 1;
 
                                                 emailMidPart +=
-                                                    $"<tr><td style='text-align:center'>{rec.EmployeeId}</td><td>{rec.EmployeeName}</td><td style='text-align:center'>{rec.Location}</td>" +
+                                                    $"<tr><td style='text-align:center'>{rec.EmployeeId}</td><td>{rec.EmployeeName}</td><td style='text-align:center'>{rec.Location}</td><td style='text-align:center'>{rec.DeviceCode}</td>" +
                                                     $"<td style='text-align:center'>{rec.ShiftStart.Value}</td><td style='text-align:center'>{rec.ShiftEnd.Value}</td><td style='text-align:center'>{punchIn}</td>" +
                                                     $"<td style='text-align:center'>{calcPunchOut}</td><td style='text-align:center'>{rec.LateIn}</td><td style='text-align:center'>{calcEarlyOut}</td>" +
                                                     $"<td style='text-align:center'>{calcConvertedHours}</td></tr>";

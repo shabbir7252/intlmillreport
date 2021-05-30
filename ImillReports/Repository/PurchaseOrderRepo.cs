@@ -336,7 +336,7 @@ namespace ImillReports.Repository
                 trans.Comments = gmcomment;
                 _context.SaveChanges();
 
-                if (!sendEmail && username != "accounts" && username != "admin")
+                if (!sendEmail && username != "accounts" && username != "qader")
                     SendEmail(emailPurchaseOrder, trans);
 
                 if (sendChequeReadyEmail && username == "accounts")
@@ -633,7 +633,7 @@ namespace ImillReports.Repository
                 };
 
                 mailMessage.To.Add(new MailAddress(setting.PurchaseEmail));
-                // mailMessage.To.Add(new MailAddress(setting.GmEmail));
+                mailMessage.To.Add(new MailAddress(setting.GmEmail));
 
                 if (!string.IsNullOrEmpty(setting.AdditionalCc1))
                     mailMessage.To.Add(new MailAddress(setting.AdditionalCc1));

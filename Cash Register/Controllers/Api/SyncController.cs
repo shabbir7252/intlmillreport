@@ -113,8 +113,10 @@ namespace Cash_Register.Controllers.Api
 
         [HttpGet]
         [Route("api/GetSalesmans")]
-        public bool GetSalesmans()
+        public string GetSalesmans()
         {
+            var command = "";
+
             try
             {
                 var imillSalesmans = GetImillSalesman();
@@ -147,6 +149,13 @@ namespace Cash_Register.Controllers.Api
                         cmd.ExecuteNonQuery();
                     }
 
+                    if (salesmans.Any(x => x.Sman_Cd == imillSalesman.Sman_Cd && (x.NameEn != imillSalesman.NameEn || x.NameAr != imillSalesman.NameAr)))
+                    {
+                        command = $"Update CR_Salesman Set L_Sman_Name = {imillSalesman.NameEn}, A_Sman_Name = {imillSalesman.NameAr} Where Sman_Cd = {imillSalesman.Sman_Cd}";
+                        cmd.CommandText = $"Update CR_Salesman Set L_Sman_Name = '{imillSalesman.NameEn}', A_Sman_Name = '{imillSalesman.NameAr}' Where Sman_Cd = {imillSalesman.Sman_Cd}";
+                        cmd.ExecuteNonQuery();
+                    }
+
                 }
 
                 //foreach (var localSalesman in salesmans)
@@ -166,9 +175,10 @@ namespace Cash_Register.Controllers.Api
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return false;
+                return "false : " + ex.Message + " : " + command;
             }
-            return true;
+
+            return "true";
         }
 
         [HttpGet]

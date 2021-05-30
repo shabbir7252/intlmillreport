@@ -86,16 +86,21 @@ namespace ImillReports.Controllers
         public ActionResult CashRegVsSalesRpt(DateTime? fromDate, DateTime? toDate)
         {
             if (fromDate == null)
-                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+                fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00).AddDays(-1);
 
             if (toDate == null)
-                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+                toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 11, 59, 00).AddDays(-1);
 
             ViewBag.startDate = fromDate;
             ViewBag.endDate = toDate;
             ViewBag.validation = "false";
 
             if (toDate < fromDate) ViewBag.validation = "true";
+
+            if(toDate.Value.TimeOfDay == new TimeSpan(11, 59, 00))
+            {
+                toDate = new DateTime(fromDate.Value.Year, fromDate.Value.Month, fromDate.Value.Day, 02, 59, 00).AddDays(1);
+            }
 
             var cashRegVsSalesRpt = _cashRegisterRepository.GetCashRegisterVsSalesRpt(fromDate, toDate);
 
