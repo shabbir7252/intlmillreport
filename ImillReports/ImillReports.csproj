@@ -832,6 +832,7 @@
     <Content Include="Views\BankDeposit\Index.cshtml" />
     <Content Include="Views\PurchaseOrder\Index.cshtml" />
     <Content Include="Views\PurchaseOrder\GetDetails.cshtml" />
+    <Content Include="Views\SalesReport\BranchDeliveriesAndSalesReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Print\" />

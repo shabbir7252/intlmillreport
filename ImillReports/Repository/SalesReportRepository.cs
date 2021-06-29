@@ -2183,6 +2183,7 @@ namespace ImillReports.Repository
         {
             try
             {
+                // showGroupCD = true;
                 if (fromDate == null) fromDate = DateTime.Now;
                 if (toDate == null) toDate = DateTime.Now;
 
@@ -2263,7 +2264,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -2314,7 +2315,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -2365,7 +2366,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -2416,7 +2417,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -2467,7 +2468,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -2518,7 +2519,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -2570,7 +2571,7 @@ namespace ImillReports.Repository
                                                             ProductNameEn = detail.ProductNameEn,
                                                             Salesman = detail.Salesman,
                                                             SalesReturn = detail.SalesReturn,
-                                                            SellQuantity = detail.SellQuantity,
+                                                            SellQuantity = detail.VoucherId == 202 || detail.VoucherId == 2023 || detail.VoucherId == 2035 || detail.VoucherId == 2036 || detail.VoucherId == 2037 ? -detail.SellQuantity : detail.SellQuantity,
                                                             SellUnit = detail.SellUnit,
                                                             SellUnitId = detail.SellUnitId,
                                                             UnitPrice = detail.UnitPrice,
@@ -3172,6 +3173,20 @@ namespace ImillReports.Repository
             try
             {
                 var result = GetSalesDashboardTransaction(fromDate, toDate, locationArray, voucherTypesArray, productStringArray, false);
+                return result.SRItemsTransDetails;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<TransDetailsViewModel> GetBranchSalesDetailTransaction(DateTime? fromDate, DateTime? toDate, string locationArray,
+            string voucherTypesArray, string productStringArray)
+        {
+            try
+            {
+                var result = GetSalesDashboardTransaction(fromDate, toDate, locationArray, voucherTypesArray, productStringArray, true);
                 return result.SRItemsTransDetails;
             }
             catch (Exception ex)
@@ -4926,97 +4941,83 @@ namespace ImillReports.Repository
 
                 var salesReportItems = new List<SalesReportItem>();
 
-                var transactions = GetTransactions(fromDate, toDate, fromDate, toDate).ToList();
-
-                foreach (var transaction in transactions)
+                for (var i = fromDate; i <= toDate;)
                 {
-                    var salesReportItem = new SalesReportItem
+                    var fromInnerDate = new DateTime(i.Year, i.Month, i.Day, 00, 00, 00);
+                    var toInnerDate = new DateTime(i.Year, i.Month, i.Day, 23, 59, 59);
+
+                    var transactions = GetTransactions(fromInnerDate, toInnerDate, fromInnerDate, toInnerDate).ToList();
+
+                    foreach (var transaction in transactions)
                     {
-                        EntryId = transaction.Entry_Id,
-                        Location = transaction.SM_Location.L_Short_Name,
-                        LocationId = transaction.SM_Location.Locat_Cd,
-                        Year = transaction.Voucher_Date.Year,
-                        Date = transaction.Voucher_Date.Date,
-                        InvDateTime = transaction.Voucher_Date,
-                        Salesman = transaction.SM_SALESMAN.L_Sman_Name,
-                        Voucher = transaction.ICS_Transaction_Types.L_Voucher_Name,
-                        VoucherId = transaction.ICS_Transaction_Types.Voucher_Type,
-                        InvoiceNumber = transaction.Voucher_No,
-                        GroupCD = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.Group_Cd : 0,
-                        CustomerId = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.Ldgr_Cd : 0,
-                        CustomerName = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.L_Ldgr_Name : "",
-                        CustomerNameAr = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.A_Ldgr_Name : "",
+                        var salesReportItem = new SalesReportItem
+                        {
+                            EntryId = transaction.Entry_Id,
+                            Location = transaction.SM_Location.L_Short_Name,
+                            LocationId = transaction.SM_Location.Locat_Cd,
+                            Year = transaction.Voucher_Date.Year,
+                            Date = transaction.Voucher_Date.Date,
+                            InvDateTime = transaction.Voucher_Date,
+                            Salesman = transaction.SM_SALESMAN.L_Sman_Name,
+                            Voucher = transaction.ICS_Transaction_Types.L_Voucher_Name,
+                            VoucherId = transaction.ICS_Transaction_Types.Voucher_Type,
+                            InvoiceNumber = transaction.Voucher_No,
+                            GroupCD = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.Group_Cd : 0,
+                            CustomerId = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.Ldgr_Cd : 0,
+                            CustomerName = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.L_Ldgr_Name : "",
+                            CustomerNameAr = transaction.GL_Ledger2 != null ? transaction.GL_Ledger2.A_Ldgr_Name : "",
 
-                        AmountRecieved = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
-                                        ? -transaction.Voucher_Amt_FC
-                                        : transaction.Voucher_Amt_FC,
+                            AmountRecieved = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2037
+                                            ? -transaction.Voucher_Amt_FC
+                                            : transaction.Voucher_Amt_FC,
 
-                        Discount = transaction.Discount_Amt_FC,
+                            Discount = transaction.Discount_Amt_FC,
 
-                        SalesReturn = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
-                                        ? -transaction.Net_Amt_FC
-                                        : 0,
-
-                        NetAmount = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
-                                    transaction.ICS_Transaction_Types.Voucher_Type == 2037
-                                        ? -transaction.Net_Amt_FC
-                                        : transaction.Net_Amt_FC,
-
-                        Cash = (transaction.ICS_Transaction_Types.Voucher_Type == 201 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
-                                string.IsNullOrEmpty(transaction.Credit_Card_Type)
-                                    ? transaction.Net_Amt_FC
-                                    : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
-                                       string.IsNullOrEmpty(transaction.Credit_Card_Type)
+                            SalesReturn = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2037
                                             ? -transaction.Net_Amt_FC
                                             : 0,
 
-                        Knet = (transaction.ICS_Transaction_Types.Voucher_Type == 201 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
-                               !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
-                               (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
-                                    ? transaction.Net_Amt_FC
-                                    : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
-                                       transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
-                                       !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
-                                       (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
-                                                 ? -transaction.Net_Amt_FC
-                                                 : 0,
+                            NetAmount = transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                        transaction.ICS_Transaction_Types.Voucher_Type == 2037
+                                            ? -transaction.Net_Amt_FC
+                                            : transaction.Net_Amt_FC,
 
-                        CreditCard = (transaction.ICS_Transaction_Types.Voucher_Type == 201 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
-                                transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
-                                     !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
-                                     transaction.Credit_Card_Type == "CC"
+                            Cash = (transaction.ICS_Transaction_Types.Voucher_Type == 201 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
+                                    string.IsNullOrEmpty(transaction.Credit_Card_Type)
+                                        ? transaction.Net_Amt_FC
+                                        : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                           transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
+                                           string.IsNullOrEmpty(transaction.Credit_Card_Type)
+                                                ? -transaction.Net_Amt_FC
+                                                : 0,
+
+                            Knet = (transaction.ICS_Transaction_Types.Voucher_Type == 201 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
+                                   !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
+                                   (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
                                         ? transaction.Net_Amt_FC
                                         : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
@@ -5024,487 +5025,511 @@ namespace ImillReports.Repository
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
                                            transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
                                            !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
-                                           transaction.Credit_Card_Type == "CC"
-                                               ? -transaction.Net_Amt_FC
-                                               : 0,
+                                           (transaction.Credit_Card_Type == "K-Net" || transaction.Credit_Card_Type == "Knet")
+                                                     ? -transaction.Net_Amt_FC
+                                                     : 0,
 
-                        CreditCardType = transaction.Credit_Card_Type
-                    };
+                            CreditCard = (transaction.ICS_Transaction_Types.Voucher_Type == 201 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2021 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2022 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2025 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2026 ||
+                                    transaction.ICS_Transaction_Types.Voucher_Type == 2030) &&
+                                         !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
+                                         transaction.Credit_Card_Type == "CC"
+                                            ? transaction.Net_Amt_FC
+                                            : (transaction.ICS_Transaction_Types.Voucher_Type == 202 ||
+                                               transaction.ICS_Transaction_Types.Voucher_Type == 2023 ||
+                                               transaction.ICS_Transaction_Types.Voucher_Type == 2035 ||
+                                               transaction.ICS_Transaction_Types.Voucher_Type == 2036 ||
+                                               transaction.ICS_Transaction_Types.Voucher_Type == 2037) &&
+                                               !string.IsNullOrEmpty(transaction.Credit_Card_Type) &&
+                                               transaction.Credit_Card_Type == "CC"
+                                                   ? -transaction.Net_Amt_FC
+                                                   : 0,
 
-                    salesReportItems.Add(salesReportItem);
+                            CreditCardType = transaction.Credit_Card_Type
+                        };
+
+                        salesReportItems.Add(salesReportItem);
+                    }
+
+                    foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
+                    {
+                        var startDate = items.OrderBy(x => x.Date).FirstOrDefault().Date;
+                        var endDate = items.OrderByDescending(x => x.Date).FirstOrDefault().Date;
+
+                        if (items.Key == 2021)
+                        {
+                            List<Transaction_2021> imillTrans2021 = null;
+                            var newTrans2021 = new List<Transaction_2021>();
+
+                            imillTrans2021 = _report.Transaction_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2021
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans2021.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans2021.Any())
+                            {
+                                _report.Transaction_2021.AddRange(newTrans2021);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2020)
+                        {
+                            List<Transaction_2020> imillTrans2020 = null;
+                            var newTrans200 = new List<Transaction_2020>();
+
+                            imillTrans2020 = _report.Transaction_2020.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans200.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2020
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans200.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans200.Any())
+                            {
+                                _report.Transaction_2020.AddRange(newTrans200);
+                                _report.SaveChanges();
+
+                                //var jsonPath = HttpContext.Current.Server.MapPath("~/App_Data/ICS_Transactions_2020.json");
+                                //var list = new List<Transaction_2020>();
+                                //var serializer = new JsonSerializer();
+                                //using (StreamReader file = File.OpenText(jsonPath))
+                                //{
+
+                                //    list = (List<Transaction_2020>)serializer.Deserialize(file, typeof(List<Transaction_2020>));
+
+                                //    //    string file = System.IO.File.ReadAllText(jsonPath);
+                                //    //var list = JsonConvert.DeserializeObject<List<Transaction_2020>>(file);
+
+                                //    var deleteItems = new List<Transaction_2020>();
+
+                                //    foreach (var item in list)
+                                //        if (newTrans200.Any(x => x.EntryId == item.EntryId))
+                                //            deleteItems.Add(item);
+
+                                //    if (deleteItems.Any())
+                                //        foreach (var rec in deleteItems)
+                                //            list.Remove(rec);
+
+                                //    list.AddRange(newTrans200);
+                                //var convertedJson = JsonConvert.SerializeObject(list, Formatting.Indented);
+                                //File.WriteAllText(jsonPath, convertedJson);
+                                // }
+
+                                //if (list.Any())
+                                //{
+                                //    using (StreamWriter file = File.CreateText(jsonPath))
+                                //    {
+                                //        serializer.Serialize(file, list);
+                                //    }
+                                //}
+                                //using (StreamWriter file = File.CreateText(HttpContext.Current.Server.MapPath("~/App_Data/ICS_Transactions_2020.json")))
+                                //{
+                                //    JsonSerializer serializer = new JsonSerializer();
+                                //    serializer.Serialize(file, newTrans200);
+                                //}
+                            }
+                        }
+
+                        if (items.Key == 2019)
+                        {
+                            List<Transaction_2019> imillTrans2019 = null;
+                            var newTrans2019 = new List<Transaction_2019>();
+
+                            imillTrans2019 = _report.Transaction_2019.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2019
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans2019.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans2019.Any())
+                            {
+                                _report.Transaction_2019.AddRange(newTrans2019);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2018)
+                        {
+                            List<Transaction_2018> imillTrans2018 = null;
+                            var newTrans2018 = new List<Transaction_2018>();
+
+                            imillTrans2018 = _report.Transaction_2018.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2018
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans2018.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans2018.Any())
+                            {
+                                _report.Transaction_2018.AddRange(newTrans2018);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2017)
+                        {
+                            List<Transaction_2017> imillTrans2017 = null;
+                            var newTrans2017 = new List<Transaction_2017>();
+
+                            imillTrans2017 = _report.Transaction_2017.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2017
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans2017.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans2017.Any())
+                            {
+                                _report.Transaction_2017.AddRange(newTrans2017);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2016)
+                        {
+                            List<Transaction_2016> imillTrans2016 = null;
+                            var newTrans2016 = new List<Transaction_2016>();
+
+                            imillTrans2016 = _report.Transaction_2016.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2016
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans2016.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans2016.Any())
+                            {
+                                _report.Transaction_2016.AddRange(newTrans2016);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2015)
+                        {
+                            List<Transaction_2015> imillTrans2015 = null;
+                            var newTrans2015 = new List<Transaction_2015>();
+
+                            imillTrans2015 = _report.Transaction_2015.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                            foreach (var item in items)
+                            {
+                                if (!imillTrans2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                {
+                                    if (!newTrans2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                    {
+                                        var iTrans = new Transaction_2015
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year
+
+                                        };
+
+                                        newTrans2015.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTrans2015.Any())
+                            {
+                                _report.Transaction_2015.AddRange(newTrans2015);
+                                _report.SaveChanges();
+                            }
+                        }
+                    }
+
+                    i = i.AddDays(1);
                 }
 
-                foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
-                {
-                    var startDate = items.OrderBy(x => x.Date).FirstOrDefault().Date;
-                    var endDate = items.OrderByDescending(x => x.Date).FirstOrDefault().Date;
-
-                    if (items.Key == 2021)
-                    {
-                        List<Transaction_2021> imillTrans2021 = null;
-                        var newTrans2021 = new List<Transaction_2021>();
-
-                        imillTrans2021 = _report.Transaction_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2021
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans2021.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans2021.Any())
-                        {
-                            _report.Transaction_2021.AddRange(newTrans2021);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2020)
-                    {
-                        List<Transaction_2020> imillTrans2020 = null;
-                        var newTrans200 = new List<Transaction_2020>();
-
-                        imillTrans2020 = _report.Transaction_2020.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2020.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans200.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2020
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans200.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans200.Any())
-                        {
-                            _report.Transaction_2020.AddRange(newTrans200);
-                            _report.SaveChanges();
-
-                            //var jsonPath = HttpContext.Current.Server.MapPath("~/App_Data/ICS_Transactions_2020.json");
-                            //var list = new List<Transaction_2020>();
-                            //var serializer = new JsonSerializer();
-                            //using (StreamReader file = File.OpenText(jsonPath))
-                            //{
-
-                            //    list = (List<Transaction_2020>)serializer.Deserialize(file, typeof(List<Transaction_2020>));
-
-                            //    //    string file = System.IO.File.ReadAllText(jsonPath);
-                            //    //var list = JsonConvert.DeserializeObject<List<Transaction_2020>>(file);
-
-                            //    var deleteItems = new List<Transaction_2020>();
-
-                            //    foreach (var item in list)
-                            //        if (newTrans200.Any(x => x.EntryId == item.EntryId))
-                            //            deleteItems.Add(item);
-
-                            //    if (deleteItems.Any())
-                            //        foreach (var rec in deleteItems)
-                            //            list.Remove(rec);
-
-                            //    list.AddRange(newTrans200);
-                            //var convertedJson = JsonConvert.SerializeObject(list, Formatting.Indented);
-                            //File.WriteAllText(jsonPath, convertedJson);
-                            // }
-
-                            //if (list.Any())
-                            //{
-                            //    using (StreamWriter file = File.CreateText(jsonPath))
-                            //    {
-                            //        serializer.Serialize(file, list);
-                            //    }
-                            //}
-                            //using (StreamWriter file = File.CreateText(HttpContext.Current.Server.MapPath("~/App_Data/ICS_Transactions_2020.json")))
-                            //{
-                            //    JsonSerializer serializer = new JsonSerializer();
-                            //    serializer.Serialize(file, newTrans200);
-                            //}
-                        }
-                    }
-
-                    if (items.Key == 2019)
-                    {
-                        List<Transaction_2019> imillTrans2019 = null;
-                        var newTrans2019 = new List<Transaction_2019>();
-
-                        imillTrans2019 = _report.Transaction_2019.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans2019.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2019
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans2019.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans2019.Any())
-                        {
-                            _report.Transaction_2019.AddRange(newTrans2019);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2018)
-                    {
-                        List<Transaction_2018> imillTrans2018 = null;
-                        var newTrans2018 = new List<Transaction_2018>();
-
-                        imillTrans2018 = _report.Transaction_2018.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans2018.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2018
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans2018.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans2018.Any())
-                        {
-                            _report.Transaction_2018.AddRange(newTrans2018);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2017)
-                    {
-                        List<Transaction_2017> imillTrans2017 = null;
-                        var newTrans2017 = new List<Transaction_2017>();
-
-                        imillTrans2017 = _report.Transaction_2017.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans2017.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2017
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans2017.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans2017.Any())
-                        {
-                            _report.Transaction_2017.AddRange(newTrans2017);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2016)
-                    {
-                        List<Transaction_2016> imillTrans2016 = null;
-                        var newTrans2016 = new List<Transaction_2016>();
-
-                        imillTrans2016 = _report.Transaction_2016.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans2016.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2016
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans2016.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans2016.Any())
-                        {
-                            _report.Transaction_2016.AddRange(newTrans2016);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2015)
-                    {
-                        List<Transaction_2015> imillTrans2015 = null;
-                        var newTrans2015 = new List<Transaction_2015>();
-
-                        imillTrans2015 = _report.Transaction_2015.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-                        foreach (var item in items)
-                        {
-                            if (!imillTrans2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            {
-                                if (!newTrans2015.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                                {
-                                    var iTrans = new Transaction_2015
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTrans2015.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTrans2015.Any())
-                        {
-                            _report.Transaction_2015.AddRange(newTrans2015);
-                            _report.SaveChanges();
-                        }
-                    }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -5523,542 +5548,554 @@ namespace ImillReports.Repository
                 var fromDate = new DateTime(year, month, from, 00, 00, 00);
                 var toDate = new DateTime(year, month, to, 23, 59, 59);
 
-                var transactions = year == 2020
-                                        ? GetSalesTransaction(fromDate, toDate, "", "").SalesReportItems
+                for (var i = fromDate; i <= toDate;)
+                {
+                    var fromInnerDate = new DateTime(i.Year, i.Month, i.Day, 00, 00, 00);
+                    var toInnerDate = new DateTime(i.Year, i.Month, i.Day, 23, 59, 59);
+
+                    var transactions = year == 2020
+                                        ? GetSalesTransaction(fromInnerDate, toInnerDate, "", "").SalesReportItems
                                         : year == 2021
-                                            ? GetSalesTransaction2021(fromDate, toDate, "", "").SalesReportItems
+                                            ? GetSalesTransaction2021(fromInnerDate, toInnerDate, "", "").SalesReportItems
                                             : year == 2019
-                                                ? GetSalesTransaction2019(fromDate, toDate, "", "").SalesReportItems
+                                                ? GetSalesTransaction2019(fromInnerDate, toInnerDate, "", "").SalesReportItems
                                                 : year == 2018
-                                                    ? GetSalesTransaction2018(fromDate, toDate, "", "").SalesReportItems
+                                                    ? GetSalesTransaction2018(fromInnerDate, toInnerDate, "", "").SalesReportItems
                                                     : year == 2017
-                                                        ? GetSalesTransaction2017(fromDate, toDate, "", "").SalesReportItems
+                                                        ? GetSalesTransaction2017(fromInnerDate, toInnerDate, "", "").SalesReportItems
                                                             : year == 2016
-                                                            ? GetSalesTransaction2016(fromDate, toDate, "", "").SalesReportItems
-                                                            : GetSalesTransaction2015(fromDate, toDate, "", "").SalesReportItems;
+                                                            ? GetSalesTransaction2016(fromInnerDate, toInnerDate, "", "").SalesReportItems
+                                                            : GetSalesTransaction2015(fromInnerDate, toInnerDate, "", "").SalesReportItems;
 
-                var entryIdArray = new List<string>();
-                entryIdArray.AddRange(from item in transactions select item.EntryId.ToString());
+                    var entryIdArray = new List<string>();
+                    entryIdArray.AddRange(from item in transactions select item.EntryId.ToString());
 
-                var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
-                long[] entryIds = Array.ConvertAll(entryIdArray.ToArray(), s => long.Parse(s));
-                // var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
-                var transactionDetails = _context.ICS_Transaction_Details.Where(x => entryIds.Contains(x.Entry_Id)).ToList();
+                    var entryIdString = entryIdArray != null && entryIdArray.Count > 0 ? string.Join(",", entryIdArray) : "";
+                    long[] entryIds = Array.ConvertAll(entryIdArray.ToArray(), s => long.Parse(s));
+                    // var transactionDetails = _context.spICSTransDetail_GetAll(entryIdString, "").ToList();
+                    var transactionDetails = _context.ICS_Transaction_Details.Where(x => entryIds.Contains(x.Entry_Id)).ToList();
 
-                var dbItems = _context.ICS_Item.ToList();
-                var itemUnits = _context.ICS_Unit.ToList();
-                var itemUnitDetails = _context.ICS_Item_Unit_Details.ToList();
+                    var dbItems = _context.ICS_Item.ToList();
+                    var itemUnits = _context.ICS_Unit.ToList();
+                    var itemUnitDetails = _context.ICS_Item_Unit_Details.ToList();
 
-                var salesReportItems = new List<SalesReportItem>();
+                    var salesReportItems = new List<SalesReportItem>();
 
-                foreach (var detail in transactionDetails)
-                {
-                    if (detail.Line_No >= 0)
+                    foreach (var detail in transactionDetails)
                     {
-                        var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
-                        var IUD = itemUnitDetails.FirstOrDefault(x => x.Unit_Entry_Id == detail.Unit_Entry_ID);
-                        var salesReportItem = new SalesReportItem
+                        if (detail.Line_No >= 0)
                         {
-                            EntryId = detail.Entry_Id,
-                            Location = trans.Location,
-                            LocationId = trans.LocationId,
-                            InvDateTime = trans.InvDateTime,
-                            Salesman = trans.Salesman,
-                            Voucher = trans.Voucher,
-                            VoucherId = trans.VoucherId,
-                            InvoiceNumber = trans.InvoiceNumber,
-                            GroupCD = trans.GroupCD,
-                            CustomerId = trans.CustomerId,
-                            CustomerName = trans.CustomerName,
-                            CustomerNameAr = trans.CustomerNameAr,
-                            //ProdId = detail.ProdId,
-                            //ProductNameEn = detail.ProdEn,
-                            //ProductNameAr = detail.ProdAr,
-                            //BaseQuantity = detail.IUDBaseQty,
-                            //BaseUnit = detail.BaseUnit,
-                            //BaseUnitId = detail.BaseUnitId,
-                            //SellQuantity = detail.Qty,
-                            //SellUnit = detail.SellUnit,
-                            //SellUnitId = detail.SellUnitId,
-                            //LineNumber = detail.LineNumber,
+                            var trans = transactions.FirstOrDefault(x => x.EntryId == detail.Entry_Id);
+                            var IUD = itemUnitDetails.FirstOrDefault(x => x.Unit_Entry_Id == detail.Unit_Entry_ID);
+                            var salesReportItem = new SalesReportItem
+                            {
+                                EntryId = detail.Entry_Id,
+                                Location = trans.Location,
+                                LocationId = trans.LocationId,
+                                InvDateTime = trans.InvDateTime,
+                                Salesman = trans.Salesman,
+                                Voucher = trans.Voucher,
+                                VoucherId = trans.VoucherId,
+                                InvoiceNumber = trans.InvoiceNumber,
+                                GroupCD = trans.GroupCD,
+                                CustomerId = trans.CustomerId,
+                                CustomerName = trans.CustomerName,
+                                CustomerNameAr = trans.CustomerNameAr,
+                                //ProdId = detail.ProdId,
+                                //ProductNameEn = detail.ProdEn,
+                                //ProductNameAr = detail.ProdAr,
+                                //BaseQuantity = detail.IUDBaseQty,
+                                //BaseUnit = detail.BaseUnit,
+                                //BaseUnitId = detail.BaseUnitId,
+                                //SellQuantity = detail.Qty,
+                                //SellUnit = detail.SellUnit,
+                                //SellUnitId = detail.SellUnitId,
+                                // LineNumber = detail.LineNumber,
 
-                            ProdId = detail.Prod_Cd,
-                            ProductNameEn = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).L_Prod_Name,
-                            ProductNameAr = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).A_Prod_Name,
-                            BaseQuantity = IUD.Base_Qty,
-                            BaseUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Base_Unit_Cd).L_Unit_Name,
-                            BaseUnitId = IUD.Base_Unit_Cd,
-                            SellQuantity = detail.Qty,
-                            SellUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Alt_Unit_Cd).L_Unit_Name,
-                            SellUnitId = IUD.Alt_Unit_Cd,
-                            LineNumber = detail.Line_No,
+                                ProdId = detail.Prod_Cd,
+                                ProductNameEn = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).L_Prod_Name,
+                                ProductNameAr = dbItems.FirstOrDefault(x => x.Prod_Cd == detail.Prod_Cd).A_Prod_Name,
+                                BaseQuantity = IUD.Base_Qty,
+                                BaseUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Base_Unit_Cd).L_Unit_Name,
+                                BaseUnitId = IUD.Base_Unit_Cd,
+                                SellQuantity = detail.Qty,
+                                SellUnit = itemUnits.FirstOrDefault(x => x.Unit_Cd == IUD.Alt_Unit_Cd).L_Unit_Name,
+                                SellUnitId = IUD.Alt_Unit_Cd,
+                                LineNumber = detail.Line_No,
 
 
-                            Discount = trans.VoucherId == 202 ||
-                                   trans.VoucherId == 2023 ||
-                                   trans.VoucherId == 2035 ||
-                                   trans.VoucherId == 2036 ||
-                                   trans.VoucherId == 2037
-                                    ? -detail.FC_Prod_Dis
-                                    : detail.FC_Prod_Dis,
-                            Amount = trans.VoucherId == 202 ||
-                                   trans.VoucherId == 2023 ||
-                                   trans.VoucherId == 2035 ||
-                                   trans.VoucherId == 2036 ||
-                                   trans.VoucherId == 2037
-                                    ? -detail.FC_Amount
-                                    : detail.FC_Amount,
-                            Year = trans.InvDateTime.Year,
-                            Date = trans.InvDateTime.Date
-                        };
+                                Discount = trans.VoucherId == 202 ||
+                                       trans.VoucherId == 2023 ||
+                                       trans.VoucherId == 2035 ||
+                                       trans.VoucherId == 2036 ||
+                                       trans.VoucherId == 2037
+                                        ? -detail.FC_Prod_Dis
+                                        : detail.FC_Prod_Dis,
+                                Amount = trans.VoucherId == 202 ||
+                                       trans.VoucherId == 2023 ||
+                                       trans.VoucherId == 2035 ||
+                                       trans.VoucherId == 2036 ||
+                                       trans.VoucherId == 2037
+                                        ? -detail.FC_Amount
+                                        : detail.FC_Amount,
+                                Year = trans.InvDateTime.Year,
+                                Date = trans.InvDateTime.Date
+                            };
 
-                        salesReportItems.Add(salesReportItem);
+                            salesReportItems.Add(salesReportItem);
+                        }
                     }
+
+                    foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
+                    {
+                        var startDate = items.OrderBy(x => x.InvDateTime).FirstOrDefault().Date;
+                        var endDate = items.OrderByDescending(x => x.InvDateTime).FirstOrDefault().Date;
+
+                        if (items.Key == 2021)
+                        {
+                            List<Trans_Detail_2021> trans_detail_2021 = null;
+                            var newTransDetail2021 = new List<Trans_Detail_2021>();
+
+                            trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                //if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                //{
+                                //    if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
+                                //    {
+
+                                if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
+                                {
+                                    if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
+                                    {
+                                        var iTrans = new Trans_Detail_2021
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+                                        };
+
+                                        newTransDetail2021.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2021.Any())
+                            {
+                                _report.Trans_Detail_2021.AddRange(newTransDetail2021);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2020)
+                        {
+                            List<Trans_Detail_2020> trans_detail_2020 = null;
+                            var newTransDetail2020 = new List<Trans_Detail_2020>();
+
+                            trans_detail_2020 = _report.Trans_Detail_2020.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
+                                {
+                                    if (!newTransDetail2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
+                                    {
+                                        var iTrans = new Trans_Detail_2020
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+                                        };
+
+                                        newTransDetail2020.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2020.Any())
+                            {
+                                _report.Trans_Detail_2020.AddRange(newTransDetail2020);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2019)
+                        {
+                            List<Trans_Detail_2019> trans_detail_2019 = null;
+                            var newTransDetail2019 = new List<Trans_Detail_2019>();
+
+                            trans_detail_2019 = _report.Trans_Detail_2019.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                if (!trans_detail_2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                {
+                                    if (!newTransDetail2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                    {
+                                        var iTrans = new Trans_Detail_2019
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+                                        };
+
+                                        newTransDetail2019.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2019.Any())
+                            {
+                                _report.Trans_Detail_2019.AddRange(newTransDetail2019);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2018)
+                        {
+                            List<Trans_Detail_2018> trans_detail_2018 = null;
+                            var newTransDetail2018 = new List<Trans_Detail_2018>();
+
+                            trans_detail_2018 = _report.Trans_Detail_2018.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                if (!trans_detail_2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                {
+                                    if (!newTransDetail2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                    {
+                                        var iTrans = new Trans_Detail_2018
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+                                        };
+
+                                        newTransDetail2018.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2018.Any())
+                            {
+                                _report.Trans_Detail_2018.AddRange(newTransDetail2018);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2017)
+                        {
+                            List<Trans_Detail_2017> trans_detail_2017 = null;
+                            var newTransDetail2017 = new List<Trans_Detail_2017>();
+
+                            trans_detail_2017 = _report.Trans_Detail_2017.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                if (!trans_detail_2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                {
+                                    if (!newTransDetail2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                    {
+                                        var iTrans = new Trans_Detail_2017
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+                                        };
+
+                                        newTransDetail2017.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2017.Any())
+                            {
+                                _report.Trans_Detail_2017.AddRange(newTransDetail2017);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2016)
+                        {
+                            List<Trans_Detail_2016> trans_detail_2016 = null;
+                            var newTransDetail2016 = new List<Trans_Detail_2016>();
+
+                            trans_detail_2016 = _report.Trans_Detail_2016.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                if (!trans_detail_2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                {
+                                    if (!newTransDetail2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                    {
+                                        var iTrans = new Trans_Detail_2016
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+
+                                        };
+
+                                        newTransDetail2016.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2016.Any())
+                            {
+                                _report.Trans_Detail_2016.AddRange(newTransDetail2016);
+                                _report.SaveChanges();
+                            }
+                        }
+
+                        if (items.Key == 2015)
+                        {
+                            List<Trans_Detail_2015> trans_detail_2015 = null;
+                            var newTransDetail2015 = new List<Trans_Detail_2015>();
+
+                            trans_detail_2015 = _report.Trans_Detail_2015.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                            foreach (var item in items)
+                            {
+                                if (!trans_detail_2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                {
+                                    if (!newTransDetail2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                    {
+                                        var iTrans = new Trans_Detail_2015
+                                        {
+                                            Amount = item.Amount,
+                                            AmountRecieved = item.AmountRecieved,
+                                            BaseQuantity = item.BaseQuantity,
+                                            BaseUnit = item.BaseUnit,
+                                            BaseUnitId = item.BaseUnitId,
+                                            Cash = item.Cash,
+                                            CreditCard = item.CreditCard,
+                                            CreditCardType = item.CreditCardType,
+                                            CustomerId = item.CustomerId,
+                                            CustomerName = item.CustomerName,
+                                            CustomerNameAr = item.CustomerNameAr,
+                                            Date = item.Date,
+                                            Discount = item.Discount,
+                                            EntryId = item.EntryId,
+                                            GroupCD = item.GroupCD,
+                                            InvDateTime = item.InvDateTime,
+                                            InvoiceNumber = item.InvoiceNumber,
+                                            Knet = item.Knet,
+                                            Location = item.Location,
+                                            LocationId = item.LocationId,
+                                            NetAmount = item.NetAmount,
+                                            ProdId = item.ProdId,
+                                            ProductNameAr = item.ProductNameAr,
+                                            ProductNameEn = item.ProductNameEn,
+                                            Salesman = item.Salesman,
+                                            SalesReturn = item.SalesReturn,
+                                            SellQuantity = item.SellQuantity,
+                                            SellUnit = item.SellUnit,
+                                            SellUnitId = item.SellUnitId,
+                                            UnitPrice = item.UnitPrice,
+                                            Voucher = item.Voucher,
+                                            VoucherId = item.VoucherId,
+                                            Year = item.Year,
+                                            Line_No = item.LineNumber
+                                        };
+
+                                        newTransDetail2015.Add(iTrans);
+                                    }
+                                }
+                            }
+                            if (newTransDetail2015.Any())
+                            {
+                                _report.Trans_Detail_2015.AddRange(newTransDetail2015);
+                                _report.SaveChanges();
+                            }
+                        }
+                    }
+
+                    i = i.AddDays(1);
                 }
 
-                foreach (var items in salesReportItems.GroupBy(x => x.Year).OrderBy(x => x.Key))
-                {
-                    var startDate = items.OrderBy(x => x.InvDateTime).FirstOrDefault().Date;
-                    var endDate = items.OrderByDescending(x => x.InvDateTime).FirstOrDefault().Date;
-
-                    if (items.Key == 2021)
-                    {
-                        List<Trans_Detail_2021> trans_detail_2021 = null;
-                        var newTransDetail2021 = new List<Trans_Detail_2021>();
-
-                        trans_detail_2021 = _report.Trans_Detail_2021.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            //if (!trans_detail_2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            //{
-                            //    if (!newTransDetail2021.Any(x => x.Date == item.Date && x.InvDateTime == item.InvDateTime && x.EntryId == item.EntryId && x.InvoiceNumber == item.InvoiceNumber && x.LocationId == item.LocationId))
-                            //    {
-
-                            if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
-                            {
-                                if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
-                                {
-                                    var iTrans = new Trans_Detail_2021
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year,
-                                        Line_No = item.LineNumber
-                                    };
-
-                                    newTransDetail2021.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2021.Any())
-                        {
-                            _report.Trans_Detail_2021.AddRange(newTransDetail2021);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2020)
-                    {
-                        List<Trans_Detail_2020> trans_detail_2020 = null;
-                        var newTransDetail2020 = new List<Trans_Detail_2020>();
-
-                        trans_detail_2020 = _report.Trans_Detail_2020.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                            {
-                                if (!newTransDetail2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                                {
-                                    var iTrans = new Trans_Detail_2020
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-                                    };
-
-                                    newTransDetail2020.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2020.Any())
-                        {
-                            _report.Trans_Detail_2020.AddRange(newTransDetail2020);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2019)
-                    {
-                        List<Trans_Detail_2019> trans_detail_2019 = null;
-                        var newTransDetail2019 = new List<Trans_Detail_2019>();
-
-                        trans_detail_2019 = _report.Trans_Detail_2019.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                            {
-                                if (!newTransDetail2019.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                                {
-                                    var iTrans = new Trans_Detail_2019
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTransDetail2019.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2019.Any())
-                        {
-                            _report.Trans_Detail_2019.AddRange(newTransDetail2019);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2018)
-                    {
-                        List<Trans_Detail_2018> trans_detail_2018 = null;
-                        var newTransDetail2018 = new List<Trans_Detail_2018>();
-
-                        trans_detail_2018 = _report.Trans_Detail_2018.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                            {
-                                if (!newTransDetail2018.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                                {
-                                    var iTrans = new Trans_Detail_2018
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTransDetail2018.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2018.Any())
-                        {
-                            _report.Trans_Detail_2018.AddRange(newTransDetail2018);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2017)
-                    {
-                        List<Trans_Detail_2017> trans_detail_2017 = null;
-                        var newTransDetail2017 = new List<Trans_Detail_2017>();
-
-                        trans_detail_2017 = _report.Trans_Detail_2017.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                            {
-                                if (!newTransDetail2017.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                                {
-                                    var iTrans = new Trans_Detail_2017
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTransDetail2017.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2017.Any())
-                        {
-                            _report.Trans_Detail_2017.AddRange(newTransDetail2017);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2016)
-                    {
-                        List<Trans_Detail_2016> trans_detail_2016 = null;
-                        var newTransDetail2016 = new List<Trans_Detail_2016>();
-
-                        trans_detail_2016 = _report.Trans_Detail_2016.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                            {
-                                if (!newTransDetail2016.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                                {
-                                    var iTrans = new Trans_Detail_2016
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTransDetail2016.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2016.Any())
-                        {
-                            _report.Trans_Detail_2016.AddRange(newTransDetail2016);
-                            _report.SaveChanges();
-                        }
-                    }
-
-                    if (items.Key == 2015)
-                    {
-                        List<Trans_Detail_2015> trans_detail_2015 = null;
-                        var newTransDetail2015 = new List<Trans_Detail_2015>();
-
-                        trans_detail_2015 = _report.Trans_Detail_2015.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
-
-                        foreach (var item in items)
-                        {
-                            if (!trans_detail_2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                            {
-                                if (!newTransDetail2015.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
-                                {
-                                    var iTrans = new Trans_Detail_2015
-                                    {
-                                        Amount = item.Amount,
-                                        AmountRecieved = item.AmountRecieved,
-                                        BaseQuantity = item.BaseQuantity,
-                                        BaseUnit = item.BaseUnit,
-                                        BaseUnitId = item.BaseUnitId,
-                                        Cash = item.Cash,
-                                        CreditCard = item.CreditCard,
-                                        CreditCardType = item.CreditCardType,
-                                        CustomerId = item.CustomerId,
-                                        CustomerName = item.CustomerName,
-                                        CustomerNameAr = item.CustomerNameAr,
-                                        Date = item.Date,
-                                        Discount = item.Discount,
-                                        EntryId = item.EntryId,
-                                        GroupCD = item.GroupCD,
-                                        InvDateTime = item.InvDateTime,
-                                        InvoiceNumber = item.InvoiceNumber,
-                                        Knet = item.Knet,
-                                        Location = item.Location,
-                                        LocationId = item.LocationId,
-                                        NetAmount = item.NetAmount,
-                                        ProdId = item.ProdId,
-                                        ProductNameAr = item.ProductNameAr,
-                                        ProductNameEn = item.ProductNameEn,
-                                        Salesman = item.Salesman,
-                                        SalesReturn = item.SalesReturn,
-                                        SellQuantity = item.SellQuantity,
-                                        SellUnit = item.SellUnit,
-                                        SellUnitId = item.SellUnitId,
-                                        UnitPrice = item.UnitPrice,
-                                        Voucher = item.Voucher,
-                                        VoucherId = item.VoucherId,
-                                        Year = item.Year
-
-                                    };
-
-                                    newTransDetail2015.Add(iTrans);
-                                }
-                            }
-                        }
-                        if (newTransDetail2015.Any())
-                        {
-                            _report.Trans_Detail_2015.AddRange(newTransDetail2015);
-                            _report.SaveChanges();
-                        }
-                    }
-                }
+                    
             }
             catch (Exception ex)
             {

@@ -1,0 +1,255 @@
+﻿
+
+<div class="container">
+    <div class="col-12 mt-3">
+        <h3>Add Order</h3>
+    </div>
+
+    <div class="col-12">
+        <div class="row mt-4">
+            <div class="col-3">
+                <label for="order-date" class="form-label">Order Date</label>
+                <input type="date" class="form-control" id="order-date" name="order-date">
+            </div>
+            <div class="col-3">
+                <label for="client-name" class="form-label">Client Name</label>
+                <input type="text" class="form-control" id="client-name" name="client-name">
+            </div>
+            <div class="col-3">
+                <label for="mobile-number" class="form-label">Mobile No.</label>
+                <input type="number" class="form-control" id="mobile-number" name="mobile-number">
+            </div>
+            <div class="col-3">
+                <label for="delivery-date" class="form-label">Delivery Date</label>
+                <input type="date" class="form-control" id="delivery-date" name="delivery-date">
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="5"></textarea>
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-5">
+            <div class="col-3">
+                <label for="driver" class="form-label">Driver</label>
+                <input type="text" class="form-control" id="driver" placeholder="Driver">
+            </div>
+            <div class="col-3">
+                <label for="branch" class="form-label">Branch</label>
+                @Html.DropDownList("branch", new SelectList(ViewBag.Locations, "Value", "Text", ViewBag.Locations.SelectedValue), "Select Branch", new { @class = "form-control" })
+            </div>
+            <div class="col-3">
+                <label for="payment-method" class="form-label">Payment Method</label>
+                <select class="form-select" id="payment-method">
+                    <option value="100" selected>COD</option>
+                    <option value="200">Knet</option>
+                    <option value="300">Visa</option>
+                </select>
+            </div>
+
+            <div class="col-3">
+                <label for="shipping-charges" class="form-label">Shipping Charges</label>
+                <input type="number" class="form-control" id="shipping-charges" name="shipping-charges" value="0.500">
+            </div>
+        </div>
+
+        <div class="card w-100 mt-5 mb-5">
+            <div class="card-body">
+                <h5 class="card-title">Order Details</h5>
+                
+                <hr />
+
+                <div class="row mt-4">
+                    <div class="col-3">
+                        <label for="item" class="form-label">Item</label>
+                        @Html.DropDownList("item", new SelectList(ViewBag.Items, "Value", "Text", ViewBag.Items.SelectedValue), "Select Item", new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-3">
+                        <label for="unit" class="form-label">Unit</label>
+                        <select class="form-select" id="unit">
+                            <option value="50 gm">50 gm</option>
+                            <option value="100 gm">100 gm</option>
+                            <option value="200 gm">200 gm</option>
+                            <option value="250 gm">250 gm</option>
+                            <option value="500 gm">500 gm</option>
+                            <option value="750 gm">750 gm</option>
+                            <option value="1000 kg">1 kg</option>
+                        </select>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="qty" class="form-label">Qty</label>
+                        <input type="number" class="form-control" id="qty" name="qty">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="amount" name="amount">
+                    </div>
+
+                    <div class="col-2 mt-4 pt-2">
+                        <button class="btn btn-dark" onclick="AddItem()">Add Item</button>
+                    </div>
+
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <table id="myTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-2 mx-auto">
+                <button class="btn btn-primary w-100" onclick="SaveOrder()">Save</button>
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var itemList = [];
+        var count = 0;
+
+        $(document).ready(function () {
+            document.getElementById('order-date').valueAsDate = new Date();
+            document.getElementById('delivery-date').valueAsDate = new Date();
+        })
+
+        function AddItem(){
+            var item = $('#item').val();
+            var unit = $('#unit').val();
+            var qty = $('#qty').val();
+            var amount = $('#amount').val();
+
+            itemList.push(count + "," + item + "," + unit + "," + qty + "," + amount);
+            count += 1;
+
+            $('#myTable > tbody:last-child').append('<tr id="tr-' + count + '"><th scope="row">' + item + '</th><td>' + unit + '</td><td>' + qty + '</td><td>' + amount + '</td><td><button class="btn btn-danger" onclick="DeleteOrderItem(' + count + ')">Delete</button></td></tr>');
+        }
+
+        function SaveOrder() {
+
+            var date = $('#order-date').val();
+            if (date === '') {
+                alert("Please select order date!");
+                return false;
+            }
+
+            var clientName = $('#client-name').val();
+            if (clientName === '') {
+                alert("Please mention client name!");
+                return false;
+            }
+
+            var mobileNumber = $('#mobile-number').val();
+            if (mobileNumber === '') {
+                alert("Please add mobile number!");
+                return false;
+            }
+
+            var deliveryDate = $('#delivery-date').val();
+            if (deliveryDate === '') {
+                alert("Please select delivery date!");
+                return false;
+            }
+
+            var address = $('#address').val();
+            if (address === '') {
+                alert("Please add address!");
+                return false;
+            }
+
+            var driver = $('#driver').val();
+            if (driver === '') {
+                alert("Please add driver name!");
+                return false;
+            }
+
+            var branch = $('#branch').val();
+            if (branch === '') {
+                alert("Please select branch!");
+                return false;
+            }
+
+            var paymentMethod = $('#payment-method').val();
+            if (paymentMethod === '') {
+                alert("Please select payment method!");
+                return false;
+            }
+
+            var shippingCharges = $('#shipping-charges').val();
+            if (shippingCharges === '') {
+                alert("Please select shipping charges!");
+                return false;
+            }
+
+            if (itemList.length === 0) {
+                alert("Add Atleast 1 Item!");
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    orderDate: date.toString(),
+                    clientName: clientName.toString(),
+                    mobileNumber: mobileNumber.toString(),
+                    deliveryDate: deliveryDate.toString(),
+                    address: address.toString(),
+                    driver: driver.toString(),
+                    branch: branch.toString(),
+                    paymentMethod: paymentMethod.toString(),
+                    shippingCharges: shippingCharges.toString(),
+                    itemList: itemList
+                },
+                url: '@Url.Action("SaveNewOrder", "Home")',
+                // dataType: 'json',
+                success: function (response) {
+                    alert('Success : ' + response);
+                    location.reload();
+                },
+                error: function (ex) {
+                    alert(ex.responseText);
+                }
+
+            });
+        }
+
+        function DeleteOrderItem(id) {
+            // $('#' + id).remove();
+            // var id = this.id;
+            $('#tr-' + id).remove();
+
+            itemList.some(function (elem, i) {
+                var elemid = elem.substr(0, elem.indexOf(','));
+                if (elemid === id) {
+                    itemList.splice(i, 1);
+                }
+            });
+        }
+
+
+    </script>
+}

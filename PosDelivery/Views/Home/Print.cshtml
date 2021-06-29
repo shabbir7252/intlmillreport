@@ -1,0 +1,150 @@
+﻿@model PosDelivery.ViewModels.OrderPrintViewModel
+
+<div class="container">
+
+    <div class="row border-bottom">
+        <div class="col-12">
+            <h1 class="text-center">رقم الطلب</h1>
+        </div>
+        <div class="col-12" style="background-color: #000000">
+            <h1 class="text-light text-center">@Model.OrderId</h1>
+        </div>
+    </div>
+
+    
+
+    <div class="row mb-2 border-top mt-3 pt-3">
+        <div class="col-12">
+            <label>تاريخ </label>
+            <label>/ Date</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.DateTime.ToString("dd-MM-yyyy hh:mm:ss tt")</b>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <label>اسم العميل</label>
+            <label>/ Customer</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.ClientName</b>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <label>رقم الهاتف</label>
+            <label>/ Mobile No.</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.MobileNo</b>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <label>التوصيل في</label>
+            <label>/ Delivery On</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.DeliveryOn.ToString("dd-MM-yyyy")</b>
+        </div>
+    </div>
+
+    <div class="row mb-2 border-bottom pb-3">
+        <div class="col-12">
+            <label>معلومات العنوان</label>
+            <label> / Address</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.Address</b>
+        </div>
+    </div>
+
+
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h5 class="text-center">
+                معلومات الطلب / Order Details
+            </h5>
+            <hr />
+        </div>
+    </div>
+
+    @foreach (var item in Model.OrderItems)
+    {
+
+        <div class="row border-bottom pb-3 mb-3">
+            
+            <div class="col-12">
+                @item.ItemNameAr (@item.ItemNameEn)
+            </div>
+
+            <div class="col-12">
+                @item.Unit x @item.Qty
+            </div>
+
+            <div class="col-12">
+                @item.Amount
+            </div>
+
+        </div>
+    }
+
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <label>المبلغ الإجمالي</label>
+            <label> / Total Order</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.TotalOrderValue</b>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <label>رسوم التوصيل</label>
+            <label> / Shipping</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.ShippingFees</b>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <label>المجموع الكلى د.ك</label>
+            <label> / Net Amount</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.NetAmount</b>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <label>نوع الدفع</label>
+            <label> / Payment Method</label>
+        </div>
+        <div class="col-12">
+            <b>@Model.PaymentMethod</b>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts {
+    <script>
+                   var document_focus = false; // var we use to monitor document focused status.
+                   // Now our event handlers.
+                   $(document).focus(function () { document_focus = true; });
+                   $(document).ready(function () { window.print(); document_focus = true; });
+                   setInterval(function () { if (document_focus === true) { window.close(); } }, 500);
+    </script>
+}

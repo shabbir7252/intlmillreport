@@ -129,7 +129,7 @@ namespace ImillPda.Repository
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw ex.InnerException;
             }
 
             return transactionVMs.OrderByDescending(x => x.UserDateTime).ToList();

@@ -1986,8 +1986,8 @@ namespace ImillReports.Repository
         /// In Development
         public string SendShiftStartDetailReport()
         {
-            var today = DateTime.Now;
-            // var today = new DateTime(2021, 02, 09, 06, 07, 00);
+            // var today = DateTime.Now;
+            var today = new DateTime(2021, 04, 30, 23, 00, 00);
 
             try
             {

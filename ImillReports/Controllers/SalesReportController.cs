@@ -439,22 +439,22 @@ namespace ImillReports.Controllers
                 ContentType = "application/json"
             };
 
-            //var exportData = source.ToList().Select(x => new SalesReportItemFromXcel
-            //{
-            //    Amount = x.AmountRecieved,
-            //    Cash = x.Cash,
-            //    CustomerName = x.CustomerName,
-            //    CustomerNameAr = x.CustomerNameAr,
-            //    Date = x.InvDateTime,
-            //    Discount = x.Discount,
-            //    Invoice = x.InvoiceNumber,
-            //    Knet = x.Knet,
-            //    Location = x.Location,
-            //    Salesman = x.Salesman,
-            //    TotalAmount = x.NetAmount,
-            //    Visa = x.CreditCard,
-            //    Voucher = x.Voucher
-            //}).ToList();
+            var exportData = source.ToList().Select(x => new SalesReportItemFromXcel
+            {
+                Amount = x.AmountRecieved,
+                Cash = x.Cash,
+                CustomerName = x.CustomerName,
+                CustomerNameAr = x.CustomerNameAr,
+                Date = x.InvDateTime,
+                Discount = x.Discount,
+                Invoice = x.InvoiceNumber,
+                Knet = x.Knet,
+                Location = x.Location,
+                Salesman = x.Salesman,
+                TotalAmount = x.NetAmount,
+                Visa = x.CreditCard,
+                Voucher = x.Voucher
+            }).ToList();
 
             //using (ExcelEngine excelEngine = new ExcelEngine())
             //{
@@ -496,6 +496,206 @@ namespace ImillReports.Controllers
         public string GetSalesDetailMonthSync(int year, int month, int from, int to)
         {
             return $"{_salesReportRepository.GetSalesDetailMonth(year, month, from, to)} Date : ({from}/{to})-{month}-{year}";
+        }
+
+
+
+        [HttpGet]
+        public ActionResult BranchDeliveriesAndSalesReport(DateTime? fromDate, DateTime? toDate, string[] locationStringArray,
+            string[] voucherTypeStringArray, bool? _, string[] productStringArray, string[] _1, JsonResult _2)
+        {
+
+            if (fromDate == null)
+            {
+                var fDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 03, 00, 00);
+                fromDate = fDate;
+                ViewBag.startDate = fDate;
+            }
+
+            if (toDate == null)
+            {
+                var tDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 02, 59, 00).AddDays(1);
+                toDate = tDate;
+                ViewBag.endDate = tDate;
+            }
+
+            ViewBag.startDate = fromDate;
+            ViewBag.endDate = toDate;
+            ViewBag.validation = "false";
+
+            if (toDate < fromDate)
+            {
+                ViewBag.validation = "true";
+            }
+
+            var locations = _locationRepository.GetLocations().LocationItems;
+
+            var locationArray = new List<int>();
+            if (locationStringArray != null)
+            {
+                locationArray.AddRange(from item in locationStringArray select int.Parse(item));
+                foreach (var currentLocation in
+                    from location in locations
+                    from id in locationArray
+                    where location.LocationId == id
+                    select location)
+                {
+                    currentLocation.IsSelected = true;
+                }
+            }
+
+            ViewBag.locations = locations.OrderBy(x => x.Name);
+            ViewBag.locationVal = new string[] { "" };
+
+
+            var voucherTypes = _voucherTypesRepository.GetSalesVoucherTypes().VoucherTypeItems;
+            var voucherTypesArray = new List<int>();
+            if (voucherTypeStringArray != null)
+            {
+                voucherTypesArray.AddRange(from item in voucherTypeStringArray select int.Parse(item));
+                foreach (var currentVoucherType in
+                    from types in voucherTypes
+                    from id in voucherTypesArray
+                    where types.Voucher_Type == id
+                    select types)
+                {
+                    currentVoucherType.IsSelected = true;
+                }
+            }
+
+            ViewBag.voucherTypes = voucherTypes.OrderBy(x => x.L_Voucher_Name);
+            ViewBag.voucherTypesVal = new string[] { "" };
+
+            var products = _productRepository.GetAllProducts().Items;
+            var productArray = new List<int>();
+            if (productStringArray != null)
+            {
+                productArray.AddRange(from item in productStringArray select int.Parse(item));
+                foreach (var currentProduct in
+                    from types in products
+                    from id in productArray
+                    where types.ProductId == id
+                    select types)
+                {
+                    currentProduct.IsSelected = true;
+                }
+            }
+
+            ViewBag.products = products.OrderBy(x => x.Name);
+            ViewBag.productsVal = new string[] { "" };
+
+            QueryBuilderRule rule = new QueryBuilderRule()
+            {
+                Condition = "and",
+                Rules = new List<QueryBuilderRule>()
+                {
+                    new QueryBuilderRule { Label="Title", Field="Title", Type="string", Operator="equal", Value = "Sales Manager" }
+                }
+            };
+
+            ViewBag.rule = rule;
+
+            SetSalesDetailsColChooserVal();
+
+            if (fromDate.Value.Date == DateTime.Now.Date || fromDate == null)
+            {
+                var srs = new List<SalesReportItem>();
+                var sr = new SalesReportItem
+                {
+                    Amount = 0,
+                    AmountRecieved = 0,
+                    BaseQuantity = 0,
+                    BaseUnit = "",
+                    Cash = 0,
+                    CreditCard = 0,
+                    CreditCardType = "",
+                    CustomerName = "",
+                    CustomerNameAr = "",
+                    Date = DateTime.Now,
+                    Discount = 0,
+                    GroupCD = 0,
+                    InvDateTime = DateTime.Now,
+                    InvoiceNumber = 0,
+                    Knet = 0,
+                    Location = "",
+                    LocationId = 0,
+                    NetAmount = 0,
+                    ProductNameAr = "",
+                    ProductNameEn = "",
+                    Salesman = "",
+                    SellQuantity = 0,
+                    SellUnit = "",
+                    UnitPrice = 0,
+                    Voucher = "",
+                    VoucherId = 0
+                };
+
+                srs.Add(sr);
+
+                ViewBag.DataSource = srs;
+                return View();
+            }
+
+            var locationsString = locationStringArray != null && locationStringArray.Length > 0 ? string.Join(",", locationStringArray) : "";
+            var voucherTypeString = voucherTypeStringArray != null && voucherTypeStringArray.Length > 0 ? string.Join(",", voucherTypeStringArray) : "";
+            var productString = productStringArray != null && productStringArray.Length > 0 ? string.Join(",", productStringArray) : "";
+
+            var salesReportViewModel = _salesReportRepository.GetBranchSalesDetailTransaction(fromDate, toDate, locationsString, voucherTypeString, productString);
+            ViewBag.DataSource = salesReportViewModel;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult BranchDeliveriesAndSalesReport(string from, string to, string locations, string voucher, string product, string productAr, bool isChecked)
+        {
+            try
+            {
+                var fromDate = DateTime.Now;
+                var toDate = DateTime.Now;
+                var productIds = isChecked ? product : productAr;
+
+                if (!string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to))
+                {
+                    fromDate = DateTime.Parse(from);
+                    toDate = DateTime.Parse(to);
+                }
+
+                ViewBag.startDate = fromDate;
+                ViewBag.endDate = toDate;
+                ViewBag.validation = "false";
+
+                if (toDate < fromDate)
+                {
+                    ViewBag.validation = "true";
+                }
+
+                var salesReportViewModel = _salesReportRepository.GetBranchSalesDetailTransaction(fromDate, toDate, locations, voucher, productIds);
+                var source = salesReportViewModel;
+
+                var serializer = new JavaScriptSerializer
+                {
+
+                    // For simplicity just use Int32's max value.
+                    // You could always read the value from the config section mentioned above.
+                    MaxJsonLength = Int32.MaxValue
+                };
+
+                var result = new ContentResult
+                {
+                    // Content = serializer.Serialize(salesReportViewModel.SalesReportItems),
+                    Content = JsonConvert.SerializeObject(source),
+                    ContentType = "application/json"
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
         }
 
         #endregion

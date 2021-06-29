@@ -483,8 +483,6 @@ namespace ImillReports.Controllers
             ViewBag.jsonResult = data.Chart1;
             ViewBag.jsonResult2 = data.Chart2;
 
-            // GeneratePdf();
-
             return View();
 
         }

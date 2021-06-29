@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="IMILLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ICS_Item">
+    <Key>
+      <PropertyRef Name="Prod_Cd" />
+    </Key>
+    <Property Name="Prod_Cd" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Group_Cd" Type="int" Nullable="false" />
+    <Property Name="Cat_Cd" Type="int" Nullable="false" />
+    <Property Name="Base_Unit_Cd" Type="smallint" Nullable="false" />
+    <Property Name="Item_Type_Cd" Type="tinyint" Nullable="false" />
+    <Property Name="Part_No" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="L_Prod_Name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="A_Prod_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Prod_Desc" Type="nvarchar" MaxLength="400" />
+    <Property Name="Cost" Type="decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="Costing_Method" Type="tinyint" Nullable="false" />
+    <Property Name="Cash_Sale_Cd" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Credit_Sale_Cd" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Inventory_Cd" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Cost_Of_Sale_Cd" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Current_Qty" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_In_Hand" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_Allocated" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_Reserved" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_Booked" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_Available" Type="decimal" Precision="17" Scale="5" StoreGeneratedPattern="Computed" />
+    <Property Name="Stock_In_Transit" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_On_Order" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Stock_Return_In_Transit" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="MTD_Usage" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="YTD_Usage" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Avg_Monthly_Usage" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Tot_Qty_In" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Tot_Qty_Out" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Supplier_Ldgr_Cd" Type="int" />
+    <Property Name="Supplier_Part_No" Type="varchar" MaxLength="20" />
+    <Property Name="ABC_Category" Type="char" MaxLength="1" />
+    <Property Name="Picture" Type="varchar" MaxLength="100" />
+    <Property Name="Maximum_Level" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Minimum_Level" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Reorder_Level" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Maximum_Reorder_Qty" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Minimum_Reorder_Qty" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Last_Purchased_Qty" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Last_Sold_Qty" Type="decimal" Precision="14" Scale="5" />
+    <Property Name="Last_Supplier_Cd" Type="char" MaxLength="10" />
+    <Property Name="Last_Customer_Cd" Type="char" MaxLength="10" />
+    <Property Name="Last_Purchased_Date" Type="smalldatetime" />
+    <Property Name="Last_Sold_Date" Type="smalldatetime" />
+    <Property Name="Last_Purchased_Unit_Cd" Type="smallint" />
+    <Property Name="Last_Sold_Unit_Cd" Type="smallint" />
+    <Property Name="Purchase_Rate" Type="money" />
+    <Property Name="Purchase_Rate_1" Type="money" />
+    <Property Name="Purchase_Rate_2" Type="money" />
+    <Property Name="Purchase_Rate_3" Type="money" />
+    <Property Name="Purchase_Rate_4" Type="money" />
+    <Property Name="Purchase_Rate_5" Type="money" />
+    <Property Name="Sales_Rate" Type="money" />
+    <Property Name="Sale_Rate1" Type="money" />
+    <Property Name="Sale_Rate2" Type="money" />
+    <Property Name="Sale_Rate3" Type="money" />
+    <Property Name="Sale_Rate4" Type="money" />
+    <Property Name="Sale_Rate5" Type="money" />
+    <Property Name="Expiry_Date" Type="smalldatetime" />
+    <Property Name="Warranty_Period_In_Days" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="Serialized" Type="bit" Nullable="false" />
+    <Property Name="Discontinued" Type="bit" Nullable="false" />
+    <Property Name="Promotional_Item" Type="bit" Nullable="false" />
+    <Property Name="Print_Components_On_Voucher" Type="bit" />
+    <Property Name="Commision_In_Percent_On_Sales" Type="money" />
+    <Property Name="Commision_In_Percent_On_Purchase" Type="money" />
+    <Property Name="Comments" Type="varchar" MaxLength="100" />
+    <Property Name="Protected" Type="bit" Nullable="false" />
+    <Property Name="User_Cd" Type="smallint" Nullable="false" />
+    <Property Name="User_Date_Time" Type="smalldatetime" Nullable="false" />
+    <Property Name="Time_Stamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Stock_On_Order_Of_Sales" Type="decimal" Precision="14" Scale="5" Nullable="false" />
+    <Property Name="Picture_Object" Type="image" />
+    <Property Name="Updated_By_User_Cd" Type="smallint" />
+    <Property Name="Updated_Date_Time" Type="smalldatetime" />
+    <Property Name="Offline_Data_Updated_Locat_Cd" Type="varchar" MaxLength="500" />
+    <Property Name="Bin_Location" Type="nvarchar" MaxLength="20" />
+    <Property Name="Weight" Type="decimal" Precision="14" Scale="3" Nullable="false" />
+    <Property Name="Flex1_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex2_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex3_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex4_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex5_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex6_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex7_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex8_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex9_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex10_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex11_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex12_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex13_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Flex14_VSSV_Code" Type="varchar" MaxLength="10" />
+    <Property Name="Report_Unit_Cd" Type="smallint" Nullable="false" />
+    <Property Name="package" Type="nvarchar" MaxLength="50" />
+    <Property Name="ExpDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="MadeIn" Type="nvarchar" MaxLength="50" />
+    <Property Name="PackDate" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="SM_Location">
+    <Key>
+      <PropertyRef Name="Locat_Cd" />
+    </Key>
+    <Property Name="Locat_Cd" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Locat_No" Type="int" Nullable="false" />
+    <Property Name="L_Locat_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="A_Locat_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="L_Short_Name" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="A_Short_Name" Type="nvarchar" MaxLength="20" />
+    <Property Name="Addr_1" Type="varchar" MaxLength="50" />
+    <Property Name="Addr_2" Type="varchar" MaxLength="50" />
+    <Property Name="Addr_3" Type="varchar" MaxLength="50" />
+    <Property Name="Contact_Person" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="10" />
+    <Property Name="Auto_Create_Delivery_Notes" Type="bit" Nullable="false" />
+    <Property Name="Auto_Create_Receipt_Of_Goods" Type="bit" Nullable="false" />
+    <Property Name="Auto_Create_Supplier_Return" Type="bit" Nullable="false" />
+    <Property Name="Auto_Create_Stock_Return" Type="bit" Nullable="false" />
+    <Property Name="Inventory_Cd" Type="int" />
+    <Property Name="Adjustment_Cd" Type="int" />
+    <Property Name="Cost_Of_Sale_Cd" Type="int" />
+    <Property Name="PDis_Cd" Type="int" />
+    <Property Name="Cash_Sale_Cd" Type="int" />
+    <Property Name="Credit_Sale_Cd" Type="int" />
+    <Property Name="Cash_SDis_Cd" Type="int" />
+    <Property Name="Credit_SDis_Cd" Type="int" />
+    <Property Name="PRet_Cd" Type="int" />
+    <Property Name="PRet_Dis_Cd" Type="int" />
+    <Property Name="Cash_SRet_Cd" Type="int" />
+    <Property Name="Credit_SRet_Cd" Type="int" />
+    <Property Name="Cash_SRet_Dis_Cd" Type="int" />
+    <Property Name="Credit_SRet_Dis_Cd" Type="int" />
+    <Property Name="Cash_Cd" Type="int" />
+    <Property Name="Suspense_Cd" Type="int" />
+    <Property Name="Inventory_Cost_Cd" Type="int" />
+    <Property Name="Adjustment_Cost_Cd" Type="int" />
+    <Property Name="Cost_Of_Sale_Cost_Cd" Type="int" />
+    <Property Name="PDis_Cost_Cd" Type="int" />
+    <Property Name="Cash_Sale_Cost_Cd" Type="int" />
+    <Property Name="Credit_Sale_Cost_Cd" Type="int" />
+    <Property Name="Cash_SDis_Cost_Cd" Type="int" />
+    <Property Name="Credit_SDis_Cost_Cd" Type="int" />
+    <Property Name="PRet_Cost_Cd" Type="int" />
+    <Property Name="PRet_Dis_Cost_Cd" Type="int" />
+    <Property Name="Cash_SRet_Cost_Cd" Type="int" />
+    <Property Name="Credit_SRet_Cost_Cd" Type="int" />
+    <Property Name="Cash_SRet_Dis_Cost_Cd" Type="int" />
+    <Property Name="Credit_SRet_Dis_Cost_Cd" Type="int" />
+    <Property Name="Cash_Cost_Cd" Type="int" />
+    <Property Name="Suspense_Cost_Cd" Type="int" />
+    <Property Name="Protected" Type="bit" Nullable="false" />
+    <Property Name="Comments" Type="nvarchar" MaxLength="100" />
+    <Property Name="User_Cd" Type="smallint" Nullable="false" />
+    <Property Name="User_Date_Time" Type="smalldatetime" Nullable="false" />
+    <Property Name="time_stamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="Show" Type="bit" Nullable="false" />
+    <Property Name="row_id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Is_Primary_Location" Type="bit" Nullable="false" />
+    <Property Name="Last_Ldgr_No" Type="varchar" MaxLength="20" />
+    <Property Name="Last_Cash_Type" Type="bit" />
+    <Property Name="Last_Cash_No" Type="varchar" MaxLength="20" />
+    <Property Name="Service_Sales_Cd" Type="int" />
+    <Property Name="Service_Cost_Of_Sales_Cd" Type="int" />
+    <Property Name="Service_Expense_Cd" Type="int" />
+    <Property Name="Non_Inventory_Sales_Cd" Type="int" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Cd" Type="int" />
+    <Property Name="non_inventory_expense_cd" Type="int" />
+    <Property Name="Service_Sales_Cost_Cd" Type="int" />
+    <Property Name="Service_Cost_Of_Sales_Cost_Cd" Type="int" />
+    <Property Name="Service_Expense_Cost_Cd" Type="int" />
+    <Property Name="Non_Inventory_Sales_Cost_Cd" Type="int" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Cost_Cd" Type="int" />
+    <Property Name="Non_Inventory_Expense_Cost_Cd" Type="int" />
+    <Property Name="Data_Upload_Path" Type="varchar" MaxLength="250" />
+    <Property Name="Credit_Card_Cd" Type="char" MaxLength="10" />
+    <Property Name="Default_Sman_No" Type="smallint" />
+    <Property Name="Allow_Generation_Of_Reverse_Voucher_Type" Type="bit" Nullable="false" />
+    <Property Name="Check_Negative_Stock" Type="bit" Nullable="false" />
+    <Property Name="Inventory_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Inventory_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Inventory_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Inventory_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="adjustment_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Adjustment_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Adjustment_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Adjustment_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Cost_Of_Sale_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Cost_Of_Sale_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Cost_Of_Sale_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Cost_Of_Sale_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="PDis_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="PDis_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="PDis_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="PDis_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Cash_Sale_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_Sale_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Cash_Sale_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_Sale_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Credit_Sale_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_Sale_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Credit_Sale_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_Sale_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Cash_SDis_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_SDis_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Cash_SDis_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_SDis_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Credit_SDis_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_SDis_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Credit_SDis_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_SDis_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="PRet_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="PRet_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="PRet_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="PRet_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="PRet_Dis_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="PRet_Dis_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="PRet_Dis_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="PRet_Dis_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Cash_SRet_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_SRet_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Cash_SRet_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_SRet_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Credit_SRet_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_SRet_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Credit_SRet_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_SRet_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Cash_SRet_Dis_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_SRet_Dis_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Cash_SRet_Dis_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_SRet_Dis_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Credit_SRet_Dis_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_SRet_Dis_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Credit_SRet_Dis_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_SRet_Dis_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Cash_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Cash_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Cash_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Suspense_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Suspense_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Suspense_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Suspense_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Service_Sales_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Service_Sales_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Service_Sales_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Service_Sales_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Service_Expense_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Service_Expense_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Service_Expense_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Service_Expense_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Non_Inventory_Sales_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Non_Inventory_Sales_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Non_Inventory_Sales_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Non_Inventory_Sales_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="non_inventory_expense_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="non_inventory_expense_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="non_inventory_expense_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="non_inventory_expense_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Service_Cost_Of_Sales_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Inventory_Project_Cd" Type="bigint" />
+    <Property Name="Adjustment_Project_Cd" Type="bigint" />
+    <Property Name="Cost_Of_Sale_Project_Cd" Type="bigint" />
+    <Property Name="PDis_Project_Cd" Type="bigint" />
+    <Property Name="Cash_Sale_Project_Cd" Type="bigint" />
+    <Property Name="Credit_Sale_Project_Cd" Type="bigint" />
+    <Property Name="Cash_SDis_Project_Cd" Type="bigint" />
+    <Property Name="Credit_SDis_Project_Cd" Type="bigint" />
+    <Property Name="PRet_Project_Cd" Type="bigint" />
+    <Property Name="PRet_Dis_Project_Cd" Type="bigint" />
+    <Property Name="Cash_SRet_Project_Cd" Type="bigint" />
+    <Property Name="Credit_SRet_Project_Cd" Type="bigint" />
+    <Property Name="Cash_SRet_Dis_Project_Cd" Type="bigint" />
+    <Property Name="Credit_SRet_Dis_Project_Cd" Type="bigint" />
+    <Property Name="Cash_Project_Cd" Type="bigint" />
+    <Property Name="Suspense_Project_Cd" Type="bigint" />
+    <Property Name="Service_Sales_Project_Cd" Type="bigint" />
+    <Property Name="Service_Expense_Project_Cd" Type="bigint" />
+    <Property Name="Non_Inventory_Sales_Project_Cd" Type="bigint" />
+    <Property Name="non_inventory_expense_Project_Cd" Type="bigint" />
+    <Property Name="Service_Cost_Of_Sales_Project_Cd" Type="bigint" />
+    <Property Name="Non_Inventory_Cost_Of_Sales_Project_Cd" Type="bigint" />
+    <Property Name="Material_Issue_Return_Cd" Type="int" />
+    <Property Name="Material_Issue_Return_Cost_Cd" Type="int" />
+    <Property Name="Material_Issue_Return_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Material_Issue_Return_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Material_Issue_Return_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Material_Issue_Return_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Material_Issue_Return_Project_Cd" Type="int" />
+    <Property Name="Credit_Service_Sales_Cd" Type="int" />
+    <Property Name="Credit_Service_Sales_Cost_Cd" Type="int" />
+    <Property Name="Credit_Service_Sales_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_Service_Sales_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Credit_Service_Sales_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_Service_Sales_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Credit_Service_Expense_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_Service_Expense_Anly_Head_No_1" Type="tinyint" />
+    <Property Name="Credit_Service_Expense_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_Service_Expense_Anly_Head_No_2" Type="tinyint" />
+    <Property Name="Credit_non_inventory_Sales_Cd" Type="int" />
+    <Property Name="Credit_non_inventory_Sales_Cost_Cd" Type="int" />
+    <Property Name="Credit_non_inventory_expense_cd" Type="int" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Head_No_1" Type="int" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_non_inventory_Sales_Anly_Head_No_2" Type="int" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Code_1" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Head_No_1" Type="int" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Code_2" Type="varchar" MaxLength="12" />
+    <Property Name="Credit_non_inventory_Expense_Anly_Head_No_2" Type="int" />
+    <Property Name="Credit_non_inventory_cost_of_sales_cd" Type="int" />
+    <Property Name="Credit_Service_Expense_Cd" Type="int" />
+    <Property Name="Credit_Service_Cost_Of_Sales_Cost_Cd" Type="int" />
+    <Property Name="Credit_service_cost_of_sales_cd" Type="int" />
+    <Property Name="Credit_service_expense_cost_cd" Type="int" />
+    <Property Name="Credit_non_inventory_cost_of_sales_cost_cd" Type="int" />
+    <Property Name="Credit_non_inventory_expense_cost_cd" Type="int" />
+    <Property Name="Credit_service_sales_project_cd" Type="int" />
+    <Property Name="Credit_service_cost_of_sales_project_cd" Type="int" />
+    <Property Name="Credit_service_expense_project_cd" Type="int" />
+    <Property Name="Credit_non_inventory_sales_project_cd" Type="int" />
+    <Property Name="Credit_non_inventory_cost_of_sales_project_cd" Type="int" />
+    <Property Name="Credit_non_inventory_expense_project_cd" Type="int" />
+  </EntityType>
+  <EntityContainer Name="IMILLModelStoreContainer">
+    <EntitySet Name="ICS_Item" EntityType="Self.ICS_Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SM_Location" EntityType="Self.SM_Location" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

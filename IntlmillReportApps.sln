@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryCount", "Inventory
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImillPda", "ImillPda\ImillPda.csproj", "{94FBC5E0-0A1D-4B2A-8142-4479AFAE4EEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PosDelivery", "PosDelivery\PosDelivery.csproj", "{2F3B7E6C-AD85-42A6-851E-D26D0B0A7C24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{94FBC5E0-0A1D-4B2A-8142-4479AFAE4EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94FBC5E0-0A1D-4B2A-8142-4479AFAE4EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94FBC5E0-0A1D-4B2A-8142-4479AFAE4EEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3B7E6C-AD85-42A6-851E-D26D0B0A7C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3B7E6C-AD85-42A6-851E-D26D0B0A7C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3B7E6C-AD85-42A6-851E-D26D0B0A7C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3B7E6C-AD85-42A6-851E-D26D0B0A7C24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

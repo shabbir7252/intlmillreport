@@ -1,0 +1,110 @@
+﻿@using Syncfusion.EJ2
+@using PosDelivery.Models
+@model IEnumerable<PosOrder>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .e-grid .e-rowcell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-headercell.customcss {
+        font-size: 11px;
+    }
+
+    .e-grid .e-summaryrow .e-summarycell, .e-grid .e-summaryrow .e-templatecell {
+        font-size: 11px;
+    }
+
+    .e-headertext {
+        font-size: 11px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-12">
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.DataSource).AllowResizing(true).AllowExcelExport().ToolbarClick("toolbarClick").Height("600").Width("auto").ShowColumnChooser(true).Columns(col =>
+                {
+                    col.Field("OrderId").Width("80").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+                    col.Field("NetAmount").Width("80").Format("N3").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Filter(new { type = "CheckBox" }).CustomAttributes(new { @class = "customcss" }).Add();
+
+                }).AllowPaging(true).AllowSorting(true).AllowFiltering().FilterSettings(filter => filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu)).PageSettings(
+                    page => { page.PageSizes(true); page.PageSize(25); }).Toolbar(new List<string>() { "Search", "ExcelExport", "ColumnChooser" }).Aggregates(agg =>
+                    {
+                        agg.Columns(new List<Syncfusion.EJ2.Grids.GridAggregateColumn>() {
+                            new Syncfusion.EJ2.Grids.GridAggregateColumn() {
+                                Field = "NetAmount", Format= "N3", Type = "Sum", FooterTemplate = "${Sum}"
+                            }
+                        }).Add();
+                    }).DataBound("dataBound").Render()
+        </div>
+
+        <div class="col-12 mt-4">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Order Number</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Net Amount</th>
+                        <th scope="col">Payment Type</th>
+                        <th scope="col">Payment Status</th>
+                        @*<th scope="col">Printed</th>*@
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        var pm = item.PaymentMethod == "100" ? "COD" : item.PaymentMethod == "200" ? "KNET" : item.PaymentMethod == "300" ? "CC" : "N/A";
+                        var ps = item.PaymentStatus == "10" ? "Pending" : item.PaymentStatus == "30" ? "Paid" : item.PaymentStatus == "60" ? "Failed" : "N/A";
+
+                        <tr>
+                            <th scope="row">@item.OrderId</th>
+                            <td>@item.OrderDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                            <td>@item.NetAmount</td>
+                            <td>@pm</td>
+                            <td>@ps</td>
+                            @*<td>@item.IsPrinted</td>*@
+                            <td>
+                                <a class="btn btn-primary" href="@Url.Action("OrderDetails","Home", new { id=item.OrderId })">Get Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+
+        function dataBound(args) {
+            this.autoFitColumns(['OrderId']);
+        }
+
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                if (args.item.id === 'Grid_excelexport') {
+                    var gridObj = document.getElementById("Grid").ej2_instances[0];
+                    var excelExportProperties = {
+                        fileName: "SalesReport.xlsx",
+                        theme: "none",
+                        includeHiddenColumn: false
+                    };
+                    gridObj.excelExport(excelExportProperties);
+                }
+            }
+        }
+
+    </script>
+}

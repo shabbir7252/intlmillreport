@@ -27,7 +27,7 @@ namespace ImillReports.Repository
 
         public LocationViewModel GetLocations()
         {
-            var locations = _context.SM_Location.Where(x => x.Locat_Cd != 67 && x.Locat_Cd != 63 && x.Locat_Cd != 73).ToList();
+            var locations = _context.SM_Location.Where(x => x.Locat_Cd != 67 && x.Locat_Cd != 63 && x.Locat_Cd != 73 && x.Locat_Cd != 84).ToList();
 
             var locationItems = new List<LocationItem>();
 

@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "SyncPosData";
+}
+
+<h2>SyncPosData</h2>
+
+
+@section scripts {
+
+    <script>
+
+        const interval = setInterval(function () {
+            $.get("https://localhost:44368/api/SyncData?locatcd=84");
+        }, 5000);
+
+        print();
+
+        const PrintInterval = setInterval(function () {
+            print();
+        }, 10000);
+
+        function print() {
+            var orderId = '';
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetPrintId", "Home", new { locatcd = 68 })',
+                success: function (response) {
+                    orderId = response;
+
+                    if (orderId !== '') {
+                        var link = "@Url.Action("Print", "Home", new { orderId = -1 })";
+                        link = link.replace('-1', orderId)
+                        window.open(link, '_blank');
+                    }
+                },
+                error: function (ex) {
+                    alert(ex);
+                    $('.preloader').hide();
+                }
+            });
+        }
+
+    </script>
+
+}
+

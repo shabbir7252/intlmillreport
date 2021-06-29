@@ -241,8 +241,8 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Unity.Mvc.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Antlr3.Runtime.pdb
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csprojAssemblyReference.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csproj.CoreCompileInputs.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csproj.CopyComplete
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.pdb
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\Cash Register\obj\Debug\Cash Register.csproj.AssemblyReference.cache

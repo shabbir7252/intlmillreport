@@ -1,0 +1,250 @@
+﻿@model PosDelivery.ViewModels.OrderPrintViewModel
+
+@{
+    ViewBag.Title = "Order Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-5">
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    تاريخ
+                </div>
+                <div class="col-2">
+                    @Model.DateTime.ToString("dd-MM-yyyy hh:mm:ss tt")
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    رقم الطلب
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control" id="OrderId" name="OrderId" value="@Model.OrderId" disabled>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    اسم العميل
+
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" id="client-name" name="client-name" value="@Model.ClientName">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    رقم الهاتف
+                </div>
+                <div class="col-2">
+                    <input type="number" class="form-control" id="mobile-number" name="mobile-number" value="@Model.MobileNo">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    التوصيل في
+                </div>
+                <div class="col-2">
+                    @Model.DeliveryOn.ToString("dd-MM-yyyy")
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12 mb-2">
+                    معلومات العنوان
+                </div>
+                <div class="col-10" dir="rtl">
+                    <textarea class="form-control" id="address" name="address" rows="5">@Model.Address</textarea>
+                </div>
+            </div>
+
+            <div class="row mt-4 mb-5">
+                <div class="col-3">
+                    <label for="driver" class="form-label">Driver</label>
+                    <input type="text" class="form-control" id="driver" placeholder="Driver" value="@Model.Driver">
+                </div>
+                <div class="col-3">
+                    <label for="branch" class="form-label">Branch</label>
+                    @Html.DropDownList("branch", new SelectList(ViewBag.Locations, "Value", "Text", Model.Location), "Select Branch", new { @class = "form-control" })
+                </div>
+                <div class="col-3">
+                    <label for="payment-method" class="form-label">Payment Method</label>
+                    @{
+                        var paymentMethod = Model.PaymentMethod == "100" ? "COD" : Model.PaymentMethod == "200" ? "KNET" : Model.PaymentMethod == "300" ? "CC" : "N/A";
+                    }
+                    <input type="text" class="form-control" id="payment-method" name="payment-method" value="@paymentMethod" disabled>
+                </div>
+
+                <div class="col-3">
+                    <label for="shipping-charges" class="form-label">Shipping Charges</label>
+                    <input type="number" class="form-control" id="shipping-charges" name="shipping-charges" value="@Model.ShippingFees">
+                </div>
+            </div>
+
+
+            <div class="card w-100 mt-5 mb-5">
+                <div class="card-body">
+                    <h5 class="card-title">Order Details</h5>
+
+                    <hr />
+
+                    <div class="row mt-4">
+                        <div class="col-3">
+                            <label for="item" class="form-label">Item</label>
+                            @Html.DropDownList("item", new SelectList(ViewBag.Items, "Value", "Text", ViewBag.Items.SelectedValue), "Select Item", new { @class = "form-control" })
+                        </div>
+
+                        <div class="col-3">
+                            <label for="unit" class="form-label">Unit</label>
+                            <select class="form-select" id="unit">
+                                <option value="200 gm">200 gm</option>
+                                <option value="250 gm">250 gm</option>
+                                <option value="500 gm">500 gm</option>
+                                <option value="750 gm">750 gm</option>
+                                <option value="1 kg">1 kg</option>
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <label for="qty" class="form-label">Qty</label>
+                            <input type="number" class="form-control" id="qty" name="qty">
+                        </div>
+
+                        <div class="col-2">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="amount" name="amount">
+                        </div>
+
+                        <div class="col-2 mt-4 pt-2">
+                            <button class="btn btn-dark btnAddItem">Add Item</button>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <table id="myTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Item Name</th>
+                                        <th scope="col">Unit</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-2 mx-auto">
+            <button class="btn btn-primary w-100 btnSaveOrder">Save</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            var itemList = [];
+            var count = 0
+
+            @foreach (var d in Model.OrderItems)
+            {
+                @:var item = '@d.ItemNameAr';
+                @:var unit = '@d.Unit';
+                @:var qty = '@d.Qty';
+                @:var amount = '@d.Amount';
+
+                @:count += 1;
+                @:itemList.push(count + "," + item + "," + unit + "," + qty + "," + amount);
+
+                @: $('#myTable > tbody:last-child').append('<tr id="tr-' + count + '"><th scope="row">' + item + '</th><td>' + unit + '</td><td>' + qty + '</td><td>' + amount + '</td><td><button id="' + count + '" class="btn btn-danger btnDelete">Delete</button></td></tr>');
+            }
+
+
+            $('.btnDelete').click(function () {
+                var id = this.id;
+                $('#tr-' + id).remove();
+
+                itemList.some(function (elem, i) {
+                    var elemid = elem.substr(0, elem.indexOf(',')); 
+                    if (elemid === id) {
+                        itemList.splice(i, 1);
+                    }
+                });
+            });
+
+            $('.btnAddItem').click(function() {
+                var item = $('#item').val();
+                var unit = $('#unit').val();
+                var qty = $('#qty').val();
+                var amount = $('#amount').val();
+
+                count += 1;
+                itemList.push(count + "," + item + "," + unit + "," + qty + "," + amount);
+
+                $('#myTable > tbody:last-child').append('<tr id="tr-' + count + '"><th scope="row">' + item + '</th><td>' + unit + '</td><td>' + qty + '</td><td>' + amount + '</td><td><button id="' + count +'" class="btn btn-danger btnDelete">Delete</button></td></tr>');
+            });
+
+            $('.btnSaveOrder').click(function () {
+
+                console.log('items : ', itemList);
+
+                var clientName = $('#client-name').val();
+                var mobileNumber = $('#mobile-number').val();
+                var address = $('#address').val();
+                var driver = $('#driver').val();
+                var branch = $('#branch').val();
+                var shippingCharges = $('#shipping-charges').val();
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        orderId: '@Model.OrderId',
+                        clientName: clientName.toString(),
+                        mobileNumber: mobileNumber.toString(),
+                        address: address.toString(),
+                        driver: driver.toString(),
+                        branch: branch.toString(),
+                        shippingCharges: shippingCharges.toString(),
+                        itemList: itemList
+                    },
+                    url: '@Url.Action("UpdateOrder", "Home")',
+                    dataType: 'json',
+                    success: function (response) {
+                        alert(response);
+                        location.reload();
+                    },
+                    error: function (ex) {
+                        alert(ex.responseText);
+                        location.reload();
+                    }
+
+                });
+            });
+
+        });
+    </script>
+}
