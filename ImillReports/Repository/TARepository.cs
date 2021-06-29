@@ -136,9 +136,11 @@ namespace ImillReports.Repository
                                             shiftStart = shift.StartTime;
                                             shiftEnd = shift.EndTime;
 
+                                            var nightShiftFlag = false;
+
                                             if (shiftStart >= new TimeSpan(21, 00, 00) && shiftStart <= new TimeSpan(23, 59, 59))
                                             {
-                                                iFirstTime = new DateTime(i.Year, i.Month, i.Day, shiftStart.Value.Hours, shiftStart.Value.Minutes, shiftStart.Value.Seconds);
+                                                iFirstTime = new DateTime(i.Year, i.Month, i.Day, shiftStart.Value.Hours, shiftStart.Value.Minutes, shiftStart.Value.Seconds).AddHours(-1).AddMinutes(-30);
                                                 iLastTime = new DateTime(i.Year, i.Month, i.Day, shiftEnd.Value.Hours, shiftEnd.Value.Minutes, shiftEnd.Value.Seconds).AddDays(1).AddHours(3);
 
                                                 if (iLastTime.Date > toDate.Date)
@@ -151,6 +153,7 @@ namespace ImillReports.Repository
                                                 {
                                                     punchIn = firstRecord.TransactionDateTime;
                                                     skipFlag = true;
+                                                    nightShiftFlag = true;
                                                 }
                                             }
 
@@ -172,6 +175,8 @@ namespace ImillReports.Repository
                                                 var punchOut = firstRecord.TransactionDateTime != lastRecord.TransactionDateTime
                                                                                                ? lastRecord.TransactionDateTime
                                                                                                : firstRecord.TransactionDateTime;
+
+                                                if (nightShiftFlag && punchOut == punchIn) skipFlag = false;
 
                                                 if (empId != 0)
                                                 {
@@ -1986,8 +1991,8 @@ namespace ImillReports.Repository
         /// In Development
         public string SendShiftStartDetailReport()
         {
-            // var today = DateTime.Now;
-            var today = new DateTime(2021, 04, 30, 23, 00, 00);
+            var today = DateTime.Now;
+            // var today = new DateTime(2021, 06, 26, 23, 00, 00);
 
             try
             {

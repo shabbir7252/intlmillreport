@@ -7,6 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>C:\Users\shabb\Desktop\_Publishe_Files\imillReports</_PublishTargetUrl>
+    <History>True|2021-06-29T18:16:10.5387627Z;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/column_chooser.json">
@@ -28,10 +29,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 18:59:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>06/19/2021 06:05:18</publishTime>
+      <publishTime>06/29/2021 23:45:52</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>06/19/2021 06:05:18</publishTime>
+      <publishTime>06/29/2021 23:45:52</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>12/16/2020 09:59:12</publishTime>
@@ -58,10 +59,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/12/2013 07:30:52</publishTime>
     </File>
     <File Include="bin/ImillReports.dll">
-      <publishTime>06/19/2021 06:05:09</publishTime>
+      <publishTime>06/29/2021 23:45:41</publishTime>
     </File>
     <File Include="bin/ImillReports.pdb">
-      <publishTime>06/19/2021 06:05:09</publishTime>
+      <publishTime>06/29/2021 23:45:41</publishTime>
     </File>
     <File Include="bin/iTextSharp.dll">
       <publishTime>12/01/2011 16:26:30</publishTime>
@@ -883,7 +884,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2021 12:55:26</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>06/19/2021 06:05:11</publishTime>
+      <publishTime>06/29/2021 23:45:44</publishTime>
     </File>
     <File Include="readme_exporter.txt">
       <publishTime>12/17/2020 15:25:07</publishTime>
@@ -1012,7 +1013,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/08/2021 14:19:53</publishTime>
     </File>
     <File Include="Views/Dashboard/BranchSales.cshtml">
-      <publishTime>01/30/2021 23:21:28</publishTime>
+      <publishTime>06/23/2021 08:45:33</publishTime>
     </File>
     <File Include="Views/Dashboard/BranchSalesForPrint.cshtml">
       <publishTime>02/12/2021 14:59:41</publishTime>
@@ -1021,13 +1022,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/15/2020 17:49:13</publishTime>
     </File>
     <File Include="Views/Dashboard/SyncSalesData.cshtml">
-      <publishTime>05/10/2021 11:51:32</publishTime>
+      <publishTime>06/29/2021 13:06:27</publishTime>
     </File>
     <File Include="Views/Dashboard/_BranchGraphs.cshtml">
-      <publishTime>02/06/2021 14:39:01</publishTime>
+      <publishTime>06/23/2021 08:50:21</publishTime>
     </File>
     <File Include="Views/Dashboard/_BranchSalesDetails.cshtml">
-      <publishTime>02/03/2021 14:19:28</publishTime>
+      <publishTime>06/23/2021 08:46:30</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>03/18/2020 13:10:57</publishTime>
@@ -1084,7 +1085,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/26/2020 13:32:36</publishTime>
     </File>
     <File Include="Views/SalesReport/Index.cshtml">
-      <publishTime>10/19/2020 14:21:31</publishTime>
+      <publishTime>06/24/2021 17:19:38</publishTime>
     </File>
     <File Include="Views/SalesReport/SalesDetailReport.cshtml">
       <publishTime>10/26/2020 21:58:17</publishTime>

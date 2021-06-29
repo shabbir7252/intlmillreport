@@ -12,7 +12,7 @@
 
         // SyncUNVData();
 
-        function SyncUNVData() {
+        @*function SyncUNVData() {
             console.log("Unv Started!");
 
             var year = 2021;
@@ -43,7 +43,7 @@
                 }
 
             });
-        }
+        }*@
 
 
 
@@ -53,7 +53,7 @@
         //    SendWeeklyReport()
         //}, 80000);
 
-        function SendWeeklyReport() {
+        @*function SendWeeklyReport() {
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("SendWeeklyReport", "Dashboard")',
@@ -67,7 +67,7 @@
                     console.log("Sales : ", ex);
                 }
             });
-        }
+        }*@
 
         // SyncAllSalesReport();
         //const interval = setInterval(function () {
@@ -88,7 +88,7 @@
             });
         }*@
 
-        function SyncAllSalesReport() {
+        @*function SyncAllSalesReport() {
             var daysCount = 10;
             $.ajax({
                 type: 'GET',
@@ -104,9 +104,9 @@
                 }
 
             });
-        }
+        }*@
 
-        function SyncAllSalesDetailReport(daysCount) {
+        @*function SyncAllSalesDetailReport(daysCount) {
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetSalesDetailSync", "SalesReport")',
@@ -119,24 +119,24 @@
                 }
 
             });
-        }
+        }*@
 
 
         // for 2019 data
-        var date = new Date(2020, 9, 16);
-        var endDate = new Date(2020, 9, 16);
-        Date.prototype.addDays = function (days) {
-            var date = new Date(this.valueOf());
-            date.setDate(date.getDate() + days);
-            return date;
-        };
+        //var date = new Date(2020, 9, 16);
+        //var endDate = new Date(2020, 9, 16);
+        //Date.prototype.addDays = function (days) {
+        //    var date = new Date(this.valueOf());
+        //    date.setDate(date.getDate() + days);
+        //    return date;
+        //};
 
         //SyncSalesMonth2019Report();
         //const interval = setInterval(function () {
         //    SyncSalesMonth2019Report();
         //}, 600000);
 
-        function SyncSalesMonth2019Report() {
+        @*function SyncSalesMonth2019Report() {
             var year = 2019;
             var month = date.getMonth();
             var from = date.getDate();
@@ -162,9 +162,9 @@
                     }
                 });
             }
-        }
+        }*@
 
-        function SyncSalesDetailMonth2019Report(year, month, from, to) {
+        @*function SyncSalesDetailMonth2019Report(year, month, from, to) {
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetSalesDetailMonthSync", "SalesReport")',
@@ -183,12 +183,12 @@
                 }
 
             });
-        }
+        }*@
 
 
         // ****************** Month Sales Data Sync (Manual) ***************** //
 
-        var monthDate = new Date(2020, 1, 1);
+        @*var monthDate = new Date(2020, 1, 1);
         var monthEndDate = new Date(2020, 1, 31);
         Date.prototype.addDays = function (days) {
             var date = new Date(this.valueOf());
@@ -250,7 +250,7 @@
                 }
 
             });
-        }
+        }*@
 
         // ****************** Month Sales Data Sync (Manual) End ***************** //
 
@@ -268,7 +268,7 @@
         //}, 600000);
 
 
-        function SyncTAReport() {
+        @*function SyncTAReport() {
             var year = taFromDate.getFullYear();
             var month = taFromDate.getMonth();
             var from = taFromDate.getDate();
@@ -301,16 +301,16 @@
                 });
 
             }
-        }
+        }*@
 
         // ****************** Time Attendance Sync End ***************** //
 
         // ****************** Sending Mail For Time Attendance ***************** //
 
          EmailTAReport();
-        const emailInterval = setInterval(function () {
-            EmailTAReport();
-        }, 30000);
+        //const emailInterval = setInterval(function () {
+        //    EmailTAReport();
+        //}, 30000);
 
         function EmailTAReport() {
             $.ajax({
@@ -325,7 +325,7 @@
             });
         }
 
-        EmailTAEndReport();
+        @*EmailTAEndReport();
         //const emailEndInterval = setInterval(function () {
         //    EmailTAEndReport()
         //}, 40000);
@@ -341,14 +341,14 @@
                     console.log("TA End Email: ", ex);
                 }
             });
-        }
+        }*@
 
         // ****************** Sending Mail For Time Attendance End ***************** //
 
 
         // ****************** Checking PDA Transactions ***************** //
 
-        ValidateTransDetail();
+        @*ValidateTransDetail();
         const transDetailInterval = setInterval(function () {
             ValidateTransDetail();
         }, 40000);
@@ -364,14 +364,14 @@
                     console.log("PDA : ", ex);
                 }
             });
-        }
+        }*@
 
         // ****************** Checking PDA Transactions ***************** //
 
 
         // ****************** Purchase Order Sync ***************** //
 
-        PurchaseOrder();
+        @*PurchaseOrder();
         const purchaseOrder = setInterval(function () {
             PurchaseOrder();
         }, 30000);
@@ -399,7 +399,7 @@
                     console.log("PurchaseOrder : ", ex);
                 }
             });
-        }
+        }*@
 
         // ****************** End Purchase Order Sync ***************** //
 
@@ -412,7 +412,7 @@
 
         SyncSalesMonthReport();
 
-        function SyncSalesMonthReport() {
+        @*function SyncSalesMonthReport() {
             console.log("Have Started!");
             var month = 09;
             var year = 2020;
@@ -437,9 +437,9 @@
                 }
 
             });
-        }
+        }*@
 
-        function SyncSalesDetailMonthReport(year, month, from, to) {
+        @*function SyncSalesDetailMonthReport(year, month, from, to) {
             console.log("Have Started Details!");
             $.ajax({
                 type: 'GET',
@@ -458,7 +458,7 @@
                 }
 
             });
-        }
+        }*@
 
         // ****************** Month Sales Data Sync (Manual) End ***************** //
 
