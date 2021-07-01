@@ -809,6 +809,19 @@ namespace ImillReports.Repository
                         if (employee.tbl_EmpLocShiftMap.Any(x => locationOids.Contains(x.LocationOid)))
                         {
 
+                            //var nightShiftFlag = false;
+
+                            //foreach(var idd in employee.tbl_EmpLocShiftMap)
+                            //{
+                            //    var startTime = idd.tbl_Shift.StartTime;
+                            //    var endTime = idd.tbl_Shift.EndTime;
+
+                            //    var iFirstTime = new TimeSpan(20,30,00);
+                            //    var iLastTime = new TimeSpan(09, 00, 00);
+
+                            //    if (startTime >= iFirstTime && endTime <= iLastTime) nightShiftFlag = true;
+                            //}
+
                             var empLeaves = _empLeaves.Where(x => x.EmployeeId == employee.EmployeeID &&
                                                                   (x.StartDate <= fromDate && x.EndDate >= fromDate ||
                                                                    x.StartDate <= toDate && x.EndDate >= toDate) &&
@@ -1991,8 +2004,8 @@ namespace ImillReports.Repository
         /// In Development
         public string SendShiftStartDetailReport()
         {
-            var today = DateTime.Now;
-            // var today = new DateTime(2021, 06, 26, 23, 00, 00);
+            // var today = DateTime.Now;
+            var today = new DateTime(2021, 06, 29, 23, 00, 00);
 
             try
             {
