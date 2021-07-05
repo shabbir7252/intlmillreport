@@ -46,6 +46,8 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Microsoft.Web.Infrastructure.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Newtonsoft.Json.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Owin.dll
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Syncfusion.EJ2.dll
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Syncfusion.Licensing.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\System.Data.SQLite.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\System.Data.SQLite.EF6.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\System.Data.SQLite.Linq.dll
@@ -62,6 +64,7 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\WebGrease.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\EntityFramework.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\EntityFramework.SqlServer.xml
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Syncfusion.EJ2.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\System.Data.SQLite.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\System.Net.Http.Formatting.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\System.Web.Http.xml
@@ -88,11 +91,8 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Microsoft.Owin.Security.OAuth.xml
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\obj\Debug\PosDelivery.csproj.AssemblyReference.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\obj\Debug\PosDelivery.csproj.CoreCompileInputs.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\obj\Debug\PosDelivery.csproj.CopyComplete
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\obj\Debug\PosDelivery.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\obj\Debug\PosDelivery.pdb
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\obj\Debug\PosDelivery.csproj.AssemblyReference.cache
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Syncfusion.EJ2.dll
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Syncfusion.Licensing.dll
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\PosDelivery\bin\Syncfusion.EJ2.xml

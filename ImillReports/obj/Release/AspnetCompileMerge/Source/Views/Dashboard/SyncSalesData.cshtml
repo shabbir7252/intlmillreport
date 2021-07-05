@@ -10,6 +10,42 @@
 @section scripts {
     <script>
 
+
+
+
+
+        SyncPOSDeliveryData();
+
+        const posInterval = setInterval(function () {
+            SyncPOSDeliveryData()
+        }, 10000);
+
+        function SyncPOSDeliveryData() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("PosDeliverySync", "PosDelivery")',
+                data: {
+                    backDays : -1
+                },
+                success: function (response) {
+                    console.log("POS Delivery : ", response);
+                },
+                error: function (ex) {
+                    console.log("POS Delivery Error : ", ex);
+                }
+
+            });
+        } 
+
+
+
+
+
+
+
+
+
+
         // SyncUNVData();
 
         @*function SyncUNVData() {
@@ -259,8 +295,8 @@
 
         // ****************** Time Attendance Sync ***************** //
 
-        var taFromDate = new Date(2020, 9, 16);
-        var taEndDate = new Date(2020, 9, 16);
+        // var taFromDate = new Date(2020, 9, 16);
+        // var taEndDate = new Date(2020, 9, 16);
 
         //SyncTAReport();
         //const interval = setInterval(function () {
@@ -307,12 +343,12 @@
 
         // ****************** Sending Mail For Time Attendance ***************** //
 
-         EmailTAReport();
+        // EmailTAReport();
         //const emailInterval = setInterval(function () {
         //    EmailTAReport();
         //}, 30000);
 
-        function EmailTAReport() {
+        @*function EmailTAReport() {
             $.ajax({
                 type: 'GET',
                 url: '@Url.Action("SendShiftStartEmail", "TAReport")',
@@ -323,7 +359,7 @@
                     console.log("TA Email: ", ex);
                 }
             });
-        }
+        }*@
 
         @*EmailTAEndReport();
         //const emailEndInterval = setInterval(function () {
@@ -410,7 +446,7 @@
 
         // ****************** Month Sales Data Sync (Manual) ***************** //
 
-        SyncSalesMonthReport();
+        // SyncSalesMonthReport();
 
         @*function SyncSalesMonthReport() {
             console.log("Have Started!");

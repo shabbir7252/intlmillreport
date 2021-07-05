@@ -75,7 +75,7 @@ namespace ImillReports.Repository
 
             var salesDetails = salesDetailsOfMonth.Where(x => x.LocationId != 1 && x.LocationId != 84).GroupBy(x => x.ProdId);
 
-            var top5ProductsByAmount = new List<Product>();
+            var top5ProductsByAmount = new List<ViewModels.Product> ();
 
             foreach (var item in salesDetails.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
@@ -108,7 +108,7 @@ namespace ImillReports.Repository
                     productDetails.Add(productDetail);
                 }
 
-                var product = new Product
+                var product = new ViewModels.Product
                 {
                     ProductId = prod.ProductId,
                     Name = prod.Name,
@@ -128,7 +128,7 @@ namespace ImillReports.Repository
 
             var salesDetailsHo = salesDetailsOfMonth.Where(x => x.LocationId == 1 || x.LocationId == 84).GroupBy(x => x.ProdId);
 
-            var top5HoProductsByAmount = new List<Product>();
+            var top5HoProductsByAmount = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsHo.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
@@ -158,7 +158,7 @@ namespace ImillReports.Repository
                     productDetails.Add(productDetail);
                 }
 
-                var product = new Product
+                var product = new ViewModels.Product
                 {
                     Name = prod.Name,
                     NameAr = prod.NameAr,
@@ -196,7 +196,7 @@ namespace ImillReports.Repository
                                                                                    (x.BaseUnitId == 40 ||
                                                                                     x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
 
-            var top5ProductsByKg = new List<Product>();
+            var top5ProductsByKg = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsByKg.OrderByDescending(a => a.Sum(b => b.BaseUnitId == 40
                                                                                     ? b.BaseQuantity * b.SellQuantity
@@ -244,7 +244,7 @@ namespace ImillReports.Repository
 
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                var product = new ViewModels.Product
                 {
                     Name = prod.Name,
                     NameAr = prod.NameAr,
@@ -271,7 +271,7 @@ namespace ImillReports.Repository
                                                                                      (x.BaseUnitId == 40 ||
                                                                                      x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
 
-            var top5ProductsHoByKg = new List<Product>();
+            var top5ProductsHoByKg = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsHoByKg.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40
                                                                                     ? x.BaseQuantity * x.SellQuantity
@@ -316,7 +316,7 @@ namespace ImillReports.Repository
 
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                var product = new ViewModels.Product
                 {
                     Name = prod.Name,
                     NameAr = prod.NameAr,
@@ -352,7 +352,7 @@ namespace ImillReports.Repository
                                                                                     x.BaseUnitId != 42 &&
                                                                                     x.ProdId != 19595).GroupBy(x => x.ProdId);
 
-            var top5ProductsByQty = new List<Product>();
+            var top5ProductsByQty = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsByQty.OrderByDescending(a => a.Sum(b => b.BaseQuantity * b.SellQuantity)).Take(10))
             {
@@ -389,7 +389,7 @@ namespace ImillReports.Repository
                 var itemTotalQty = item.Sum(a => a.SellQuantity);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                var product = new ViewModels.Product
                 {
                     Name = prod.Name,
                     NameAr = prod.NameAr,
@@ -414,7 +414,7 @@ namespace ImillReports.Repository
                                                                                       x.BaseUnitId != 42 &&
                                                                                       x.ProdId != 19595).GroupBy(x => x.ProdId);
 
-            var top5ProductsHoByQty = new List<Product>();
+            var top5ProductsHoByQty = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsHoByQty.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(10))
             {
@@ -449,7 +449,7 @@ namespace ImillReports.Repository
                 var itemTotalQty = item.Sum(a => a.SellQuantity);
                 var prod = products.FirstOrDefault(x => x.ProductId == item.Key);
 
-                var product = new Product
+                var product = new ViewModels.Product
                 {
                     Name = prod.Name,
                     NameAr = prod.NameAr,
@@ -1311,7 +1311,7 @@ namespace ImillReports.Repository
             var totalAmount = branchSalesDetail.Sum(x => x.Amount);
             var salesDetails = branchSalesDetail.GroupBy(x => x.ProdId);
 
-            var top5ProductsByAmount = new List<Product>();
+            var top5ProductsByAmount = new List<ViewModels.Product>();
 
             foreach (var item in salesDetails.OrderByDescending(a => a.Sum(b => b.Amount)).Take(10))
             {
@@ -1343,7 +1343,7 @@ namespace ImillReports.Repository
 
                 if (prod != null)
                 {
-                    var product = new Product
+                    var product = new ViewModels.Product
                     {
                         ProductId = prod.ProductId,
                         Name = prod.Name,
@@ -1368,7 +1368,7 @@ namespace ImillReports.Repository
             // 2022 = Cash
             // 2023 = Sales Return            
 
-            var top5HoProductsByAmount = new List<Product>();
+            var top5HoProductsByAmount = new List<ViewModels.Product>();
 
 
 
@@ -1400,7 +1400,7 @@ namespace ImillReports.Repository
 
                 if (prod != null)
                 {
-                    var product = new Product
+                    var product = new ViewModels.Product
                     {
                         Name = prod.Name,
                         NameAr = prod.NameAr,
@@ -1430,7 +1430,7 @@ namespace ImillReports.Repository
 
             var salesDetailsByKg = branchSalesDetail.Where(x => x.BaseUnitId == 40 || x.BaseUnitId == 42).GroupBy(x => x.ProdId);
 
-            var top5ProductsByKg = new List<Product>();
+            var top5ProductsByKg = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsByKg.OrderByDescending(a => a.Sum(b => b.BaseUnitId == 40
                                                                                     ? b.BaseQuantity * b.SellQuantity
@@ -1476,7 +1476,7 @@ namespace ImillReports.Repository
 
                 if (prod != null)
                 {
-                    var product = new Product
+                    var product = new ViewModels.Product
                     {
                         Name = prod.Name,
                         NameAr = prod.NameAr,
@@ -1501,7 +1501,7 @@ namespace ImillReports.Repository
 
             var salesDetailsHoByKg = hoSalesDetails.Where(x => (x.BaseUnitId == 40 || x.BaseUnitId == 42)).GroupBy(x => x.ProdId);
 
-            var top5ProductsHoByKg = new List<Product>();
+            var top5ProductsHoByKg = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsHoByKg.OrderByDescending(a => a.Sum(x => x.BaseUnitId == 40
                                                                                     ? x.BaseQuantity * x.SellQuantity
@@ -1547,7 +1547,7 @@ namespace ImillReports.Repository
                 if (prod != null)
                 {
 
-                    var product = new Product
+                    var product = new ViewModels.Product
                     {
                         Name = prod.Name,
                         NameAr = prod.NameAr,
@@ -1579,7 +1579,7 @@ namespace ImillReports.Repository
                                                                  x.ProdId != 19595)
                                                      .GroupBy(x => x.ProdId);
 
-            var top5ProductsByQty = new List<Product>();
+            var top5ProductsByQty = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsByQty.OrderByDescending(a => a.Sum(b => b.BaseQuantity * b.SellQuantity)).Take(10))
             {
@@ -1615,7 +1615,7 @@ namespace ImillReports.Repository
 
                 if (prod != null)
                 {
-                    var product = new Product
+                    var product = new ViewModels.Product
                     {
                         Name = prod.Name,
                         NameAr = prod.NameAr,
@@ -1639,7 +1639,7 @@ namespace ImillReports.Repository
                                                                 x.BaseUnitId != 42 &&
                                                                 x.ProdId != 19595).GroupBy(x => x.ProdId);
 
-            var top5ProductsHoByQty = new List<Product>();
+            var top5ProductsHoByQty = new List<ViewModels.Product>();
 
             foreach (var item in salesDetailsHoByQty.OrderByDescending(a => a.Sum(b => b.SellQuantity)).Take(10))
             {
@@ -1675,7 +1675,7 @@ namespace ImillReports.Repository
 
                 if (prod != null)
                 {
-                    var product = new Product
+                    var product = new ViewModels.Product
                     {
                         Name = prod.Name,
                         NameAr = prod.NameAr,

@@ -1,0 +1,2203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="intlmilldbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Addresses">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddressName" Type="nvarchar(max)" />
+          <Property Name="AddressNameAr" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="int" Nullable="false" />
+          <Property Name="Block" Type="nvarchar(max)" />
+          <Property Name="Street" Type="nvarchar(max)" />
+          <Property Name="House" Type="nvarchar(max)" />
+          <Property Name="Floor" Type="int" Nullable="false" />
+          <Property Name="Flat" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="Area_AreaId" Type="int" />
+          <Property Name="Customer_CustomerGuid" Type="uniqueidentifier" />
+          <Property Name="Governorates_GovernorateId" Type="int" />
+          <Property Name="FullAddress" Type="nvarchar(max)" />
+          <Property Name="PACINumber" Type="nvarchar(max)" />
+          <Property Name="Avenue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Areas">
+          <Key>
+            <PropertyRef Name="AreaId" />
+          </Key>
+          <Property Name="AreaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AreaName" Type="nvarchar(max)" />
+          <Property Name="AreaNameAr" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="Governorates_GovernorateId" Type="int" />
+          <Property Name="Branch_BranchId" Type="int" />
+          <Property Name="DeliveryMode_Oid" Type="int" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Branches">
+          <Key>
+            <PropertyRef Name="BranchId" />
+          </Key>
+          <Property Name="BranchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BranchCode" Type="int" Nullable="false" />
+          <Property Name="BranchName" Type="nvarchar(max)" />
+          <Property Name="BranchNameAr" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BranchUsers">
+          <Key>
+            <PropertyRef Name="BranchUserGuid" />
+          </Key>
+          <Property Name="BranchUserGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="BranchUserName" Type="nvarchar(max)" />
+          <Property Name="BranchUserNameAr" Type="nvarchar(max)" />
+          <Property Name="ContactNumber" Type="int" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="branch_BranchId" Type="int" />
+          <Property Name="Email" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CartSettings">
+          <Key>
+            <PropertyRef Name="CartSettingsId" />
+          </Key>
+          <Property Name="CartSettingsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckoutAmountLimit" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar(max)" />
+          <Property Name="CategoryNameAr" Type="nvarchar(max)" />
+          <Property Name="CategoryDescription" Type="nvarchar(max)" />
+          <Property Name="CategoryDescriptionAr" Type="nvarchar(max)" />
+          <Property Name="ParentCategoryID" Type="int" />
+          <Property Name="CategoryImage" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerGuid" />
+          </Key>
+          <Property Name="CustomerGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar(max)" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="HasShoppingCartItems" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="ApplicationUser_Id" Type="nvarchar" MaxLength="128" />
+          <Property Name="DOB" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Deliveries">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeliveryModes">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="NameAr" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Governorates">
+          <Key>
+            <PropertyRef Name="GovernorateId" />
+          </Key>
+          <Property Name="GovernorateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GovernoratesName" Type="nvarchar(max)" />
+          <Property Name="GovernoratesNameAr" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrderItems">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+          </Key>
+          <Property Name="OrderItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="Order_OrderId" Type="int" />
+          <Property Name="ProductAttributeValue_ProductAttributeValueId" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderNumbers">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNum" Type="int" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomOrderNumber" Type="int" Nullable="false" />
+          <Property Name="CustomerIpAddress" Type="nvarchar(max)" />
+          <Property Name="OrderNotes" Type="nvarchar(max)" />
+          <Property Name="OrderStatus" Type="int" Nullable="false" />
+          <Property Name="PaidDateUtc" Type="datetime" />
+          <Property Name="PaymentStatus" Type="int" Nullable="false" />
+          <Property Name="PaymentType" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="Address_AddressId" Type="int" />
+          <Property Name="Customer_CustomerGuid" Type="uniqueidentifier" />
+          <Property Name="Branch_BranchId" Type="int" />
+          <Property Name="TotalOrderAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ShippingCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Delivery_Oid" Type="int" />
+          <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
+          <Property Name="DeliveryMode_Oid" Type="int" />
+          <Property Name="TimeSlot_Oid" Type="int" />
+          <Property Name="reference_number" Type="nvarchar(max)" />
+          <Property Name="result" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PickupDeliveries">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="TimeSlot_Oid" Type="int" />
+        </EntityType>
+        <EntityType Name="Product_Category_Mapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category_CategoryID" Type="int" />
+          <Property Name="Products_ProductID" Type="int" />
+        </EntityType>
+        <EntityType Name="Product_ProductAttribute_Mapping">
+          <Key>
+            <PropertyRef Name="ProductAttributeMappingId" />
+          </Key>
+          <Property Name="ProductAttributeMappingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="Product_ProductID" Type="int" />
+          <Property Name="ProductAttribute_ProductAttributeId" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductAttributes">
+          <Key>
+            <PropertyRef Name="ProductAttributeId" />
+          </Key>
+          <Property Name="ProductAttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductAttributeName" Type="nvarchar(max)" />
+          <Property Name="ProductAttributeNameAr" Type="nvarchar(max)" />
+          <Property Name="ProductAttributeDescription" Type="nvarchar(max)" />
+          <Property Name="ProductAttributeDescriptionAr" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProductAttributeValues">
+          <Key>
+            <PropertyRef Name="ProductAttributeValueId" />
+          </Key>
+          <Property Name="ProductAttributeValueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductAttributeValueName" Type="nvarchar(max)" />
+          <Property Name="ProductAttributeValueNameAr" Type="nvarchar(max)" />
+          <Property Name="SalesPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="StockQuantity" Type="int" Nullable="false" />
+          <Property Name="MaxOrder" Type="int" Nullable="false" />
+          <Property Name="LowStockQuantity" Type="int" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="Product_ProductAttribute_Mapping_ProductAttributeMappingId" Type="int" />
+          <Property Name="Barcode" Type="nvarchar(max)" />
+          <Property Name="MinOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar(max)" />
+          <Property Name="ProductNameAr" Type="nvarchar(max)" />
+          <Property Name="ProductDescription" Type="nvarchar(max)" />
+          <Property Name="ProductDescriptionAr" Type="nvarchar(max)" />
+          <Property Name="ProductPhoto" Type="nvarchar(max)" />
+          <Property Name="ProductSKU" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shipments">
+          <Key>
+            <PropertyRef Name="ShipmentId" />
+          </Key>
+          <Property Name="ShipmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShippingStatus" Type="int" Nullable="false" />
+          <Property Name="TrackingNumber" Type="nvarchar(max)" />
+          <Property Name="TotalWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ShippedDate" Type="datetime" />
+          <Property Name="DeliveryDate" Type="datetime" />
+          <Property Name="AdminComment" Type="nvarchar(max)" />
+          <Property Name="Order_OrderId" Type="int" />
+        </EntityType>
+        <EntityType Name="ShipmentSettings">
+          <Key>
+            <PropertyRef Name="ShipmentSettingsId" />
+          </Key>
+          <Property Name="ShipmentSettingsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StandardShippingCharges" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="FreeShippingAmountLimit" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShoppingCarts">
+          <Key>
+            <PropertyRef Name="ShoppingCartId" />
+          </Key>
+          <Property Name="ShoppingCartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShoppingCartType" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="TotalCost" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="Customer_CustomerGuid" Type="uniqueidentifier" />
+          <Property Name="Products_ProductID" Type="int" />
+          <Property Name="ProductAttributeValue_ProductAttributeValueId" Type="int" />
+          <Property Name="ShippingCost" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeSlots">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="NameAr" Type="nvarchar(max)" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Addresses_dbo_Areas_Area_AreaId">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="Area_AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerGuid" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="Customer_CustomerGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId">
+          <End Role="Governorates" Type="Self.Governorates" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Governorates">
+              <PropertyRef Name="GovernorateId" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="Governorates_GovernorateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Areas_dbo_Branches_Branch_BranchId">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="Areas" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="Branch_BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid">
+          <End Role="DeliveryModes" Type="Self.DeliveryModes" Multiplicity="0..1" />
+          <End Role="Areas" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryModes">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="DeliveryMode_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId">
+          <End Role="Governorates" Type="Self.Governorates" Multiplicity="0..1" />
+          <End Role="Areas" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Governorates">
+              <PropertyRef Name="GovernorateId" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="Governorates_GovernorateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BranchUsers_dbo_Branches_branch_BranchId">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="BranchUsers" Type="Self.BranchUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="BranchUsers">
+              <PropertyRef Name="branch_BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="ApplicationUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_OrderItems_dbo_Orders_Order_OrderId">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="Order_OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+          <End Role="ProductAttributeValues" Type="Self.ProductAttributeValues" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductAttributeValues">
+              <PropertyRef Name="ProductAttributeValueId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductAttributeValue_ProductAttributeValueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Addresses_Address_AddressId">
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Address_AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Branches_Branch_BranchId">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Branch_BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerGuid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Customer_CustomerGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Deliveries_Delivery_Oid">
+          <End Role="Deliveries" Type="Self.Deliveries" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Deliveries">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Delivery_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid">
+          <End Role="DeliveryModes" Type="Self.DeliveryModes" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryModes">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="DeliveryMode_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid">
+          <End Role="TimeSlots" Type="Self.TimeSlots" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlots">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="TimeSlot_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid">
+          <End Role="TimeSlots" Type="Self.TimeSlots" Multiplicity="0..1" />
+          <End Role="PickupDeliveries" Type="Self.PickupDeliveries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlots">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="PickupDeliveries">
+              <PropertyRef Name="TimeSlot_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Product_Category_Mapping" Type="Self.Product_Category_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Product_Category_Mapping">
+              <PropertyRef Name="Category_CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Product_Category_Mapping" Type="Self.Product_Category_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Product_Category_Mapping">
+              <PropertyRef Name="Products_ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId">
+          <End Role="ProductAttributes" Type="Self.ProductAttributes" Multiplicity="0..1" />
+          <End Role="Product_ProductAttribute_Mapping" Type="Self.Product_ProductAttribute_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductAttributes">
+              <PropertyRef Name="ProductAttributeId" />
+            </Principal>
+            <Dependent Role="Product_ProductAttribute_Mapping">
+              <PropertyRef Name="ProductAttribute_ProductAttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Product_ProductAttribute_Mapping" Type="Self.Product_ProductAttribute_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Product_ProductAttribute_Mapping">
+              <PropertyRef Name="Product_ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId">
+          <End Role="Product_ProductAttribute_Mapping" Type="Self.Product_ProductAttribute_Mapping" Multiplicity="0..1" />
+          <End Role="ProductAttributeValues" Type="Self.ProductAttributeValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_ProductAttribute_Mapping">
+              <PropertyRef Name="ProductAttributeMappingId" />
+            </Principal>
+            <Dependent Role="ProductAttributeValues">
+              <PropertyRef Name="Product_ProductAttribute_Mapping_ProductAttributeMappingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Shipments_dbo_Orders_Order_OrderId">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="Shipments" Type="Self.Shipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Shipments">
+              <PropertyRef Name="Order_OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="ShoppingCarts" Type="Self.ShoppingCarts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerGuid" />
+            </Principal>
+            <Dependent Role="ShoppingCarts">
+              <PropertyRef Name="Customer_CustomerGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+          <End Role="ProductAttributeValues" Type="Self.ProductAttributeValues" Multiplicity="0..1" />
+          <End Role="ShoppingCarts" Type="Self.ShoppingCarts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductAttributeValues">
+              <PropertyRef Name="ProductAttributeValueId" />
+            </Principal>
+            <Dependent Role="ShoppingCarts">
+              <PropertyRef Name="ProductAttributeValue_ProductAttributeValueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ShoppingCarts" Type="Self.ShoppingCarts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ShoppingCarts">
+              <PropertyRef Name="Products_ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="intlmilldbModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Areas" EntityType="Self.Areas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BranchUsers" EntityType="Self.BranchUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CartSettings" EntityType="Self.CartSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deliveries" EntityType="Self.Deliveries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryModes" EntityType="Self.DeliveryModes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Governorates" EntityType="Self.Governorates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderNumbers" EntityType="Self.OrderNumbers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PickupDeliveries" EntityType="Self.PickupDeliveries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_Category_Mapping" EntityType="Self.Product_Category_Mapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_ProductAttribute_Mapping" EntityType="Self.Product_ProductAttribute_Mapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductAttributes" EntityType="Self.ProductAttributes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductAttributeValues" EntityType="Self.ProductAttributeValues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shipments" EntityType="Self.Shipments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShipmentSettings" EntityType="Self.ShipmentSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShoppingCarts" EntityType="Self.ShoppingCarts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeSlots" EntityType="Self.TimeSlots" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Addresses_dbo_Areas_Area_AreaId" Association="Self.FK_dbo_Addresses_dbo_Areas_Area_AreaId">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid" Association="Self.FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId" Association="Self.FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId">
+            <End Role="Governorates" EntitySet="Governorates" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Areas_dbo_Branches_Branch_BranchId" Association="Self.FK_dbo_Areas_dbo_Branches_Branch_BranchId">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid" Association="Self.FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid">
+            <End Role="DeliveryModes" EntitySet="DeliveryModes" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId" Association="Self.FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId">
+            <End Role="Governorates" EntitySet="Governorates" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BranchUsers_dbo_Branches_branch_BranchId" Association="Self.FK_dbo_BranchUsers_dbo_Branches_branch_BranchId">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="BranchUsers" EntitySet="BranchUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id" Association="Self.FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_OrderItems_dbo_Orders_Order_OrderId" Association="Self.FK_dbo_OrderItems_dbo_Orders_Order_OrderId">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" Association="Self.FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+            <End Role="ProductAttributeValues" EntitySet="ProductAttributeValues" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Addresses_Address_AddressId" Association="Self.FK_dbo_Orders_dbo_Addresses_Address_AddressId">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Branches_Branch_BranchId" Association="Self.FK_dbo_Orders_dbo_Branches_Branch_BranchId">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid" Association="Self.FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Deliveries_Delivery_Oid" Association="Self.FK_dbo_Orders_dbo_Deliveries_Delivery_Oid">
+            <End Role="Deliveries" EntitySet="Deliveries" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid" Association="Self.FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid">
+            <End Role="DeliveryModes" EntitySet="DeliveryModes" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid" Association="Self.FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid">
+            <End Role="TimeSlots" EntitySet="TimeSlots" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid" Association="Self.FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid">
+            <End Role="TimeSlots" EntitySet="TimeSlots" />
+            <End Role="PickupDeliveries" EntitySet="PickupDeliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID" Association="Self.FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Product_Category_Mapping" EntitySet="Product_Category_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID" Association="Self.FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_Category_Mapping" EntitySet="Product_Category_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId" Association="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId">
+            <End Role="ProductAttributes" EntitySet="ProductAttributes" />
+            <End Role="Product_ProductAttribute_Mapping" EntitySet="Product_ProductAttribute_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID" Association="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_ProductAttribute_Mapping" EntitySet="Product_ProductAttribute_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId" Association="Self.FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId">
+            <End Role="Product_ProductAttribute_Mapping" EntitySet="Product_ProductAttribute_Mapping" />
+            <End Role="ProductAttributeValues" EntitySet="ProductAttributeValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Shipments_dbo_Orders_Order_OrderId" Association="Self.FK_dbo_Shipments_dbo_Orders_Order_OrderId">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Shipments" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid" Association="Self.FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="ShoppingCarts" EntitySet="ShoppingCarts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" Association="Self.FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+            <End Role="ProductAttributeValues" EntitySet="ProductAttributeValues" />
+            <End Role="ShoppingCarts" EntitySet="ShoppingCarts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID" Association="Self.FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ShoppingCarts" EntitySet="ShoppingCarts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="intlmilldbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddressName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddressNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="Int32" Nullable="false" />
+          <Property Name="Block" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="House" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Floor" Type="Int32" Nullable="false" />
+          <Property Name="Flat" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Area_AreaId" Type="Int32" />
+          <Property Name="Customer_CustomerGuid" Type="Guid" />
+          <Property Name="Governorates_GovernorateId" Type="Int32" />
+          <Property Name="FullAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PACINumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Avenue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Area" Relationship="Self.FK_dbo_Addresses_dbo_Areas_Area_AreaId" FromRole="Addresses" ToRole="Areas" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid" FromRole="Addresses" ToRole="Customers" />
+          <NavigationProperty Name="Governorate" Relationship="Self.FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId" FromRole="Addresses" ToRole="Governorates" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_dbo_Orders_dbo_Addresses_Address_AddressId" FromRole="Addresses" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreaId" />
+          </Key>
+          <Property Name="AreaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AreaName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AreaNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Governorates_GovernorateId" Type="Int32" />
+          <Property Name="Branch_BranchId" Type="Int32" />
+          <Property Name="DeliveryMode_Oid" Type="Int32" />
+          <NavigationProperty Name="Addresses" Relationship="Self.FK_dbo_Addresses_dbo_Areas_Area_AreaId" FromRole="Areas" ToRole="Addresses" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_dbo_Areas_dbo_Branches_Branch_BranchId" FromRole="Areas" ToRole="Branches" />
+          <NavigationProperty Name="DeliveryMode" Relationship="Self.FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid" FromRole="Areas" ToRole="DeliveryModes" />
+          <NavigationProperty Name="Governorate" Relationship="Self.FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId" FromRole="Areas" ToRole="Governorates" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id" FromRole="AspNetUsers" ToRole="Customers" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="BranchId" />
+          </Key>
+          <Property Name="BranchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BranchCode" Type="Int32" Nullable="false" />
+          <Property Name="BranchName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BranchNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_dbo_Areas_dbo_Branches_Branch_BranchId" FromRole="Branches" ToRole="Areas" />
+          <NavigationProperty Name="BranchUsers" Relationship="Self.FK_dbo_BranchUsers_dbo_Branches_branch_BranchId" FromRole="Branches" ToRole="BranchUsers" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_dbo_Orders_dbo_Branches_Branch_BranchId" FromRole="Branches" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="BranchUser">
+          <Key>
+            <PropertyRef Name="BranchUserGuid" />
+          </Key>
+          <Property Name="BranchUserGuid" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BranchUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BranchUserNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="branch_BranchId" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_dbo_BranchUsers_dbo_Branches_branch_BranchId" FromRole="BranchUsers" ToRole="Branches" />
+        </EntityType>
+        <EntityType Name="CartSetting">
+          <Key>
+            <PropertyRef Name="CartSettingsId" />
+          </Key>
+          <Property Name="CartSettingsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckoutAmountLimit" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryDescriptionAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentCategoryID" Type="Int32" />
+          <Property Name="CategoryImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product_Category_Mapping" Relationship="Self.FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID" FromRole="Categories" ToRole="Product_Category_Mapping" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerGuid" />
+          </Key>
+          <Property Name="CustomerGuid" Type="Guid" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HasShoppingCartItems" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ApplicationUser_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Addresses" Relationship="Self.FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid" FromRole="Customers" ToRole="Addresses" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id" FromRole="Customers" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid" FromRole="Customers" ToRole="Orders" />
+          <NavigationProperty Name="ShoppingCarts" Relationship="Self.FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid" FromRole="Customers" ToRole="ShoppingCarts" />
+        </EntityType>
+        <EntityType Name="Delivery">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_dbo_Orders_dbo_Deliveries_Delivery_Oid" FromRole="Deliveries" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="DeliveryMode">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid" FromRole="DeliveryModes" ToRole="Areas" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid" FromRole="DeliveryModes" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Governorate">
+          <Key>
+            <PropertyRef Name="GovernorateId" />
+          </Key>
+          <Property Name="GovernorateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GovernoratesName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GovernoratesNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Addresses" Relationship="Self.FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId" FromRole="Governorates" ToRole="Addresses" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId" FromRole="Governorates" ToRole="Areas" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+          </Key>
+          <Property Name="OrderItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Subtotal" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="Order_OrderId" Type="Int32" />
+          <Property Name="ProductAttributeValue_ProductAttributeValueId" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_dbo_OrderItems_dbo_Orders_Order_OrderId" FromRole="OrderItems" ToRole="Orders" />
+          <NavigationProperty Name="ProductAttributeValue" Relationship="Self.FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" FromRole="OrderItems" ToRole="ProductAttributeValues" />
+        </EntityType>
+        <EntityType Name="OrderNumber">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNum" Type="Int32" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomOrderNumber" Type="Int32" Nullable="false" />
+          <Property Name="CustomerIpAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrderStatus" Type="Int32" Nullable="false" />
+          <Property Name="PaidDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="PaymentStatus" Type="Int32" Nullable="false" />
+          <Property Name="PaymentType" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Address_AddressId" Type="Int32" />
+          <Property Name="Customer_CustomerGuid" Type="Guid" />
+          <Property Name="Branch_BranchId" Type="Int32" />
+          <Property Name="TotalOrderAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ShippingCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Delivery_Oid" Type="Int32" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeliveryMode_Oid" Type="Int32" />
+          <Property Name="TimeSlot_Oid" Type="Int32" />
+          <Property Name="reference_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="result" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Address" Relationship="Self.FK_dbo_Orders_dbo_Addresses_Address_AddressId" FromRole="Orders" ToRole="Addresses" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_dbo_Orders_dbo_Branches_Branch_BranchId" FromRole="Orders" ToRole="Branches" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid" FromRole="Orders" ToRole="Customers" />
+          <NavigationProperty Name="Delivery" Relationship="Self.FK_dbo_Orders_dbo_Deliveries_Delivery_Oid" FromRole="Orders" ToRole="Deliveries" />
+          <NavigationProperty Name="DeliveryMode" Relationship="Self.FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid" FromRole="Orders" ToRole="DeliveryModes" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK_dbo_OrderItems_dbo_Orders_Order_OrderId" FromRole="Orders" ToRole="OrderItems" />
+          <NavigationProperty Name="TimeSlot" Relationship="Self.FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid" FromRole="Orders" ToRole="TimeSlots" />
+          <NavigationProperty Name="Shipments" Relationship="Self.FK_dbo_Shipments_dbo_Orders_Order_OrderId" FromRole="Orders" ToRole="Shipments" />
+        </EntityType>
+        <EntityType Name="PickupDelivery">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="TimeSlot_Oid" Type="Int32" />
+          <NavigationProperty Name="TimeSlot" Relationship="Self.FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid" FromRole="PickupDeliveries" ToRole="TimeSlots" />
+        </EntityType>
+        <EntityType Name="Product_Category_Mapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category_CategoryID" Type="Int32" />
+          <Property Name="Products_ProductID" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID" FromRole="Product_Category_Mapping" ToRole="Categories" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID" FromRole="Product_Category_Mapping" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Product_ProductAttribute_Mapping">
+          <Key>
+            <PropertyRef Name="ProductAttributeMappingId" />
+          </Key>
+          <Property Name="ProductAttributeMappingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Product_ProductID" Type="Int32" />
+          <Property Name="ProductAttribute_ProductAttributeId" Type="Int32" />
+          <NavigationProperty Name="ProductAttribute" Relationship="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId" FromRole="Product_ProductAttribute_Mapping" ToRole="ProductAttributes" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID" FromRole="Product_ProductAttribute_Mapping" ToRole="Products" />
+          <NavigationProperty Name="ProductAttributeValues" Relationship="Self.FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId" FromRole="Product_ProductAttribute_Mapping" ToRole="ProductAttributeValues" />
+        </EntityType>
+        <EntityType Name="ProductAttribute">
+          <Key>
+            <PropertyRef Name="ProductAttributeId" />
+          </Key>
+          <Property Name="ProductAttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductAttributeName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductAttributeNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductAttributeDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductAttributeDescriptionAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Product_ProductAttribute_Mapping" Relationship="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId" FromRole="ProductAttributes" ToRole="Product_ProductAttribute_Mapping" />
+        </EntityType>
+        <EntityType Name="ProductAttributeValue">
+          <Key>
+            <PropertyRef Name="ProductAttributeValueId" />
+          </Key>
+          <Property Name="ProductAttributeValueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductAttributeValueName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductAttributeValueNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SalesPrice" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="StockQuantity" Type="Int32" Nullable="false" />
+          <Property Name="MaxOrder" Type="Int32" Nullable="false" />
+          <Property Name="LowStockQuantity" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Product_ProductAttribute_Mapping_ProductAttributeMappingId" Type="Int32" />
+          <Property Name="Barcode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MinOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" FromRole="ProductAttributeValues" ToRole="OrderItems" />
+          <NavigationProperty Name="Product_ProductAttribute_Mapping" Relationship="Self.FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId" FromRole="ProductAttributeValues" ToRole="Product_ProductAttribute_Mapping" />
+          <NavigationProperty Name="ShoppingCarts" Relationship="Self.FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" FromRole="ProductAttributeValues" ToRole="ShoppingCarts" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDescriptionAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSKU" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product_Category_Mapping" Relationship="Self.FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID" FromRole="Products" ToRole="Product_Category_Mapping" />
+          <NavigationProperty Name="Product_ProductAttribute_Mapping" Relationship="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID" FromRole="Products" ToRole="Product_ProductAttribute_Mapping" />
+          <NavigationProperty Name="ShoppingCarts" Relationship="Self.FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID" FromRole="Products" ToRole="ShoppingCarts" />
+        </EntityType>
+        <EntityType Name="Shipment">
+          <Key>
+            <PropertyRef Name="ShipmentId" />
+          </Key>
+          <Property Name="ShipmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShippingStatus" Type="Int32" Nullable="false" />
+          <Property Name="TrackingNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TotalWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ShippedDate" Type="DateTime" Precision="3" />
+          <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="AdminComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order_OrderId" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_dbo_Shipments_dbo_Orders_Order_OrderId" FromRole="Shipments" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="ShipmentSetting">
+          <Key>
+            <PropertyRef Name="ShipmentSettingsId" />
+          </Key>
+          <Property Name="ShipmentSettingsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StandardShippingCharges" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="FreeShippingAmountLimit" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShoppingCart">
+          <Key>
+            <PropertyRef Name="ShoppingCartId" />
+          </Key>
+          <Property Name="ShoppingCartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShoppingCartType" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="TotalCost" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Customer_CustomerGuid" Type="Guid" />
+          <Property Name="Products_ProductID" Type="Int32" />
+          <Property Name="ProductAttributeValue_ProductAttributeValueId" Type="Int32" />
+          <Property Name="ShippingCost" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid" FromRole="ShoppingCarts" ToRole="Customers" />
+          <NavigationProperty Name="ProductAttributeValue" Relationship="Self.FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" FromRole="ShoppingCarts" ToRole="ProductAttributeValues" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID" FromRole="ShoppingCarts" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="TimeSlot">
+          <Key>
+            <PropertyRef Name="Oid" />
+          </Key>
+          <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NameAr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid" FromRole="TimeSlots" ToRole="Orders" />
+          <NavigationProperty Name="PickupDeliveries" Relationship="Self.FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid" FromRole="TimeSlots" ToRole="PickupDeliveries" />
+        </EntityType>
+        <Association Name="FK_dbo_Addresses_dbo_Areas_Area_AreaId">
+          <End Role="Areas" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="Area_AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerGuid" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="Customer_CustomerGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId">
+          <End Role="Governorates" Type="Self.Governorate" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Governorates">
+              <PropertyRef Name="GovernorateId" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="Governorates_GovernorateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Addresses_Address_AddressId">
+          <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Address_AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Areas_dbo_Branches_Branch_BranchId">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="0..1" />
+          <End Role="Areas" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="Branch_BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid">
+          <End Role="DeliveryModes" Type="Self.DeliveryMode" Multiplicity="0..1" />
+          <End Role="Areas" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryModes">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="DeliveryMode_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId">
+          <End Role="Governorates" Type="Self.Governorate" Multiplicity="0..1" />
+          <End Role="Areas" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Governorates">
+              <PropertyRef Name="GovernorateId" />
+            </Principal>
+            <Dependent Role="Areas">
+              <PropertyRef Name="Governorates_GovernorateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="ApplicationUser_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_BranchUsers_dbo_Branches_branch_BranchId">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="0..1" />
+          <End Role="BranchUsers" Type="Self.BranchUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="BranchUsers">
+              <PropertyRef Name="branch_BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Branches_Branch_BranchId">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Branch_BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID">
+          <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Product_Category_Mapping" Type="Self.Product_Category_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Product_Category_Mapping">
+              <PropertyRef Name="Category_CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerGuid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Customer_CustomerGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="ShoppingCarts" Type="Self.ShoppingCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerGuid" />
+            </Principal>
+            <Dependent Role="ShoppingCarts">
+              <PropertyRef Name="Customer_CustomerGuid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_Deliveries_Delivery_Oid">
+          <End Role="Deliveries" Type="Self.Delivery" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Deliveries">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Delivery_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid">
+          <End Role="DeliveryModes" Type="Self.DeliveryMode" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryModes">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="DeliveryMode_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_OrderItems_dbo_Orders_Order_OrderId">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="Order_OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+          <End Role="ProductAttributeValues" Type="Self.ProductAttributeValue" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductAttributeValues">
+              <PropertyRef Name="ProductAttributeValueId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductAttributeValue_ProductAttributeValueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid">
+          <End Role="TimeSlots" Type="Self.TimeSlot" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlots">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="TimeSlot_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Shipments_dbo_Orders_Order_OrderId">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Shipments" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Shipments">
+              <PropertyRef Name="Order_OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid">
+          <End Role="TimeSlots" Type="Self.TimeSlot" Multiplicity="0..1" />
+          <End Role="PickupDeliveries" Type="Self.PickupDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlots">
+              <PropertyRef Name="Oid" />
+            </Principal>
+            <Dependent Role="PickupDeliveries">
+              <PropertyRef Name="TimeSlot_Oid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID">
+          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Product_Category_Mapping" Type="Self.Product_Category_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Product_Category_Mapping">
+              <PropertyRef Name="Products_ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId">
+          <End Role="ProductAttributes" Type="Self.ProductAttribute" Multiplicity="0..1" />
+          <End Role="Product_ProductAttribute_Mapping" Type="Self.Product_ProductAttribute_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductAttributes">
+              <PropertyRef Name="ProductAttributeId" />
+            </Principal>
+            <Dependent Role="Product_ProductAttribute_Mapping">
+              <PropertyRef Name="ProductAttribute_ProductAttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID">
+          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Product_ProductAttribute_Mapping" Type="Self.Product_ProductAttribute_Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Product_ProductAttribute_Mapping">
+              <PropertyRef Name="Product_ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId">
+          <End Role="Product_ProductAttribute_Mapping" Type="Self.Product_ProductAttribute_Mapping" Multiplicity="0..1" />
+          <End Role="ProductAttributeValues" Type="Self.ProductAttributeValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_ProductAttribute_Mapping">
+              <PropertyRef Name="ProductAttributeMappingId" />
+            </Principal>
+            <Dependent Role="ProductAttributeValues">
+              <PropertyRef Name="Product_ProductAttribute_Mapping_ProductAttributeMappingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+          <End Role="ProductAttributeValues" Type="Self.ProductAttributeValue" Multiplicity="0..1" />
+          <End Role="ShoppingCarts" Type="Self.ShoppingCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductAttributeValues">
+              <PropertyRef Name="ProductAttributeValueId" />
+            </Principal>
+            <Dependent Role="ShoppingCarts">
+              <PropertyRef Name="ProductAttributeValue_ProductAttributeValueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID">
+          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ShoppingCarts" Type="Self.ShoppingCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ShoppingCarts">
+              <PropertyRef Name="Products_ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="intlmilldbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="Addresses" EntityType="Self.Address" />
+          <EntitySet Name="Areas" EntityType="Self.Area" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="Branches" EntityType="Self.Branch" />
+          <EntitySet Name="BranchUsers" EntityType="Self.BranchUser" />
+          <EntitySet Name="CartSettings" EntityType="Self.CartSetting" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Deliveries" EntityType="Self.Delivery" />
+          <EntitySet Name="DeliveryModes" EntityType="Self.DeliveryMode" />
+          <EntitySet Name="Governorates" EntityType="Self.Governorate" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItem" />
+          <EntitySet Name="OrderNumbers" EntityType="Self.OrderNumber" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="PickupDeliveries" EntityType="Self.PickupDelivery" />
+          <EntitySet Name="Product_Category_Mapping" EntityType="Self.Product_Category_Mapping" />
+          <EntitySet Name="Product_ProductAttribute_Mapping" EntityType="Self.Product_ProductAttribute_Mapping" />
+          <EntitySet Name="ProductAttributes" EntityType="Self.ProductAttribute" />
+          <EntitySet Name="ProductAttributeValues" EntityType="Self.ProductAttributeValue" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Shipments" EntityType="Self.Shipment" />
+          <EntitySet Name="ShipmentSettings" EntityType="Self.ShipmentSetting" />
+          <EntitySet Name="ShoppingCarts" EntityType="Self.ShoppingCart" />
+          <EntitySet Name="TimeSlots" EntityType="Self.TimeSlot" />
+          <AssociationSet Name="FK_dbo_Addresses_dbo_Areas_Area_AreaId" Association="Self.FK_dbo_Addresses_dbo_Areas_Area_AreaId">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid" Association="Self.FK_dbo_Addresses_dbo_Customers_Customer_CustomerGuid">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId" Association="Self.FK_dbo_Addresses_dbo_Governorates_Governorates_GovernorateId">
+            <End Role="Governorates" EntitySet="Governorates" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Addresses_Address_AddressId" Association="Self.FK_dbo_Orders_dbo_Addresses_Address_AddressId">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Areas_dbo_Branches_Branch_BranchId" Association="Self.FK_dbo_Areas_dbo_Branches_Branch_BranchId">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid" Association="Self.FK_dbo_Areas_dbo_DeliveryModes_DeliveryMode_Oid">
+            <End Role="DeliveryModes" EntitySet="DeliveryModes" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId" Association="Self.FK_dbo_Areas_dbo_Governorates_Governorates_GovernorateId">
+            <End Role="Governorates" EntitySet="Governorates" />
+            <End Role="Areas" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id" Association="Self.FK_dbo_Customers_dbo_AspNetUsers_ApplicationUser_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_BranchUsers_dbo_Branches_branch_BranchId" Association="Self.FK_dbo_BranchUsers_dbo_Branches_branch_BranchId">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="BranchUsers" EntitySet="BranchUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Branches_Branch_BranchId" Association="Self.FK_dbo_Orders_dbo_Branches_Branch_BranchId">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID" Association="Self.FK_dbo_Product_Category_Mapping_dbo_Categories_Category_CategoryID">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Product_Category_Mapping" EntitySet="Product_Category_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid" Association="Self.FK_dbo_Orders_dbo_Customers_Customer_CustomerGuid">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid" Association="Self.FK_dbo_ShoppingCarts_dbo_Customers_Customer_CustomerGuid">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="ShoppingCarts" EntitySet="ShoppingCarts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_Deliveries_Delivery_Oid" Association="Self.FK_dbo_Orders_dbo_Deliveries_Delivery_Oid">
+            <End Role="Deliveries" EntitySet="Deliveries" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid" Association="Self.FK_dbo_Orders_dbo_DeliveryModes_DeliveryMode_Oid">
+            <End Role="DeliveryModes" EntitySet="DeliveryModes" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_OrderItems_dbo_Orders_Order_OrderId" Association="Self.FK_dbo_OrderItems_dbo_Orders_Order_OrderId">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" Association="Self.FK_dbo_OrderItems_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+            <End Role="ProductAttributeValues" EntitySet="ProductAttributeValues" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid" Association="Self.FK_dbo_Orders_dbo_TimeSlots_TimeSlot_Oid">
+            <End Role="TimeSlots" EntitySet="TimeSlots" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Shipments_dbo_Orders_Order_OrderId" Association="Self.FK_dbo_Shipments_dbo_Orders_Order_OrderId">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Shipments" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid" Association="Self.FK_dbo_PickupDeliveries_dbo_TimeSlots_TimeSlot_Oid">
+            <End Role="TimeSlots" EntitySet="TimeSlots" />
+            <End Role="PickupDeliveries" EntitySet="PickupDeliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID" Association="Self.FK_dbo_Product_Category_Mapping_dbo_Products_Products_ProductID">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_Category_Mapping" EntitySet="Product_Category_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId" Association="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_ProductAttributes_ProductAttribute_ProductAttributeId">
+            <End Role="ProductAttributes" EntitySet="ProductAttributes" />
+            <End Role="Product_ProductAttribute_Mapping" EntitySet="Product_ProductAttribute_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID" Association="Self.FK_dbo_Product_ProductAttribute_Mapping_dbo_Products_Product_ProductID">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_ProductAttribute_Mapping" EntitySet="Product_ProductAttribute_Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId" Association="Self.FK_dbo_ProductAttributeValues_dbo_Product_ProductAttribute_Mapping_Product_ProductAttribute_Mapping_ProductAttributeMappingId">
+            <End Role="Product_ProductAttribute_Mapping" EntitySet="Product_ProductAttribute_Mapping" />
+            <End Role="ProductAttributeValues" EntitySet="ProductAttributeValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId" Association="Self.FK_dbo_ShoppingCarts_dbo_ProductAttributeValues_ProductAttributeValue_ProductAttributeValueId">
+            <End Role="ProductAttributeValues" EntitySet="ProductAttributeValues" />
+            <End Role="ShoppingCarts" EntitySet="ShoppingCarts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID" Association="Self.FK_dbo_ShoppingCarts_dbo_Products_Products_ProductID">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ShoppingCarts" EntitySet="ShoppingCarts" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="intlmilldbModelStoreContainer" CdmEntityContainer="intlmilldbEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="intlmilldbModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="intlmilldbModel.Address">
+              <MappingFragment StoreEntitySet="Addresses">
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="AddressName" ColumnName="AddressName" />
+                <ScalarProperty Name="AddressNameAr" ColumnName="AddressNameAr" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Block" ColumnName="Block" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="House" ColumnName="House" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+                <ScalarProperty Name="Flat" ColumnName="Flat" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Area_AreaId" ColumnName="Area_AreaId" />
+                <ScalarProperty Name="Customer_CustomerGuid" ColumnName="Customer_CustomerGuid" />
+                <ScalarProperty Name="Governorates_GovernorateId" ColumnName="Governorates_GovernorateId" />
+                <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+                <ScalarProperty Name="PACINumber" ColumnName="PACINumber" />
+                <ScalarProperty Name="Avenue" ColumnName="Avenue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="intlmilldbModel.Area">
+              <MappingFragment StoreEntitySet="Areas">
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="AreaNameAr" ColumnName="AreaNameAr" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Governorates_GovernorateId" ColumnName="Governorates_GovernorateId" />
+                <ScalarProperty Name="Branch_BranchId" ColumnName="Branch_BranchId" />
+                <ScalarProperty Name="DeliveryMode_Oid" ColumnName="DeliveryMode_Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="intlmilldbModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="intlmilldbModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="intlmilldbModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="intlmilldbModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="intlmilldbModel.Branch">
+              <MappingFragment StoreEntitySet="Branches">
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="BranchNameAr" ColumnName="BranchNameAr" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BranchUsers">
+            <EntityTypeMapping TypeName="intlmilldbModel.BranchUser">
+              <MappingFragment StoreEntitySet="BranchUsers">
+                <ScalarProperty Name="BranchUserGuid" ColumnName="BranchUserGuid" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BranchUserName" ColumnName="BranchUserName" />
+                <ScalarProperty Name="BranchUserNameAr" ColumnName="BranchUserNameAr" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="branch_BranchId" ColumnName="branch_BranchId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CartSettings">
+            <EntityTypeMapping TypeName="intlmilldbModel.CartSetting">
+              <MappingFragment StoreEntitySet="CartSettings">
+                <ScalarProperty Name="CartSettingsId" ColumnName="CartSettingsId" />
+                <ScalarProperty Name="CheckoutAmountLimit" ColumnName="CheckoutAmountLimit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="intlmilldbModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryNameAr" ColumnName="CategoryNameAr" />
+                <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
+                <ScalarProperty Name="CategoryDescriptionAr" ColumnName="CategoryDescriptionAr" />
+                <ScalarProperty Name="ParentCategoryID" ColumnName="ParentCategoryID" />
+                <ScalarProperty Name="CategoryImage" ColumnName="CategoryImage" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="intlmilldbModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CustomerGuid" ColumnName="CustomerGuid" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HasShoppingCartItems" ColumnName="HasShoppingCartItems" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="ApplicationUser_Id" ColumnName="ApplicationUser_Id" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deliveries">
+            <EntityTypeMapping TypeName="intlmilldbModel.Delivery">
+              <MappingFragment StoreEntitySet="Deliveries">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryModes">
+            <EntityTypeMapping TypeName="intlmilldbModel.DeliveryMode">
+              <MappingFragment StoreEntitySet="DeliveryModes">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Governorates">
+            <EntityTypeMapping TypeName="intlmilldbModel.Governorate">
+              <MappingFragment StoreEntitySet="Governorates">
+                <ScalarProperty Name="GovernorateId" ColumnName="GovernorateId" />
+                <ScalarProperty Name="GovernoratesName" ColumnName="GovernoratesName" />
+                <ScalarProperty Name="GovernoratesNameAr" ColumnName="GovernoratesNameAr" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="intlmilldbModel.OrderItem">
+              <MappingFragment StoreEntitySet="OrderItems">
+                <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Order_OrderId" ColumnName="Order_OrderId" />
+                <ScalarProperty Name="ProductAttributeValue_ProductAttributeValueId" ColumnName="ProductAttributeValue_ProductAttributeValueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderNumbers">
+            <EntityTypeMapping TypeName="intlmilldbModel.OrderNumber">
+              <MappingFragment StoreEntitySet="OrderNumbers">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="OrderNum" ColumnName="OrderNum" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="intlmilldbModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="CustomOrderNumber" ColumnName="CustomOrderNumber" />
+                <ScalarProperty Name="CustomerIpAddress" ColumnName="CustomerIpAddress" />
+                <ScalarProperty Name="OrderNotes" ColumnName="OrderNotes" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="PaidDateUtc" ColumnName="PaidDateUtc" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Address_AddressId" ColumnName="Address_AddressId" />
+                <ScalarProperty Name="Customer_CustomerGuid" ColumnName="Customer_CustomerGuid" />
+                <ScalarProperty Name="Branch_BranchId" ColumnName="Branch_BranchId" />
+                <ScalarProperty Name="TotalOrderAmount" ColumnName="TotalOrderAmount" />
+                <ScalarProperty Name="ShippingCharge" ColumnName="ShippingCharge" />
+                <ScalarProperty Name="Delivery_Oid" ColumnName="Delivery_Oid" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="DeliveryMode_Oid" ColumnName="DeliveryMode_Oid" />
+                <ScalarProperty Name="TimeSlot_Oid" ColumnName="TimeSlot_Oid" />
+                <ScalarProperty Name="reference_number" ColumnName="reference_number" />
+                <ScalarProperty Name="result" ColumnName="result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PickupDeliveries">
+            <EntityTypeMapping TypeName="intlmilldbModel.PickupDelivery">
+              <MappingFragment StoreEntitySet="PickupDeliveries">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="TimeSlot_Oid" ColumnName="TimeSlot_Oid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Category_Mapping">
+            <EntityTypeMapping TypeName="intlmilldbModel.Product_Category_Mapping">
+              <MappingFragment StoreEntitySet="Product_Category_Mapping">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Category_CategoryID" ColumnName="Category_CategoryID" />
+                <ScalarProperty Name="Products_ProductID" ColumnName="Products_ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_ProductAttribute_Mapping">
+            <EntityTypeMapping TypeName="intlmilldbModel.Product_ProductAttribute_Mapping">
+              <MappingFragment StoreEntitySet="Product_ProductAttribute_Mapping">
+                <ScalarProperty Name="ProductAttributeMappingId" ColumnName="ProductAttributeMappingId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Product_ProductID" ColumnName="Product_ProductID" />
+                <ScalarProperty Name="ProductAttribute_ProductAttributeId" ColumnName="ProductAttribute_ProductAttributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductAttributes">
+            <EntityTypeMapping TypeName="intlmilldbModel.ProductAttribute">
+              <MappingFragment StoreEntitySet="ProductAttributes">
+                <ScalarProperty Name="ProductAttributeId" ColumnName="ProductAttributeId" />
+                <ScalarProperty Name="ProductAttributeName" ColumnName="ProductAttributeName" />
+                <ScalarProperty Name="ProductAttributeNameAr" ColumnName="ProductAttributeNameAr" />
+                <ScalarProperty Name="ProductAttributeDescription" ColumnName="ProductAttributeDescription" />
+                <ScalarProperty Name="ProductAttributeDescriptionAr" ColumnName="ProductAttributeDescriptionAr" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductAttributeValues">
+            <EntityTypeMapping TypeName="intlmilldbModel.ProductAttributeValue">
+              <MappingFragment StoreEntitySet="ProductAttributeValues">
+                <ScalarProperty Name="ProductAttributeValueId" ColumnName="ProductAttributeValueId" />
+                <ScalarProperty Name="ProductAttributeValueName" ColumnName="ProductAttributeValueName" />
+                <ScalarProperty Name="ProductAttributeValueNameAr" ColumnName="ProductAttributeValueNameAr" />
+                <ScalarProperty Name="SalesPrice" ColumnName="SalesPrice" />
+                <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
+                <ScalarProperty Name="MaxOrder" ColumnName="MaxOrder" />
+                <ScalarProperty Name="LowStockQuantity" ColumnName="LowStockQuantity" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Product_ProductAttribute_Mapping_ProductAttributeMappingId" ColumnName="Product_ProductAttribute_Mapping_ProductAttributeMappingId" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="MinOrder" ColumnName="MinOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="intlmilldbModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductNameAr" ColumnName="ProductNameAr" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductDescriptionAr" ColumnName="ProductDescriptionAr" />
+                <ScalarProperty Name="ProductPhoto" ColumnName="ProductPhoto" />
+                <ScalarProperty Name="ProductSKU" ColumnName="ProductSKU" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shipments">
+            <EntityTypeMapping TypeName="intlmilldbModel.Shipment">
+              <MappingFragment StoreEntitySet="Shipments">
+                <ScalarProperty Name="ShipmentId" ColumnName="ShipmentId" />
+                <ScalarProperty Name="ShippingStatus" ColumnName="ShippingStatus" />
+                <ScalarProperty Name="TrackingNumber" ColumnName="TrackingNumber" />
+                <ScalarProperty Name="TotalWeight" ColumnName="TotalWeight" />
+                <ScalarProperty Name="ShippedDate" ColumnName="ShippedDate" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="AdminComment" ColumnName="AdminComment" />
+                <ScalarProperty Name="Order_OrderId" ColumnName="Order_OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShipmentSettings">
+            <EntityTypeMapping TypeName="intlmilldbModel.ShipmentSetting">
+              <MappingFragment StoreEntitySet="ShipmentSettings">
+                <ScalarProperty Name="ShipmentSettingsId" ColumnName="ShipmentSettingsId" />
+                <ScalarProperty Name="StandardShippingCharges" ColumnName="StandardShippingCharges" />
+                <ScalarProperty Name="FreeShippingAmountLimit" ColumnName="FreeShippingAmountLimit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShoppingCarts">
+            <EntityTypeMapping TypeName="intlmilldbModel.ShoppingCart">
+              <MappingFragment StoreEntitySet="ShoppingCarts">
+                <ScalarProperty Name="ShoppingCartId" ColumnName="ShoppingCartId" />
+                <ScalarProperty Name="ShoppingCartType" ColumnName="ShoppingCartType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Customer_CustomerGuid" ColumnName="Customer_CustomerGuid" />
+                <ScalarProperty Name="Products_ProductID" ColumnName="Products_ProductID" />
+                <ScalarProperty Name="ProductAttributeValue_ProductAttributeValueId" ColumnName="ProductAttributeValue_ProductAttributeValueId" />
+                <ScalarProperty Name="ShippingCost" ColumnName="ShippingCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSlots">
+            <EntityTypeMapping TypeName="intlmilldbModel.TimeSlot">
+              <MappingFragment StoreEntitySet="TimeSlots">
+                <ScalarProperty Name="Oid" ColumnName="Oid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="intlmilldbModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -18,8 +18,8 @@
     <EntitySet Name="Transaction_2016" EntityType="ImillReportsModel.Transaction_2016" />
     <EntitySet Name="Transaction_2017" EntityType="ImillReportsModel.Transaction_2017" />
     <EntitySet Name="BankDeposits" EntityType="ImillReportsModel.BankDeposit" />
-    <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
     <EntitySet Name="PurchaseOrders" EntityType="ImillReportsModel.PurchaseOrder" />
+    <EntitySet Name="Settings" EntityType="ImillReportsModel.Setting" />
   </EntityContainer>
   <EntityType Name="Transaction_2020">
     <Key>
@@ -681,19 +681,6 @@
     <Property Name="FintasAm" Type="Decimal" Precision="18" Scale="3" />
     <Property Name="FintasPm" Type="Decimal" Precision="18" Scale="3" />
   </EntityType>
-  <EntityType Name="Setting">
-    <Key>
-      <PropertyRef Name="Oid" />
-    </Key>
-    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="SerialNumber" Type="Int64" Nullable="false" />
-    <Property Name="BackDays" Type="Int32" />
-    <Property Name="GmEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="PurchaseEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="AdditionalCc1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="AdditionalCc2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="PurchaseOrder">
     <Key>
       <PropertyRef Name="Oid" />
@@ -712,5 +699,18 @@
     <Property Name="QAStatus" Type="Int32" />
     <Property Name="QARemarks" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
     <Property Name="QAStatusTransDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Setting">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SerialDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SerialNumber" Type="Int64" Nullable="false" />
+    <Property Name="BackDays" Type="Int32" />
+    <Property Name="GmEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PurchaseEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AdditionalCc1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AdditionalCc2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

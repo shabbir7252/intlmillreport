@@ -678,20 +678,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Settings">
-      <EntityTypeMapping TypeName="ImillReportsModel.Setting">
-        <MappingFragment StoreEntitySet="Settings">
-          <ScalarProperty Name="AdditionalCc2" ColumnName="AdditionalCc2" />
-          <ScalarProperty Name="AdditionalCc1" ColumnName="AdditionalCc1" />
-          <ScalarProperty Name="PurchaseEmail" ColumnName="PurchaseEmail" />
-          <ScalarProperty Name="GmEmail" ColumnName="GmEmail" />
-          <ScalarProperty Name="BackDays" ColumnName="BackDays" />
-          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
-          <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
-          <ScalarProperty Name="Oid" ColumnName="Oid" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PurchaseOrders">
       <EntityTypeMapping TypeName="ImillReportsModel.PurchaseOrder">
         <MappingFragment StoreEntitySet="PurchaseOrder">
@@ -708,6 +694,20 @@
           <ScalarProperty Name="VoucherDate" ColumnName="VoucherDate" />
           <ScalarProperty Name="LdgrCd" ColumnName="LdgrCd" />
           <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Settings">
+      <EntityTypeMapping TypeName="ImillReportsModel.Setting">
+        <MappingFragment StoreEntitySet="Settings">
+          <ScalarProperty Name="AdditionalCc2" ColumnName="AdditionalCc2" />
+          <ScalarProperty Name="AdditionalCc1" ColumnName="AdditionalCc1" />
+          <ScalarProperty Name="PurchaseEmail" ColumnName="PurchaseEmail" />
+          <ScalarProperty Name="GmEmail" ColumnName="GmEmail" />
+          <ScalarProperty Name="BackDays" ColumnName="BackDays" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="SerialDate" ColumnName="SerialDate" />
           <ScalarProperty Name="Oid" ColumnName="Oid" />
         </MappingFragment>
       </EntityTypeMapping>

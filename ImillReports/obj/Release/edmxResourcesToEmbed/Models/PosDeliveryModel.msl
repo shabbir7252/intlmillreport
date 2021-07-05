@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PosDeliveryModelStoreContainer" CdmEntityContainer="PosDeliveryEntities">
+    <EntitySetMapping Name="PosOrders">
+      <EntityTypeMapping TypeName="PosDeliveryModel.PosOrder">
+        <MappingFragment StoreEntitySet="PosOrder">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+          <ScalarProperty Name="DeliveryOn" ColumnName="DeliveryOn" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="TotalOrderValue" ColumnName="TotalOrderValue" />
+          <ScalarProperty Name="ShippingFees" ColumnName="ShippingFees" />
+          <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="Driver" ColumnName="Driver" />
+          <ScalarProperty Name="Locat_Cd" ColumnName="Locat_Cd" />
+          <ScalarProperty Name="IsPrinted" ColumnName="IsPrinted" />
+          <ScalarProperty Name="AllowSync" ColumnName="AllowSync" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PosOrderDetails">
+      <EntityTypeMapping TypeName="PosDeliveryModel.PosOrderDetail">
+        <MappingFragment StoreEntitySet="PosOrderDetails">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="ItemNameEn" ColumnName="ItemNameEn" />
+          <ScalarProperty Name="ItemNameAr" ColumnName="ItemNameAr" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="OrderOid" ColumnName="OrderOid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

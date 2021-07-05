@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PosDeliveryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="PosOrder">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" Nullable="false" />
+    <Property Name="OrderId" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ClientName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="MobileNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DeliveryOn" Type="datetime" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="2000" Nullable="false" />
+    <Property Name="TotalOrderValue" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="ShippingFees" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="NetAmount" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="PaymentMethod" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="PaymentStatus" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Driver" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Locat_Cd" Type="smallint" Nullable="false" />
+    <Property Name="IsPrinted" Type="bit" Nullable="false" />
+    <Property Name="AllowSync" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PosOrderDetails">
+    <Key>
+      <PropertyRef Name="Oid" />
+    </Key>
+    <Property Name="Oid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ItemNameEn" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ItemNameAr" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Unit" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="OrderOid" Type="varchar" MaxLength="4000" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="PosDeliveryModelStoreContainer">
+    <EntitySet Name="PosOrder" EntityType="Self.PosOrder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PosOrderDetails" EntityType="Self.PosOrderDetails" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

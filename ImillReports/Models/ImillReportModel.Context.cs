@@ -42,7 +42,7 @@ namespace ImillReports.Models
         public virtual DbSet<Transaction_2016> Transaction_2016 { get; set; }
         public virtual DbSet<Transaction_2017> Transaction_2017 { get; set; }
         public virtual DbSet<BankDeposit> BankDeposits { get; set; }
-        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
     }
 }

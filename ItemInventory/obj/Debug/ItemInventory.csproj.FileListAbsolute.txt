@@ -317,8 +317,8 @@ E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApp
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\MigraDoc.RtfRendering-gdi.resources.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\PdfSharp-gdi.resources.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\bin\de\PdfSharp.Charting-gdi.resources.dll
+E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.AssemblyReference.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CoreCompileInputs.cache
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.CopyComplete
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.dll
 E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.pdb
-E:\Projects\TheCode53\Projects\InternationalMill\_root\Reports\IntlmillReportApps\ItemInventory\obj\Debug\ItemInventory.csproj.AssemblyReference.cache

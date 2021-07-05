@@ -1,0 +1,389 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="intlmilldbModelStoreContainer" CdmEntityContainer="intlmilldbEntities">
+    <EntitySetMapping Name="C__MigrationHistory">
+      <EntityTypeMapping TypeName="intlmilldbModel.C__MigrationHistory">
+        <MappingFragment StoreEntitySet="__MigrationHistory">
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Addresses">
+      <EntityTypeMapping TypeName="intlmilldbModel.Address">
+        <MappingFragment StoreEntitySet="Addresses">
+          <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+          <ScalarProperty Name="AddressName" ColumnName="AddressName" />
+          <ScalarProperty Name="AddressNameAr" ColumnName="AddressNameAr" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Block" ColumnName="Block" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="House" ColumnName="House" />
+          <ScalarProperty Name="Floor" ColumnName="Floor" />
+          <ScalarProperty Name="Flat" ColumnName="Flat" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="Area_AreaId" ColumnName="Area_AreaId" />
+          <ScalarProperty Name="Customer_CustomerGuid" ColumnName="Customer_CustomerGuid" />
+          <ScalarProperty Name="Governorates_GovernorateId" ColumnName="Governorates_GovernorateId" />
+          <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+          <ScalarProperty Name="PACINumber" ColumnName="PACINumber" />
+          <ScalarProperty Name="Avenue" ColumnName="Avenue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Areas">
+      <EntityTypeMapping TypeName="intlmilldbModel.Area">
+        <MappingFragment StoreEntitySet="Areas">
+          <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+          <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+          <ScalarProperty Name="AreaNameAr" ColumnName="AreaNameAr" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="Governorates_GovernorateId" ColumnName="Governorates_GovernorateId" />
+          <ScalarProperty Name="Branch_BranchId" ColumnName="Branch_BranchId" />
+          <ScalarProperty Name="DeliveryMode_Oid" ColumnName="DeliveryMode_Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetRoles">
+      <EntityTypeMapping TypeName="intlmilldbModel.AspNetRole">
+        <MappingFragment StoreEntitySet="AspNetRoles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserClaims">
+      <EntityTypeMapping TypeName="intlmilldbModel.AspNetUserClaim">
+        <MappingFragment StoreEntitySet="AspNetUserClaims">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserLogins">
+      <EntityTypeMapping TypeName="intlmilldbModel.AspNetUserLogin">
+        <MappingFragment StoreEntitySet="AspNetUserLogins">
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUsers">
+      <EntityTypeMapping TypeName="intlmilldbModel.AspNetUser">
+        <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Branches">
+      <EntityTypeMapping TypeName="intlmilldbModel.Branch">
+        <MappingFragment StoreEntitySet="Branches">
+          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+          <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+          <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+          <ScalarProperty Name="BranchNameAr" ColumnName="BranchNameAr" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BranchUsers">
+      <EntityTypeMapping TypeName="intlmilldbModel.BranchUser">
+        <MappingFragment StoreEntitySet="BranchUsers">
+          <ScalarProperty Name="BranchUserGuid" ColumnName="BranchUserGuid" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="BranchUserName" ColumnName="BranchUserName" />
+          <ScalarProperty Name="BranchUserNameAr" ColumnName="BranchUserNameAr" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="branch_BranchId" ColumnName="branch_BranchId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CartSettings">
+      <EntityTypeMapping TypeName="intlmilldbModel.CartSetting">
+        <MappingFragment StoreEntitySet="CartSettings">
+          <ScalarProperty Name="CartSettingsId" ColumnName="CartSettingsId" />
+          <ScalarProperty Name="CheckoutAmountLimit" ColumnName="CheckoutAmountLimit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="intlmilldbModel.Category">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryNameAr" ColumnName="CategoryNameAr" />
+          <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
+          <ScalarProperty Name="CategoryDescriptionAr" ColumnName="CategoryDescriptionAr" />
+          <ScalarProperty Name="ParentCategoryID" ColumnName="ParentCategoryID" />
+          <ScalarProperty Name="CategoryImage" ColumnName="CategoryImage" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="intlmilldbModel.Customer">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="CustomerGuid" ColumnName="CustomerGuid" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="HasShoppingCartItems" ColumnName="HasShoppingCartItems" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="ApplicationUser_Id" ColumnName="ApplicationUser_Id" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Deliveries">
+      <EntityTypeMapping TypeName="intlmilldbModel.Delivery">
+        <MappingFragment StoreEntitySet="Deliveries">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeliveryModes">
+      <EntityTypeMapping TypeName="intlmilldbModel.DeliveryMode">
+        <MappingFragment StoreEntitySet="DeliveryModes">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Governorates">
+      <EntityTypeMapping TypeName="intlmilldbModel.Governorate">
+        <MappingFragment StoreEntitySet="Governorates">
+          <ScalarProperty Name="GovernorateId" ColumnName="GovernorateId" />
+          <ScalarProperty Name="GovernoratesName" ColumnName="GovernoratesName" />
+          <ScalarProperty Name="GovernoratesNameAr" ColumnName="GovernoratesNameAr" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderItems">
+      <EntityTypeMapping TypeName="intlmilldbModel.OrderItem">
+        <MappingFragment StoreEntitySet="OrderItems">
+          <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+          <ScalarProperty Name="Order_OrderId" ColumnName="Order_OrderId" />
+          <ScalarProperty Name="ProductAttributeValue_ProductAttributeValueId" ColumnName="ProductAttributeValue_ProductAttributeValueId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderNumbers">
+      <EntityTypeMapping TypeName="intlmilldbModel.OrderNumber">
+        <MappingFragment StoreEntitySet="OrderNumbers">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="OrderNum" ColumnName="OrderNum" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="intlmilldbModel.Order">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="CustomOrderNumber" ColumnName="CustomOrderNumber" />
+          <ScalarProperty Name="CustomerIpAddress" ColumnName="CustomerIpAddress" />
+          <ScalarProperty Name="OrderNotes" ColumnName="OrderNotes" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="PaidDateUtc" ColumnName="PaidDateUtc" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="Address_AddressId" ColumnName="Address_AddressId" />
+          <ScalarProperty Name="Customer_CustomerGuid" ColumnName="Customer_CustomerGuid" />
+          <ScalarProperty Name="Branch_BranchId" ColumnName="Branch_BranchId" />
+          <ScalarProperty Name="TotalOrderAmount" ColumnName="TotalOrderAmount" />
+          <ScalarProperty Name="ShippingCharge" ColumnName="ShippingCharge" />
+          <ScalarProperty Name="Delivery_Oid" ColumnName="Delivery_Oid" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="DeliveryMode_Oid" ColumnName="DeliveryMode_Oid" />
+          <ScalarProperty Name="TimeSlot_Oid" ColumnName="TimeSlot_Oid" />
+          <ScalarProperty Name="reference_number" ColumnName="reference_number" />
+          <ScalarProperty Name="result" ColumnName="result" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PickupDeliveries">
+      <EntityTypeMapping TypeName="intlmilldbModel.PickupDelivery">
+        <MappingFragment StoreEntitySet="PickupDeliveries">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+          <ScalarProperty Name="TimeSlot_Oid" ColumnName="TimeSlot_Oid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product_Category_Mapping">
+      <EntityTypeMapping TypeName="intlmilldbModel.Product_Category_Mapping">
+        <MappingFragment StoreEntitySet="Product_Category_Mapping">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Category_CategoryID" ColumnName="Category_CategoryID" />
+          <ScalarProperty Name="Products_ProductID" ColumnName="Products_ProductID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product_ProductAttribute_Mapping">
+      <EntityTypeMapping TypeName="intlmilldbModel.Product_ProductAttribute_Mapping">
+        <MappingFragment StoreEntitySet="Product_ProductAttribute_Mapping">
+          <ScalarProperty Name="ProductAttributeMappingId" ColumnName="ProductAttributeMappingId" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="Product_ProductID" ColumnName="Product_ProductID" />
+          <ScalarProperty Name="ProductAttribute_ProductAttributeId" ColumnName="ProductAttribute_ProductAttributeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductAttributes">
+      <EntityTypeMapping TypeName="intlmilldbModel.ProductAttribute">
+        <MappingFragment StoreEntitySet="ProductAttributes">
+          <ScalarProperty Name="ProductAttributeId" ColumnName="ProductAttributeId" />
+          <ScalarProperty Name="ProductAttributeName" ColumnName="ProductAttributeName" />
+          <ScalarProperty Name="ProductAttributeNameAr" ColumnName="ProductAttributeNameAr" />
+          <ScalarProperty Name="ProductAttributeDescription" ColumnName="ProductAttributeDescription" />
+          <ScalarProperty Name="ProductAttributeDescriptionAr" ColumnName="ProductAttributeDescriptionAr" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductAttributeValues">
+      <EntityTypeMapping TypeName="intlmilldbModel.ProductAttributeValue">
+        <MappingFragment StoreEntitySet="ProductAttributeValues">
+          <ScalarProperty Name="ProductAttributeValueId" ColumnName="ProductAttributeValueId" />
+          <ScalarProperty Name="ProductAttributeValueName" ColumnName="ProductAttributeValueName" />
+          <ScalarProperty Name="ProductAttributeValueNameAr" ColumnName="ProductAttributeValueNameAr" />
+          <ScalarProperty Name="SalesPrice" ColumnName="SalesPrice" />
+          <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
+          <ScalarProperty Name="MaxOrder" ColumnName="MaxOrder" />
+          <ScalarProperty Name="LowStockQuantity" ColumnName="LowStockQuantity" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="Product_ProductAttribute_Mapping_ProductAttributeMappingId" ColumnName="Product_ProductAttribute_Mapping_ProductAttributeMappingId" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="MinOrder" ColumnName="MinOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="intlmilldbModel.Product">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductNameAr" ColumnName="ProductNameAr" />
+          <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+          <ScalarProperty Name="ProductDescriptionAr" ColumnName="ProductDescriptionAr" />
+          <ScalarProperty Name="ProductPhoto" ColumnName="ProductPhoto" />
+          <ScalarProperty Name="ProductSKU" ColumnName="ProductSKU" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Shipments">
+      <EntityTypeMapping TypeName="intlmilldbModel.Shipment">
+        <MappingFragment StoreEntitySet="Shipments">
+          <ScalarProperty Name="ShipmentId" ColumnName="ShipmentId" />
+          <ScalarProperty Name="ShippingStatus" ColumnName="ShippingStatus" />
+          <ScalarProperty Name="TrackingNumber" ColumnName="TrackingNumber" />
+          <ScalarProperty Name="TotalWeight" ColumnName="TotalWeight" />
+          <ScalarProperty Name="ShippedDate" ColumnName="ShippedDate" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="AdminComment" ColumnName="AdminComment" />
+          <ScalarProperty Name="Order_OrderId" ColumnName="Order_OrderId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipmentSettings">
+      <EntityTypeMapping TypeName="intlmilldbModel.ShipmentSetting">
+        <MappingFragment StoreEntitySet="ShipmentSettings">
+          <ScalarProperty Name="ShipmentSettingsId" ColumnName="ShipmentSettingsId" />
+          <ScalarProperty Name="StandardShippingCharges" ColumnName="StandardShippingCharges" />
+          <ScalarProperty Name="FreeShippingAmountLimit" ColumnName="FreeShippingAmountLimit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShoppingCarts">
+      <EntityTypeMapping TypeName="intlmilldbModel.ShoppingCart">
+        <MappingFragment StoreEntitySet="ShoppingCarts">
+          <ScalarProperty Name="ShoppingCartId" ColumnName="ShoppingCartId" />
+          <ScalarProperty Name="ShoppingCartType" ColumnName="ShoppingCartType" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="Customer_CustomerGuid" ColumnName="Customer_CustomerGuid" />
+          <ScalarProperty Name="Products_ProductID" ColumnName="Products_ProductID" />
+          <ScalarProperty Name="ProductAttributeValue_ProductAttributeValueId" ColumnName="ProductAttributeValue_ProductAttributeValueId" />
+          <ScalarProperty Name="ShippingCost" ColumnName="ShippingCost" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSlots">
+      <EntityTypeMapping TypeName="intlmilldbModel.TimeSlot">
+        <MappingFragment StoreEntitySet="TimeSlots">
+          <ScalarProperty Name="Oid" ColumnName="Oid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="NameAr" ColumnName="NameAr" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AspNetUserRoles" TypeName="intlmilldbModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+      <EndProperty Name="AspNetRoles">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+      <EndProperty Name="AspNetUsers">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

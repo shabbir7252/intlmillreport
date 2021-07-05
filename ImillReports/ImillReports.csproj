@@ -266,6 +266,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ManageTimeAttendanceController.cs" />
     <Compile Include="Controllers\PdaController.cs" />
+    <Compile Include="Controllers\PosDeliveryController.cs" />
     <Compile Include="Controllers\PurchaseOrderController.cs" />
     <Compile Include="Controllers\SalesmanController.cs" />
     <Compile Include="Controllers\SalesReportController.cs" />
@@ -274,12 +275,57 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Area.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetRole.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUser.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserClaim.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogin.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BankDeposit.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Branch.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BranchUser.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CartSetting.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Chart.cs" />
+    <Compile Include="Models\Customer.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C__MigrationHistory.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Delivery.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DeliveryMode.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GL_Ledger.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Governorate.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ICS_Item.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
@@ -318,10 +364,34 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImillReportModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\IntlmillWebDbModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IntlmillWebDbModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IntlmillWebDbModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IntlmillWebDbModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IntlmillWebDbModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\intlmill_cash_register.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Order.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderItem.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderNumber.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PDA.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -336,6 +406,45 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PDA.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PickupDelivery.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PosDeliveryModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PosDeliveryModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PosDeliveryModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PosDeliveryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PosDeliveryModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PosDeliveryModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PosOrder.cs">
+      <DependentUpon>PosDeliveryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PosOrderDetail.cs">
+      <DependentUpon>PosDeliveryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductAttribute.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductAttributeValue.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product_Category_Mapping.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product_ProductAttribute_Mapping.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PurchaseOrder.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
@@ -363,6 +472,15 @@
     </Compile>
     <Compile Include="Models\Setting.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Shipment.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ShipmentSetting.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ShoppingCart.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SM_Location.cs">
       <DependentUpon>ReportModel.tt</DependentUpon>
@@ -429,6 +547,9 @@
     </Compile>
     <Compile Include="Models\tbl_Transactions.cs">
       <DependentUpon>TAModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TimeSlot.cs">
+      <DependentUpon>IntlmillWebDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Transaction_2015.cs">
       <DependentUpon>ImillReportModel.tt</DependentUpon>
@@ -685,6 +806,16 @@
       <DependentUpon>ImillReportModel.edmx</DependentUpon>
       <LastGenOutput>ImillReportModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\IntlmillWebDbModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>IntlmillWebDbModel.edmx</DependentUpon>
+      <LastGenOutput>IntlmillWebDbModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\IntlmillWebDbModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>IntlmillWebDbModel.edmx</DependentUpon>
+      <LastGenOutput>IntlmillWebDbModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\PDA.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PDA.edmx</DependentUpon>
@@ -694,6 +825,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PDA.edmx</DependentUpon>
       <LastGenOutput>PDA.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PosDeliveryModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PosDeliveryModel.edmx</DependentUpon>
+      <LastGenOutput>PosDeliveryModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PosDeliveryModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PosDeliveryModel.edmx</DependentUpon>
+      <LastGenOutput>PosDeliveryModel.cs</LastGenOutput>
     </Content>
     <Content Include="Models\ReportModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -752,6 +893,20 @@
     </EntityDeploy>
     <Content Include="Models\PDA.edmx.diagram">
       <DependentUpon>PDA.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\PosDeliveryModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PosDeliveryModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PosDeliveryModel.edmx.diagram">
+      <DependentUpon>PosDeliveryModel.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\IntlmillWebDbModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>IntlmillWebDbModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\IntlmillWebDbModel.edmx.diagram">
+      <DependentUpon>IntlmillWebDbModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\ej2\ej2.min.js" />
@@ -838,6 +993,7 @@
     <Folder Include="Content\Print\" />
     <Folder Include="Views\Location\" />
     <Folder Include="Views\Pda\" />
+    <Folder Include="Views\PosDelivery\" />
     <Folder Include="Views\Salesman\" />
   </ItemGroup>
   <ItemGroup>

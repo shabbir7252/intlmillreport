@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Shabbir\Dropbox (Old)\My PC (Shabbir-Dev)\Desktop\_Publishe_Files\POS_Delivery</_PublishTargetUrl>
-    <History>True|2021-06-27T11:07:36.5873065Z;True|2021-06-27T15:03:51.0927050+05:30;True|2021-06-26T15:14:01.5041473+05:30;True|2021-06-26T13:31:32.9790150+05:30;</History>
+    <History>True|2021-07-05T16:34:43.4239397Z;True|2021-06-27T16:37:36.5873065+05:30;True|2021-06-27T15:03:51.0927050+05:30;True|2021-06-26T15:14:01.5041473+05:30;True|2021-06-26T13:31:32.9790150+05:30;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
@@ -69,10 +69,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/27/2012 15:30:52</publishTime>
     </File>
     <File Include="bin/PosDelivery.dll">
-      <publishTime>06/27/2021 16:37:32</publishTime>
+      <publishTime>07/05/2021 22:04:34</publishTime>
     </File>
     <File Include="bin/PosDelivery.pdb">
-      <publishTime>06/27/2021 16:37:32</publishTime>
+      <publishTime>07/05/2021 22:04:34</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/27/2016 21:50:24</publishTime>
