@@ -4737,9 +4737,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                            if (!trans_detail_2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
                             {
-                                if (!newTransDetail2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                if (!newTransDetail2020.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
                                 {
                                     var iTrans = new Trans_Detail_2020
                                     {
@@ -4796,9 +4796,9 @@ namespace ImillReports.Repository
 
                         foreach (var item in items)
                         {
-                            if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                            if (!trans_detail_2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
                             {
-                                if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber))
+                                if (!newTransDetail2021.Any(x => x.Line_No == item.LineNumber && x.InvoiceNumber == item.InvoiceNumber && x.InvDateTime == item.InvDateTime))
                                 {
                                     var iTrans = new Trans_Detail_2021
                                     {
